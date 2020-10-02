@@ -1,0 +1,17 @@
+{
+"M":{
+ "title"  :"Cell scale is 1/M [um/mm] ",
+ "val"   :6320},
+"CellPix":{
+ "title"  :"Number of cells corresponds to detector pixel size",
+ "val"   : 13 },
+"PixNum":{
+ "title"  :"Number of detector pixels for the side length of a single area",
+ "val" : 9 },
+"dx":{
+  "title" :"x difference between psf center and detector pixel center ",
+  "val" : 0 },
+"dy":{
+  "title" :"y difference between psf center and detector pixel center ",
+  "val" : 0 }
+}

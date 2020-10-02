@@ -1,0 +1,18 @@
+{
+"EPD":{
+ "title"  :"Entrance Pupil Diameter",
+ "val"   :400 },
+"Cobs":{
+ "title"  :"Central obscuration ratio",
+ "val" :0.31},
+"Stype":{
+ "title"  :"Spider type",
+ "val" :"tripod",
+ "thick":5 },
+"Eopt":{
+  "title" : "Spectral efficiency of optics with the filter",
+  "W00" : 1.1,
+  "V00" : 0.88,
+  "W01" : 1.6,
+  "V01" : 0.88}
+}
