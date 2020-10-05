@@ -9,11 +9,11 @@ from setuptools import find_packages, setup
 
 NAME = "jasmine-imagesim"
 PACKAGES = find_packages(where="src")
-META_PATH = os.path.join("src", "pixsim", "__init__.py")
+META_PATH = os.path.join("src", "jis", "__init__.py")
 CLASSIFIERS = [
     "Programming Language :: Python",
 ]
-INSTALL_REQUIRES = ["numpy","tqdm","scipy"]
+INSTALL_REQUIRES = ["numpy","tqdm","scipy","docopt"]
 
 # END PROJECT SPECIFIC
 
