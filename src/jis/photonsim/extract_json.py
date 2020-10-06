@@ -1,5 +1,16 @@
 import numpy as np
 
+def extsp(sp):
+    k=len(sp['WLdef'])-1
+    WL = np.empty(k)
+    for i in range(k):
+        WL[i] = sp['WLdef']['v{:02d}'.format(i)]
+    NP = np.empty(k)
+    for i in range(k):
+        NP[i] = sp['SPR']['v{:02d}'.format(i)]
+    Ntot = sp['Ntot']['val']
+    return k,WL,NP,Ntot
+
 def exttel(tel):
     # from Eopt in tel, prepare arrays for WL and E
     k = int((len(tel['Eopt'])-1)/2 ) # number of definition points

@@ -13,7 +13,7 @@ META_PATH = os.path.join("src", "jis", "__init__.py")
 CLASSIFIERS = [
     "Programming Language :: Python",
 ]
-INSTALL_REQUIRES = ["numpy","tqdm","scipy","docopt"]
+INSTALL_REQUIRES = ["numpy","tqdm","scipy","docopt","pyfftw"]
 
 # END PROJECT SPECIFIC
 
