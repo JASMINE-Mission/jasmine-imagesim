@@ -22,3 +22,7 @@ trajectory, optics, ...
 # Test
 - cd [jis-home]/bin
 - bash test.sh
+
+# Usage
+- To use modules in the jis package, you can call them by 'from jis import xxxx' in your script.
+- To use executables, you can execute files in [jis-home]/bin/xxxx.py.
