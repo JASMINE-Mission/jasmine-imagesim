@@ -9,8 +9,8 @@ trajectory, optics, ...
 
 # Structure
 This package basically consists of 'bin' and 'src' directories.
--bin: Executables are stored.
--src: Modules are stored. The modules can be used for general purposes.
+- bin: Executables are stored.
+- src: Modules are stored. The modules can be used for general purposes.
 
 # Requirements
 - python 3.8 (3.7 might be ok)
