@@ -35,3 +35,42 @@ def calc_wfe(EPD,efile):
                     data[iy,ix] = math.nan
 
     return data
+
+def wfe_model_z(rg,nmax,wlen,zodd,zeven):
+  """
+  wave front error のために zernike で n=2..(nmax-1) の 強度データを作成する。
+  長さのスケールに用いる波長を wlen とする。
+  n が奇数のときは、強度を wlen/zodd とし、偶数の時は wlen/zeven とする。
+  そして、 m=0 ではこの強度をそのまま用い、 m がゼロでなければ、
+  この強度を正の m の項に に cos(θ) 倍、 m が負の項に sin(θ) 倍したものを
+  用いることにする。ここで θ は 0 から 2π の一様乱数である。
+  """
+  n=int(nmax*(nmax+1)/2)
+  ZIDn,ZIDm = zernike.ZernikeID(n)
+  k=1
+  wfe={}
+  wfe['title'] = 'Zernike polynomials'
+  wfe['N-polys'] = n-3
+  for i in range(3,n):
+    if ZIDn[i]%2 == 1 :
+      a=wlen/zodd
+    else :
+     a=wlen/zeven
+    if ZIDm[i]<0:
+      continue
+    elif ZIDm[i]==0:
+      wfe['z{:03d}-n'.format(k)] = int(ZIDn[i] )
+      wfe['z{:03d}-m'.format(k)] = int(ZIDm[i] )
+      wfe['z{:03d}-a'.format(k)] = a
+      k=k+1
+    else :
+      th = rg.uniform() * 2*math.pi
+      wfe['z{:03d}-n'.format(k)] = int(ZIDn[i])
+      wfe['z{:03d}-m'.format(k)] = int(ZIDm[i])
+      wfe['z{:03d}-a'.format(k)] = a*math.cos(th)
+      k=k+1
+      wfe['z{:03d}-n'.format(k)] = int(ZIDn[i])
+      wfe['z{:03d}-m'.format(k)] = int(-ZIDm[i])
+      wfe['z{:03d}-a'.format(k)] = a*math.sin(th)
+      k=k+1
+  return wfe
