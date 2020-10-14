@@ -11,9 +11,9 @@ def extsp(sp):
 
     Returns:
         k    (int)    : Number of output data points.
-        WL   (ndarray): Wavelength data.
-        NP   (ndarray): Spectral response data (Num. of photon?).
-        Ntot (float?) : Total... what? 
+        WL   (ndarray): Wavelength data (um).
+        NP   (ndarray): Number of detected photon (electron) flux (e-/s/m2/um).
+        Ntot (float?) : Total detected photon (electron) rate (e-/s/m2).
 
     Example:
         import json
@@ -51,10 +51,10 @@ def exttel(tel):
 
     Returns:
         k         (int)    : Number of output data points.
-        WLdefined (ndarray): Wavelength data.
+        WLdefined (ndarray): Wavelength data (um).
         EPdefined (ndarray): Optical efficiency.
-        WLshort   (float)  : Shortest wavelength.
-        WLlong    (float)  : Longest wavelength.        
+        WLshort   (float)  : Shortest wavelength (um).
+        WLlong    (float)  : Longest wavelength (um).        
 
     Example:
         import json
@@ -91,7 +91,7 @@ def extQE(det):
         det (dict): Decoded json data of the detector information.
 
     Returns:
-        WLdet (ndarray): Wavelength data.
+        WLdet (ndarray): Wavelength data (um).
         QEdet (ndarray): Quantum efficiency of the detector.
 
     Example:
@@ -127,8 +127,8 @@ def extsrc(src):
 
     Returns:
         Rv  (float): Extinction factor Rv(=Av/E(B-V)).
-        JH  (float): J-H color of... what?
-        alp (float): Hw-band magnitude of the source?.
+        JH  (float): Color excess (E(J-H)=AJ-AH).
+        alp (float): ???
 
     Example:
         import json

@@ -14,16 +14,16 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         wfe   (ndarray): Wavefront error data (um?).
         wN    (int)    : Number of pixels on a side of the wfe data.
         k     (int)    : Number of wavelength data points.
-        WL    (ndarray): Wavelength data (um?).
-        NP    (ndarray): Number of photons data?
-        Ntot  (float)  : Total number of photons (electrons)?
-        Stel  (float)  : Total area of the telescope aperture.
+        WL    (ndarray): Wavelength data (um).
+        NP    (ndarray): Detected photon (electron) flux (e-/s/m2/um).
+        Ntot  (float)  : Total detected photon (electron) rate (e-/s/m2).
+        Stel  (float)  : Total area of the telescope aperture (m2?).
         adata (ndarray): Aperture mask data.
-        M              : Control parameter M?.
+        M              : Control parameter M.
         aN    (int)    : Number of pixels of the aperture mask data.
 
     Returns:
-        image (nadarray): 520 x 520 pixel array of the psf in e-/s/pix.
+        image (nadarray): 520 x 520 pixel array of the psf (e-/s/pix?).
 
     Example:
         import json
@@ -32,10 +32,10 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
 
         # Reading source information.
         sp = json.load(open("source.json"))
-        k,WL,NP,Ntot = extract_json.extsp(sp)
+        k, WL, NP, Ntot = extract_json.extsp(sp)
 
         # Reading aperture pattern.
-        Stel,adata,aN,ahdr = readfits.read_aperture_mask("aperture.fits")
+        Stel, adata, aN, ahdr = readfits.read_aperture_mask("aperture.fits")
 
         # Reading wavefront error pattern.
         wfe,wN,whdr=readfits.read_wfe_map("wfe.fits")
