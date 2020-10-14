@@ -12,4 +12,5 @@ echo "test ace"
 python mksimace.py  -n 1048576 -t 15 -e ../photonsim/data/ace_001.json -m ../photonsim/data/ace_1_0001.fits -p ../photonsim/data/ace_1_1.png
 python mksimace.py  -n 1048576 -t 15 -e ../photonsim/data/ace_001.json -m ../photonsim/data/ace_1_0002.fits
 python mkace2d.py  -v 1 -w 1 -p 0.025 -x ../photonsim/data/ace_1_0001.fits -y ../photonsim/data/ace_1_0002.fits -n 520 -o ../photonsim/data/ace2d_001_00010002.fits
+python mkpixcube.py -v 1 -w 1 -p 0.025 -x ../photonsim/data/ace_1_0001.fits -y ../photonsim/data/ace_1_0002.fits -n 520 
 echo "finish."
