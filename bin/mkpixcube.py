@@ -4,7 +4,7 @@
   Make a pixel cube
 
   usage:
-    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -o out.fits
+    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N
 
  options:
    --help       show this help message and exit
@@ -14,7 +14,6 @@
    -w ys        aY.fits is scaled by ys
    -n N         output image is N x N 
    -p ps        pixel scale of Output image
-   -o out.fits  output image file
 
 """ 
 from docopt import docopt             # command line interface
@@ -25,8 +24,10 @@ from jis.pixsim import makeflat as mf
 import astropy.io.fits as fits
 import os
 import sys
+import time
 # Command line interface
 if __name__ == '__main__':
+    ts=time.time()
     args = docopt(__doc__)
     
     # Get parameters from command line
@@ -62,11 +63,16 @@ if __name__ == '__main__':
     flat = mf.gaussian_flat(sigma=0.01)
     gpixdim=np.shape(flat) # dimension for global pixel positions
 
+    #initial global position
+    x0=(0.5*(np.shape(flat)[0]-spixdim[0]))
+    y0=(0.5*(np.shape(flat)[1]-spixdim[1]))
+    x=x0
+    y=y0
     #trajectory
     theta=np.array([xdata,ydata])
     theta=theta*pix_scale
-    nlim=10000
-    theta=theta[:,0:nlim]
+
+#    theta=theta[:,0:10000]
     print(np.shape(theta))
     nframe = 1
     tframe = 7.0 # [sec] for 1 frame
@@ -82,11 +88,6 @@ if __name__ == '__main__':
         xtau=tframe/tau
         Qtsave=[]
 
-    #initial global position
-    x0=(0.5*(np.shape(flat)[0]-spixdim[0]))
-    y0=(0.5*(np.shape(flat)[1]-spixdim[1]))
-    x=x0
-    y=y0
     
     lc=[]    
     jx,jy=np.int(x),np.int(y)
@@ -95,16 +96,13 @@ if __name__ == '__main__':
         #global position update
         #x,y=
 
-        jxp,jyp=jx,jy
         jx,jy=np.int(x),np.int(y)
-        djx,djy=jx-jxp,jy-jyp
         interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
 
         #local position update
+        print(pixdim)
+        theta=theta+np.array([pixdim]).T/2
         pixar=sp.simpix(theta,interpix,intrapix)
-
-        print(np.shape(pixar))
-
         
         if persistence:
             #persistence
@@ -116,3 +114,17 @@ if __name__ == '__main__':
             lctmp=np.mean(np.sum(Ei))
             lc.append(lctmp)
 
+    te=time.time()
+    print(te-ts,"sec")
+
+    #################################
+    #rough sampling plot
+    import matplotlib.pyplot as plt
+    pixsep=pixar[:,:,::50000]
+    meancu=np.median(pixsep,axis=2)
+    for i in range(0,np.shape(pixsep)[2]):
+        #        plt.imshow(pixsep[:,:,i])
+        #        plt.savefig("cubemean"+str(i)+".png")
+        plt.imshow(pixsep[:,:,i]-meancu)
+        plt.savefig("cubemean"+str(i)+".png")
+    
