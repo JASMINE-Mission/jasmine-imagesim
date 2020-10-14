@@ -127,7 +127,7 @@ def extsrc(src):
 
     Returns:
         Rv  (float): Extinction factor Rv(=Av/E(B-V)).
-        JH  (float): Intrinsic color of the source.
+        JH  (float): J-H color of... what?
         alp (float): Hw-band magnitude of the source?.
 
     Example:
