@@ -5,8 +5,29 @@ from jis.photonsim import zernike                       # Zernike polynomials fu
 import json
 
 def calc_wfe(EPD,efile):
+    """
+    Summary:
+        This function calculates wavefront error pattern 
+        by calculating summation of zernike polynomials.
+        Coefficients and dimensions of the zernike terms are 
+        given by the input json file, efile.
+
+    Args:
+        EPD   (float): Entrance pupil diameter (pix).
+        efile (str)  : Filename of the json file having wavefront error parameters.
+
+    Returns:
+        data (ndarray): EPD+4 x EPD+4 data array of the calculated wavefront error pattern.
+
+    Example:
+        from jis.photonsim.wfe import calc_wfe
+
+        wfe_pattern = calc_wfe(500, "wfe.json").
+
+    """
+
     # make a little bit larger data
-    N = int(EPD + 4) 
+    N    = int(EPD + 4) 
     data = np.zeros((N,N),dtype=float)
     
     # Get wavefront error parameters from json file
