@@ -13,8 +13,9 @@ def calc_wfe(EPD,efile):
         given by the input json file, efile.
 
     Args:
-        EPD   (float): Entrance pupil diameter (pix).
+        EPD   (float): Entrance pupil diameter (pix=mm).
         efile (str)  : Filename of the json file having wavefront error parameters.
+        *** Pixel scale is assumed to be 1 mm/pix!!! ***
 
     Returns:
         data (ndarray): EPD+4 x EPD+4 data array of the calculated wavefront error pattern.
