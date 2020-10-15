@@ -24,7 +24,7 @@ def calc_aperture(N,EPD,Robs,Tsp):
 
     Returns:
         data (ndarray): N x N data array of the aperture pattern.
-        S    (float)  : Total area (number of pix) of unmasked region.
+        S    (float)  : Total area (number of pix=mm^2) of unmasked region.
 
     Examples:
         from jis.photonsim.aperture import calc_aperture
