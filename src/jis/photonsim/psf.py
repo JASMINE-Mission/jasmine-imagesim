@@ -19,7 +19,7 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         Ntot  (float)  : Total detected photon (electron) rate (e-/s/m^2).
         Stel  (float)  : Total area of the telescope aperture (m^2).
         adata (ndarray): Aperture mask data.
-        M              : Control parameter M.
+        M              : Inverse number of the PSF cell scale (mm/um).
         aN    (int)    : Number of pixels of the aperture mask data.
 
     Returns:
