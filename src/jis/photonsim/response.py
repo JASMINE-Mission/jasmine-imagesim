@@ -41,7 +41,8 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
     Args:
         Rv        (float)  : Extinction parasmeter Rv(=Av/E(B-V)).
         JH        (float)  : Color excess E(J-H)(=AJ-AH).
-        alp       (float)  : what???
+        alp       (float)  : Interpolation factor to define Hw-band mag.
+                             Hw-band mag = alp * J-mag + (1-alp) H-mag
         k         (int?)   : Number of wavelength data points? (not used).
         WLdefined (ndarray): Wavelength data.
         EPdefined (ndarray): Optical efficiency data.
@@ -61,7 +62,7 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
 
        Rv  = 3.1
        EJH = 0.3
-       alp = 0.0
+       alp = 0.75
        WL  = np.array([1.4, 1.5, 1.6])
        EP  = np.array([0.9, 0.8, 0.7])
        QEdet = np.array([0.5, 0.4, 0.3])
@@ -98,8 +99,8 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
     NpJ   = Nphotons(WL_J)
     NpH   = Nphotons(WL_H)
     NpHw  = NpJ*alp+NpH*(1-alp) # Hw band 0 mag photon flux
-    NprJ  = NpJ*math.pow(10.0,-AWL(WL_J,Rv)*Av/2.5) # J band reddened flux
-    NprH  = NpH*math.pow(10.0,-AWL(WL_H,Rv)*Av/2.5) # H band reddened flux
+    NprJ  = NpJ*math.pow(10.0,-AWL(WL_J,Rv)*Av/2.5)     # J band reddened flux
+    NprH  = NpH*math.pow(10.0,-AWL(WL_H,Rv)*Av/2.5)     # H band reddened flux
     NprHw = NprJ*0.75+NprH*0.25 # Hw band reddened flux # Should we use alp (TK)???
 
     # reddenend photon (electron) flux (e-/s/m^2/um)

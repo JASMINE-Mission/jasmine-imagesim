@@ -128,7 +128,8 @@ def extsrc(src):
     Returns:
         Rv  (float): Extinction factor Rv(=Av/E(B-V)).
         JH  (float): Color excess (E(J-H)=AJ-AH).
-        alp (float): ???
+        alp (float): Interpolation factor to define the Hw-band mag
+                         Hw-mag = alp * J-mag + (1-alp) * H-mag
 
     Example:
         import json
