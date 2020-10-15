@@ -34,9 +34,13 @@ WL_H = 1.644
 def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEdet):
     """
     Summary:
-        This function calculates electron rate (e-/s/m^2) detected by JS
-        based on the optics efficiency (EPdefined), the quantum efficiency (QEdet),
-        and some of parameters of the object source (Rv, JH, and alp)..
+        This function calculates the electron rate (e-/s/m^2) detected by SJ
+        based on the optics efficiency (EPdefined), the quantum efficiency (QEdet).
+        The target object is assumed to have an interstellar extinction
+        defined with Rv and JH (=E(J-H)) and show the same photon flux 
+        at the Hw-band wavelength as a zero-mag object.
+        The parameter 'alp' defines the weight to determine the Hw-band magnitude
+        by interpolating the J- and H-band magnitudes.
 
     Args:
         Rv        (float)  : Extinction parasmeter Rv(=Av/E(B-V)).
@@ -46,8 +50,8 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
         k         (int?)   : Number of wavelength data points? (not used).
         WLdefined (ndarray): Wavelength data.
         EPdefined (ndarray): Optical efficiency data.
-        WLshort   (float)  : Shortest wavelength (um?).
-        WLlong    (float)  : Longest wavelength (um?). 
+        WLshort   (float)  : Shortest wavelength (um).
+        WLlong    (float)  : Longest wavelength (um). 
         WLdet     (ndarray): Wavelength grid for the detector QE data, QEdet.
         QEdet     (ndarray): Quantum efficiency data of the detector.
 
@@ -105,13 +109,14 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
     NprHw = NprJ*0.75+NprH*0.25 # Hw-band reddened photon flux (ph/s/m^2/um).
                                 # Should we use alp (TK)???
 
-    # reddenend photon (electron) flux (e-/s/m^2/um)
+    # reddenend photon (electron) flux (e-/s/m^2/um) from an object
     # with the same photon flux at the Hw band as a Zero-mag object.
     Npr = np.empty(len(WL))
     for i in range(len(WL)):
         Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-AWL(WL[i],Rv)*Av/2.5)*NpHw/NprHw
 
-    # Total photon (electron) rate (e-/s/m^2)
+    # Total photon (electron) rate (e-/s/m^2) from an object
+    # with the same photon flux at the Hw band as a Zero-mag object.
     Tr = integrate.simps(Npr,WL)
 
     return Tr, WL, Npr
