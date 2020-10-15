@@ -12,14 +12,14 @@ h = 6.62607015e-34 ; # [J/s]
 ## wavelength [um]
 WL_MKO   = np.array([ 0.5450 , 1.250  , 1.644  , 2.121  , 2.149  , 2.198  ,
                       3.754  , 4.702])
-## zero-mag flux [W/m2/um]
+## zero-mag flux [W/m^2/um]
 FLUX_MKO = np.array([3.68e-08,3.01e-09,1.18e-09,4.57e-10,4.35e-10,4.00e-10,
                      5.31e-11,2.22e-11])
 
-# zero-mag photon flux [Photons/s/m2/um]
+# zero-mag photon flux [Photons/s/m^2/um]
 NP_MKO = FLUX_MKO * WL_MKO * 1.0e-6 / h / c ;
 
-# interpolate photon flux (photons/s/m2/um)
+# interpolate photon flux (photons/s/m^2/um)
 logL = np.log10(WL_MKO)
 logN = np.log10(NP_MKO)
 Npspline = interpolate.interp1d(logL, logN, kind="cubic")
@@ -34,7 +34,7 @@ WL_H = 1.644
 def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEdet):
     """
     Summary:
-        This function calculates electron rate (e-/s/m2) detected by JS
+        This function calculates electron rate (e-/s/m^2) detected by JS
         based on the optics efficiency (EPdefined), the quantum efficiency (QEdet),
         and some of parameters of the object source (Rv, JH, and alp)..
 
@@ -92,21 +92,23 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
     EP = EPinter(WL)
     QE = QEinter(WL)
 
-    # Zero-mag photon flux
+    # Zero-mag photon flux (ph/s/m^2/um)
     Np=Nphotons(WL)
 
     # band definition
-    NpJ   = Nphotons(WL_J)
-    NpH   = Nphotons(WL_H)
-    NpHw  = NpJ*alp+NpH*(1-alp) # Hw band 0 mag photon flux
-    NprJ  = NpJ*math.pow(10.0,-AWL(WL_J,Rv)*Av/2.5)     # J band reddened flux
-    NprH  = NpH*math.pow(10.0,-AWL(WL_H,Rv)*Av/2.5)     # H band reddened flux
-    NprHw = NprJ*0.75+NprH*0.25 # Hw band reddened flux # Should we use alp (TK)???
+    NpJ   = Nphotons(WL_J)      # Zero-mag photon flux in J  band (ph/s/m^2/um).
+    NpH   = Nphotons(WL_H)      # Zero-mag photon flux in H  band (ph/s/m^2/um).
+    NpHw  = NpJ*alp+NpH*(1-alp) # Zero-mag photon flux in Hw band (ph/s/m^2/um).
+    ## Photon fluxes of reddened object which is intrinsically zero mag. 
+    NprJ  = NpJ*math.pow(10.0,-AWL(WL_J,Rv)*Av/2.5)     # J-band reddened photon flux (ph/s/m^2/um).
+    NprH  = NpH*math.pow(10.0,-AWL(WL_H,Rv)*Av/2.5)     # H-band reddened photon flux (ph/s/m^2/um).
+    NprHw = NprJ*0.75+NprH*0.25 # Hw-band reddened photon flux (ph/s/m^2/um).
+                                # Should we use alp (TK)???
 
     # reddenend photon (electron) flux (e-/s/m^2/um)
     Npr = np.empty(len(WL))
     for i in range(len(WL)):
-        Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-AWL(WL[i],Rv)*Av/2.5)*NpHw/NprHw # What's this (TK)
+        Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-AWL(WL[i],Rv)*Av/2.5)*NpHw/NprHw # What's this (TK)???
 
     # Total photon (electron) rate (e-/s/m^2)
     Tr = integrate.simps(Npr,WL)
@@ -116,7 +118,8 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
 def Nphotons(WL):
     """
     Summary:
-        This function returns logarithmically interpolated zero-mag photon flux
+        This function returns logarithmically 
+        interpolated zero-mag photon flux (ph/s/m^2/um)
         in the MKO-NIR system at the wavelengths WL.
 
     Args:
