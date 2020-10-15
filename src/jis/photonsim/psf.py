@@ -15,9 +15,9 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         wN    (int)    : Number of pixels on a side of the wfe data.
         k     (int)    : Number of wavelength data points.
         WL    (ndarray): Wavelength data (um).
-        NP    (ndarray): Detected photon (electron) flux (e-/s/m2/um).
-        Ntot  (float)  : Total detected photon (electron) rate (e-/s/m2).
-        Stel  (float)  : Total area of the telescope aperture (m2?).
+        NP    (ndarray): Detected photon (electron) flux (e-/s/m^2/um).
+        Ntot  (float)  : Total detected photon (electron) rate (e-/s/m^2).
+        Stel  (float)  : Total area of the telescope aperture (m^2).
         adata (ndarray): Aperture mask data.
         M              : Control parameter M.
         aN    (int)    : Number of pixels of the aperture mask data.
