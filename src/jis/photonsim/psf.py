@@ -13,7 +13,7 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         (1/M) x 10^-3 rad/pix.
 
     Args:
-        wfe   (ndarray): Wavefront error data (um?).
+        wfe   (ndarray): Wavefront error data (um).
         wN    (int)    : Number of pixels on a side of the wfe data.
         k     (int)    : Number of wavelength data points.
         WL    (ndarray): Wavelength data (um).
