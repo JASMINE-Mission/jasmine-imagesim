@@ -13,12 +13,14 @@ def calc_aperture(N,EPD,Robs,Tsp):
 
         The output pattern consists of N x N pixels with a value of 0 or 1.
         The parameters (EPD, Robs, and Tsp) are in "pix".
+        But in the current simulation, we are assuming a pixel scale of 1 mm/pix.
 
     Args:
-        N    (int)  : Number of pixels of the output aperture pattern.
+        N    (int)  : Number of pixels of the output aperture pattern (pix).
         EPD  (float): Entrance pupil diameter (pix).
         Robs (float): Radius of the central obscuration (pix).
         Tsp  (float): Thickness of the spider (pix).
+        *** Pixel scale is assumed to be 1 mm/pix!!! ***
 
     Returns:
         data (ndarray): N x N data array of the aperture pattern.
