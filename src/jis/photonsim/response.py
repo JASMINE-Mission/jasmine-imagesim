@@ -106,9 +106,10 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
                                 # Should we use alp (TK)???
 
     # reddenend photon (electron) flux (e-/s/m^2/um)
+    # with the same photon flux at the Hw band as a Zero-mag object.
     Npr = np.empty(len(WL))
     for i in range(len(WL)):
-        Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-AWL(WL[i],Rv)*Av/2.5)*NpHw/NprHw # What's this (TK)???
+        Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-AWL(WL[i],Rv)*Av/2.5)*NpHw/NprHw
 
     # Total photon (electron) rate (e-/s/m^2)
     Tr = integrate.simps(Npr,WL)
