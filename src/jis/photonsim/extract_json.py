@@ -12,8 +12,8 @@ def extsp(sp):
     Returns:
         k    (int)    : Number of output data points.
         WL   (ndarray): Wavelength data (um).
-        NP   (ndarray): Number of detected photon (electron) flux (e-/s/m2/um).
-        Ntot (float?) : Total detected photon (electron) rate (e-/s/m2).
+        NP   (ndarray): Number of detected photon (electron) flux (e-/s/m^2/um).
+        Ntot (float)  : Total detected photon (electron) rate (e-/s/m^2).
 
     Example:
         import json
