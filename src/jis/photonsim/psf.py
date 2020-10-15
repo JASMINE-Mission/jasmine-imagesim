@@ -8,7 +8,9 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         This function calculates the psf in e-/sec/pix
         based on the wavefront error (wfe),
         the spectral information (NP), and
-        the aperture mask data (adata)..
+        the aperture mask data (adata).
+        The pixel scale is defined by the parameter M as
+        (1/M) x 10^-3 rad/pix.
 
     Args:
         wfe   (ndarray): Wavefront error data (um?).
@@ -23,7 +25,8 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         aN    (int)    : Number of pixels of the aperture mask data.
 
     Returns:
-        image (nadarray): 520 x 520 pixel array of the psf (e-/s/pix?).
+        image (nadarray): 520 x 520 pixel array of the psf (e-/s/pix).
+                          The pixel scale is (1/M) x 10^-3 rad/pix.
 
     Example:
         import json
