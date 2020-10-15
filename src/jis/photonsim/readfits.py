@@ -48,7 +48,7 @@ def read_aperture_mask(fitsfile):
         fitsfile (str): Filename of the input fits file of the aperture mask pattern.
 
     Returns:
-        Stel  (float)  : Area of collecting photons written in the header.
+        Stel  (float)  : Area of collecting photons written in the header (m^2).
         adata (ndarray): Aperture mask data.
         aN    (int)    : Number of pixels on a side of the aperture mask pattern.
         ahdr  (dict)   : Header of the input fits file.
