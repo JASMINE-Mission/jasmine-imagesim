@@ -4,7 +4,7 @@
   Make a pixel cube
 
   usage:
-    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N
+    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe
 
  options:
    --help       show this help message and exit
@@ -14,8 +14,10 @@
    -w ys        aY.fits is scaled by ys
    -n N         output image is N x N 
    -p ps        pixel scale of Output image
-
+   -s tframe        exposure [sec] of a frame
+   -f nframe        number of the frames
 """ 
+
 from docopt import docopt             # command line interface
 import numpy as np
 from jis.pixsim import readflat as rf
@@ -31,15 +33,22 @@ if __name__ == '__main__':
     args = docopt(__doc__)
     
     # Get parameters from command line
+    tframe=float(args['-s'])
+    nframe=int(args['-f'])
+    t=np.array(range(0,nframe))*tframe #total time sec
+
     x_scale = float(args['-v'])
     y_scale = float(args['-w'])
     pix_scale = float(args['-p'])
     N = int(args['-n'])
-    
+
+    #-----------------------------------------#
+    # Loading ACE fits (should be separated in near future)
     xhdul = fits.open(args['-x'])
     xdata = xhdul[0].data
     xhead = xhdul[0].header
     xN = xhead['NAXIS1']
+
     yhdul = fits.open(args['-y'])
     ydata = yhdul[0].data
     yhead = yhdul[0].header
@@ -49,9 +58,18 @@ if __name__ == '__main__':
         print("NAXIS1 is not the same")
         sys.exit(-1)
 
+    if xhead["ACE-TOTT"] != yhead["ACE-TOTT"]:
+        print("ACE-TOTT (total time) mismatch.")
+        sys.exit(-1)
+        
+    Tace=xhead['ACE-TOTT']
+    Nace=len(xdata)
+    #-----------------------------------------#
+
+    Nts_per_frame= int(tframe*Nace/Tace) # number of timestep per a frame
+
     pixdim=[32,32] # pixel dimension in the aperture
     spixdim=[32,32] # subpixel dimension in a pixel
-    ntime=len(xdata)
     
     #intrapixel
     filex="intravx.csv"
@@ -68,15 +86,10 @@ if __name__ == '__main__':
     y0=(0.5*(np.shape(flat)[1]-spixdim[1]))
     x=x0
     y=y0
-    #trajectory
-    theta=np.array([xdata,ydata])
-    theta=theta*pix_scale
+    #full trajectory
+    theta_full=np.array([xdata,ydata])
+    theta_full=theta_full*pix_scale
 
-#    theta=theta[:,0:10000]
-    print(np.shape(theta))
-    nframe = 1
-    tframe = 7.0 # [sec] for 1 frame
-    t=np.array(range(0,nframe))*tframe #sec
 
     persistence=False
     if persistence:
@@ -93,14 +106,21 @@ if __name__ == '__main__':
     jx,jy=np.int(x),np.int(y)
 
     for iframe in range(0,nframe):
+        print(iframe)
         #global position update
         #x,y=
 
         jx,jy=np.int(x),np.int(y)
         interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
 
-        #local position update
-        print(pixdim)
+        # picking temporary trajectory and local position update
+        istart=iframe*Nts_per_frame
+        iend=(iframe+1)*Nts_per_frame
+        if iend >= Nace:
+            print("insufficient time length of ACE fits.")
+            sys.exit(-1)            
+        theta=np.copy(theta_full[:,istart:iend])
+        print(np.shape(theta),np.shape(theta_full))
         theta=theta+np.array([pixdim]).T/2
         pixar=sp.simpix(theta,interpix,intrapix)
         
