@@ -1,0 +1,22 @@
+{
+"pixsize":{
+ "title"  :"Pixel size (micron)",
+ "val"    : 15},
+"Nread":{ 
+ "title"  :"Read out noize",
+ "val" :  15 },
+"Idark":{
+ "title"  :"Dark current w stray light (electrons/sec/pix)",
+ "val" :  20 },
+"Fullwell":{
+  "title" :"Full well",
+  "val" : 150000},
+"QE" : {
+  "title" : "Spectral responce of qe ",
+  "W00" : 0.9,
+  "V00" : 0.6,
+  "W01" : 1.4,
+  "V01" : 0.6,
+  "W02" : 1.6,
+  "V02" : 0.6}
+}
