@@ -1,9 +1,9 @@
 {
 "Ntot":{
-  "title" : "0 mag Total electrons/m2/sec ",
+  "title" : "Zero-mag total detected photon (electron) rate(e-/m^2/sec)",
   "val" : 4.47263272e+09 },
 "WLdef":{
-  "title" : "wavlength points",
+  "title" : "Wavlength grid (um)",
   "v00" : 1.10000000e+00,
   "v01" : 1.20000000e+00,
   "v02" : 1.30000000e+00,
@@ -11,7 +11,7 @@
   "v04" : 1.50000000e+00,
   "v05" : 1.60000000e+00},
 "SPR":{
-  "title" : "Spectal distribution of input photons",
+  "title" : "Spectal distribution of detected photon (electron) rate (e-/m^2/sec/um)",
   "v00" : 2.28576257e+09,
   "v01" : 4.33658661e+09,
   "v02" : 7.05412716e+09,

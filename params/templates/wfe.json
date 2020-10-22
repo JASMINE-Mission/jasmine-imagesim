@@ -1,5 +1,5 @@
 {
-  "title": "Zernike polynomials",
+  "title": "Zernike polynomials (n, m: indices; a: amplitude in um)",
   "N-polys": 33,
   "z001-n": 2,
   "z001-m": 0,

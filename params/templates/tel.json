@@ -1,16 +1,16 @@
 {
 "EPD":{
- "title"  :"Entrance Pupil Diameter",
+ "title"  :"Entrance pupil diameter (mm)",
  "val"   :400 },
 "Cobs":{
  "title"  :"Central obscuration ratio",
  "val" :0.31},
 "Stype":{
- "title"  :"Spider type",
+ "title"  :"Spider type and thickness (mm)",
  "val" :"tripod",
  "thick":5 },
 "Eopt":{
-  "title" : "Spectral efficiency of optics with the filter",
+  "title" : "Spectral efficiency of the optics with filters (W?? in um)",
   "W00" : 1.1,
   "V00" : 0.88,
   "W01" : 1.6,

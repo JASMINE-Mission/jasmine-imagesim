@@ -1,12 +1,12 @@
 {
 "Hwband":{
- "title" : "Hw band is (val)*J + (1-val)*H",
+ "title" : "Hw-band definition parameter: Hw = (val)*J + (1-val)*H",
   "val"  : 0.75 },
 "J-H":{
- "title"  :"J-H color by reddening",
+ "title"  :"J-H color excess due to the interstellar extinction",
  "val"   :2 },
 "Rv":{
-  "title" : "ratio of total to selective extinction",
+  "title" : "Total-to-selective extinction ratio of the interstellar extinction",
  "val"   :3.1},
 "HwMagmax":{
   "title" :"Brightest source without saturation",
