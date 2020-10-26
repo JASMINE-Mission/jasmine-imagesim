@@ -15,9 +15,9 @@ def calc_wfe(EPD,efile):
         the calculated wfe is assumed to be um. 
 
     Args:
-        EPD   (float): Entrance pupil diameter (pix=mm).
+        EPD   (float): Entrance pupil diameter (apt-cell=mm).
         efile (str)  : Filename of the json file having wavefront error parameters.
-        *** Pixel scale is assumed to be 1 mm/pix!!! ***
+        *** Apt-cell scale is assumed to be 1 mm/apt-cell!!! ***
         *** Coefficients are assumed to be in um!!!  ***
 
     Returns:
