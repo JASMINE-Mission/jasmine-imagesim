@@ -106,8 +106,7 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
     ## Photon fluxes of reddened object which is intrinsically zero mag. 
     NprJ  = NpJ*math.pow(10.0,-AWL(WL_J,Rv)*Av/2.5)     # J-band reddened photon flux (ph/s/m^2/um).
     NprH  = NpH*math.pow(10.0,-AWL(WL_H,Rv)*Av/2.5)     # H-band reddened photon flux (ph/s/m^2/um).
-    NprHw = NprJ*0.75+NprH*0.25 # Hw-band reddened photon flux (ph/s/m^2/um).
-                                # Should we use alp (TK)???
+    NprHw = NprJ*alp+NprH*(1-alp) # Hw-band reddened photon flux (ph/s/m^2/um).
 
     # reddenend photon (electron) flux (e-/s/m^2/um) from an object
     # with the same photon flux at the Hw band as a Zero-mag object.
