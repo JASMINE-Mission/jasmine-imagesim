@@ -12,7 +12,7 @@ def read_wfe_map(fitsfile):
 
     Returns:
         wfe  (ndarray): Wavefront error data.
-        wN   (int)    : Number of pixels on a side of the wavefront error map.
+        wN   (int)    : Number of apt-cells on a side of the wavefront error map.
         whdr (dict)   : Header of the input fits file.
 
     Example:
@@ -50,7 +50,7 @@ def read_aperture_mask(fitsfile):
     Returns:
         Stel  (float)  : Area of collecting photons written in the header (m^2).
         adata (ndarray): Aperture mask data.
-        aN    (int)    : Number of pixels on a side of the aperture mask pattern.
+        aN    (int)    : Number of apt-cells on a side of the aperture mask pattern.
         ahdr  (dict)   : Header of the input fits file.
 
     Example:
