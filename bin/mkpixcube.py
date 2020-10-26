@@ -84,7 +84,7 @@ if __name__ == '__main__':
     
     Nts_per_frame= int(tframe*Nace/Tace) # number of timestep per a frame
 
-    Nmargin=5
+    Nmargin=10
     Npixcube=int((np.max(theta_full)+Nmargin)*2)
     pixdim=[Npixcube,Npixcube] # adaptive pixel dimension in the aperture
     spixdim=[32,32] # subpixel dimension in a pixel
