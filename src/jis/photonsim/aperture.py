@@ -11,28 +11,28 @@ def calc_aperture(N,EPD,Robs,Tsp):
         circular obscuration with a radius of Robs, and
         a 3-vane spider pattern with a thickness of Tsp. 
 
-        The output pattern consists of N x N pixels with a value of 0 or 1.
-        The parameters (EPD, Robs, and Tsp) are in "pix".
-        But in the current simulation, we are assuming a pixel scale of 1 mm/pix.
+        The output pattern consists of N x N apt-cells with a value of 0 or 1.
+        The parameters (EPD, Robs, and Tsp) are in "apt-cell".
+        But in the current simulation, we are assuming a scale of 1 mm/apt-cell.
 
     Args:
-        N    (int)  : Number of pixels of the output aperture pattern (pix).
-        EPD  (float): Entrance pupil diameter (pix).
-        Robs (float): Radius of the central obscuration (pix).
-        Tsp  (float): Thickness of the spider (pix).
-        *** Pixel scale is assumed to be 1 mm/pix!!! ***
+        N    (int)  : Number of apt-cells of the output aperture pattern (apt-cell).
+        EPD  (float): Entrance pupil diameter (apt-cell).
+        Robs (float): Radius of the central obscuration (apt-cell).
+        Tsp  (float): Thickness of the spider (apt-cell).
+        *** Scale is assumed to be 1 mm/apt-cell!!! ***
 
     Returns:
         data (ndarray): N x N data array of the aperture pattern.
-        S    (float)  : Total area (number of pix=mm^2) of unmasked region.
+        S    (float)  : Total area (number of apt-cells=mm^2) of unmasked region.
 
     Examples:
         from jis.photonsim.aperture import calc_aperture
 
-        N    = 100 # Number of pixels of the output aperture pattern.
-        EPD  = 80  # Entrance pupil diameter in pix.
-        Robs = 20  # Central obscuration radius in pix.
-        Tsp  = 3   # Spider thickness in pix.
+        N    = 100 # Number of apt-cells of the output aperture pattern.
+        EPD  = 80  # Entrance pupil diameter in apt-cell.
+        Robs = 20  # Central obscuration radius in apt-cell.
+        Tsp  = 3   # Spider thickness in apt-cell.
 
         data, S = calc_aperture(N, EPD, Robs, Tsp)
 
