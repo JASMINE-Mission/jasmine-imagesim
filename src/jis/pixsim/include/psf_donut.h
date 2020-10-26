@@ -36,8 +36,8 @@ __device__ float BesselJ1(float x){
 __device__ float psf(float pxr, float pyr, float sigma2){
   float r=sqrt(pxr*pxr+pyr*pyr);
   double A=0.0;
-  if(r < 10.0&&r>0){
-  A=BesselJ1(PI*r/alpha_ejas)/(r/alpha_ejas) - BesselJ1(PI*r/beta_ejas)/(r/beta_ejas);
+  if(r < 10.0&&r>0){   
+    A=BesselJ1(PI*r/alpha_ejas)/(r/alpha_ejas) - beta_ejas*beta_ejas/alpha_ejas/alpha_ejas*BesselJ1(PI*r/beta_ejas)/(r/beta_ejas);
   }
   
   return float(A*A)/NORM;

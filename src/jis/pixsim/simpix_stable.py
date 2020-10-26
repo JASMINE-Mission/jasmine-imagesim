@@ -12,7 +12,7 @@ def genimg():
 
     __shared__ float cache[NMXCACHE];    
 
-    #include "psf_ejas.h"
+    #include "psf_donut.h"
     #include "pixlight.h"
 
 """,options=['-use_fast_math'])
