@@ -23,6 +23,7 @@ import numpy as np
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim import makeflat as mf
+from jis.jisplot import plotace 
 import astropy.io.fits as fits
 import os
 import sys
@@ -64,6 +65,7 @@ if __name__ == '__main__':
         
     Tace=xhead['ACE-TOTT']
     Nace=len(xdata)
+
     #-----------------------------------------#
 
     Nts_per_frame= int(tframe*Nace/Tace) # number of timestep per a frame
@@ -90,6 +92,8 @@ if __name__ == '__main__':
     theta_full=np.array([xdata,ydata])
     theta_full=theta_full*pix_scale
 
+    plotace.trajectory(xdata*pix_scale,ydata*pix_scale)
+    sys.exit(-1)
 
     persistence=False
     if persistence:
@@ -100,7 +104,6 @@ if __name__ == '__main__':
         Qtrap = np.zeros((gpixdim[0],gpixdim[1],NQc)) #trapped charge
         xtau=tframe/tau
         Qtsave=[]
-
     
     lc=[]    
     jx,jy=np.int(x),np.int(y)
