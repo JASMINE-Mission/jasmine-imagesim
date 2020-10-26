@@ -4,7 +4,7 @@
   Make a pixel cube
 
   usage:
-    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe
+    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd
 
  options:
    --help       show this help message and exit
@@ -14,16 +14,19 @@
    -w ys        aY.fits is scaled by ys
    -n N         output image is N x N 
    -p ps        pixel scale of Output image
-   -s tframe        exposure [sec] of a frame
-   -f nframe        number of the frames
+   -s tframe    exposure [sec] of a frame
+   -f nframe    number of the frames
+   -d vd        drifting velocity [pixel scale/sec]
 """ 
 
 from docopt import docopt             # command line interface
 import numpy as np
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
+from jis.pixsim import gentraj
 from jis.pixsim import makeflat as mf
 from jis.jisplot import plotace 
+import tqdm
 import astropy.io.fits as fits
 import os
 import sys
@@ -36,6 +39,7 @@ if __name__ == '__main__':
     # Get parameters from command line
     tframe=float(args['-s'])
     nframe=int(args['-f'])
+    vd=float(args['-d'])
     t=np.array(range(0,nframe))*tframe #total time sec
 
     x_scale = float(args['-v'])
@@ -65,14 +69,26 @@ if __name__ == '__main__':
         
     Tace=xhead['ACE-TOTT']
     Nace=len(xdata)
-
     #-----------------------------------------#
 
+    #artificial linear drift
+    if vd>0.0:
+        drift_length=vd*Tace
+        #drift_azimuth=np.random.random()*2.0*np.pi
+        drift_azimuth=np.pi/4.0
+        drift_theta=gentraj.gentraj_drift(Nace,drift_length,drift_azimuth)
+    
+    #full trajectory
+    theta_full=np.array([xdata*pix_scale+drift_theta[0,:],ydata*pix_scale+drift_theta[1,:]])        
+    plotace.trajectory(theta_full[0,:],theta_full[1,:])
+    
     Nts_per_frame= int(tframe*Nace/Tace) # number of timestep per a frame
 
-    pixdim=[32,32] # pixel dimension in the aperture
+    Nmargin=5
+    Npixcube=int((np.max(theta_full)+Nmargin)*2)
+    pixdim=[Npixcube,Npixcube] # adaptive pixel dimension in the aperture
     spixdim=[32,32] # subpixel dimension in a pixel
-    
+
     #intrapixel
     filex="intravx.csv"
     filey="intravy.csv"
@@ -88,12 +104,7 @@ if __name__ == '__main__':
     y0=(0.5*(np.shape(flat)[1]-spixdim[1]))
     x=x0
     y=y0
-    #full trajectory
-    theta_full=np.array([xdata,ydata])
-    theta_full=theta_full*pix_scale
 
-    plotace.trajectory(xdata*pix_scale,ydata*pix_scale)
-    sys.exit(-1)
 
     persistence=False
     if persistence:
@@ -108,14 +119,12 @@ if __name__ == '__main__':
     lc=[]    
     jx,jy=np.int(x),np.int(y)
 
-    for iframe in range(0,nframe):
-        print(iframe)
-        #global position update
-        #x,y=
+    pixcube=np.zeros((Npixcube,Npixcube,nframe))
+    for iframe in tqdm.tqdm(range(0,nframe)):
 
+        #the positioning system is designed to match to the future upgrade of the large drift.
         jx,jy=np.int(x),np.int(y)
         interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
-
         # picking temporary trajectory and local position update
         istart=iframe*Nts_per_frame
         iend=(iframe+1)*Nts_per_frame
@@ -123,7 +132,6 @@ if __name__ == '__main__':
             print("insufficient time length of ACE fits.")
             sys.exit(-1)            
         theta=np.copy(theta_full[:,istart:iend])
-        print(np.shape(theta),np.shape(theta_full))
         theta=theta+np.array([pixdim]).T/2
         pixar=sp.simpix(theta,interpix,intrapix)
         
@@ -137,17 +145,22 @@ if __name__ == '__main__':
             lctmp=np.mean(np.sum(Ei))
             lc.append(lctmp)
 
+        pixcube[:,:,iframe]=np.sum(pixar,axis=2)
+            
     te=time.time()
     print(te-ts,"sec")
 
     #################################
-    #rough sampling plot
+    #pixcube image
     import matplotlib.pyplot as plt
-    pixsep=pixar[:,:,::50000]
-    meancu=np.median(pixsep,axis=2)
-    for i in range(0,np.shape(pixsep)[2]):
-        #        plt.imshow(pixsep[:,:,i])
-        #        plt.savefig("cubemean"+str(i)+".png")
-        plt.imshow(pixsep[:,:,i]-meancu)
-        plt.savefig("cubemean"+str(i)+".png")
-    
+
+    fig=plt.figure()
+    ax=fig.add_subplot(111)
+    ax.plot(np.sum(pixcube[:,:,:],axis=(0,1)))
+    ax.set_aspect(0.7/ax.get_data_ratio())
+    plt.savefig("lc.png")
+
+    for iframe in range(0,nframe):
+        plt.imshow(pixcube[:,:,iframe])
+        plt.savefig("pixcube"+str(iframe)+".png")
+
