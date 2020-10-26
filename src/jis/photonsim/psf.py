@@ -5,16 +5,16 @@ import pyfftw
 def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
     """
     Summary:
-        This function calculates the psf in e-/sec/pix
+        This function calculates the psf in e-/sec/fp-cell
         based on the wavefront error (wfe),
         the spectral information (NP), and
         the aperture mask data (adata).
-        The pixel scale is defined by the parameter M as
-        (1/M) x 10^-3 rad/pix.
+        The fp-cell scale is defined by the parameter M as
+        (1/M) x 10^-3 rad/fp-cell.
 
     Args:
         wfe   (ndarray): Wavefront error data (um).
-        wN    (int)    : Number of pixels on a side of the wfe data.
+        wN    (int)    : Number of fp-cells on a side of the wfe data.
         k     (int)    : Number of wavelength data points.
         WL    (ndarray): Wavelength data (um).
         NP    (ndarray): Detected photon (electron) flux (e-/s/m^2/um).
@@ -22,11 +22,11 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         Stel  (float)  : Total area of the telescope aperture (m^2).
         adata (ndarray): Aperture mask data.
         M              : Inverse number of the PSF cell scale (mm/um).
-        aN    (int)    : Number of pixels of the aperture mask data.
+        aN    (int)    : Number of apt-cells of the aperture mask data.
 
     Returns:
-        image (nadarray): 520 x 520 pixel array of the psf (e-/s/pix).
-                          The pixel scale is (1/M) x 10^-3 rad/pix.
+        image (nadarray): 520 x 520 fp-cell array of the psf (e-/s/fp-cell).
+                          The fp-cell scale is (1/M) x 10^-3 rad/fp-cell.
 
     Example:
         import json
