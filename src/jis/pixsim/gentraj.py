@@ -3,6 +3,12 @@ import argparse
 import pylab
 import matplotlib.pyplot as plt
 
+def gentraj_drift(Nts,drift_length,drift_azimuth):
+    thetax=np.linspace(0,drift_length,Nts)*np.cos(drift_azimuth)
+    thetay=np.linspace(0,drift_length,Nts)*np.sin(drift_azimuth)
+    theta=np.array([thetax,thetay])
+    return theta
+
     
 def gentraj_k2like(ntime,basepos,nsub,basesig=0.1,lpix=1.0,lpixsig=0.1,pixret=30,grad=0.74,gradsig=0.1,seed=None):
     nret=np.int(float(ntime)/float(pixret*nsub))+1

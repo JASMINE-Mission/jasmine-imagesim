@@ -61,6 +61,7 @@ data,psdn = ace.calc_ace(rg,N,T,acep)
 # Save ACE map
 hdu = fits.PrimaryHDU(data)
 hdu.header["ACE-FILE"] = args['-e']
+hdu.header["ACE-TOTT"] = T
 hdulist = fits.HDUList([hdu])
 hdulist.writeto(args['-m'],overwrite=True)
 
