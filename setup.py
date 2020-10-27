@@ -40,7 +40,7 @@ if __name__ == "__main__":
         name=NAME,
         use_scm_version={
             "write_to": os.path.join(
-                "src", NAME, "{0}_version.py".format(NAME)
+                "src", "jis", "{0}_version.py".format(NAME)
             ),
             "write_to_template": '__version__ = "{version}"\n',
         },

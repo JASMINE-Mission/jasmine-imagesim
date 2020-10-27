@@ -12,7 +12,7 @@ def genimg():
 
     __shared__ float cache[NMXCACHE];    
 
-    #include "psf_ejas.h"
+    #include "psf_donut.h"
     #include "pixlight.h"
 
 """,options=['-use_fast_math'])
@@ -51,6 +51,7 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
     return dev_pixlc,dev_interpix,dev_intrapix,dev_thetax,dev_thetay,pixdim,spixdim,ntime,sigma2,pixlc
 
 def simpix(theta,interpix,intrapix,sigma2=2.0):
+    #sigma2 is dummy
     start = time.time()
     #set all
     dev_pixlc,dev_interpix,dev_intrapix,dev_thetax,dev_thetay,pixdim,spixdim,ntime,sigma2,pixlc=set_simpix(theta,interpix,intrapix,sigma2)

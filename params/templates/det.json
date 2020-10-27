@@ -1,0 +1,22 @@
+{
+"pixsize":{
+ "title"  :"Pixel size (micron)",
+ "val"    : 15},
+"Nread":{ 
+ "title"  :"Read out noise (e-)",
+ "val" :  15 },
+"Idark":{
+ "title"  :"Dark current w stray light (e-/sec/pix)",
+ "val" :  20 },
+"Fullwell":{
+  "title" :"Full well (e-)",
+  "val" : 150000},
+"QE" : {
+  "title" : "Spectral distribution of quantum efficiency (W?? in um)",
+  "W00" : 0.9,
+  "V00" : 0.6,
+  "W01" : 1.4,
+  "V01" : 0.6,
+  "W02" : 1.6,
+  "V02" : 0.6}
+}

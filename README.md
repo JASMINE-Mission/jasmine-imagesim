@@ -2,7 +2,11 @@
 This is an image simulator package developed for the JASMINE project.
 
 ## pixsim
-combining detector characteristics 
+combining detector characteristics. To use pixsim you need to specify include directory like
+
+setenv CPLUS_INCLUDE_PATH /home/kawahara/jasmine-imagesim/src/jis/pixsim/include
+
+or copy .h files to your "include" directory.
 
 ## (Kataza-san code)
 trajectory, optics, ...

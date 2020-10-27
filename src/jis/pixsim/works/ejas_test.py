@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     #trajectory
     theta=np.loadtxt(trajfile).T
-    
+    print(np.shape(theta))
     #generate
     pixar=sp.simpix(theta,interpix,intrapix,sigma2=sigma2)
 
