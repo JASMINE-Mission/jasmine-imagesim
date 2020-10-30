@@ -13,7 +13,7 @@ def calc_ace(rg, N, T, ace):
         normalized with its standard deviation.
 
     Args:
-        rg  (): ???
+        rg  (numpy.random.Generator): Random generator.
         N   (int)  : Number of time grids.
         T   (float): Range of time to simulate.
         ace (dict) : Parameterset about ace loaded from the ace json file (?).
