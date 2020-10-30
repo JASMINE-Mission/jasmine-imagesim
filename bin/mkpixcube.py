@@ -4,7 +4,7 @@
   Make a pixel cube
 
   usage:
-    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd
+    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd  [-m] 
 
  options:
    --help       show this help message and exit
@@ -17,6 +17,7 @@
    -s tframe    exposure [sec] of a frame
    -f nframe    number of the frames
    -d vd        drifting velocity [pixel scale/sec]
+   -m generate png sequence of the pixel images
 """ 
 
 from docopt import docopt             # command line interface
@@ -150,17 +151,15 @@ if __name__ == '__main__':
     te=time.time()
     print(te-ts,"sec")
 
-    #################################
     #pixcube image
-    import matplotlib.pyplot as plt
-
-    fig=plt.figure()
-    ax=fig.add_subplot(111)
-    ax.plot(np.sum(pixcube[:,:,:],axis=(0,1)))
-    ax.set_aspect(0.7/ax.get_data_ratio())
-    plt.savefig("lc.png")
-
-    for iframe in range(0,nframe):
-        plt.imshow(pixcube[:,:,iframe])
-        plt.savefig("pixcube"+str(iframe)+".png")
+    if args.m:
+        import matplotlib.pyplot as plt        
+        fig=plt.figure()
+        ax=fig.add_subplot(111)
+        ax.plot(np.sum(pixcube[:,:,:],axis=(0,1)))
+        ax.set_aspect(0.7/ax.get_data_ratio())
+        plt.savefig("lc.png")
+        for iframe in range(0,nframe):
+            plt.imshow(pixcube[:,:,iframe])
+            plt.savefig("pixcube"+str(iframe)+".png")
 
