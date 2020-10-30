@@ -9,18 +9,19 @@ def calc_ace(rg, N, T, ace):
     Summary:
         This function makes a one-dimensional attitude control error (ACE) data.
         The ACE is assumed to have a PSW which consists of a power-law function
-        and some Lorenzian-type peaks (PS disturbance). The returned ace data is
-        normalized with its standard deviation.
+        and some Lorenzian-type peaks (PS disturbance). The returned ace data (acedata)
+        is normalized with its standard deviation. The generated PSD is also returned
+        as 'psdn', but this is not normalized as 'acedata'.
 
     Args:
         rg  (numpy.random.Generator): Random generator.
         N   (int)  : Number of time grids.
         T   (float): Range of time to simulate.
-        ace (dict) : Parameterset about ace loaded from the ace json file (?).
+        ace (dict) : Parameterset about ace loaded from the ace json file.
 
     Returns:
         acedata (ndarray): Time-series data of the calculated ace normalized with stddev.
-        psdn    (ndarray): Calculated PSD data.
+        psdn    (ndarray): Calculated PSD data (Not normalized; just for checking).
 
     """
 
@@ -104,7 +105,7 @@ def calc_ace(rg, N, T, ace):
         # Making output data.
         acedata = ( ft.real - mean ) / std # Centering and normalizing with std.
         psdn    = data.real*data.real+data.imag*data.imag
-                                           # No need to normalize? (TK)
+                                           # PSD of the result (not normalized).
 
     return acedata, psdn
 
