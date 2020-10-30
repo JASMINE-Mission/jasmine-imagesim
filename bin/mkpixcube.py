@@ -4,10 +4,11 @@
   Make a pixel cube
 
   usage:
-    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd  [-m] 
+    mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd -o pixcube [-m] 
 
  options:
    --help       show this help message and exit
+   -l lc.fits   light curve
    -x aX.fits   X-axis simulated ACE file
    -v xs        aX.fits is scaled by xs
    -y aY.fits   Y-axis simulated ACE file
@@ -17,7 +18,8 @@
    -s tframe    exposure [sec] of a frame
    -f nframe    number of the frames
    -d vd        drifting velocity [pixel scale/sec]
-   -m generate png sequence of the pixel images
+   -o pixcube   output h5 of pixcube
+   -m           output sequential png files for movie
 """ 
 
 from docopt import docopt             # command line interface
@@ -31,6 +33,7 @@ import tqdm
 import astropy.io.fits as fits
 import os
 import sys
+import h5py
 import time
 # Command line interface
 if __name__ == '__main__':
@@ -42,7 +45,16 @@ if __name__ == '__main__':
     nframe=int(args['-f'])
     vd=float(args['-d'])
     t=np.array(range(0,nframe))*tframe #total time sec
-
+    #lc reading
+    if args['-l']:
+        lhdul = fits.open(args['-l'])
+        ldata = lhdul[0].data
+        lhead = lhdul[0].header
+        tl=ldata[0,:]
+        injlc=ldata[1,:]
+        if np.sum((t-tl)**2) > 0:
+            sys.exit("time mismatch of "+str(args["-l"]))
+    
     x_scale = float(args['-v'])
     y_scale = float(args['-w'])
     pix_scale = float(args['-p'])
@@ -70,8 +82,8 @@ if __name__ == '__main__':
         
     Tace=xhead['ACE-TOTT']
     Nace=len(xdata)
+    
     #-----------------------------------------#
-
     #artificial linear drift
     if vd>0.0:
         drift_length=vd*Tace
@@ -119,13 +131,15 @@ if __name__ == '__main__':
     
     lc=[]    
     jx,jy=np.int(x),np.int(y)
-
+    interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
+    
     pixcube=np.zeros((Npixcube,Npixcube,nframe))
     for iframe in tqdm.tqdm(range(0,nframe)):
 
         #the positioning system is designed to match to the future upgrade of the large drift.
-        jx,jy=np.int(x),np.int(y)
-        interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
+        #jx,jy=np.int(x),np.int(y)
+        #interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
+        
         # picking temporary trajectory and local position update
         istart=iframe*Nts_per_frame
         iend=(iframe+1)*Nts_per_frame
@@ -148,17 +162,29 @@ if __name__ == '__main__':
 
         pixcube[:,:,iframe]=np.sum(pixar,axis=2)
             
+    if args["-l"]:
+        pixcube=pixcube*injlc        
     te=time.time()
     print(te-ts,"sec")
 
+    #output
+    with h5py.File(args["-o"], "w") as f:
+        f.create_group("header")
+        f.create_group("data")
+        f.create_dataset("header/tframe", data=args["-s"])
+        f.create_dataset("data/pixcube", data=pixcube)
+        f.create_dataset("data/interpix", data=interpix)
+    
     #pixcube image
-    if args.m:
-        import matplotlib.pyplot as plt        
-        fig=plt.figure()
-        ax=fig.add_subplot(111)
-        ax.plot(np.sum(pixcube[:,:,:],axis=(0,1)))
-        ax.set_aspect(0.7/ax.get_data_ratio())
-        plt.savefig("lc.png")
+    import matplotlib.pyplot as plt        
+    fig=plt.figure()
+    ax=fig.add_subplot(111)
+    ax.plot(np.sum(pixcube[:,:,:],axis=(0,1)))
+    ax.plot(np.sum(pixcube.transpose()/interpix.transpose(),axis=(1,2)))
+    ax.set_aspect(0.7/ax.get_data_ratio())
+    plt.savefig("lc.png")
+    
+    if args["-m"]:
         for iframe in range(0,nframe):
             plt.imshow(pixcube[:,:,iframe])
             plt.savefig("pixcube"+str(iframe)+".png")

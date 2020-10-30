@@ -38,6 +38,7 @@ if __name__ == '__main__':
         import matplotlib.pyplot as plt
         plt.plot(t,injlc)
         plt.xlabel("Time sec")
+        plt.savefig("lcin.png")
         plt.show()
 
     # Save Light Curve
