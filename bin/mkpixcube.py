@@ -82,7 +82,7 @@ if __name__ == '__main__':
         
     Tace=xhead['ACE-TOTT']
     Nace=len(xdata)
-    
+
     #-----------------------------------------#
     #artificial linear drift
     if vd>0.0:
@@ -92,9 +92,13 @@ if __name__ == '__main__':
         drift_theta=gentraj.gentraj_drift(Nace,drift_length,drift_azimuth)
     
     #full trajectory
-    theta_full=np.array([xdata*pix_scale+drift_theta[0,:],ydata*pix_scale+drift_theta[1,:]])        
+    if vd>0.0:
+        theta_full=np.array([xdata*x_scale/pix_scale+drift_theta[0,:],ydata*y_scale/pix_scale+drift_theta[1,:]])
+    else:
+        theta_full=np.array([xdata*x_scale/pix_scale,ydata*y_scale/pix_scale])
+        
     plotace.trajectory(theta_full[0,:],theta_full[1,:])
-    
+#    sys.exit()
     Nts_per_frame= int(tframe*Nace/Tace) # number of timestep per a frame
 
     Nmargin=10
