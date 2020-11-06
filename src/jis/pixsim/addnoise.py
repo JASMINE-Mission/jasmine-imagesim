@@ -2,6 +2,56 @@ import numpy as np
 import argparse
 import time
 
+def addnoise(data, readnoise, rg_shot=None, rg_read=None):
+    """
+    Summary:
+        This function adds shotnoise and readnoise.
+
+    Args:
+        data (ndarray):
+            Image cube without noise in electrons.
+
+        readnoise (float):
+            Readnoise in electrons.
+
+        rg_shot (Generator):
+            Random generator for shotnoise.
+            If this is not given, the shotnoise will be
+            generated automatically by mk_shotnoise.
+
+        rg_read (Generator):
+            Random generator for readnoise.
+            If this is not given, the readnoise will be
+            generated automatically by mk_readnoise.
+
+    Returns:
+        data (ndarray)   : Image cube with noise in electrons.
+        seed (dictionary): Seed created when rg_* are not given.
+                           If rg_* are given, this is not returned.
+
+    """
+
+    seed_shot = None
+    if rg_shot is None:
+        shotnoise, seed_shot = mk_shotnoise(data)
+    else:
+        shotnoise = mk_shotnoise(data, rg_shot)
+
+    seed_read = None
+    if rg_read is None:
+        readnoise, seed_read = mk_readnoise(data.shape, readnoise)
+    else:
+        readnoise = mk_readnoise(data.shape, readnoise, rg_read)
+
+    data = data + shotnoise + readnoise
+
+    if seed_shot is None and seed_read is None:
+        return data
+    else:
+        seed = {'seed_shot': seed_shot, 'seed_read': seed_read}
+        return data, seed
+
+
 def mk_shotnoise(data, rg=None):
     """
     Summary:
