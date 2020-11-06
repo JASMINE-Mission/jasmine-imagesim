@@ -55,6 +55,30 @@ def inject_transit(p, t0, depth, ntime,\
     return flux
 
 
+def gentransit_json(t,json_file):
+    import json
+    """
+    Summary:
+        Wrapper of gentransit using the planet json file.
+
+    Args:
+        json_file      (str): Planet JSON file
+                      
+    Returns:
+        injlc (ndarray): Transit light curve data.
+        b     (float)  : Apparent size of the orbital semi-major axis in Rstar? 
+          
+    """
+    with open(json_file) as f:
+        pp = json.load(f)
+    injlc=0
+    b=0
+    injlc, b=gentransit(t, t0=pp["t0"], Porb=pp["Porb"], Rp=pp["Rp"],\
+                        Mp=pp["Mp"], Rs=pp["Rs"], Ms=pp["Ms"],ideg=pp["ideg"],\
+                        w=pp["w"],e=pp["e"],u1=pp["u1"],u2=pp["u2"])
+
+    return injlc, b
+
 def gentransit(t, t0=0.0, Porb=14.0, Rp=1.0, Mp=1.0, Rs=0.2, Ms=0.15,\
                ideg=90.0,w=90.0,e=0.0,u1=0.1,u2=0.3):
     """
@@ -65,7 +89,7 @@ def gentransit(t, t0=0.0, Porb=14.0, Rp=1.0, Mp=1.0, Rs=0.2, Ms=0.15,\
     Args:
         t      (ndarray): Array of times at which 
                           to calculate the transit model in days.
-        t0     (float)  : Time of inverior conjunction in days.
+        t0     (float)  : Time of inferior conjunction in days.
                           (Default: 0.0)
         Porb   (float)  : Orbital period in days.
                           (Default: 14.0)
