@@ -4,6 +4,7 @@ import pycuda.compiler
 from pycuda.compiler import SourceModule
 import time
 import numpy as np
+from jis.pixsim.addnoise import addnoise
 
 def genimg():
     source_module = SourceModule("""
@@ -78,7 +79,7 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
            pixdim, spixdim, ntime, sigma2, pixlc
 
 
-def simpix(theta, interpix, intrapix, sigma2=2.0):
+def simpix(theta, interpix, intrapix, sigma2=2.0, readnoise=15.):
     """
     Summary:
         This function makes a movie data 
@@ -88,10 +89,11 @@ def simpix(theta, interpix, intrapix, sigma2=2.0):
         The PSF is assumed to be a gaussian function.
 
     Args:
-        theta    (ndarray): Time-series data of the PSF position.
-        interpix (ndarray): Interpixel flat pattern (2-d array).
-        intrapix (ndarray): Intrapixel flat pattern (2-d array).
-        sigma2   (float)  : sigma^2 of gaussian PSF.
+        theta     (ndarray): Time-series data of the PSF position.
+        interpix  (ndarray): Interpixel flat pattern (2-d array).
+        intrapix  (ndarray): Intrapixel flat pattern (2-d array).
+        sigma2    (float)  : sigma^2 of gaussian PSF.
+        readnoise (float)  : Readnoise in electrons (default 15e-).
 
     Returns:
         pixar (ndarray): Calculated movie data (3-d array).  
@@ -115,5 +117,8 @@ def simpix(theta, interpix, intrapix, sigma2=2.0):
     cuda.memcpy_dtoh(pixlc,dev_pixlc)
 
     pixar = pixlc.reshape((pixdim[0], pixdim[1], ntime))
+
+    # assuming pixar is in electrons (TK).
+    pixar, seed = addnoise(pixar, readnoise)
 
     return pixar
