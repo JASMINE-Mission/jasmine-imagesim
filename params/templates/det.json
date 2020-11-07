@@ -4,7 +4,7 @@
   "val"  : 15 },
 "Npix":{
   "title": "Number of pixels on a side",
-  "val"  : 1280 }, 
+  "val"  : 1296 }, 
 "readnoise":{ 
   "title": "Read out noise (e-)",
   "val"  : 15 },
