@@ -1,4 +1,7 @@
 import numpy as np
+import json
+from jis.pixsim import makeflat as mf
+from jis.pixsim import readflat as rf
 
 def extsp(sp):
     """
@@ -79,6 +82,127 @@ def exttel(tel):
     WLlong =  WLdefined[k-1]
 
     return k, WLdefined, EPdefined, WLshort, WLlong
+
+
+def mkDet(det_json_filename, spixdim=[32, 32]):
+    """
+    Summary:
+        This function extracts detector properties from an input json file
+        and returns a detector class object which has the properties..
+
+    Args:
+        det_json_filename (str): Filename of the detector json file.
+        spixdim    (array-like): Dimensions of the intrapixel pattern.
+                                 (Default: [32, 32])
+
+    Returns:
+        detector (detector): Detector object which has the extracted properties.
+
+    """
+
+    class detector:
+        def __init__(self, npix=None, idark=None, intrapix=None, interpix=None, tau=None, rho=None):
+            """
+            Summary:
+                This is a class to describe the detector properties.
+
+            Attributes:
+                npix     (int)    : Number of pixels on a side.
+                idark    (float)  : Dark current including stray light (e/s/pix).
+                intrapix (ndarray): Intrapixel pattern.
+                interpix (ndarray): Interpixel pattern.
+                persistence (dict): Persistence parameters consists of tau and rho.
+                                    tau is the detrapping timescales in sec.
+                                    rho is the trapping fractions.
+            """
+
+            self.npix  = npix
+            self.idark = idark
+            self.intrapix = intrapix
+            self.interpix = interpix
+            self.persistence = {'tau': tau, 'rho': rho}
+
+    with open(det_json_filename, "r") as fp:
+        js = json.load(fp)
+
+        idark    = extIdark(js)
+        tau, rho = extPersistenceParams(js)
+        interpix_sigma, intradir, intrax, intray = extFlatInfo(js)
+
+        npix = js['Npix']['val']
+    fp.close()
+
+    interpix = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma)
+    intrapix = rf.read_intrapix(intrax, intray, spixdim, intradir)
+
+    detector = detector(npix=npix, idark=idark, \
+                        interpix=interpix, intrapix=intrapix, \
+                        tau=tau, rho=rho)
+
+    return detector
+
+
+def extIdark(det):
+    """
+    Summary:
+        This function extracts dark current including stray light.
+
+    Args:
+        det (dict): Decoded json data of the detector information.
+
+    Returns:
+        idark (float): Dark current including stray light in e/sec/pix.
+
+    """
+
+    idark = det['Idark']['val']
+
+    return idark
+
+
+def extPersistenceParams(det):
+    """
+    Summary:
+        This function extracts persistence parameters.
+
+    Args:
+        det (dict): Decoded json data of the detector information.
+
+    Returns:
+        tau (ndarray): Detrapping time constants in sec.
+        rho (ndarray): Trapping fractions.
+
+    """
+
+    tau = det['persistence']['tau']
+    rho = det['persistence']['rho']
+
+    return tau, rho
+
+
+def extFlatInfo(det):
+    """
+    Summary:
+        This function extracts information about detector flat.
+
+    Args:
+        det (dict): Decoded json data of the detector information.
+
+    Returns:
+        interpix (float): Stddev of the interpixel flat.
+        intradir (str)  : Name of the directory containing intrapix pattern data.
+        intrax   (str)  : Filename of the intrapix pattern in x direction.
+        intray   (str)  : Filename of the intrapix pattern in y direction.
+
+    """
+
+    interpix = det['interpix']['val']
+
+    intradir = det['intrapix']['dirname']
+    intrax   = det['intrapix']['filex']
+    intray   = det['intrapix']['filey']
+
+    return interpix, intradir, intrax, intray
 
 
 def extQE(det):
