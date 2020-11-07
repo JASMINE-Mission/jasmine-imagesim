@@ -4,6 +4,26 @@ from jis.pixsim.addnoise import mk_shotnoise
 import matplotlib.pylab as plt
 
 def integrate(pixar, jx, jy, texp, dt, det):
+    """
+    Summary:
+        This function integrates the pixar array
+        calculated by simpix with taking the sampling 
+        timing. This function also adds readnoise and
+        shotnoise, and digitize. Saturation is also considered.
+
+    Args:
+        pixar  (ndarray): Movie data created by simpix. 
+                          The shape is (X, Y, Z) not (Z, Y, X).
+        jx, jy (int)    : Global pixel positions correspond to the
+                          origin of the simulated local image (pixar).
+        texp   (float)  : Exposure time in sec.
+        dt     (float)  : Timestep of the simulated data (pixar).
+        det    (detctor): Detector class object.
+
+    Returns:
+        adu (ndarray): Integrated data in adu.
+
+    """
 
     # Number of pixels in a row including pre/post pixels.
     npix_read_per_row = det.ncol_ch + det.npix_pre + det.npix_post
@@ -75,6 +95,6 @@ def integrate(pixar, jx, jy, texp, dt, det):
     adu2 = np.round(adu2/det.gain)
 
     # Subtraction.
-    adu = adu2 - adu1
+    adu = (adu2 - adu1).T
 
-    return adu.T
+    return adu
