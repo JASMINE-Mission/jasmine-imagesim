@@ -120,7 +120,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
             self.idark = idark
             self.intrapix = intrapix
             self.interpix = interpix
-            self.persistence = {'tau': tau, 'rho': rho}
+            self.persistence = {'tau': np.array(tau), 'rho': np.array(rho)}
 
     with open(det_json_filename, "r") as fp:
         js = json.load(fp)
