@@ -101,7 +101,8 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
     """
 
     class detector:
-        def __init__(self, npix=None, idark=None, intrapix=None, interpix=None, tau=None, rho=None):
+        def __init__(self, npix=None, idark=None, intrapix=None, interpix=None,\
+                     tau=None, rho=None, readnoise=None):
             """
             Summary:
                 This is a class to describe the detector properties.
@@ -114,6 +115,8 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
                 persistence (dict): Persistence parameters consists of tau and rho.
                                     tau is the detrapping timescales in sec.
                                     rho is the trapping fractions.
+                readnoise (float) : Readnoise (e/read).
+
             """
 
             self.npix  = npix
@@ -121,6 +124,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
             self.intrapix = intrapix
             self.interpix = interpix
             self.persistence = {'tau': np.array(tau), 'rho': np.array(rho)}
+            self.readnoise = readnoise
 
     with open(det_json_filename, "r") as fp:
         js = json.load(fp)
@@ -130,6 +134,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
         interpix_sigma, intradir, intrax, intray = extFlatInfo(js)
 
         npix = js['Npix']['val']
+        readnoise = js['readnoise']['val']
     fp.close()
 
     interpix = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma)
@@ -137,7 +142,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
 
     detector = detector(npix=npix, idark=idark, \
                         interpix=interpix, intrapix=intrapix, \
-                        tau=tau, rho=rho)
+                        tau=tau, rho=rho, readnoise=readnoise)
 
     return detector
 
