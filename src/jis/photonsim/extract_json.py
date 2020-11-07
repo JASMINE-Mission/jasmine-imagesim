@@ -102,7 +102,8 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
 
     class detector:
         def __init__(self, npix=None, idark=None, intrapix=None, interpix=None,\
-                     tau=None, rho=None, readnoise=None, readparams=None):
+                     tau=None, rho=None, readnoise=None, fullwell=None,\
+                     readparams=None):
             """
             Summary:
                 This is a class to describe the detector properties.
@@ -116,6 +117,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
                                     tau is the detrapping timescales in sec.
                                     rho is the trapping fractions.
                 readnoise  (float): Readnoise (e/read).
+                fullwell   (float): Full-well in electrons.
                 fsmpl      (float): Sampling frequency in Hz.
                 tsmpl      (float): Sampling time in sec (1/fsmpl).
                 ncol_ch    (int)  : Num. of col. in one ch.
@@ -131,6 +133,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
             self.interpix = interpix
             self.persistence = {'tau': np.array(tau), 'rho': np.array(rho)}
             self.readnoise = readnoise
+            self.fullwell = fullwell
             if readparams is not None:
                 self.fsmpl      = readparams['fsmpl']['val']
                 self.tsmpl      = 1./self.fsmpl
@@ -159,6 +162,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
         npix       = js['Npix']['val']
         readnoise  = js['readnoise']['val']
         readparams = js['readparams']
+        fullwell   = js['Fullwell']['val']
     fp.close()
 
     interpix = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma)
@@ -167,7 +171,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
     detector = detector(npix=npix, idark=idark, \
                         interpix=interpix, intrapix=intrapix, \
                         tau=tau, rho=rho, readnoise=readnoise,\
-                        readparams=readparams)
+                        fullwell=fullwell, readparams=readparams)
 
     return detector
 
