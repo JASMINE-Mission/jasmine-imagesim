@@ -4,7 +4,7 @@
   Make a pixel cube
 
   usage:
-    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd
+    mkpixcube.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd [-q]
 
  options:
    --help       show this help message and exit
@@ -17,6 +17,7 @@
    -s tframe    exposure [sec] of a frame
    -f nframe    number of the frames
    -d vd        drifting velocity [pixel scale/sec]
+   -q psf.fits  psf file (if not given, an analytic donuts model will be used.
 """ 
 
 from docopt import docopt             # command line interface
