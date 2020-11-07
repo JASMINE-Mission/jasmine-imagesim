@@ -94,10 +94,10 @@ if __name__ == '__main__':
     if xhead["ACE-TOTT"] != yhead["ACE-TOTT"]:
         print("ACE-TOTT (total time) mismatch.")
         sys.exit(-1)
-        
+
     Tace = xhead['ACE-TOTT'] # Total time of the ACE data.
     Nace = len(xdata)
-    
+
     #-----------------------------------------#
 
     # Setting artificial linear drift.
@@ -106,7 +106,7 @@ if __name__ == '__main__':
         #drift_azimuth=np.random.random()*2.0*np.pi
         drift_azimuth = np.pi/4.0
         drift_theta   = gentraj.gentraj_drift(Nace,drift_length,drift_azimuth)
-    
+
     # Setting and plotting full trajectory.
     if vd>0.0:
         theta_full = np.array([xdata*x_scale/pix_scale+drift_theta[0,:], ydata*y_scale/pix_scale+drift_theta[1,:]])
@@ -115,7 +115,8 @@ if __name__ == '__main__':
     ##### drift_theta should be divided by pix_scale (TK)?? #####
 
     plotace.trajectory(theta_full[0,:], theta_full[1,:])
-    
+    #    sys.exit()
+
     Nts_per_frame = int(tframe*Nace/Tace) # Number of timesteps per a frame.
 
     Nmargin  = 10
@@ -153,7 +154,7 @@ if __name__ == '__main__':
     jx, jy = np.int(x), np.int(y)
     interpix = rf.flat_interpix(flat, jx, jy, pixdim, figsw=0)
 
-    lc = []
+    lc = []        
     pixcube = np.zeros((Npixcube, Npixcube, nframe))
     for iframe in tqdm.tqdm(range(0,nframe)):
 
