@@ -31,6 +31,7 @@ from jis.pixsim import simpix_stable as sp
 from jis.pixsim import gentraj
 from jis.pixsim import makeflat as mf
 from jis.pixsim.addnoise import addnoise
+from jis.pixsim.integrate import integrate
 from jis.jisplot import plotace 
 from jis.photonsim.extract_json import mkDet
 import tqdm
@@ -98,6 +99,7 @@ if __name__ == '__main__':
 
     Tace = xhead['ACE-TOTT'] # Total time of the ACE data.
     Nace = len(xdata)
+    dtace = Tace/(Nace-1.)
 
     #-----------------------------------------#
 
@@ -118,7 +120,7 @@ if __name__ == '__main__':
     plotace.trajectory(theta_full[0,:], theta_full[1,:])
     #    sys.exit()
 
-    Nts_per_frame = int(tframe*Nace/Tace) # Number of timesteps per a frame.
+    Nts_per_frame = int(tframe/dtace) # Number of timesteps per a frame.
 
     Nmargin  = 10
     Npixcube = int((np.max(theta_full)+Nmargin)*2)
@@ -184,9 +186,8 @@ if __name__ == '__main__':
             lctmp = np.mean(np.sum(Ei))
             lc.append(lctmp)
 
-        integrated = np.sum(pixar, axis=2) # Integrating one exposure.
-        integrated, seeds = addnoise(integrated, det.readnoise*np.sqrt(2.))
-                            # Adding shotnoise and readnoise (x sqrt(2); CDS).
+        # Integrating, adding noise, and quantization
+        integrated = integrate(pixar, jx, jy, tframe, dtace, det) 
 
         pixcube[:,:,iframe] = integrated # Storing the integrated frame in pixcube.
             
