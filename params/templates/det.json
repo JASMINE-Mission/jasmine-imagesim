@@ -1,22 +1,37 @@
 {
 "pixsize":{
- "title"  :"Pixel size (micron)",
- "val"    : 15},
-"Nread":{ 
- "title"  :"Read out noise (e-)",
- "val" :  15 },
+  "title": "Pixel size (micron)",
+  "val"  : 15 },
+"Npix":{
+  "title": "Number of pixels on a side",
+  "val"  : 1280 }, 
+"readnoise":{ 
+  "title": "Read out noise (e-)",
+  "val"  : 15 },
 "Idark":{
- "title"  :"Dark current w stray light (e-/sec/pix)",
- "val" :  20 },
+  "title": "Dark current w stray light (e-/sec/pix)",
+  "val"  :  24.5 },
 "Fullwell":{
-  "title" :"Full well (e-)",
-  "val" : 150000},
-"QE" : {
-  "title" : "Spectral distribution of quantum efficiency (W?? in um)",
-  "W00" : 0.9,
-  "V00" : 0.6,
-  "W01" : 1.4,
-  "V01" : 0.6,
-  "W02" : 1.6,
-  "V02" : 0.6}
+  "title": "Full well (e-)",
+  "val"  : 150000},
+"QE": {
+  "title": "Spectral distribution of quantum efficiency (W?? in um; V?? QE value)",
+  "W00": 0.9,
+  "V00": 0.6,
+  "W01": 1.4,
+  "V01": 0.6,
+  "W02": 1.6,
+  "V02": 0.6},
+"interpix":{
+  "title": "STDDEV of the interpixel flat",
+  "val"  : 0.01},
+"intrapix":{
+  "title": "Information about files describing intrapixel pattern",
+  "dirname": "/home/kamizuka/jasmine-imagesim/src/jis/pixsim/data/intrapix",
+  "filex": "intravx.csv",
+  "filey": "intravy.csv"},
+"persistence":{
+  "title": "Persistence parameters (tau: detrap. time in sec; rho: frac. of trap.)",
+  "tau": [1, 10, 100, 1000, 10000],
+  "rho": [1e-3, 1.5e-3, 1.5e-3, 2e-3, 3e-3]}
 }
