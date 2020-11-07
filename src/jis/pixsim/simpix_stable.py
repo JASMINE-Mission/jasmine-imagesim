@@ -4,7 +4,6 @@ import pycuda.compiler
 from pycuda.compiler import SourceModule
 import time
 import numpy as np
-from jis.pixsim.addnoise import addnoise
 
 def genimg():
     source_module = SourceModule("""
@@ -117,8 +116,5 @@ def simpix(theta, interpix, intrapix, sigma2=2.0, readnoise=15.):
     cuda.memcpy_dtoh(pixlc,dev_pixlc)
 
     pixar = pixlc.reshape((pixdim[0], pixdim[1], ntime))
-
-    # assuming pixar is in electrons (TK).
-    pixar, seed = addnoise(pixar, readnoise)
 
     return pixar
