@@ -103,7 +103,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
     class detector:
         def __init__(self, npix=None, idark=None, intrapix=None, interpix=None,\
                      tau=None, rho=None, readnoise=None, fullwell=None,\
-                     readparams=None):
+                     gain=None, readparams=None):
             """
             Summary:
                 This is a class to describe the detector properties.
@@ -118,6 +118,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
                                     rho is the trapping fractions.
                 readnoise  (float): Readnoise (e/read).
                 fullwell   (float): Full-well in electrons.
+                gain       (float): Conversion gain in e/adu.
                 fsmpl      (float): Sampling frequency in Hz.
                 tsmpl      (float): Sampling time in sec (1/fsmpl).
                 ncol_ch    (int)  : Num. of col. in one ch.
@@ -134,6 +135,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
             self.persistence = {'tau': np.array(tau), 'rho': np.array(rho)}
             self.readnoise = readnoise
             self.fullwell = fullwell
+            self.gain = gain
             if readparams is not None:
                 self.fsmpl      = readparams['fsmpl']['val']
                 self.tsmpl      = 1./self.fsmpl
@@ -163,6 +165,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
         readnoise  = js['readnoise']['val']
         readparams = js['readparams']
         fullwell   = js['Fullwell']['val']
+        gain       = js['gain']['val']
     fp.close()
 
     interpix = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma)
@@ -171,7 +174,8 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
     detector = detector(npix=npix, idark=idark, \
                         interpix=interpix, intrapix=intrapix, \
                         tau=tau, rho=rho, readnoise=readnoise,\
-                        fullwell=fullwell, readparams=readparams)
+                        fullwell=fullwell, gain=gain,\
+                        readparams=readparams)
 
     return detector
 

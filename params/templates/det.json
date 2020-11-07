@@ -41,5 +41,8 @@
   "nrow_ch"   : {"val":1296, "description": "Num. of row in one ch."},
   "npix_pre"  : {"val":   4, "description": "Npix before reading each row."},
   "npix_post" : {"val":   4, "description": "Npix after reading each row."},
-  "t_overhead": {"val": 0.1, "description": "Overhead time between reset and the 1st read in sec."}}
+  "t_overhead": {"val": 0.1, "description": "Overhead time between reset and the 1st read in sec."}},
+"gain":{
+  "title": "Conversion gain in e/adu.",
+  "val": 3}
 }
