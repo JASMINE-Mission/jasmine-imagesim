@@ -30,6 +30,7 @@ from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim import gentraj
 from jis.pixsim import makeflat as mf
+from jis.pixsim.addnoise import addnoise
 from jis.jisplot import plotace 
 from jis.photonsim.extract_json import mkDet
 import tqdm
@@ -183,7 +184,11 @@ if __name__ == '__main__':
             lctmp = np.mean(np.sum(Ei))
             lc.append(lctmp)
 
-        pixcube[:,:,iframe] = np.sum(pixar,axis=2) # Making one exposure frame and storing it in pixcube.
+        integrated = np.sum(pixar, axis=2) # Integrating one exposure.
+        integrated, seeds = addnoise(integrated, det.readnoise*np.sqrt(2.))
+                            # Adding shotnoise and readnoise (x sqrt(2); CDS).
+
+        pixcube[:,:,iframe] = integrated # Storing the integrated frame in pixcube.
             
     if args["-l"]:
         pixcube = pixcube*injlc
