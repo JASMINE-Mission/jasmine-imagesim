@@ -120,7 +120,14 @@ if __name__ == '__main__':
     plotace.trajectory(theta_full[0,:], theta_full[1,:])
     #    sys.exit()
 
-    Nts_per_frame = int(tframe/dtace) # Number of timesteps per a frame.
+    tscan = det.t_overhead +\
+            det.tsmpl*(det.npix_pre+det.ncol_ch+det.npix_post)*det.nrow_ch
+    Nts_per_frame = int((tframe+tscan)/dtace+0.5) # Number of timesteps per a frame.
+
+    print("Current settings: dt(ace)={:.1e}; tscan={:.1e}".format(dtace, tscan))
+    if dtace>tscan:
+        print("WARNING: ACE timestep should be smaller than the frame-scanning time.")
+
 
     Nmargin  = 10
     Npixcube = int((np.max(theta_full)+Nmargin)*2)
