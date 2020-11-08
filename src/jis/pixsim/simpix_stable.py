@@ -5,10 +5,11 @@ from pycuda.compiler import SourceModule
 import time
 import numpy as np
 
-def genimg_donut():
+def genimg_donut(spixdim):
     print("Analytic donut PSF model used.")
-    source_module = SourceModule("""
-    #define NMXCACHE 1024 
+    source_module = SourceModule(
+    "#define NMXCACHE "+str(spixdim[0]*spixdim[1])+"\n"+ 
+    """
     #define PI 3.14159265359
     
     __shared__ float cache[NMXCACHE];    
@@ -20,9 +21,11 @@ def genimg_donut():
     
     return source_module
 
-def genimg_custom():        
+def genimg_custom(spixdim,Nsubtilex, Nsubtiley):        
     print("Custom PSF model used.")
-    source_module = SourceModule("""
+    source_module = SourceModule(
+    "#define NMXCACHE "+str(spixdim[0]*spixdim[1]+Nsubtilex*Nsubtiley)+"\n"+ 
+    """
     #define NMXCACHE 1024 
     #define PI 3.14159265359
     
@@ -39,7 +42,7 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
     """
     Summary:
         This function makes preparations for simpix.
-        (Memory allocation etc.)
+        (Gloabl memory allocation etc.)
 
     Args:
         theta    (ndarray): Time-series data of the PSF center position
@@ -94,22 +97,66 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
     return dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay,\
            pixdim, spixdim, ntime, sigma2, pixlc
 
-def set_custom(theta,psfshape,psfside,pixdim):
-    subtilex=[]
-    subtiley=[]
-    txmax=np.max(theta[0,:])
-    txmin=np.max(theta[0,:])
-    tymax=np.max(theta[1,:])
-    tymin=np.max(theta[1,:])
+def pix2psfpix(pixpos,theta,psfcenter,psfscale):
+    # psfpos [psf_pix]: psfarr pixel position as a function of (detector) pixel position (pixpos [pix])
+    # theta: the PSF center position [pix]
+    # psfscale [pix/psf_pix]
+    
+    psfpos=psfcenter + (pixpos - theta)/psfscale
+    return psfpos
+
+def set_custom(theta,psfarr,psfcenter,psfside,pixdim):
+    # psf array
+    fpsfarr = (psfarr.flatten()).astype(np.float32)
+    dev_psfarr = cuda.mem_alloc(fpsfarr.nbytes)
+    cuda.memcpy_htod(dev_psfarr,psfarr)
+
+    #pix and psfarr center
+    pixcenter=pixdim/2.0
+    psfdim=np.shape(psfarr)
+    psfscale=psfside/psfdim #[pix/psf_pix] 1 psfarr pixel scale in the unit of (detector) pixel scale 
+    
+    subtilex=np.zeros(pixdim)
+    subtiley=np.zeros(pixdim)
+
+    thetamax=np.max(theta,axis=1)
+    thetamin=np.min(theta,axis=1)
+    
+    Nsubtilex=0
+    Nsubtiley=0
 
     for ix in range(0,pixdim[0]):
         for iy in range(0,pixdim[1]):
-            print("--")
-    
-    return dev_subtilex, dev_subtiley, n_subtile 
+            minpixpos=thetamin+np.array([ix,iy])
+            minpsfpos=pix2psfpix(minpixpos,theta,psfcenter,psfscale)
+            subtilex[ix,iy]=minpsfpos[0]-1.0/psfscale[0]/2-1
+            subtiley[ix,iy]=minpsfpos[1]-1.0/psfscale[1]/2-1
+
+            maxpixpos=thetamax+np.array([ix,iy])
+            maxpsfpos=pix2psfpix(maxpixpos,theta,psfcenter,psfscale)
+
+            #check the maximum size of subtile
+            smax=maxpsfpos[0]+1.0/psfscale/2+1        
+            Nsx=smax[0]-subtilex[ix,iy]
+            if Nsx > Nsubtilex:
+                Nsubtilex=Nsx                
+            Nsy=smax[1]-subtiley[ix,iy]
+            if Nsy > Nsubtiley:
+                Nsubtiley=Nsy
+
+                
+    subtilex = (np.array(subtilex)).astype(np.float32)
+    dev_subtilex = cuda.mem_alloc(subtilex.nbytes)
+    cuda.memcpy_htod(dev_subtilex,subtilex)
+
+    subtiley = (np.array(subtiley)).astype(np.float32)
+    dev_subtiley = cuda.mem_alloc(subtiley.nbytes)
+    cuda.memcpy_htod(dev_subtiley,subtiley)
+            
+    return dev_psfarr, dev_subtilex, dev_subtiley, Nsubtilex, Nsubtiley
 
 
-def simpix(theta, interpix, intrapix, sigma2=2.0, psf=None, psfside=None):
+def simpix(theta, interpix, intrapix, sigma2=2.0, psfarr=None, psfcenter=None, psfside=None):
     """
     Summary:
         This function makes a movie data 
@@ -138,22 +185,21 @@ def simpix(theta, interpix, intrapix, sigma2=2.0, psf=None, psfside=None):
 
     #kernel
     if psf is None:
-        source_module = genimg_donut()
+        source_module = genimg_donut(spixdim)
         pkernel = source_module.get_function("pixlight_analytic")
         pkernel(dev_pixlc, dev_interpix, dev_intrapix, np.int32(ntime),\
                 dev_thetax, dev_thetay, np.float32(sigma2),\
                 block=(int(spixdim[0]), int(spixdim[1]),1),\
                 grid=(int(pixdim[0]),int(pixdim[1])))
     else:
-        dev_subtile, n_subtile = set_custom(theta, np.shape(psf),psfside)
-        source_module = genimg_custom()
+        dev_psfarr, dev_subtilex, dev_subtiley, Nsubtilex, Nsubtiley = set_custom(theta, psfarr, psfcenter, psfside, pixdim)
+        source_module = genimg_custom(spixdim,Nsubtilex, Nsubtiley)
         pkernel = source_module.get_function("pixlight_custom")
-        pkernel(dev_pixlc, dev_interpix, dev_intrapix, np.int32(ntime),\
+        pkernel(dev_pixlc, dev_interpix, dev_intrapix, dev_psfarr,\
+                np.int32(ntime),np.int32(Nsubtilex),np.int32(Nsubtiley),\
                 dev_thetax, dev_thetay,\
                 block=(int(spixdim[0]), int(spixdim[1]),1),\
                 grid=(int(pixdim[0]),int(pixdim[1])))
-    
-
 
         
     cuda.memcpy_dtoh(pixlc,dev_pixlc)

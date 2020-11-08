@@ -1,4 +1,15 @@
-__global__ void pixlight_custom(float *pixlc, float *interpix, float *intrapix, int ntime, float* thetaX, float* thetaY){
+/* 
+
+cache
+0 -- blockDim.x*blockDim.y - 1: subpixel value
+blockDim.x*blockDim -- blockDim.x*blockDim + nsubtilex*nsubtiley - 1: PSF subtile
+
+
+*/
+
+
+
+__global__ void pixlight_custom(float *pixlc, float *interpix, float *intrapix, float *psfarr, int ntime, int nsubtilex, int nsubtiley, float* thetaX, float* thetaY){
   /* subpixel (thread) positinos */
   float spy = float(threadIdx.x)/float(blockDim.x);
   float spx = float(threadIdx.y)/float(blockDim.y); 

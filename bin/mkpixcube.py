@@ -22,7 +22,7 @@
    -o pixcube     output h5 of pixcube
    -m             output sequential png files for movie
    --persistence  considering persistence (not supported yet!).
-   --psf psf.fits  psf file (if not given, an analytic donuts model will be used.
+   --psf psf.fits  psf array file (if not given, an analytic donuts model will be used.
 """ 
 
 from docopt import docopt             # command line interface
@@ -64,10 +64,10 @@ if __name__ == '__main__':
     # Loading PSF
     if args['--psf']:
         phdul = fits.open(args['--psf'])
-        psf = phdul[0].data
+        psfarr = phdul[0].data
         psfheader = phdul[0].header
     else:
-        psf = None
+        psfarr = None
         
     # Loading light curve data.
     if args['-l']:
@@ -183,7 +183,7 @@ if __name__ == '__main__':
 
         # Perform the PSF integration
         # output: array of images taken at each frame.
-        pixar = sp.simpix(theta, interpix, intrapix, psf=psf)
+        pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr)
         
         if args["--persistence"]:
             #persistence
