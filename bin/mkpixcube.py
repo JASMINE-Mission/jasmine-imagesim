@@ -4,7 +4,7 @@
   Make a pixel cube
 
   usage:
-    mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json -o pixcube [-m] [--persistence] [-q] psf.fits 
+    mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json -o pixcube [-m] [--persistence] [--psf] psf.fits 
 
  options:
    --help         show this help message and exit
@@ -22,7 +22,7 @@
    -o pixcube     output h5 of pixcube
    -m             output sequential png files for movie
    --persistence  considering persistence (not supported yet!).
-   -q psf.fits  psf file (if not given, an analytic donuts model will be used.
+   --psf psf.fits  psf file (if not given, an analytic donuts model will be used.
 """ 
 
 from docopt import docopt             # command line interface
@@ -61,6 +61,14 @@ if __name__ == '__main__':
 
     det = mkDet(det_json, spixdim=spixdim) # Making a detector class object.
 
+    # Loading PSF
+    if args['--psf']:
+        phdul = fits.open(args['--psf'])
+        psf = phdul[0].data
+        psfheader = phdul[0].header
+    else:
+        psf = None
+        
     # Loading light curve data.
     if args['-l']:
         lhdul = fits.open(args['-l'])
@@ -121,8 +129,7 @@ if __name__ == '__main__':
     Nts_per_frame = int(tframe*Nace/Tace) # Number of timesteps per a frame.
 
     Nmargin  = 10
-    Npixcube = int((np.max(theta_full)+Nmargin)*2)
-    ###### np.max(theta_full) is np.max(np.abs(theta_full)) (TK)??? #####
+    Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
 
     # Preparing flat (intrapix/interpix). ##########
@@ -170,9 +177,13 @@ if __name__ == '__main__':
             print("insufficient time length of ACE fits.")
             sys.exit(-1)            
 
+        # PSF center for iframe
         theta = np.copy(theta_full[:,istart:iend])
         theta = theta+np.array([pixdim]).T/2
-        pixar = sp.simpix(theta, interpix, intrapix) # array of images taken at each (ACE) timestep.
+
+        # Perform the PSF integration
+        # output: array of images taken at each frame.
+        pixar = sp.simpix(theta, interpix, intrapix, psf=psf)
         
         if args["--persistence"]:
             #persistence

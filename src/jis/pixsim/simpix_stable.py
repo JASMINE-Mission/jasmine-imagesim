@@ -5,30 +5,33 @@ from pycuda.compiler import SourceModule
 import time
 import numpy as np
 
-def genimg(psffile=None):
-    if psffile is None:
-        source_module = SourceModule("""
-        #define NMXCACHE 1024 
-        #define PI 3.14159265359
-        
-        __shared__ float cache[NMXCACHE];    
-        
-        #include "psf_donut.h"
-        #include "pixlight.h"
-        
-        """,options=['-use_fast_math'])
-    else:
-        print("Custom PSF model used.")
-        source_module = SourceModule("""
-        #define NMXCACHE 1024 
-        #define PI 3.14159265359
-        
-        __shared__ float cache[NMXCACHE];    
-        
-        #include "psf_custom.h"
-        #include "pixlight.h"
-        
-        """,options=['-use_fast_math'])
+def genimg_donut():
+    print("Analytic donut PSF model used.")
+    source_module = SourceModule("""
+    #define NMXCACHE 1024 
+    #define PI 3.14159265359
+    
+    __shared__ float cache[NMXCACHE];    
+    
+    #include "psf_donut.h"
+    #include "pixlight_analytic.h"
+    
+    """,options=['-use_fast_math'])
+    
+    return source_module
+
+def genimg_custom():        
+    print("Custom PSF model used.")
+    source_module = SourceModule("""
+    #define NMXCACHE 1024 
+    #define PI 3.14159265359
+    
+    __shared__ float cache[NMXCACHE];    
+    
+    #include "psf_custom.h"
+    #include "pixlight_custom.h"
+    
+    """,options=['-use_fast_math'])
         
     return source_module
 
@@ -91,8 +94,22 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
     return dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay,\
            pixdim, spixdim, ntime, sigma2, pixlc
 
+def set_custom(theta,psfshape,psfside,pixdim):
+    subtilex=[]
+    subtiley=[]
+    txmax=np.max(theta[0,:])
+    txmin=np.max(theta[0,:])
+    tymax=np.max(theta[1,:])
+    tymin=np.max(theta[1,:])
 
-def simpix(theta, interpix, intrapix, sigma2=2.0):
+    for ix in range(0,pixdim[0]):
+        for iy in range(0,pixdim[1]):
+            print("--")
+    
+    return dev_subtilex, dev_subtiley, n_subtile 
+
+
+def simpix(theta, interpix, intrapix, sigma2=2.0, psf=None, psfside=None):
     """
     Summary:
         This function makes a movie data 
@@ -106,28 +123,42 @@ def simpix(theta, interpix, intrapix, sigma2=2.0):
         interpix (ndarray): Interpixel flat pattern (2-d array).
         intrapix (ndarray): Intrapixel flat pattern (2-d array).
         sigma2   (float)  : sigma^2 of gaussian PSF.
-
+        psf      (ndarray): psf array or None=the analytic donut.
+        psfside  (float)  : psf array size in the unit of (detector) pixel.
     Returns:
         pixar (ndarray): Calculated movie data (3-d array).  
 
     """
 
-    # sigma2 is dummy
     start = time.time()
+    
     # set all
     dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay,\
-    pixdim, spixdim, ntime, sigma2, pixlc = set_simpix(theta, interpix, intrapix, sigma2)
+        pixdim, spixdim, ntime, sigma2, pixlc = set_simpix(theta, interpix, intrapix, sigma2)     # sigma2 is dummy
 
     #kernel
-    source_module = genimg()
-    pkernel = source_module.get_function("pixlight")
-    pkernel(dev_pixlc, dev_interpix, dev_intrapix, np.int32(ntime),\
-            dev_thetax, dev_thetay, np.float32(sigma2),\
-            block=(int(spixdim[0]), int(spixdim[1]),1),\
-            grid=(int(pixdim[0]),int(pixdim[1])))
+    if psf is None:
+        source_module = genimg_donut()
+        pkernel = source_module.get_function("pixlight_analytic")
+        pkernel(dev_pixlc, dev_interpix, dev_intrapix, np.int32(ntime),\
+                dev_thetax, dev_thetay, np.float32(sigma2),\
+                block=(int(spixdim[0]), int(spixdim[1]),1),\
+                grid=(int(pixdim[0]),int(pixdim[1])))
+    else:
+        dev_subtile, n_subtile = set_custom(theta, np.shape(psf),psfside)
+        source_module = genimg_custom()
+        pkernel = source_module.get_function("pixlight_custom")
+        pkernel(dev_pixlc, dev_interpix, dev_intrapix, np.int32(ntime),\
+                dev_thetax, dev_thetay,\
+                block=(int(spixdim[0]), int(spixdim[1]),1),\
+                grid=(int(pixdim[0]),int(pixdim[1])))
+    
 
+
+        
     cuda.memcpy_dtoh(pixlc,dev_pixlc)
 
     pixar = pixlc.reshape((pixdim[0], pixdim[1], ntime))
 
     return pixar
+
