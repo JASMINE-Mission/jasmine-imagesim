@@ -39,16 +39,14 @@ def genimg_custom(psfdim, spixdim, psfcenter, psfscale, Nsubtilex, Nsubtiley):
     
     __shared__ float cache[NMXCACHE];    
     
-    #include "psf_custom.h"
     #include "pixlight_custom.h"
     
     """
-    print(cudacode)
     source_module = SourceModule(cudacode,options=['-use_fast_math'])
 
     return source_module
 
-def set_simpix(theta,interpix,intrapix,sigma2=2.0):
+def set_simpix(theta,interpix,intrapix):
     """
     Summary:
         This function makes preparations for simpix.
@@ -59,8 +57,6 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
                             (pix; [0,:] is x_center; [1,:] is y_center).
         interpix (ndarray): Interpixel map (2-d array).
         intrapix (ndarray): Intrapixel map (2-d array).
-        sigma2   (float)  : sigma^2 of gaussian PSF (pix^2).
-                            Default: 2.0
 
     Return:
         dev_pixlc    (DeviceAllocation): Memory for output movie data (pixlc).
@@ -71,7 +67,6 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
         pixdim       (ndarray)         : Dimensions of interpix.
         spixdim      (ndarray)         : Dimensions of intrapix.
         ntime        (int)             : Number of time grid points.
-        sigma2       (float)           : sigma^2 of gaussian PSF (pix^2).
         pixlc        (ndarray)         : Array for output movie data.
  
     """
@@ -105,7 +100,7 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
     cuda.memcpy_htod(dev_thetay,thetay)
     
     return dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay,\
-           pixdim, spixdim, ntime, sigma2, pixlc
+           pixdim, spixdim, ntime, pixlc
 
 def pix2psfpix(pixpos,pixcenter,psfcenter,psfscale):
     # psfpos [fp-cell]: psfarr pixel position as a function of (detector) pixel position (pixpos [pix])
@@ -246,20 +241,19 @@ def emurate_pixlight_custom(theta_instant,psfarr,pixdim,spixdim,subtilex,subtile
 
 
 
-def simpix(theta, interpix, intrapix, sigma2=2.0, psfarr=None, psfcenter=None, psfscale=None):
+def simpix(theta, interpix, intrapix, psfarr=None, psfcenter=None, psfscale=None):
     """
     Summary:
         This function makes a movie data 
         based on the time-series data of the observed position (theta)
         with taking interpix/intrapix flat data into account.
         Calculation is done by pixlight command.
-        The PSF is assumed to be a gaussian function.
+        If psfarr,psfcenter,psfscale are given, the bilinear interporation of psfarr provides the psf. If not, the analytic psf assuming a donut shape will be applied.
 
     Args:
         theta     (ndarray): Time-series data of the PSF position.
         interpix  (ndarray): Interpixel flat pattern (2-d array).
         intrapix  (ndarray): Intrapixel flat pattern (2-d array).
-        sigma2    (float)  : sigma^2 of gaussian PSF.
         psfarr    (ndarray): psf array or None=the analytic donut.
         psfcenter (ndarray): psf center in the unit of fp-cell
         psfscale  (float)  : psf pixel-size in the unit of (detector) pix [pix/fp-cell]
@@ -272,14 +266,13 @@ def simpix(theta, interpix, intrapix, sigma2=2.0, psfarr=None, psfcenter=None, p
     
     # set all
     dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay,\
-        pixdim, spixdim, ntime, sigma2, pixlc = set_simpix(theta, interpix, intrapix, sigma2) # sigma2 is currently dummy
-
+        pixdim, spixdim, ntime, pixlc = set_simpix(theta, interpix, intrapix) #
     #kernel
     if psfarr is None:
         source_module = genimg_donut(spixdim)
         pkernel = source_module.get_function("pixlight_analytic")
         pkernel(dev_pixlc, dev_interpix, dev_intrapix, np.int32(ntime),\
-                dev_thetax, dev_thetay, np.float32(sigma2),\
+                dev_thetax, dev_thetay,\
                 block=(int(spixdim[0]), int(spixdim[1]),1),\
                 grid=(int(pixdim[0]),int(pixdim[1])))
     else:

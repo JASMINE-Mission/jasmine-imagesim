@@ -81,7 +81,7 @@ if __name__ == '__main__':
         phdul = fits.open(args['--psf'])
         psfarr = phdul[0].data
         psfheader = phdul[0].header
-        psfcenter = np.array(np.shape(psfarr))/2.0 #psf center in the unit of fp-cell
+        psfcenter = (np.array(np.shape(psfarr))-1.0)*0.5 #psf center in the unit of fp-cell
         
         M=psfheader['M']    # Number of FFT cells per wavelength in um        
         fp_cellsize_rad=(1/M)*1.e-3 #[rad/fp-cell]
@@ -205,7 +205,9 @@ if __name__ == '__main__':
         pixcube[:,:,iframe] = np.sum(pixar,axis=2) # Making one exposure frame and storing it in pixcube.
 
     ## renormalization of the unit
-    pixcube = pixcube/(psfscale*psfscale) # in the unit of e-/pix/sec
+    #pixcube = pixcube/(psfscale*psfscale) # in the unit of e-/pix/sec
+    pixcube = pixcube/(psfscale*psfscale)*tframe # in the unit of e-/pix/exposure
+
     
     if args["-l"]:
         pixcube = pixcube*injlc
