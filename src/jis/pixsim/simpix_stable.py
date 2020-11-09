@@ -4,7 +4,6 @@ import pycuda.compiler
 from pycuda.compiler import SourceModule
 import time
 import numpy as np
-
 def genimg_donut(spixdim):
     print("Analytic donut PSF model used.")
     source_module = SourceModule(
@@ -35,7 +34,7 @@ def genimg_custom(spixdim,Nsubtilex, Nsubtiley):
     #include "pixlight_custom.h"
     
     """,options=['-use_fast_math'])
-        
+    print(source_module)    
     return source_module
 
 def set_simpix(theta,interpix,intrapix,sigma2=2.0):
@@ -66,8 +65,8 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
  
     """
 
-    pixdim  = np.shape(interpix)
-    spixdim = np.shape(intrapix)
+    pixdim  = np.array(np.shape(interpix))
+    spixdim = np.array(np.shape(intrapix))
     ntime   = np.shape(theta)[1]
     thetax  = theta[0,:].astype(np.float32)
     thetay  = theta[1,:].astype(np.float32)
@@ -97,66 +96,142 @@ def set_simpix(theta,interpix,intrapix,sigma2=2.0):
     return dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay,\
            pixdim, spixdim, ntime, sigma2, pixlc
 
-def pix2psfpix(pixpos,theta,psfcenter,psfscale):
-    # psfpos [psf_pix]: psfarr pixel position as a function of (detector) pixel position (pixpos [pix])
-    # theta: the PSF center position [pix]
-    # psfscale [pix/psf_pix]
+def pix2psfpix(pixpos,pixcenter,psfcenter,psfscale):
+    # psfpos [fp-cell]: psfarr pixel position as a function of (detector) pixel position (pixpos [pix])
+    # pixcenter: the detector center position [pix,pix]
+    # psfscale [pix/fp-cell]
     
-    psfpos=psfcenter + (pixpos - theta)/psfscale
+    psfpos=psfcenter + (pixpos - pixcenter)/psfscale
     return psfpos
 
-def set_custom(theta,psfarr,psfcenter,psfside,pixdim):
+def set_custom(theta,psfarr,psfcenter,psfscale,pixdim,spixdim):
+    import sys
+
     # psf array
     fpsfarr = (psfarr.flatten()).astype(np.float32)
     dev_psfarr = cuda.mem_alloc(fpsfarr.nbytes)
-    cuda.memcpy_htod(dev_psfarr,psfarr)
+    cuda.memcpy_htod(dev_psfarr,fpsfarr)
 
-    #pix and psfarr center
+    #detector pixel center [pix]
     pixcenter=pixdim/2.0
-    psfdim=np.shape(psfarr)
-    psfscale=psfside/psfdim #[pix/psf_pix] 1 psfarr pixel scale in the unit of (detector) pixel scale 
-    
+
+    #subtile initialization
     subtilex=np.zeros(pixdim)
     subtiley=np.zeros(pixdim)
 
     thetamax=np.max(theta,axis=1)
     thetamin=np.min(theta,axis=1)
-    
+    thetamed=np.median(theta,axis=1)
+
+    # psfscale [pix/fp-cell]
+    half_pixsize=1.0/psfscale/2.0
+
+    psfdim=np.array(np.shape(psfarr))
     Nsubtilex=0
     Nsubtiley=0
 
+    #checking shared memory size    
+    dev=cuda.Device(0)
+    shared_memory_size=dev.MAX_SHARED_MEMORY_PER_BLOCK
+    
     for ix in range(0,pixdim[0]):
         for iy in range(0,pixdim[1]):
-            minpixpos=thetamin+np.array([ix,iy])
-            minpsfpos=pix2psfpix(minpixpos,theta,psfcenter,psfscale)
-            subtilex[ix,iy]=minpsfpos[0]-1.0/psfscale[0]/2-1
-            subtiley[ix,iy]=minpsfpos[1]-1.0/psfscale[1]/2-1
+            pixpos=np.array([ix,iy])
+            maxpsfpos=pix2psfpix(pixpos,thetamin,psfcenter,psfscale)
+            minpsfpos=pix2psfpix(pixpos,thetamax,psfcenter,psfscale)
 
-            maxpixpos=thetamax+np.array([ix,iy])
-            maxpsfpos=pix2psfpix(maxpixpos,theta,psfcenter,psfscale)
+            jx=int(minpsfpos[0]-half_pixsize-1)
+            if jx >= 0 and jx < psfdim[0]:
+                subtilex[ix,iy]=jx
+            else:
+                jx = -1
 
+            jy=int(minpsfpos[1]-half_pixsize-1)
+            if jy >= 0 and jy < psfdim[1]:
+                subtiley[ix,iy]=jy
+            else:
+                jy = -1
+            
             #check the maximum size of subtile
-            smax=maxpsfpos[0]+1.0/psfscale/2+1        
-            Nsx=smax[0]-subtilex[ix,iy]
+            smax=maxpsfpos+half_pixsize+1
+            Nsx=smax[0]-subtilex[ix,iy]+1
             if Nsx > Nsubtilex:
-                Nsubtilex=Nsx                
-            Nsy=smax[1]-subtiley[ix,iy]
+                Nsubtilex=int(Nsx)                
+            Nsy=smax[1]-subtiley[ix,iy]+1
             if Nsy > Nsubtiley:
-                Nsubtiley=Nsy
-
+                Nsubtiley=int(Nsy)
                 
-    subtilex = (np.array(subtilex)).astype(np.float32)
+    subtilex = (np.array(subtilex)).astype(np.int32)    
     dev_subtilex = cuda.mem_alloc(subtilex.nbytes)
     cuda.memcpy_htod(dev_subtilex,subtilex)
 
-    subtiley = (np.array(subtiley)).astype(np.float32)
+    subtiley = (np.array(subtiley)).astype(np.int32)
     dev_subtiley = cuda.mem_alloc(subtiley.nbytes)
     cuda.memcpy_htod(dev_subtiley,subtiley)
-            
-    return dev_psfarr, dev_subtilex, dev_subtiley, Nsubtilex, Nsubtiley
+
+    if (Nsx*Nsy+spixdim[0]*spixdim[1]) > shared_memory_size:
+        print("your system has "+str(shared_memory_size)+" byte/block for shared memory.")
+        print("But we need "+str(Nsx*Nsy+spixdim[0]*spixdim[1])+" byte/block.")
+        sys.exit("Error: Shared memory size not enough.")
+
+    
+    return dev_psfarr, dev_subtilex, dev_subtiley, subtilex, subtiley, Nsubtilex, Nsubtiley
 
 
-def simpix(theta, interpix, intrapix, sigma2=2.0, psfarr=None, psfcenter=None, psfside=None):
+def emurate_pixlight_custom(theta_instant,psfarr,pixdim,spixdim,subtilex,subtiley,Nsubtilex, Nsubtiley,psfcenter,psfscale):
+    #------------------------------------------------------
+    ## emurating cuda pixlight_custom.h
+    testpsf=np.zeros(pixdim)
+    allpsf=np.zeros(pixdim*spixdim)
+    
+    for ix in range(0,pixdim[0]):
+        for iy in range(0,pixdim[1]):
+            jx=int(subtilex[ix,iy])
+            jy=int(subtiley[ix,iy])
+            subtile=psfarr[jx:jx+Nsubtilex,jy:jy+Nsubtiley]
+
+            if jx<0 or jx<0:
+                testpsf[ix,iy]=None
+            else:
+                testpsf[ix,iy]=psfarr[jx,jy]
+                for kx in range(0,spixdim[0]):
+                    for ky in range(0,spixdim[1]):
+                        lx=spixdim[0]*ix + kx
+                        ly=spixdim[1]*iy + ky
+
+                        pixpos=np.array([ix+kx/spixdim[0],iy+ky/spixdim[1]])
+                        psfpos=pix2psfpix(pixpos,theta_instant,psfcenter,psfscale)
+                        #bilinear interpolation
+                        x=psfpos[0]-jx #x-position in subtile
+                        y=psfpos[1]-jy #y-position in subtile
+                        x1=int(x)
+                        x2=x1+1
+                        y1=int(y)
+                        y2=y1+1                        
+
+                        Q11=subtile[x1,y1]
+                        Q12=subtile[x1,y2]
+                        Q21=subtile[x2,y1]
+                        Q22=subtile[x2,y2]
+                        
+                        F1=(x2-x)*Q11 + (x-x1)*Q21
+                        F2=(x2-x)*Q12 + (x-x1)*Q22
+                        
+                        allpsf[lx,ly]=(y2-y)*F1 + (y-y1)*F2
+                            
+    import matplotlib.pyplot as plt
+    #a=plt.imshow(testpsf)
+    a=plt.imshow(allpsf,interpolation=None,cmap="rainbow")
+    plt.colorbar(a)
+    plt.show()
+    sys.exit()
+    return allpsf
+    #------------------------------------------------------
+
+
+
+
+def simpix(theta, interpix, intrapix, sigma2=2.0, psfarr=None, psfcenter=None, psfscale=None):
     """
     Summary:
         This function makes a movie data 
@@ -166,12 +241,13 @@ def simpix(theta, interpix, intrapix, sigma2=2.0, psfarr=None, psfcenter=None, p
         The PSF is assumed to be a gaussian function.
 
     Args:
-        theta    (ndarray): Time-series data of the PSF position.
-        interpix (ndarray): Interpixel flat pattern (2-d array).
-        intrapix (ndarray): Intrapixel flat pattern (2-d array).
-        sigma2   (float)  : sigma^2 of gaussian PSF.
-        psf      (ndarray): psf array or None=the analytic donut.
-        psfside  (float)  : psf array size in the unit of (detector) pixel.
+        theta     (ndarray): Time-series data of the PSF position.
+        interpix  (ndarray): Interpixel flat pattern (2-d array).
+        intrapix  (ndarray): Intrapixel flat pattern (2-d array).
+        sigma2    (float)  : sigma^2 of gaussian PSF.
+        psfarr    (ndarray): psf array or None=the analytic donut.
+        psfcenter (ndarray): psf center in the unit of fp-cell
+        psfscale  (float)  : psf pixel-size in the unit of (detector) pix [pix/fp-cell]
     Returns:
         pixar (ndarray): Calculated movie data (3-d array).  
 
@@ -181,10 +257,10 @@ def simpix(theta, interpix, intrapix, sigma2=2.0, psfarr=None, psfcenter=None, p
     
     # set all
     dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay,\
-        pixdim, spixdim, ntime, sigma2, pixlc = set_simpix(theta, interpix, intrapix, sigma2)     # sigma2 is dummy
+        pixdim, spixdim, ntime, sigma2, pixlc = set_simpix(theta, interpix, intrapix, sigma2) # sigma2 is currently dummy
 
     #kernel
-    if psf is None:
+    if psfarr is None:
         source_module = genimg_donut(spixdim)
         pkernel = source_module.get_function("pixlight_analytic")
         pkernel(dev_pixlc, dev_interpix, dev_intrapix, np.int32(ntime),\
@@ -192,10 +268,17 @@ def simpix(theta, interpix, intrapix, sigma2=2.0, psfarr=None, psfcenter=None, p
                 block=(int(spixdim[0]), int(spixdim[1]),1),\
                 grid=(int(pixdim[0]),int(pixdim[1])))
     else:
-        dev_psfarr, dev_subtilex, dev_subtiley, Nsubtilex, Nsubtiley = set_custom(theta, psfarr, psfcenter, psfside, pixdim)
+        if psfscale is None or psfcenter is None:
+            import sys
+            sys.exit("Error: Provide both psfscale and psfcenter in simpix.")
+
+        dev_psfarr, dev_subtilex, dev_subtiley, subtilex, subtiley, Nsubtilex, Nsubtiley = set_custom(theta, psfarr, psfcenter, psfscale, pixdim, spixdim)
+        emurate_pixlight_custom(theta[:,0],psfarr,pixdim,spixdim,subtilex,subtiley,Nsubtilex, Nsubtiley,psfcenter,psfscale)
+
         source_module = genimg_custom(spixdim,Nsubtilex, Nsubtiley)
         pkernel = source_module.get_function("pixlight_custom")
-        pkernel(dev_pixlc, dev_interpix, dev_intrapix, dev_psfarr,\
+        pkernel(dev_pixlc, dev_interpix, dev_intrapix,\
+                dev_psfarr,dev_subtilex, dev_subtiley,\
                 np.int32(ntime),np.int32(Nsubtilex),np.int32(Nsubtiley),\
                 dev_thetax, dev_thetay,\
                 block=(int(spixdim[0]), int(spixdim[1]),1),\
@@ -203,6 +286,7 @@ def simpix(theta, interpix, intrapix, sigma2=2.0, psfarr=None, psfcenter=None, p
 
         
     cuda.memcpy_dtoh(pixlc,dev_pixlc)
+    sys.exit()
 
     pixar = pixlc.reshape((pixdim[0], pixdim[1], ntime))
 

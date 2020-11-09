@@ -4,7 +4,7 @@
   Make a pixel cube
 
   usage:
-    mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json -o pixcube [-m] [--persistence] [--psf] psf.fits 
+    mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json [--psf psf.fits] -o pixcube [-m] [--persistence] 
 
  options:
    --help         show this help message and exit
@@ -19,10 +19,10 @@
    -f nframe      number of the frames
    -d vd          drifting velocity [pixel scale/sec]
    --det det.json detector param json file
+   --psf psf.fits  psf array file (if not given, an analytic donuts model will be used.
    -o pixcube     output h5 of pixcube
    -m             output sequential png files for movie
    --persistence  considering persistence (not supported yet!).
-   --psf psf.fits  psf array file (if not given, an analytic donuts model will be used.
 """ 
 
 from docopt import docopt             # command line interface
@@ -58,16 +58,7 @@ if __name__ == '__main__':
     det_json = args['--det']     # Det-param json filename.
 
     t = np.array(range(0,nframe))*tframe # Total time to simulate (sec).
-
     det = mkDet(det_json, spixdim=spixdim) # Making a detector class object.
-
-    # Loading PSF
-    if args['--psf']:
-        phdul = fits.open(args['--psf'])
-        psfarr = phdul[0].data
-        psfheader = phdul[0].header
-    else:
-        psfarr = None
         
     # Loading light curve data.
     if args['-l']:
@@ -84,6 +75,22 @@ if __name__ == '__main__':
     pix_scale = float(args['-p']) # pixel scale (ex. arcsec/pix).
     N = int(args['-n'])           # Number of pixels on a side in the output image.
 
+    #-----------------------------------------#
+    # Loading PSF
+    if args['--psf']:
+        phdul = fits.open(args['--psf'])
+        psfarr = phdul[0].data
+        psfheader = phdul[0].header
+        psfcenter = np.array(np.shape(psfarr))/2.0 #psf center in the unit of fp-cell
+        
+        M=psfheader['M']    # Number of FFT cells per wavelength in um        
+        fp_cellsize_rad=(1/M)*1.e-3 #[rad/fp-cell]
+        fp_scale=fp_cellsize_rad*3600*180/np.pi #[arcsec/fp-cell]
+        psfscale = fp_scale/pix_scale #[pix/fp-cell]
+    else:
+        psfarr = None
+        psfcenter = None
+        psfscale = None
     #-----------------------------------------#
     # Loading ACE fits (should be separated in near future)
     xhdul = fits.open(args['-x'])
@@ -183,8 +190,8 @@ if __name__ == '__main__':
 
         # Perform the PSF integration
         # output: array of images taken at each frame.
-        pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr)
-        
+        pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)
+        sys.exit("Temporary stopping")
         if args["--persistence"]:
             #persistence
             Qij = read_trapped_charge(Qtrap, jx, jy, pixdim, figsw=0)
