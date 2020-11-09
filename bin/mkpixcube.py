@@ -187,11 +187,11 @@ if __name__ == '__main__':
         # PSF center for iframe
         theta = np.copy(theta_full[:,istart:iend])
         theta = theta+np.array([pixdim]).T/2
-
+        
         # Perform the PSF integration
         # output: array of images taken at each frame.
         pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)
-        sys.exit("Temporary stopping")
+        
         if args["--persistence"]:
             #persistence
             Qij = read_trapped_charge(Qtrap, jx, jy, pixdim, figsw=0)
@@ -203,18 +203,21 @@ if __name__ == '__main__':
             lc.append(lctmp)
 
         pixcube[:,:,iframe] = np.sum(pixar,axis=2) # Making one exposure frame and storing it in pixcube.
-            
+
+    ## renormalization of the unit
+    pixcube = pixcube/(psfscale*psfscale) # in the unit of e-/pix/sec
+    
     if args["-l"]:
         pixcube = pixcube*injlc
 
     te = time.time()   # End time.
     print(te-ts,"sec") # Show elapsed time.
-
     # Making output h5 data.
     with h5py.File(args["-o"], "w") as f:
         f.create_group("header")
         f.create_group("data")
         f.create_dataset("header/tframe", data=args["-s"])
+        f.create_dataset("header/unit", data="e-/pix/sec")
         f.create_dataset("data/pixcube", data=pixcube)
         f.create_dataset("data/interpix", data=interpix)
     
@@ -229,6 +232,8 @@ if __name__ == '__main__':
     # Saving each frame in pixcube.
     if args["-m"]:
         for iframe in range(0,nframe):
-            plt.imshow(pixcube[:,:,iframe])
+            fig=plt.figure()                    
+            a=plt.imshow(pixcube[:,:,iframe])
+            plt.colorbar(a)
             plt.savefig("pixcube"+str(iframe)+".png")
 
