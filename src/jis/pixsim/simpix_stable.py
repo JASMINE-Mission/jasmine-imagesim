@@ -242,6 +242,7 @@ def emurate_pixlight_custom(theta_instant,psfarr,pixdim,spixdim,subtilex,subtile
 
 
 def simpix(theta, interpix, intrapix, psfarr=None, psfcenter=None, psfscale=None):
+  
     """
     Summary:
         This function makes a movie data 
@@ -257,6 +258,8 @@ def simpix(theta, interpix, intrapix, psfarr=None, psfcenter=None, psfscale=None
         psfarr    (ndarray): psf array or None=the analytic donut.
         psfcenter (ndarray): psf center in the unit of fp-cell
         psfscale  (float)  : psf pixel-size in the unit of (detector) pix [pix/fp-cell]
+        readnoise (float)  : Readnoise in electrons (default 15e-).
+
     Returns:
         pixar (ndarray): Calculated movie data (3-d array).  
 
