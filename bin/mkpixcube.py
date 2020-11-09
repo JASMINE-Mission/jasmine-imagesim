@@ -4,7 +4,7 @@
   Make a pixel cube
 
   usage:
-    mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json -o pixcube [-m] [--persistence]
+    mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json [--psf psf.fits] -o pixcube [-m] [--persistence] 
 
  options:
    --help         show this help message and exit
@@ -19,9 +19,10 @@
    -f nframe      number of the frames
    -d vd          drifting velocity [pixel scale/sec]
    --det det.json detector param json file
+   --psf psf.fits  psf array file (if not given, an analytic donuts model will be used.
    -o pixcube     output h5 of pixcube
    -m             output sequential png files for movie
-   --persistence  considering persistence (still not supported!).
+   --persistence  considering persistence (not supported yet!).
 """ 
 
 from docopt import docopt             # command line interface
@@ -58,9 +59,8 @@ if __name__ == '__main__':
     det_json = args['--det']     # Det-param json filename.
 
     t = np.array(range(0,nframe))*tframe # Total time to simulate (sec).
-
     det = mkDet(det_json, spixdim=spixdim) # Making a detector class object.
-
+        
     # Loading light curve data.
     if args['-l']:
         lhdul = fits.open(args['-l'])
@@ -76,6 +76,22 @@ if __name__ == '__main__':
     pix_scale = float(args['-p']) # pixel scale (ex. arcsec/pix).
     N = int(args['-n'])           # Number of pixels on a side in the output image.
 
+    #-----------------------------------------#
+    # Loading PSF
+    if args['--psf']:
+        phdul = fits.open(args['--psf'])
+        psfarr = phdul[0].data
+        psfheader = phdul[0].header
+        psfcenter = (np.array(np.shape(psfarr))-1.0)*0.5 #psf center in the unit of fp-cell
+        
+        M=psfheader['M']    # Number of FFT cells per wavelength in um        
+        fp_cellsize_rad=(1/M)*1.e-3 #[rad/fp-cell]
+        fp_scale=fp_cellsize_rad*3600*180/np.pi #[arcsec/fp-cell]
+        psfscale = fp_scale/pix_scale #[pix/fp-cell]
+    else:
+        psfarr = None
+        psfcenter = None
+        psfscale = None
     #-----------------------------------------#
     # Loading ACE fits (should be separated in near future)
     xhdul = fits.open(args['-x'])
@@ -121,8 +137,7 @@ if __name__ == '__main__':
     Nts_per_frame = int(tframe*Nace/Tace) # Number of timesteps per a frame.
 
     Nmargin  = 10
-    Npixcube = int((np.max(theta_full)+Nmargin)*2)
-    ###### np.max(theta_full) is np.max(np.abs(theta_full)) (TK)??? #####
+    Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
 
     # Preparing flat (intrapix/interpix). ##########
@@ -170,9 +185,13 @@ if __name__ == '__main__':
             print("insufficient time length of ACE fits.")
             sys.exit(-1)            
 
+        # PSF center for iframe
         theta = np.copy(theta_full[:,istart:iend])
         theta = theta+np.array([pixdim]).T/2
-        pixar = sp.simpix(theta, interpix, intrapix) # array of images taken at each (ACE) timestep.
+        
+        # Perform the PSF integration
+        # output: array of images taken at each frame.
+        pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)
         
         if args["--persistence"]:
             #persistence
@@ -184,23 +203,23 @@ if __name__ == '__main__':
             lctmp = np.mean(np.sum(Ei))
             lc.append(lctmp)
 
-        integrated = np.sum(pixar, axis=2) # Integrating one exposure.
+
+        integrated = np.sum(pixar, axis=2)/(psfscale*psfscale)*tframe # Integrating one exposure in the unit of e-/pix/exposure
         integrated, seeds = addnoise(integrated, det.readnoise*np.sqrt(2.))
                             # Adding shotnoise and readnoise (x sqrt(2); CDS).
-
         pixcube[:,:,iframe] = integrated # Storing the integrated frame in pixcube.
-            
+
     if args["-l"]:
         pixcube = pixcube*injlc
 
     te = time.time()   # End time.
     print(te-ts,"sec") # Show elapsed time.
-
     # Making output h5 data.
     with h5py.File(args["-o"], "w") as f:
         f.create_group("header")
         f.create_group("data")
         f.create_dataset("header/tframe", data=args["-s"])
+        f.create_dataset("header/unit", data="e-/pix/sec")
         f.create_dataset("data/pixcube", data=pixcube)
         f.create_dataset("data/interpix", data=interpix)
     
@@ -215,6 +234,8 @@ if __name__ == '__main__':
     # Saving each frame in pixcube.
     if args["-m"]:
         for iframe in range(0,nframe):
-            plt.imshow(pixcube[:,:,iframe])
+            fig=plt.figure()                    
+            a=plt.imshow(pixcube[:,:,iframe])
+            plt.colorbar(a)
             plt.savefig("pixcube"+str(iframe)+".png")
 

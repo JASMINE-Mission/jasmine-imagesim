@@ -34,7 +34,7 @@ __device__ float BesselJ1(float x){
 }
 
 
-__device__ float psf(float pxr, float pyr, float sigma2){
+__device__ float psf(float pxr, float pyr){
   float r=sqrt(pxr*pxr+pyr*pyr);
   double A=0.0;
   if(r < 10.0&&r>0){   
