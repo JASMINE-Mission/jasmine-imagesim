@@ -49,8 +49,7 @@ def integrate(pixar, jx, jy, texp, dt, det):
          det.tsmpl * (npix_read_per_row * y_ch + det.npix_pre + x_ch) 
 
     # Second sampling time since the end of reset.
-    t2 = t1 + texp + det.t_overhead +\
-         det.tsmpl * (npix_read_per_row * y_ch + det.npix_pre + x_ch)
+    t2 = t1 + texp
 
     # Weight array for the first sampling.
     tmp = (time-t1)/det.tsmpl
