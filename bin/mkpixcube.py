@@ -200,8 +200,10 @@ if __name__ == '__main__':
         
         # Perform the PSF integration
         # output: array of images taken at each frame.
-        pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)/(psfscale*psfscale)*dtace
-        # each frame in pixar is in e-/pix/dtace.
+        # PSF is given in e/pix/sec, then, simpix/(psfscale*psfscale) is in e/pix/sec/Nts_per_frame.
+        pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)\
+                /(psfscale*psfscale)*dtace/(1./Nts_per_frame)
+        # pixar is in e/pix/dtace.
         
         if args["--persistence"]:
             #persistence
