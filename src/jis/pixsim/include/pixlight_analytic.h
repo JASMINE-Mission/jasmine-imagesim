@@ -1,4 +1,4 @@
-__global__ void pixlight(float *pixlc, float *interpix, float *intrapix, int ntime, float* thetaX, float* thetaY, float sigma2){
+__global__ void pixlight_analytic(float *pixlc, float *interpix, float *intrapix, int ntime, float* thetaX, float* thetaY){
   /* subpixel (thread) positinos */
   float spy = float(threadIdx.x)/float(blockDim.x);
   float spx = float(threadIdx.y)/float(blockDim.y); 
@@ -21,14 +21,12 @@ __global__ void pixlight(float *pixlc, float *interpix, float *intrapix, int nti
   float pxr=px+spx-thetaY[0];
   float pyr=py+spy-thetaX[0];
 
-  /* PSF Gaussian sigma2 */
-  /* float sigma2=2.0; */
   int k=0;
   for (int i=0; i<ntime; i++){
     pxr=px+spx-thetaY[i];
     pyr=py+spy-thetaX[i];
     
-    cache[thInd]=sensitivity*psf(pxr,pyr,sigma2);
+    cache[thInd]=sensitivity*psf(pxr,pyr);
 
     /*cache[thInd]=sensitivity;*/
     __syncthreads();
