@@ -202,6 +202,10 @@ if __name__ == '__main__':
         # output: array of images taken at each frame.
         pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)/(psfscale*psfscale)*dtace
         # each frame in pixar is in e-/pix/dtace.
+
+        # Adding dark current (including stray light).
+        dark = np.ones(shape=pixar.shape) * det.idark * dtace
+        pixar = pixar + dark
         
         if args["--persistence"]:
             #persistence
