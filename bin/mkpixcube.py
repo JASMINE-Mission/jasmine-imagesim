@@ -115,7 +115,7 @@ if __name__ == '__main__':
 
     Tace = xhead['ACE-TOTT'] # Total time of the ACE data.
     Nace = len(xdata)
-    dtace = Tace/(Nace-1.)
+    dtace = Tace/Nace # not Tace/(Nace-1)
 
     #-----------------------------------------#
 
