@@ -32,6 +32,7 @@ from jis.pixsim import simpix_stable as sp
 from jis.pixsim import gentraj
 from jis.pixsim import makeflat as mf
 from jis.pixsim.addnoise import addnoise
+from jis.pixsim.integrate import integrate
 from jis.jisplot import plotace 
 from jis.photonsim.extract_json import mkDet
 import tqdm
@@ -114,6 +115,7 @@ if __name__ == '__main__':
 
     Tace = xhead['ACE-TOTT'] # Total time of the ACE data.
     Nace = len(xdata)
+    dtace = Tace/(Nace-1.)
 
     #-----------------------------------------#
 
@@ -134,7 +136,14 @@ if __name__ == '__main__':
     plotace.trajectory(theta_full[0,:], theta_full[1,:])
     #    sys.exit()
 
-    Nts_per_frame = int(tframe*Nace/Tace) # Number of timesteps per a frame.
+    tscan = det.t_overhead +\
+            det.tsmpl*(det.npix_pre+det.ncol_ch+det.npix_post)*det.nrow_ch
+    Nts_per_frame = int((tframe+tscan)/dtace+0.5) # Number of timesteps per a frame.
+
+    print("Current settings: dt(ace)={:.1e}; tscan={:.1e}".format(dtace, tscan))
+    if dtace>tscan:
+        print("WARNING: ACE timestep should be smaller than the frame-scanning time.")
+
 
     Nmargin  = 10
     Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
@@ -191,7 +200,10 @@ if __name__ == '__main__':
         
         # Perform the PSF integration
         # output: array of images taken at each frame.
-        pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)
+        # When the PSF is given in e/fp-cell/sec, simpix/(psfscale*psfscale) is in e/pix/(1./Nts_per_frame sec).
+        pixar = sp.simpix(theta, interpix, intrapix, psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)\
+                /(psfscale*psfscale)*dtace/(1./Nts_per_frame)
+        # pixar is in e/pix/dtace.
         
         if args["--persistence"]:
             #persistence
@@ -203,10 +215,10 @@ if __name__ == '__main__':
             lctmp = np.mean(np.sum(Ei))
             lc.append(lctmp)
 
+        # Integrating, adding noise, and quantization
+        integrated = integrate(pixar, jx, jy, tframe, dtace, det)
+        # integrated is in e-/pix/exposure.
 
-        integrated = np.sum(pixar, axis=2)/(psfscale*psfscale)*tframe # Integrating one exposure in the unit of e-/pix/exposure
-        integrated, seeds = addnoise(integrated, det.readnoise*np.sqrt(2.))
-                            # Adding shotnoise and readnoise (x sqrt(2); CDS).
         pixcube[:,:,iframe] = integrated # Storing the integrated frame in pixcube.
 
     if args["-l"]:
