@@ -4,10 +4,11 @@
   Make an image
 
   usage:
-    mkimage.py [-h|--help] --starplate star_plate.csv --det det.json 
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json 
 
  options:
    --help                     show this help message and exit
+   --pd paramdir              name of the directory containing parameter files.
    --starplate star_plate.csv csv file containing star info (plate_id, star_id, xpix, ypix, l, b)
    --det det.json             json file containing detector related parameters.
 
@@ -24,12 +25,15 @@ if __name__ == '__main__':
     args = docopt(__doc__)
 
     # Get parameters from command line
-    filename_starplate = args['--starplate']
-    filename_detjson   = args['--det']
+    dirname_params = ''
+    if args['--pd']:
+        dirname_params = args['--pd']
+    filename_starplate = dirname_params + args['--starplate']
+    filename_detjson   = dirname_params + args['--det']
 
     # Loading parameters.
     table_starplate = asc.read(filename_starplate)
-    detector = mkDet(filename_detjson)
+    detector        = mkDet(filename_detjson)
 
     # Selecting the data for the first plate.
     pos = np.where(table_starplate['plate_id']==0)
