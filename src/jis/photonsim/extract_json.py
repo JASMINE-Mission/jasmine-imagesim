@@ -308,3 +308,24 @@ def extsrc(src):
     alp = src['Hwband']['val']
 
     return Rv, JH, alp
+
+
+def mkControlParams(json_filename):
+
+    class control_params:
+        def __init__(self, wfe=None):
+            self.wfe_control = wfe
+
+
+    with open(json_filename, "r") as fp:
+        js = json.load(fp)
+
+        wfe = {}
+        for item in ['zernike_nmax', 'zernike_even', 'zernike_odd', 'reference_wl']:
+            wfe[item] = js['WFEcontrol'][item]['val']
+    fp.close()
+
+    control_params = control_params(wfe=wfe)
+
+    return control_params
+
