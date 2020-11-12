@@ -18,10 +18,10 @@ def Radial(n,m,rho):
 
     Args:
         n, m (int)  : Indices of the Zernike term (n>=0; m<=n).
-        rho  (float): Distance from the center.
+        rho  (float/ndarray): Distance from the center.
 
     Returns:
-        r (float): R^m_n(rho) of the Zernike term.
+        r (float/ndarray): R^m_n(rho) of the Zernike term.
 
     Example:
         import numpy as np
@@ -43,7 +43,7 @@ def Radial(n,m,rho):
             a = math.factorial(int(n-k))
             b = math.factorial(int( (n+m)/2-k ))
             c = math.factorial(int( (n-m)/2-k ))
-            r = r + s*a/math.factorial(k)/b/c*math.pow(rho,n-2*k)
+            r = r + s*a/math.factorial(k)/b/c*rho**(n-2*k)
             s = -s 
 
     return r
@@ -56,11 +56,11 @@ def Zernike(n,m,rho,theta):
 
     Args:
         n, m  (int)  : Indices of the Zernike function.
-        rho   (float): Distance from the center.
-        theta (float): Azimuthal angle (rad).   
+        rho   (float/ndarray): Distance from the center.
+        theta (float/ndarray): Azimuthal angle (rad).   
 
     Returns:
-        z (float): Zernike (m, n) value at (rho, theta).
+        z (float/ndarray): Zernike (m, n) value at (rho, theta).
 
     Example:
         from jis.photonsim.zernike import Zernike 
@@ -74,9 +74,9 @@ def Zernike(n,m,rho,theta):
         sys.exit()
 
     if m>=0 :
-        z = Radial(n,mm,rho) * math.cos( m*theta )
+        z = Radial(n,mm,rho) * np.cos( m*theta )
     else :
-        z = Radial(n,mm,rho) * math.sin( mm*theta )
+        z = Radial(n,mm,rho) * np.sin( mm*theta )
 
     return z
 

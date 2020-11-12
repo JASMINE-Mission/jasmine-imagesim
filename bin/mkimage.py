@@ -96,7 +96,6 @@ if __name__ == '__main__':
         json.dump(wfe_amplitudes, f, indent=2)
 
     # Making wfe map...
-    print("Making wfe map...")
     wfe = calc_wfe(telescope.epd, filename_wfejson)
 
 
