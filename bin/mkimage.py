@@ -47,6 +47,9 @@ if __name__ == '__main__':
 
     # Setting output filenames. ####################################
     filename_interpix = dirname_output + "/" + "interpix.fits"
+    filename_intrapix = dirname_output + "/" + "intrapix.fits"
+
+    filenames_output = [filename_interpix, filename_intrapix]
 
 
     # Checking the output directory. ###############################
@@ -54,7 +57,7 @@ if __name__ == '__main__':
         os.makedirs(dirname_output)
     else:
         if overwrite is not True:
-            for filename in [filename_interpix]:
+            for filename in filenames_output:
                 if os.path.exists(filename):
                     print("\"{}\" exists.".format(filename))
                     print("Please set --overwrite option to overwrite it.")
@@ -73,3 +76,4 @@ if __name__ == '__main__':
 
     # Saving the outputs. ##########################################.
     pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
+    pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
