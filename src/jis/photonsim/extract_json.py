@@ -329,3 +329,22 @@ def mkControlParams(json_filename):
 
     return control_params
 
+
+def mkTel(json_filename):
+
+    class telescope:
+        def __init__(self, epd=None):
+            self.epd = epd
+
+
+    with open(json_filename, "r") as fp:
+        js = json.load(fp)
+
+        epd = js['EPD']['val']
+    fp.close()
+
+    telescope = telescope(epd=epd)
+
+    return telescope
+
+
