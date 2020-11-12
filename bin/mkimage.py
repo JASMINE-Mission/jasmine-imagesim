@@ -4,13 +4,14 @@
   Make an image
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json [--od outdir] [--overwrite] 
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json --ctl ctl.json [--od outdir] [--overwrite] 
 
  options:
    --help                     show this help message and exit.
    --pd paramdir              name of the directory containing parameter files.
    --starplate star_plate.csv csv file containing star info (plate_id, star_id, xpix, ypix, l, b)
    --det det.json             json file containing detector related parameters.
+   --ctl ctl.json             json file containing control parameters.
    --od outdir                name of the directory to put the outputs.
    --overwrite                if set, overwrite option activated.
 
@@ -18,10 +19,12 @@
 
 from docopt import docopt
 import os
+import json
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
-from jis.photonsim.extract_json import mkDet
+from jis.photonsim.extract_json import mkDet, mkControlParams
+from jis.photonsim.wfe import wfe_model_z
 
 
 # Command line interface
@@ -35,6 +38,7 @@ if __name__ == '__main__':
 
     filename_starplate = dirname_params + "/" + args['--starplate']
     filename_detjson   = dirname_params + "/" + args['--det']
+    filename_ctljson   = dirname_params + "/" + args['--ctl']
 
     dirname_output = '.'
     if args['--od']:
@@ -48,8 +52,9 @@ if __name__ == '__main__':
     # Setting output filenames. ####################################
     filename_interpix = dirname_output + "/" + "interpix.fits"
     filename_intrapix = dirname_output + "/" + "intrapix.fits"
+    filename_wfejson  = dirname_output + "/" + "wfe.json"
 
-    filenames_output = [filename_interpix, filename_intrapix]
+    filenames_output = [filename_interpix, filename_intrapix, filename_wfejson]
 
 
     # Checking the output directory. ###############################
@@ -67,6 +72,7 @@ if __name__ == '__main__':
     # Loading parameters. ##########################################
     table_starplate = asc.read(filename_starplate)
     detector        = mkDet(filename_detjson)
+    control_params  = mkControlParams(filename_ctljson)
 
 
     # Selecting the data for the first plate. ######################
@@ -74,6 +80,16 @@ if __name__ == '__main__':
     table_starplate = table_starplate[pos]
 
 
+    # Making random wfe. ###########################################
+    wp  = control_params.wfe_control
+    wfe_amplitudes = wfe_model_z(np.random, wp['zernike_nmax'], wp['reference_wl'],\
+                                 wp['zernike_odd'], wp['zernike_even'])
+
+
     # Saving the outputs. ##########################################.
     pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
     pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
+
+    with open(filename_wfejson, mode='w') as f:
+        json.dump(wfe_amplitudes, f, indent=2)
+ 
