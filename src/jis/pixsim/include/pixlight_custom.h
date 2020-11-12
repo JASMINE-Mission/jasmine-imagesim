@@ -1,9 +1,8 @@
 /* 
 
-cache
-0 -- blockDim.x*blockDim.y - 1: subpixel value
+cache usage:
+0 -- NINTRA(blockDim.x*blockDim.y) - 1: subpixel value
 blockDim.x*blockDim -- blockDim.x*blockDim + nsubtilex*nsubtiley - 1: PSF subtile
-
 
 */
 
@@ -12,8 +11,8 @@ blockDim.x*blockDim -- blockDim.x*blockDim + nsubtilex*nsubtiley - 1: PSF subtil
 __global__ void pixlight_custom(float *pixlc, float *interpix, float *intrapix, float *psfarr, int *subtilex, int *subtiley, int ntime, float* thetaX, float* thetaY){
 
   /* number of threads */
-  unsigned int nthread = blockDim.x*blockDim.y;
-  float rnthread=float(nthread);
+  /*  unsigned int nthread = blockDim.x*blockDim.y;*/
+  float rnthread=float(NINTRA);
 
   /* subpixel (thread) positions */
   float spy = float(threadIdx.x)/float(blockDim.x);
@@ -43,27 +42,20 @@ __global__ void pixlight_custom(float *pixlc, float *interpix, float *intrapix, 
   /* checking subtile indices */
   int jy = subtilex[grInd];
   int jx = subtiley[grInd];
-  if(jx < 0){
-    return;
-  }
-  if(jy < 0){
-    return;
-  }
 
   /* thread cooperation read of subtile */
   unsigned int rat = int(NNSUBTILE/rnthread);
   int ipickx, ipicky, ipick;
-  int i;
-  
+  int i;  
   /* subtile=psfarr[jx:jx+Nsubtilex,jy:jy+Nsubtiley] */
   for (unsigned int m=0; m<rat+1; m++){
-    i = m*nthread+thInd;
+    i = m*NINTRA+thInd;
     ipicky = jy+i%NSUBTILEY;
     ipickx = jx+int(float(i)/float(NSUBTILEY));
     ipick =  ipicky + ipickx*PSFDIMY;
     
     if (i < NNSUBTILE){ 
-      cache[i+NINTRA]=psfarr[ipick];
+      cache[i+NINTRA]=psfarr[ipick]; 
     }
   }
   __syncthreads();
@@ -85,31 +77,45 @@ __global__ void pixlight_custom(float *pixlc, float *interpix, float *intrapix, 
     psfposy=PSFCENTERY + pyr/PSFSCALE;
     x = psfposx - float(jx);
     y = psfposy - float(jy);
+
     x1 = int(x);
     x2 = x1 + 1;
     y1 = int(y);
     y2 = y1 + 1;
 
-    icc=int(y1+x1*NSUBTILEY+NINTRA);
+    /* Use shared memory */
+    icc=(y1+x1*NSUBTILEY+NINTRA);
     Q11=cache[icc];
-
-    icc=int(y2+x1*NSUBTILEY+NINTRA);
+    icc=(y2+x1*NSUBTILEY+NINTRA);
     Q12=cache[icc];
-
-    icc=int(y1+x2*NSUBTILEY+NINTRA);
+    icc=(y1+x2*NSUBTILEY+NINTRA);
     Q21=cache[icc];
-
-    icc=int(y2+x2*NSUBTILEY+NINTRA);
+    icc=(y2+x2*NSUBTILEY+NINTRA);
     Q22=cache[icc];          
+
+    /* Use global memory */
+    /*       
+    Q11=psfarr[int(psfposy)+int(psfposx)*PSFDIMY];
+    Q12=psfarr[int(psfposy+1)+int(psfposx)*PSFDIMY];
+    Q21=psfarr[int(psfposy)+int(psfposx+1)*PSFDIMY];
+    Q22=psfarr[int(psfposy+1)+int(psfposx+1)*PSFDIMY];
+    */
     
     F1=(float(x2)-x)*Q11 + (x-float(x1))*Q21;
     F2=(float(x2)-x)*Q12 + (x-float(x1))*Q22;
     bilin=(float(y2)-y)*F1 + (y-float(y1))*F2;
-    
+
     cache[thInd]=sensitivity*bilin;
 
-    __syncthreads();
+    /* reduce the tail effect (read Issue #28)*/
+    /*
+    if(pxr*pxr+pyr*pyr>100.0){
+      cache[thInd]=0.0;
+    }
+    */
     
+    __syncthreads();
+
     /* thread adding */
     k = blockDim.x*blockDim.y/2;
     while (k !=0){
