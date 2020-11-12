@@ -4,13 +4,14 @@
   Make an image
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json --ctl ctl.json [--od outdir] [--overwrite] 
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json --tel tel.json --ctl ctl.json [--od outdir] [--overwrite] 
 
  options:
    --help                     show this help message and exit.
    --pd paramdir              name of the directory containing parameter files.
    --starplate star_plate.csv csv file containing star info (plate_id, star_id, xpix, ypix, l, b)
    --det det.json             json file containing detector related parameters.
+   --tel tel.json             json file containing telescope related parameters.
    --ctl ctl.json             json file containing control parameters.
    --od outdir                name of the directory to put the outputs.
    --overwrite                if set, overwrite option activated.
@@ -23,8 +24,9 @@ import json
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
-from jis.photonsim.extract_json import mkDet, mkControlParams
-from jis.photonsim.wfe import wfe_model_z
+from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel
+from jis.photonsim.wfe import wfe_model_z, calc_wfe
+
 
 
 # Command line interface
@@ -38,6 +40,7 @@ if __name__ == '__main__':
 
     filename_starplate = dirname_params + "/" + args['--starplate']
     filename_detjson   = dirname_params + "/" + args['--det']
+    filename_teljson   = dirname_params + "/" + args['--tel']
     filename_ctljson   = dirname_params + "/" + args['--ctl']
 
     dirname_output = '.'
@@ -53,8 +56,10 @@ if __name__ == '__main__':
     filename_interpix = dirname_output + "/" + "interpix.fits"
     filename_intrapix = dirname_output + "/" + "intrapix.fits"
     filename_wfejson  = dirname_output + "/" + "wfe.json"
+    filename_wfe      = dirname_output + "/" + "wfe.fits"
 
-    filenames_output = [filename_interpix, filename_intrapix, filename_wfejson]
+    filenames_output = [filename_interpix, filename_intrapix,\
+                        filename_wfejson, filename_wfe]
 
 
     # Checking the output directory. ###############################
@@ -73,6 +78,7 @@ if __name__ == '__main__':
     table_starplate = asc.read(filename_starplate)
     detector        = mkDet(filename_detjson)
     control_params  = mkControlParams(filename_ctljson)
+    telescope       = mkTel(filename_teljson)
 
 
     # Selecting the data for the first plate. ######################
@@ -85,11 +91,21 @@ if __name__ == '__main__':
     wfe_amplitudes = wfe_model_z(np.random, wp['zernike_nmax'], wp['reference_wl'],\
                                  wp['zernike_odd'], wp['zernike_even'])
 
+    # Saving amplitude data...
+    with open(filename_wfejson, mode='w') as f:
+        json.dump(wfe_amplitudes, f, indent=2)
+
+    # Making wfe map...
+    print("Making wfe map...")
+    wfe = calc_wfe(telescope.epd, filename_wfejson)
+
 
     # Saving the outputs. ##########################################.
     pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
     pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
-
-    with open(filename_wfejson, mode='w') as f:
-        json.dump(wfe_amplitudes, f, indent=2)
- 
+    
+    hdu = pf.PrimaryHDU(wfe)
+    hdu.header["WFE-FILE"] = filename_wfejson
+    hdu.header["WFE-EPD"]  = telescope.epd
+    hdulist = pf.HDUList([hdu])
+    hdulist.writeto(filename_wfe, overwrite=overwrite)
