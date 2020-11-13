@@ -334,9 +334,14 @@ def mkControlParams(json_filename):
 def mkTel(json_filename):
 
     class telescope:
-        def __init__(self, epd=None, aperture=aperture):
+        def __init__(self, epd=None, aperture=None,\
+                     cobs=None, spider=None, total_area=None):
             self.epd = epd
             self.aperture = aperture
+            self.cobs = cobs                            # Obscuration ratio (Robs*2/EPD).
+            self.spider_type = spider['type']
+            self.spider_thickness = spider['thickness'] # in mm
+            self.total_area = total_area                # in mm^2
 
 
     with open(json_filename, "r") as fp:
@@ -345,21 +350,21 @@ def mkTel(json_filename):
         epd  = js['EPD']['val']     # Exit Pupil Diameter in mm.
         cobs = js['Cobs']['val']    # Obscuration ratio.
         r_obscuration = epd/2.*cobs # Obscuration radius in mm.
-        spider_type = js['Stype']['val']
-        spider_thickness = float(js['Stype']['thick']) # Spider thickness in mm.
+        spider_params = {'type':js['Stype']['val'], 'thickness':js['Stype']['thick']}
     fp.close()
 
     ap_data = None
     total_area = None
-    if spider_type == 'tripod':
+    if spider_params['type'] == 'tripod':
         n_apcell = int(epd+4)   # Assuming ap-cell scale to be 1mm/ap-cell.
                                 # Set the aperture pattern size to be 2mm larger than D.
         if n_apcell%2 == 1: # n_apcell should be even
             n_apcell = n_apcell + 1
 
-        ap_data, total_area = aperture.calc_aperture(n_apcell, epd, r_obscuration, spider_thickness)
+        ap_data, total_area = aperture.calc_aperture(n_apcell, epd, r_obscuration,\
+                                                     spider_params['thickness'])
 
-    telescope = telescope(epd=epd, aperture=ap_data)
+    telescope = telescope(epd=epd, aperture=ap_data, cobs=cobs, spider=spider_params, total_area=total_area)
 
     return telescope
 
