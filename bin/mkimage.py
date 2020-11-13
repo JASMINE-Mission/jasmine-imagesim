@@ -57,9 +57,10 @@ if __name__ == '__main__':
     filename_intrapix = dirname_output + "/" + "intrapix.fits"
     filename_wfejson  = dirname_output + "/" + "wfe.json"
     filename_wfe      = dirname_output + "/" + "wfe.fits"
+    filename_aperture = dirname_output + "/" + "aperture.fits"
 
     filenames_output = [filename_interpix, filename_intrapix,\
-                        filename_wfejson, filename_wfe]
+                        filename_wfejson, filename_wfe, filename_aperture]
 
 
     # Checking the output directory. ###############################
@@ -108,3 +109,5 @@ if __name__ == '__main__':
     hdu.header["WFE-EPD"]  = telescope.epd
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filename_wfe, overwrite=overwrite)
+
+    pf.writeto(filename_aperture, telescope.aperture, overwrite=overwrite)
