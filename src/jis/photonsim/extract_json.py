@@ -350,13 +350,14 @@ def mkTel(json_filename):
     fp.close()
 
     ap_data = None
+    total_area = None
     if spider_type == 'tripod':
         n_apcell = int(epd+4)   # Assuming ap-cell scale to be 1mm/ap-cell.
                                 # Set the aperture pattern size to be 2mm larger than D.
         if n_apcell%2 == 1: # n_apcell should be even
             n_apcell = n_apcell + 1
 
-        ap_data = aperture.calc_aperture(n_apcell, epd, r_obscuration, spider_thickness)
+        ap_data, total_area = aperture.calc_aperture(n_apcell, epd, r_obscuration, spider_thickness)
 
     telescope = telescope(epd=epd, aperture=ap_data)
 
