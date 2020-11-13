@@ -335,13 +335,15 @@ def mkTel(json_filename):
 
     class telescope:
         def __init__(self, epd=None, aperture=None,\
-                     cobs=None, spider=None, total_area=None):
+                     cobs=None, spider=None, total_area=None,\
+                     opt_efficiency=None):
             self.epd = epd
             self.aperture = aperture
             self.cobs = cobs                            # Obscuration ratio (Robs*2/EPD).
             self.spider_type = spider['type']
             self.spider_thickness = spider['thickness'] # in mm
             self.total_area = total_area                # in mm^2
+            self.opt_efficiency = opt_efficiency
 
 
     with open(json_filename, "r") as fp:
@@ -351,7 +353,10 @@ def mkTel(json_filename):
         cobs = js['Cobs']['val']    # Obscuration ratio.
         r_obscuration = epd/2.*cobs # Obscuration radius in mm.
         spider_params = {'type':js['Stype']['val'], 'thickness':js['Stype']['thick']}
+        n_opteff, wl_opteff, opteff, wl_opteff_short, wl_opteff_long = exttel(js)
     fp.close()
+
+    opt_efficiency = {'wl': np.array(wl_opteff), 'val': np.array(opteff)}
 
     ap_data = None
     total_area = None
@@ -364,7 +369,9 @@ def mkTel(json_filename):
         ap_data, total_area = aperture.calc_aperture(n_apcell, epd, r_obscuration,\
                                                      spider_params['thickness'])
 
-    telescope = telescope(epd=epd, aperture=ap_data, cobs=cobs, spider=spider_params, total_area=total_area)
+    telescope = telescope(epd=epd, aperture=ap_data, cobs=cobs,\
+                          spider=spider_params, total_area=total_area,\
+                          opt_efficiency=opt_efficiency)
 
     return telescope
 
