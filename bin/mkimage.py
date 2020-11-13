@@ -26,7 +26,13 @@ import astropy.io.ascii as asc
 import astropy.io.fits as pf
 from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel
 from jis.photonsim.wfe import wfe_model_z, calc_wfe
+from jis.photonsim.response import calc_response
 
+
+# Constants ########################################################
+Rv = 3.1
+JH = 2.0
+alp = 0.75
 
 
 # Command line interface
@@ -100,7 +106,19 @@ if __name__ == '__main__':
     wfe = calc_wfe(telescope.epd, filename_wfejson)
 
 
-    # Saving the outputs. ##########################################.
+    # Making PSFs ##################################################
+    opteff = telescope.opt_efficiency 
+    qe = detector.qe
+    total_e_rate, wl_e_rate, e_rate =\
+        calc_response(Rv, JH, alp,\
+                      len(opteff['wl']), opteff['wl'], opteff['val'],\
+                      np.min(opteff['wl']), np.max(opteff['wl']),\
+                      qe['wl'], qe['val'])
+    # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
+    # these values are for an object with an apparent Hw mag of 0 mag.
+
+
+    # Saving the outputs. ##########################################
     pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
     pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
     
