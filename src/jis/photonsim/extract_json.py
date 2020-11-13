@@ -104,7 +104,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
     class detector:
         def __init__(self, npix=None, idark=None, intrapix=None, interpix=None,\
                      tau=None, rho=None, readnoise=None, fullwell=None,\
-                     gain=None, readparams=None):
+                     gain=None, readparams=None, qe=None):
             """
             Summary:
                 This is a class to describe the detector properties.
@@ -127,6 +127,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
                 npix_pre   (int)  : Npix before reading each row.
                 npix_post  (int)  : Npix after reading each row.
                 t_overhead (float): Overhead time between reset and the 1st read in sec.
+                qe         (dict) : Quantum efficiency (wl: wavelength in um; val: qe values).
             """
 
             self.npix  = npix
@@ -137,6 +138,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
             self.readnoise = readnoise
             self.fullwell = fullwell
             self.gain = gain
+            self.qe = qe
             if readparams is not None:
                 self.fsmpl      = readparams['fsmpl']['val']
                 self.tsmpl      = 1./self.fsmpl
@@ -167,7 +169,11 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
         readparams = js['readparams']
         fullwell   = js['Fullwell']['val']
         gain       = js['gain']['val']
+
+        wl_qe, val_qe = extQE(js)
     fp.close()
+
+    qe = {'wl': np.array(wl_qe), 'val': np.array(val_qe)}
 
     interpix = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma)
     intrapix = rf.read_intrapix(intrax, intray, spixdim, intradir)
@@ -176,7 +182,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
                         interpix=interpix, intrapix=intrapix, \
                         tau=tau, rho=rho, readnoise=readnoise,\
                         fullwell=fullwell, gain=gain,\
-                        readparams=readparams)
+                        readparams=readparams, qe=qe)
 
     return detector
 
