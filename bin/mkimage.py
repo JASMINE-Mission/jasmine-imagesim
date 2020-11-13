@@ -110,4 +110,12 @@ if __name__ == '__main__':
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filename_wfe, overwrite=overwrite)
 
-    pf.writeto(filename_aperture, telescope.aperture, overwrite=overwrite)
+    hdu = pf.PrimaryHDU(telescope.aperture)
+    hdu.header["APTFILE"] = filename_teljson
+    hdu.header["EPD"]     = telescope.epd
+    hdu.header["COBS"]    = telescope.cobs
+    hdu.header["STYPE"]   = telescope.spider_type
+    hdu.header["STEL"]    = telescope.total_area * 1.e-6 # total area in m^2
+    hdu.list = pf.HDUList([hdu])
+    hdulist.writeto(filename_aperture, overwrite=overwrite)
+
