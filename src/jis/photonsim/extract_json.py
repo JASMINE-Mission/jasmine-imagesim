@@ -320,9 +320,11 @@ def extsrc(src):
 def mkControlParams(json_filename):
 
     class control_params:
-        def __init__(self, wfe=None, M=None):
+        def __init__(self, wfe=None, M=None, ace=None):
             self.wfe_control = wfe
             self.M_parameter = M
+            self.ace_control = ace
+
 
     with open(json_filename, "r") as fp:
         js = json.load(fp)
@@ -330,10 +332,17 @@ def mkControlParams(json_filename):
         wfe = {}
         for item in ['zernike_nmax', 'zernike_even', 'zernike_odd', 'reference_wl']:
             wfe[item] = js['WFEcontrol'][item]['val']
+
         M = js['M']['val']
+
+        ace = {}
+        for item in ['dtace', 'tace']:
+            ace[item] = js['ACEcontrol'][item]['val'] 
+        ace['nace'] = int(ace['tace']/ace['dtace'])+1
+        ace['tace'] = ace['dtace']*ace['nace']
     fp.close()
 
-    control_params = control_params(wfe=wfe, M=M)
+    control_params = control_params(wfe=wfe, M=M, ace=ace)
 
     return control_params
 
