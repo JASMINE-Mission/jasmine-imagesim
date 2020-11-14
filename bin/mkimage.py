@@ -27,6 +27,7 @@ import astropy.io.fits as pf
 from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel
 from jis.photonsim.wfe import wfe_model_z, calc_wfe
 from jis.photonsim.response import calc_response
+from jis.photonsim.psf import calc_psf
 
 
 # Constants ########################################################
@@ -116,6 +117,11 @@ if __name__ == '__main__':
                       qe['wl'], qe['val'])
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
+
+    psf = calc_psf(wfe, wfe.shape[0],\
+                   len(wl_e_rate), wl_e_rate, e_rate, total_e_rate,\
+                   telescope.total_area, telescope.aperture,\
+                   control_params.M_parameter, telescope.aperture.shape[0])
 
 
     # Saving the outputs. ##########################################
