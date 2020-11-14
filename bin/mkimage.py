@@ -34,6 +34,7 @@ from jis.photonsim.psf import calc_psf
 Rv = 3.1
 JH = 2.0
 alp = 0.75
+spixdim  = [32, 32] # subpixel dimension in a pixel (setting for intrapix pattern).
 
 
 # Command line interface
@@ -86,7 +87,7 @@ if __name__ == '__main__':
 
     # Loading parameters. ##########################################
     table_starplate = asc.read(filename_starplate)
-    detector        = mkDet(filename_detjson)
+    detector        = mkDet(filename_detjson, spixdim=spixdim)
     control_params  = mkControlParams(filename_ctljson)
     telescope       = mkTel(filename_teljson)
 
