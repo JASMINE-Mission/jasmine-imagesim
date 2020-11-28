@@ -5,7 +5,6 @@ from pycuda.compiler import SourceModule
 import time
 import numpy as np
 def genimg_donut(spixdim):
-    print("Analytic donut PSF model used.")
     cudacode=\
     "    #define NMXCACHE "+str(spixdim[0]*spixdim[1])+"\n"\
     +"""
@@ -22,7 +21,6 @@ def genimg_donut(spixdim):
     return source_module
 
 def genimg_custom(psfdim, spixdim, psfcenter, psfscale, Nsubtilex, Nsubtiley):        
-    print("Custom PSF model used.")
     cudacode=\
     "    #define NMXCACHE "+str(spixdim[0]*spixdim[1]+Nsubtilex*Nsubtiley)+"\n"\
     +"    #define NNSUBTILE "+str(Nsubtilex*Nsubtiley)+"\n"\
@@ -128,7 +126,6 @@ def set_custom(theta,psfarr,psfcenter,psfscale,pixdim,spixdim):
 
     # psfscale [pix/fp-cell]
     full_pixsize=1.0/psfscale
-    print(1.0/psfscale,"pixsize in fp_cell")
     psfdim=np.array(np.shape(psfarr))
     Nsubtilex=0
     Nsubtiley=0
