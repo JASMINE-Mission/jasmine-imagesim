@@ -202,8 +202,14 @@ if __name__ == '__main__':
     # Making image. ################################################
     for line in table_starplate:
         print("StarID: {}".format(line['star_id']))
-        jx, jy = line['xpix'], line['ypix']
-        interpix_local = rf.flat_interpix(detector.interpix, jx, jy, pixdim, figsw=0)
+
+        xc_global, yc_global = line['xpix'], line['ypix'] # Stellar position (global).
+        x0_global = int(xc_global - Npixcube*0.5) # Origin pix position in global coord (x).
+        y0_global = int(yc_global - Npixcube*0.5) # Origin pix position in global coord (y).
+        xc_local  = xc_global - x0_global  # Stellar position (local; x).
+        yc_local  = yc_global - y0_global  # Stellar position (local; y).
+
+        interpix_local = rf.flat_interpix(detector.interpix, x0_global, y0_global, pixdim, figsw=0)
 
         pixcube = np.zeros((Npixcube, Npixcube, Nplate))
         for iplate in tqdm.tqdm(range(0, Nplate)):
@@ -211,8 +217,8 @@ if __name__ == '__main__':
             istart = iplate    *Nts_per_plate
             iend   = (iplate+1)*Nts_per_plate
 
-            theta = np.copy(theta_full[:,istart:iend]) # Displacement from center.
-            theta = theta+np.array([pixdim]).T/2       # Displacement from bottom-left corner.
+            theta = np.copy(theta_full[:,istart:iend]) # Displacement from the initial position.
+            theta = theta+np.array([[xc_local, yc_local]]).T/2 # Displacement in local coord.
 
             # Performing the PSF integration.
             #   Output: array of images in each time bin in the exposure.
@@ -227,7 +233,7 @@ if __name__ == '__main__':
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
             pixar = pixar + dark
 
-        integrated = integrate(pixar, jx, jy, tplate, dtace, detector)
+        integrated = integrate(pixar, x0_global, y0_global, tplate, dtace, detector)
         pixcube[:,:,iplate] = integrated
 
  
