@@ -21,7 +21,9 @@
 
 from docopt import docopt
 import os
+import sys
 import json
+import tqdm
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
@@ -30,13 +32,23 @@ from jis.photonsim.wfe import wfe_model_z, calc_wfe
 from jis.photonsim.response import calc_response
 from jis.photonsim.psf import calc_psf
 from jis.photonsim.ace import calc_ace
+from jis.pixsim import readflat as rf
+from jis.pixsim import simpix_stable as sp
+from jis.pixsim.integrate import integrate
 
 
 # Constants ########################################################
-Rv = 3.1
-JH = 2.0
+Rv  = 3.1
+JH  = 2.0
 alp = 0.75
-spixdim  = [32, 32] # subpixel dimension in a pixel (setting for intrapix pattern).
+spixdim  = [32, 32]  # subpixel dimension in a pixel (setting for intrapix pattern).
+acex_std = 0.276     # std of ace_x (arcsec).
+acey_std = 0.276     # std of ace_y (arcsec). 
+detpix_scale = 0.423 # detector pixel scale in arcsec/pix.
+Nmargin = 10         # Margin for simpix calc.
+#Nplate  = 11         # Number of plates in a small frame.
+Nplate  = 1
+tplate  = 12.5       # Exposure time of a plate (sec).
 
 
 # Command line interface
@@ -119,7 +131,6 @@ if __name__ == '__main__':
     # Making wfe map...
     wfe = calc_wfe(telescope.epd, filename_wfejson)
 
-
     # Making PSFs ##################################################
     opteff = telescope.opt_efficiency 
     qe = detector.qe
@@ -156,9 +167,69 @@ if __name__ == '__main__':
     ace_cp = control_params.ace_control
     print("Making ACE (X)...")
     acex, psdx = calc_ace(np.random, ace_cp['nace'], ace_cp['tace'], ace_params)
+    # acex is normalized by the std.
 
     print("Making ACE (Y)...")
     acey, psdy = calc_ace(np.random, ace_cp['nace'], ace_cp['tace'], ace_params)
+    # acey is normalized by the std.
+
+    # Preparation for making image. ################################
+
+    ## Full data of the displacement in detpix.
+    ## (ace[x|y] scaled and converted to detpix)
+    theta_full = np.array([acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
+
+    Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
+    pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
+
+    tscan = detector.t_overhead +\
+            detector.tsmpl*(detector.npix_pre+detector.ncol_ch+detector.npix_post)*detector.nrow_ch
+    dtace = control_params.ace_control['dtace']
+    Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.
+
+    if Nts_per_plate*Nplate >= theta_full.shape[1]:
+        print("Insufficient time length of ACE data.")
+        print("Nts_per_plate: {}".format(Nts_per_plate))
+        print("N(theta_full): {}".format(theta_full.shape[1]))
+        sys.exit(-1)
+
+    psfcenter = (np.array(np.shape(psf))-1.0)*0.5 #psf center in the unit of fp-cell
+
+    fp_cellsize_rad = (1./control_params.M_parameter)*1.e-3 # in rad/fp-cell.
+    fp_scale = fp_cellsize_rad * 3600.*180./np.pi # arcsec/fp-cell.
+    psfscale = fp_scale/detpix_scale # det-pix/fp-cell.
+
+    # Making image. ################################################
+    for line in table_starplate:
+        print("StarID: {}".format(line['star_id']))
+        jx, jy = line['xpix'], line['ypix']
+        interpix_local = rf.flat_interpix(detector.interpix, jx, jy, pixdim, figsw=0)
+
+        pixcube = np.zeros((Npixcube, Npixcube, Nplate))
+        for iplate in tqdm.tqdm(range(0, Nplate)):
+            # picking temporary trajectory and local position update
+            istart = iplate    *Nts_per_plate
+            iend   = (iplate+1)*Nts_per_plate
+
+            theta = np.copy(theta_full[:,istart:iend]) # Displacement from center.
+            theta = theta+np.array([pixdim]).T/2       # Displacement from bottom-left corner.
+
+            # Performing the PSF integration.
+            #   Output: array of images in each time bin in the exposure.
+            #   When the PSF is given in e/fp-cell/sec,
+            #   simpix/(psfscale*psfscale) is in e/pix/(1./Nts_per_plate sec).
+            pixar = sp.simpix(theta, interpix_local, detector.intrapix,\
+                              psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
+                              /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
+            # pixar is in e/pix/dtace.
+
+            # Adding dark current (including stray light).
+            dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
+            pixar = pixar + dark
+
+        integrated = integrate(pixar, jx, jy, tplate, dtace, detector)
+        pixcube[:,:,iplate] = integrated
+
  
 
     # Saving the outputs. ##########################################
