@@ -22,7 +22,7 @@
   "reference_wl": {"val": 1.4, "description": "Reference wavelength in micron."}},
 "ACEcontrol":{
   "title": "ACE simulation control parameters.",
-  "dtace":  {"val": 15e-6, "description": "Timestep of ACE simulation in sec."},
-  "tace":   {"val": 15,    "description": "Time range of ACE simulation in sec (to be adjusted)."}}
+  "dtace":  {"val": 15e-5, "description": "Timestep of ACE simulation in sec."},
+  "tace":   {"val": 200,   "description": "Time range of ACE simulation in sec (to be adjusted)."}}
 }
 

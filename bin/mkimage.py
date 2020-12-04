@@ -35,6 +35,7 @@ from jis.photonsim.ace import calc_ace
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
+import matplotlib.pylab as plt
 
 
 # Constants ########################################################
@@ -46,9 +47,9 @@ acex_std = 0.276     # std of ace_x (arcsec).
 acey_std = 0.276     # std of ace_y (arcsec). 
 detpix_scale = 0.423 # detector pixel scale in arcsec/pix.
 Nmargin = 10         # Margin for simpix calc.
-#Nplate  = 11         # Number of plates in a small frame.
-Nplate  = 1
+Nplate  = 11         # Number of plates in a small frame.
 tplate  = 12.5       # Exposure time of a plate (sec).
+mag = 20.0           # stellar Hw band mag.
 
 
 # Command line interface
@@ -189,8 +190,8 @@ if __name__ == '__main__':
 
     if Nts_per_plate*Nplate >= theta_full.shape[1]:
         print("Insufficient time length of ACE data.")
-        print("Nts_per_plate: {}".format(Nts_per_plate))
-        print("N(theta_full): {}".format(theta_full.shape[1]))
+        print("Nts_per_plate*Nplate: {}".format(Nts_per_plate*Nplate))
+        print("N_ace_data          : {}".format(theta_full.shape[1]))
         sys.exit(-1)
 
     psfcenter = (np.array(np.shape(psf))-1.0)*0.5 #psf center in the unit of fp-cell
@@ -199,13 +200,16 @@ if __name__ == '__main__':
     fp_scale = fp_cellsize_rad * 3600.*180./np.pi # arcsec/fp-cell.
     psfscale = fp_scale/detpix_scale # det-pix/fp-cell.
 
+    pixcube_global = np.zeros(shape=(detector.npix, detector.npix, Nplate))
+
     # Making image. ################################################
     for line in table_starplate:
         print("StarID: {}".format(line['star_id']))
 
-        xc_global, yc_global = line['xpix'], line['ypix'] # Stellar position (global).
-        x0_global = int(xc_global - Npixcube*0.5) # Origin pix position in global coord (x).
-        y0_global = int(yc_global - Npixcube*0.5) # Origin pix position in global coord (y).
+        xc_global = line['xpix'] - 1 # Stellar pos. in glob. coord (X).
+        yc_global = line['ypix'] - 1 # Stellar pos. in glob. coord (Y).
+        x0_global = int(xc_global - Npixcube*0.5 + 0.5) # Origin pix position in global coord (x).
+        y0_global = int(yc_global - Npixcube*0.5 + 0.5) # Origin pix position in global coord (y).
         xc_local  = xc_global - x0_global  # Stellar position (local; x).
         yc_local  = yc_global - y0_global  # Stellar position (local; y).
 
@@ -218,7 +222,8 @@ if __name__ == '__main__':
             iend   = (iplate+1)*Nts_per_plate
 
             theta = np.copy(theta_full[:,istart:iend]) # Displacement from the initial position.
-            theta = theta+np.array([[xc_local, yc_local]]).T/2 # Displacement in local coord.
+            theta = theta + np.array([[xc_local, yc_local]]).T # Displacement in local coord.
+            theta = theta + np.array([[0.5, 0.5]]).T   # 0.5pix shift to treat the coodinate difference.
 
             # Performing the PSF integration.
             #   Output: array of images in each time bin in the exposure.
@@ -229,13 +234,21 @@ if __name__ == '__main__':
                               /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
 
+            # magnitude scaling.
+            pixar = pixar * 10.**(mag/(-2.5))
+
             # Adding dark current (including stray light).
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
             pixar = pixar + dark
 
-        integrated = integrate(pixar, x0_global, y0_global, tplate, dtace, detector)
-        pixcube[:,:,iplate] = integrated
+            # Integrating, adding noise, and quantization.
+            integrated = integrate(pixar, x0_global, y0_global, tplate, dtace, detector)
+            # integrated is in e-/pix/plate.
 
+            pixcube[:,:,iplate] = integrated
+
+        pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, :] =\
+            pixcube[:,:,:]
  
 
     # Saving the outputs. ##########################################
@@ -269,3 +282,6 @@ if __name__ == '__main__':
     hdu.header["ACE-TOTT"] = control_params.ace_control['tace']
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filename_acey, overwrite=overwrite)
+
+    pf.writeto("tmp.fits", np.swapaxes(pixcube_global, 0, 2), overwrite=overwrite)
+    pf.writeto("tmp2.fits", np.swapaxes(pixcube, 0, 2), overwrite=overwrite)
