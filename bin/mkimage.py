@@ -46,7 +46,6 @@ alp = 0.75
 spixdim  = [32, 32]  # subpixel dimension in a pixel (setting for intrapix pattern).
 acex_std = 0.276     # std of ace_x (arcsec).
 acey_std = 0.276     # std of ace_y (arcsec). 
-detpix_scale = 0.423 # detector pixel scale in arcsec/pix.
 Nmargin = 10         # Margin for simpix calc.
 Nplate  = 11         # Number of plates in a small frame.
 tplate  = 12.5       # Exposure time of a plate (sec).
@@ -86,11 +85,13 @@ if __name__ == '__main__':
     filename_psf      = dirname_output + "/" + "psf.fits"
     filename_acex     = dirname_output + "/" + "aceX.fits"
     filename_acey     = dirname_output + "/" + "aceY.fits"
+    filename_image    = dirname_output + "/" + "image.fits"
 
     filenames_output = [filename_interpix, filename_intrapix,\
                         filename_wfejson, filename_wfe,\
                         filename_aperture, filename_psf,\
-                        filename_acex, filename_acey]
+                        filename_acex, filename_acey,\
+                        filename_image]
 
 
     # Checking the output directory. ###############################
@@ -113,6 +114,8 @@ if __name__ == '__main__':
     with open(filename_acejson, "r") as f:
         ace_params = json.load(f)
     f.close()
+
+    detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi # det. pix. scale in arcsec/pix.
         
 
     # Selecting the data for the first plate. ######################
@@ -132,6 +135,7 @@ if __name__ == '__main__':
 
     # Making wfe map...
     wfe = calc_wfe(telescope.epd, filename_wfejson)
+
 
     # Making PSFs ##################################################
     opteff = telescope.opt_efficiency 
@@ -175,6 +179,7 @@ if __name__ == '__main__':
     acey, psdy = calc_ace(np.random, ace_cp['nace'], ace_cp['tace'], ace_params)
     # acey is normalized by the std.
 
+
     # Preparation for making image. ################################
 
     ## Full data of the displacement in detpix.
@@ -198,18 +203,23 @@ if __name__ == '__main__':
     psfcenter = (np.array(np.shape(psf))-1.0)*0.5 #psf center in the unit of fp-cell
 
     fp_cellsize_rad = (1./control_params.M_parameter)*1.e-3 # in rad/fp-cell.
-    fp_scale = fp_cellsize_rad * 3600.*180./np.pi # arcsec/fp-cell.
-    psfscale = fp_scale/detpix_scale # det-pix/fp-cell.
+    fp_scale = fp_cellsize_rad * 3600.*180./np.pi           # arcsec/fp-cell.
+    psfscale = fp_scale/detpix_scale                        # det-pix/fp-cell.
 
+
+    # Making image. ################################################
+
+    ## Making sky region.
     pixcube_global = np.zeros(shape=(detector.npix, detector.npix, Nplate))
     pixcube_global += detector.idark * tplate
     pixcube_global, seed = addnoise(pixcube_global, np.sqrt(2.)*detector.readnoise)
-    pixcube_global = np.round(pixcube_global/detector.gain)
+    pixcube_global = np.round(pixcube_global/detector.gain) # in adu/pix/plate.
 
-    # Making image. ################################################
+    ## Making data around each star.
     for line in table_starplate:
         print("StarID: {}".format(line['star_id']))
 
+        # Position setting.
         xc_global = line['xpix'] - 1 # Stellar pos. in glob. coord (X).
         yc_global = line['ypix'] - 1 # Stellar pos. in glob. coord (Y).
         x0_global = int(xc_global - Npixcube*0.5 + 0.5) # Origin pix position in global coord (x).
@@ -217,19 +227,24 @@ if __name__ == '__main__':
         xc_local  = xc_global - x0_global  # Stellar position (local; x).
         yc_local  = yc_global - y0_global  # Stellar position (local; y).
 
+        # Making local flat data.
         interpix_local = rf.flat_interpix(detector.interpix, x0_global, y0_global, pixdim, figsw=0)
 
-        pixcube = np.zeros((Npixcube, Npixcube, Nplate))
-        for iplate in tqdm.tqdm(range(0, Nplate)):
+        # Making a cube containing plate data for a local region (small frame for a local region).
+        pixcube = np.zeros((Npixcube, Npixcube, Nplate))   # Initialize (Axis order: X, Y, Z)
+        for iplate in tqdm.tqdm(range(0, Nplate)):         # Loop to take each plate.
             # picking temporary trajectory and local position update
             istart = iplate    *Nts_per_plate
             iend   = (iplate+1)*Nts_per_plate
 
-            theta = np.copy(theta_full[:,istart:iend]) # Displacement from the initial position.
+            theta = np.copy(theta_full[:,istart:iend])         # Displacement from the initial position.
             theta = theta + np.array([[xc_local, yc_local]]).T # Displacement in local coord.
-            theta = theta + np.array([[0.5, 0.5]]).T   # 0.5pix shift to treat the coodinate difference.
+            theta = theta + np.array([[0.5, 0.5]]).T           # 0.5-pix shift to treat the coodinate difference.
+            # Global coord.   : (0, 0) is the center of the bottom-left corner pixel.
+            # Local coord.    : (0, 0) is the center of the bottom-left corner pixel..
+            # Coord. in simpix: (0, 0) is the bottom-left corner of the bottom-left corner pixel.
 
-            # Performing the PSF integration.
+            # Performing the PSF integration (simpix).
             #   Output: array of images in each time bin in the exposure.
             #   When the PSF is given in e/fp-cell/sec,
             #   simpix/(psfscale*psfscale) is in e/pix/(1./Nts_per_plate sec).
@@ -259,6 +274,7 @@ if __name__ == '__main__':
     pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
     pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
     pf.writeto(filename_psf, psf, overwrite=overwrite)
+    pf.writeto(filename_image, np.swapaxes(pixcube_global, 0, 2), overwrite=overwrite)
     
     hdu = pf.PrimaryHDU(wfe)
     hdu.header["WFE-FILE"] = filename_wfejson
@@ -286,6 +302,3 @@ if __name__ == '__main__':
     hdu.header["ACE-TOTT"] = control_params.ace_control['tace']
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filename_acey, overwrite=overwrite)
-
-    pf.writeto("tmp.fits", np.swapaxes(pixcube_global, 0, 2), overwrite=overwrite)
-    pf.writeto("tmp2.fits", np.swapaxes(pixcube, 0, 2), overwrite=overwrite)

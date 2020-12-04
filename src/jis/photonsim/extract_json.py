@@ -104,7 +104,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
     class detector:
         def __init__(self, npix=None, idark=None, intrapix=None, interpix=None,\
                      tau=None, rho=None, readnoise=None, fullwell=None,\
-                     gain=None, readparams=None, qe=None):
+                     gain=None, readparams=None, qe=None, pixsize=None):
             """
             Summary:
                 This is a class to describe the detector properties.
@@ -128,6 +128,8 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
                 npix_post  (int)  : Npix after reading each row.
                 t_overhead (float): Overhead time between reset and the 1st read in sec.
                 qe         (dict) : Quantum efficiency (wl: wavelength in um; val: qe values).
+                pixelsize  (float): Pixel size in um.
+
             """
 
             self.npix  = npix
@@ -139,6 +141,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
             self.fullwell = fullwell
             self.gain = gain
             self.qe = qe
+            self.pixsize=pixsize
             if readparams is not None:
                 self.fsmpl      = readparams['fsmpl']['val']
                 self.tsmpl      = 1./self.fsmpl
@@ -169,6 +172,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
         readparams = js['readparams']
         fullwell   = js['Fullwell']['val']
         gain       = js['gain']['val']
+        pixsize    = js['pixsize']['val']
 
         wl_qe, val_qe = extQE(js)
     fp.close()
@@ -182,7 +186,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
                         interpix=interpix, intrapix=intrapix, \
                         tau=tau, rho=rho, readnoise=readnoise,\
                         fullwell=fullwell, gain=gain,\
-                        readparams=readparams, qe=qe)
+                        readparams=readparams, qe=qe, pixsize=pixsize)
 
     return detector
 
@@ -352,21 +356,23 @@ def mkTel(json_filename):
     class telescope:
         def __init__(self, epd=None, aperture=None,\
                      cobs=None, spider=None, total_area=None,\
-                     opt_efficiency=None):
-            self.epd = epd
-            self.aperture = aperture
-            self.cobs = cobs                            # Obscuration ratio (Robs*2/EPD).
-            self.spider_type = spider['type']
-            self.spider_thickness = spider['thickness'] # in mm
-            self.total_area = total_area                # in m^2
-            self.opt_efficiency = opt_efficiency
+                     opt_efficiency=None, efl=None):
+            self.epd      = epd                         # Exit pupil diameter (mm).
+            self.aperture = aperture                    # Aperture pattern.
+            self.cobs     = cobs                        # Obscuration ratio (Robs*2/EPD).
+            self.efl      = efl                         # Effective focal length (mm).
+            self.spider_type      = spider['type']      # Spider tape.
+            self.spider_thickness = spider['thickness'] # Spider thickness in mm.
+            self.total_area       = total_area          # Total area in m^2.
+            self.opt_efficiency   = opt_efficiency      # Optics efficiency.
 
 
     with open(json_filename, "r") as fp:
         js = json.load(fp)
 
-        epd  = js['EPD']['val']     # Exit Pupil Diameter in mm.
+        epd  = js['EPD']['val']     # Exit pupil diameter in mm.
         cobs = js['Cobs']['val']    # Obscuration ratio.
+        efl  = js['EFL']['val']     # Effective focal length in mm.
         r_obscuration = epd/2.*cobs # Obscuration radius in mm.
         spider_params = {'type':js['Stype']['val'], 'thickness':js['Stype']['thick']}
         n_opteff, wl_opteff, opteff, wl_opteff_short, wl_opteff_long = exttel(js)
@@ -374,22 +380,22 @@ def mkTel(json_filename):
 
     opt_efficiency = {'wl': np.array(wl_opteff), 'val': np.array(opteff)}
 
-    ap_data = None
+    ap_data    = None
     total_area = None
     if spider_params['type'] == 'tripod':
         n_apcell = int(epd+4)   # Assuming ap-cell scale to be 1mm/ap-cell.
                                 # Set the aperture pattern size to be 2mm larger than D.
-        if n_apcell%2 == 1: # n_apcell should be even
+
+        if n_apcell%2 == 1: # n_apcell should be even.
             n_apcell = n_apcell + 1
 
         ap_data, total_area_mm2 = aperture.calc_aperture(n_apcell, epd, r_obscuration,\
-                                                     spider_params['thickness'])
+                                                         spider_params['thickness'])
 
     telescope = telescope(epd=epd, aperture=ap_data, cobs=cobs,\
                           spider=spider_params, total_area=total_area_mm2*1.e-6,\
-                          opt_efficiency=opt_efficiency)
+                          opt_efficiency=opt_efficiency, efl=efl)
     # total_area is in m^2.
 
     return telescope
-
 
