@@ -322,8 +322,34 @@ def extsrc(src):
 
 
 def mkControlParams(json_filename):
+    """
+    Summary:
+        This method creates a control_params object,
+        which contains control parameters written in the 
+        json file for the control parameters.
+
+    Args:
+        json_filename (string): Input json filename.
+
+    Returns:
+        control_params (control_params): Created control_params object.
+
+    """
+
 
     class control_params:
+        """
+        Summary:
+            This is a class to handle the control parameters.
+
+        Attributes:
+            wfe_control (dict): Parameters related to the wfe calculation.
+            M_parameter (int) : The M parameter which determine the cell scale of the psf.
+                                The fp-cell scale will be (1/M) x 10^-3 rad/fp-cell.
+            ace_control (dict): Parameters related to the ace calculation.
+
+        """
+          
         def __init__(self, wfe=None, M=None, ace=None):
             self.wfe_control = wfe
             self.M_parameter = M
