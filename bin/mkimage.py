@@ -35,6 +35,7 @@ from jis.photonsim.ace import calc_ace
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
+from jis.pixsim.addnoise import addnoise
 import matplotlib.pylab as plt
 
 
@@ -201,6 +202,9 @@ if __name__ == '__main__':
     psfscale = fp_scale/detpix_scale # det-pix/fp-cell.
 
     pixcube_global = np.zeros(shape=(detector.npix, detector.npix, Nplate))
+    pixcube_global += detector.idark * tplate
+    pixcube_global, seed = addnoise(pixcube_global, np.sqrt(2.)*detector.readnoise)
+    pixcube_global = np.round(pixcube_global/detector.gain)
 
     # Making image. ################################################
     for line in table_starplate:
@@ -243,12 +247,12 @@ if __name__ == '__main__':
 
             # Integrating, adding noise, and quantization.
             integrated = integrate(pixar, x0_global, y0_global, tplate, dtace, detector)
-            # integrated is in e-/pix/plate.
+            # integrated is in adu/pix/plate.
 
             pixcube[:,:,iplate] = integrated
 
-        pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, :] =\
-            pixcube[:,:,:]
+            pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
+                pixcube[:,:,iplate]
  
 
     # Saving the outputs. ##########################################
