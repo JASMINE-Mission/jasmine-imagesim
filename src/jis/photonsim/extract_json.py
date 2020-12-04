@@ -378,8 +378,35 @@ def mkControlParams(json_filename):
 
 
 def mkTel(json_filename):
+    """
+    Summary:
+        This method creates a telescope object.
+
+    Args:
+        json_filename: Input json filename.
+
+    Returns:
+        telescope: Created telescope object.
+
+    """
 
     class telescope:
+        """
+        Summary:
+            This is a class to handle telescope parameters.
+
+        Attributs:
+            epd              (float)  : Exit pupil diameter (mm).
+            aperture         (ndarray): Aperture pattern array (ap-cell size = 1 mm).
+            cobs             (float)  : Obscuration ratio (R(obscuration)*2/EPD).
+            efl              (float)  : Effective focal length (mm).
+            spider_type      (string) : Spider type.
+            spider_thickness (float)  : Spider thickness (mm).
+            total_area       (float)  : Telescope total area (m^2).
+            opt_efficiency   (dict)   : Optical efficiency.
+
+        """
+           
         def __init__(self, epd=None, aperture=None,\
                      cobs=None, spider=None, total_area=None,\
                      opt_efficiency=None, efl=None):
