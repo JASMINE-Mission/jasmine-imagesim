@@ -358,7 +358,7 @@ def mkTel(json_filename):
             self.cobs = cobs                            # Obscuration ratio (Robs*2/EPD).
             self.spider_type = spider['type']
             self.spider_thickness = spider['thickness'] # in mm
-            self.total_area = total_area                # in mm^2
+            self.total_area = total_area                # in m^2
             self.opt_efficiency = opt_efficiency
 
 
@@ -382,12 +382,13 @@ def mkTel(json_filename):
         if n_apcell%2 == 1: # n_apcell should be even
             n_apcell = n_apcell + 1
 
-        ap_data, total_area = aperture.calc_aperture(n_apcell, epd, r_obscuration,\
+        ap_data, total_area_mm2 = aperture.calc_aperture(n_apcell, epd, r_obscuration,\
                                                      spider_params['thickness'])
 
     telescope = telescope(epd=epd, aperture=ap_data, cobs=cobs,\
-                          spider=spider_params, total_area=total_area,\
+                          spider=spider_params, total_area=total_area_mm2*1.e-6,\
                           opt_efficiency=opt_efficiency)
+    # total_area is in m^2.
 
     return telescope
 

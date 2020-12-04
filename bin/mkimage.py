@@ -50,7 +50,7 @@ detpix_scale = 0.423 # detector pixel scale in arcsec/pix.
 Nmargin = 10         # Margin for simpix calc.
 Nplate  = 11         # Number of plates in a small frame.
 tplate  = 12.5       # Exposure time of a plate (sec).
-mag = 20.0           # stellar Hw band mag.
+mag     = 12.5       # Stellar Hw band mag.
 
 
 # Command line interface
@@ -271,7 +271,7 @@ if __name__ == '__main__':
     hdu.header["EPD"]     = telescope.epd
     hdu.header["COBS"]    = telescope.cobs
     hdu.header["STYPE"]   = telescope.spider_type
-    hdu.header["STEL"]    = telescope.total_area * 1.e-6 # total area in m^2
+    hdu.header["STEL"]    = telescope.total_area  # total area in m^2
     hdu.list = pf.HDUList([hdu])
     hdulist.writeto(filename_aperture, overwrite=overwrite)
 
