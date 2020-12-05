@@ -9,7 +9,7 @@
  options:
    --help                     show this help message and exit.
    --pd paramdir              name of the directory containing parameter files.
-   --starplate star_plate.csv csv file containing star info (plate_id, star_id, xpix, ypix, l, b)
+   --starplate star_plate.csv csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta)
    --det det.json             json file containing detector related parameters.
    --tel tel.json             json file containing telescope related parameters.
    --ace ace.json             json file containing ace parameters.
@@ -61,11 +61,11 @@ if __name__ == '__main__':
     if args['--pd']:
         dirname_params = args['--pd']
 
-    filename_starplate = dirname_params + "/" + args['--starplate']
-    filename_detjson   = dirname_params + "/" + args['--det']
-    filename_teljson   = dirname_params + "/" + args['--tel']
-    filename_acejson   = dirname_params + "/" + args['--ace']
-    filename_ctljson   = dirname_params + "/" + args['--ctl']
+    filename_starplate = os.path.join(dirname_params, args['--starplate'])
+    filename_detjson   = os.path.join(dirname_params, args['--det'])
+    filename_teljson   = os.path.join(dirname_params, args['--tel'])
+    filename_acejson   = os.path.join(dirname_params, args['--ace'])
+    filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
 
     dirname_output = '.'
     if args['--od']:
@@ -77,15 +77,15 @@ if __name__ == '__main__':
 
 
     # Setting output filenames. ####################################
-    filename_interpix = dirname_output + "/" + "interpix.fits"
-    filename_intrapix = dirname_output + "/" + "intrapix.fits"
-    filename_wfejson  = dirname_output + "/" + "wfe.json"
-    filename_wfe      = dirname_output + "/" + "wfe.fits"
-    filename_aperture = dirname_output + "/" + "aperture.fits"
-    filename_psf      = dirname_output + "/" + "psf.fits"
-    filename_acex     = dirname_output + "/" + "aceX.fits"
-    filename_acey     = dirname_output + "/" + "aceY.fits"
-    filename_image    = dirname_output + "/" + "image.fits"
+    filename_interpix = os.path.join(dirname_output, "interpix.fits")
+    filename_intrapix = os.path.join(dirname_output, "intrapix.fits")
+    filename_wfejson  = os.path.join(dirname_output, "wfe.json")
+    filename_wfe      = os.path.join(dirname_output, "wfe.fits")
+    filename_aperture = os.path.join(dirname_output, "aperture.fits")
+    filename_psf      = os.path.join(dirname_output, "psf.fits")
+    filename_acex     = os.path.join(dirname_output, "aceX.fits")
+    filename_acey     = os.path.join(dirname_output, "aceY.fits")
+    filename_image    = os.path.join(dirname_output, "image.fits")
 
     filenames_output = [filename_interpix, filename_intrapix,\
                         filename_wfejson, filename_wfe,\
@@ -119,7 +119,7 @@ if __name__ == '__main__':
         
 
     # Selecting the data for the first plate. ######################
-    pos = np.where(table_starplate['plate_id']==0)
+    pos = np.where(table_starplate['plate index']==0)
     table_starplate = table_starplate[pos]
 
 
@@ -217,11 +217,11 @@ if __name__ == '__main__':
 
     ## Making data around each star.
     for line in table_starplate:
-        print("StarID: {}".format(line['star_id']))
+        print("StarID: {}".format(line['star index']))
 
         # Position setting.
-        xc_global = line['xpix'] - 1 # Stellar pos. in glob. coord (X).
-        yc_global = line['ypix'] - 1 # Stellar pos. in glob. coord (Y).
+        xc_global = line['x pixel'] - 1 # Stellar pos. in glob. coord (X).
+        yc_global = line['y pixel'] - 1 # Stellar pos. in glob. coord (Y).
         x0_global = int(xc_global - Npixcube*0.5 + 0.5) # Origin pix position in global coord (x).
         y0_global = int(yc_global - Npixcube*0.5 + 0.5) # Origin pix position in global coord (y).
         xc_local  = xc_global - x0_global  # Stellar position (local; x).
@@ -274,7 +274,7 @@ if __name__ == '__main__':
     pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
     pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
     pf.writeto(filename_psf, psf, overwrite=overwrite)
-    pf.writeto(filename_image, np.swapaxes(pixcube_global, 0, 2), overwrite=overwrite)
+    pf.writeto(filename_image, (np.swapaxes(pixcube_global, 0, 2)).astype('int32'), overwrite=overwrite)
     
     hdu = pf.PrimaryHDU(wfe)
     hdu.header["WFE-FILE"] = filename_wfejson
