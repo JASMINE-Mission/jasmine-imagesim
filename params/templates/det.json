@@ -1,7 +1,7 @@
 {
 "pixsize":{
   "title": "Pixel size (micron)",
-  "val"  : 15 },
+  "val"  : 15.0 },
 "Npix":{
   "title": "Number of pixels on a side",
   "val"  : 1296 }, 
