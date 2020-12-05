@@ -4,7 +4,9 @@ This is an image simulator package developed for the JASMINE project.
 ## pixsim
 combining detector characteristics. To use pixsim you need to specify include directory like
 
-setenv CPLUS_INCLUDE_PATH /home/kawahara/jasmine-imagesim/src/jis/pixsim/include
+```
+setenv CPLUS_INCLUDE_PATH /home/user-name/jasmine-imagesim/src/jis/pixsim/include
+```
 
 or copy .h files to your "include" directory.
 
@@ -48,9 +50,8 @@ export CPLUS_INCLUDE_PATH="[jis-home]/src/jis/pixsim/include:$CPLUS_INCLUDE_PATH
 
 # Sphinx document
 
-'''
+```
 sphinx-build -b html ./docs ./docs/_build/
-
-'''
+```
 
 See docs/_build/index.html

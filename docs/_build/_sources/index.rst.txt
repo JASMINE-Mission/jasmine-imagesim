@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Jasmine Image Simulator's documentation!
+Welcome to Jasmine Image Simulator
 ===================================================
 
 .. toctree::
@@ -12,6 +12,9 @@ Welcome to Jasmine Image Simulator's documentation!
 
    ./bin/modules
 
+
+.. mdinclude:: ../README.md
+   
 Indices and tables
 ==================
 

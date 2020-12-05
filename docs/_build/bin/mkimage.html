@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>mkresponse module &mdash; Jasmine Image Simulator 0.1 documentation</title>
+  <title>mkimage module &mdash; Jasmine Image Simulator 0.1 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="mksimace module" href="mksimace.html" />
-    <link rel="prev" title="mkpsf module" href="mkpsf.html" /> 
+    <link rel="next" title="mkpixcube module" href="mkpixcube.html" />
+    <link rel="prev" title="mkaperture module" href="mkaperture.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,11 +88,11 @@
 <li class="toctree-l2"><a class="reference internal" href="convolv.html">convolv module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mkace2d.html">mkace2d module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mkaperture.html">mkaperture module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mkimage.html">mkimage module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">mkimage module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mkpixcube.html">mkpixcube module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mkplanetlc.html">mkplanetlc module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mkpsf.html">mkpsf module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">mkresponse module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mkresponse.html">mkresponse module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mksimace.html">mksimace module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mkwfe.html">mkwfe module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rnd_wfe.html">rnd_wfe module</a></li>
@@ -146,13 +146,13 @@
         
           <li><a href="modules.html">bin</a> &raquo;</li>
         
-      <li>mkresponse module</li>
+      <li>mkimage module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/bin/mkresponse.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/bin/mkimage.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -165,33 +165,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-mkresponse">
-<span id="mkresponse-module"></span><h1>mkresponse module<a class="headerlink" href="#module-mkresponse" title="Permalink to this headline">¶</a></h1>
-<p>Make a response distribution</p>
-<blockquote>
-<div><dl class="simple">
-<dt>usage:</dt><dd><p>mkresponse.py [-h|–help] -t tel -s src -d det -r res</p>
-</dd>
-</dl>
-</div></blockquote>
+  <div class="section" id="module-mkimage">
+<span id="mkimage-module"></span><h1>mkimage module<a class="headerlink" href="#module-mkimage" title="Permalink to this headline">¶</a></h1>
+<p>Make an image</p>
 <dl>
+<dt>usage:</dt><dd><p>mkimage.py [-h|–help] [–pd paramdir] –starplate star_plate.csv –det det.json –tel tel.json –ace ace.json –ctl ctl.json [–od outdir] [–overwrite]</p>
+</dd>
 <dt>options:</dt><dd><dl class="option-list">
 <dt><kbd><span class="option">--help</span></kbd></dt>
-<dd><p>show this help message and exit</p>
+<dd><p>show this help message and exit.</p>
 </dd>
-<dt><kbd><span class="option">-t <var>tel</var></span></kbd></dt>
-<dd><p>Telescope parameter</p>
-</dd>
-<dt><kbd><span class="option">-s <var>src</var></span></kbd></dt>
-<dd><p>Source (Object) parameter</p>
-</dd>
-<dt><kbd><span class="option">-d <var>det</var></span></kbd></dt>
-<dd><p>Detectir parameter</p>
-</dd>
-<dt><kbd><span class="option">-r <var>res</var></span></kbd></dt>
-<dd><p>output Responce file</p>
+<dt><kbd><span class="option">--pd <var>paramdir</var></span></kbd></dt>
+<dd><p>name of the directory containing parameter files.</p>
 </dd>
 </dl>
+<p>–starplate star_plate.csv csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta)
+–det det.json             json file containing detector related parameters.
+–tel tel.json             json file containing telescope related parameters.
+–ace ace.json             json file containing ace parameters.
+–ctl ctl.json             json file containing control parameters.
+–od outdir                name of the directory to put the outputs.
+–overwrite                if set, overwrite option activated.</p>
 </dd>
 </dl>
 </div>
@@ -204,10 +198,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="mksimace.html" class="btn btn-neutral float-right" title="mksimace module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="mkpixcube.html" class="btn btn-neutral float-right" title="mkpixcube module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="mkpsf.html" class="btn btn-neutral float-left" title="mkpsf module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="mkaperture.html" class="btn btn-neutral float-left" title="mkaperture module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

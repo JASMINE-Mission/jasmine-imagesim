@@ -5,9 +5,9 @@ bin
    :maxdepth: 4
 
    convolv
-   doc
    mkace2d
    mkaperture
+   mkimage
    mkpixcube
    mkplanetlc
    mkpsf

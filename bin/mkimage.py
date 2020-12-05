@@ -1,12 +1,11 @@
 #!/usr/bin/env python3.8
 # -*- coding: utf-8 -*-
-"""
-  Make an image
+"""Make an image
 
   usage:
     mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--od outdir] [--overwrite] 
 
- options:
+  options:
    --help                     show this help message and exit.
    --pd paramdir              name of the directory containing parameter files.
    --starplate star_plate.csv csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta)
@@ -302,3 +301,4 @@ if __name__ == '__main__':
     hdu.header["ACE-TOTT"] = control_params.ace_control['tace']
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filename_acey, overwrite=overwrite)
+    
