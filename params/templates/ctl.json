@@ -13,5 +13,16 @@
   "val" : 0 },
 "dy":{
   "title" :"y difference between psf center and detector pixel center ",
-  "val" : 0 }
+  "val" : 0 },
+"WFEcontrol":{
+  "title": "WFE control parameters.",
+  "zernike_nmax": {"val": 8,  "description": "Zernike max n."},
+  "zernike_even": {"val": 50, "description": "Amplitude parameter of even terms (ref_wl/zernike_even)."},
+  "zernike_odd":  {"val": 25, "description": "Amplitude parameter of odd terms (ref_wl/zernike_odd)."},
+  "reference_wl": {"val": 1.4, "description": "Reference wavelength in micron."}},
+"ACEcontrol":{
+  "title": "ACE simulation control parameters.",
+  "dtace":  {"val": 15e-5, "description": "Timestep of ACE simulation in sec."},
+  "tace":   {"val": 200,   "description": "Time range of ACE simulation in sec (to be adjusted)."}}
 }
+

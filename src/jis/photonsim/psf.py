@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import pyfftw
+from scipy.ndimage import shift
 
 def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
     """
@@ -52,6 +53,13 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
    
 
     """
+
+    # Checking parities of wN and aN.
+    # If their parities are different, the centers of wfe and apt will be different.
+    if (wN+aN)%2 == 1:
+        print("wN and aN should have the same parity")
+        print("wN: {}; aN: {}".format(wN, aN))
+        exit()
         
     wfer = np.nan_to_num( wfe )
     wfec = np.empty( (wN,wN),dtype='complex128')
@@ -93,12 +101,23 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         # FFT
         ft  = pyfftw.interfaces.numpy_fft.fft2(data)
         fts = np.fft.fftshift(ft)
-    
+
         # 結果を入射光子数(電子数)の重みを付けて加算する。
         i1 = int(N/2-N0/2)
         i2 = int(N/2+N0/2)
         NPm   = (NP[i] + NP[i+1])/2
-        image = image + NPm*(fts.real[i1:i2,i1:i2]**2 + fts.imag[i1:i2,i1:i2]**2)
+
+        tmp_img = NPm*(fts.real[i1:i2, i1:i2]**2.+fts.imag[i1:i2, i1:i2]**2.)
+        offset = 0.0
+        if   (N%2==0) and (N0%2==1):
+            offset=1.0
+        elif (N%2==0) and (N0%2==0):
+            offset=0.5
+        elif (N%2==1) and (N0%2==0):
+            offset=0.5
+        tmp_img = shift(tmp_img, [-offset, -offset], order=1)
+
+        image = image + tmp_img
     
     # 最後に規格化しておく、値は1秒あたりのelectron数になるように
     s     = np.sum(image)

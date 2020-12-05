@@ -47,20 +47,21 @@ def calc_wfe(EPD,efile):
             Zm[i] = int(p['z{:03d}-m'.format(i+1)])
             Za[i] = float(p['z{:03d}-a'.format(i+1)])
             
-            
+
+    iy, ix = np.indices((N, N))
+    y = iy - N/2
+    x = ix - N/2
+    rho   = np.sqrt(y*y+x*x)/(EPD/2)
+    theta = np.arctan2(y, x)
+
+    data[rho>1] = np.nan
+
+    pos = np.where(rho<=1)
     for i in range(NP):
-        for iy in range(N):
-            for ix in range(N):
-                y = iy - N/2
-                x = ix - N/2
-                rho = math.sqrt( y*y+x*x ) / (EPD/2) 
-                if rho <= 1 :
-                    th = math.atan2( y, x)
-                    data[iy,ix] = data[iy,ix] + Za[i]*zernike.Zernike(Zn[i],Zm[i],rho,th)
-                else :
-                    data[iy,ix] = math.nan
+        data[pos] = data[pos] + Za[i]*zernike.Zernike(Zn[i], Zm[i], rho[pos], theta[pos])
 
     return data
+
 
 def wfe_model_z(rg,nmax,wlen,zodd,zeven):
   """
