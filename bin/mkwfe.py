@@ -1,7 +1,6 @@
 #!/usr/bin/env python3.8
 
-"""
-  Make a wave fromt error map
+"""Make a wave fromt error map
 
   usage:
     mkwfe.py [-h|--help] -t tel.json -e wfe.json -m wfe.fits
@@ -23,17 +22,17 @@ from jis.photonsim import readfits
 #  Command line interface
 if __name__ == '__main__':
   args = docopt(__doc__)
-
-# Get telescope parameter
-with open(args['-t']) as f:
-  q = json.load(f)
-  EPD = float(q['EPD']['val'])  
-
-data=wfe.calc_wfe(EPD,args['-e'])
   
-# Save WFE map
-hdu = fits.PrimaryHDU(data)
-hdu.header["WFE-FILE"] = args['-e']
-hdu.header["WFE-EPD"] = EPD
-hdulist = fits.HDUList([hdu])
-hdulist.writeto(args['-m'],overwrite=True)
+  # Get telescope parameter
+  with open(args['-t']) as f:
+    q = json.load(f)
+    EPD = float(q['EPD']['val'])  
+  
+  data=wfe.calc_wfe(EPD,args['-e'])
+  
+  # Save WFE map
+  hdu = fits.PrimaryHDU(data)
+  hdu.header["WFE-FILE"] = args['-e']
+  hdu.header["WFE-EPD"] = EPD
+  hdulist = fits.HDUList([hdu])
+  hdulist.writeto(args['-m'],overwrite=True)

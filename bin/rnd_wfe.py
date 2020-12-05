@@ -1,7 +1,6 @@
 #!/usr/bin/env python3.8
 # -*- coding: utf-8 -*-
-"""
-  Wave front error  random generattor
+"""Wave front error  random generattor
 
   usage:
     rnd_wfe.py [-h|--help] -n nmax -e z_even -o z_odd -z wfe.json
@@ -37,15 +36,15 @@ statistical properties than the legacy MT19937
 #  Command line interface
 if __name__ == '__main__':
   args = docopt(__doc__)
-
-# Get parameters from command line
-nmax = int(args['-n'])   # Max order of Zernike polynomial
-zeve = float(args['-e']) 
-zodd = float(args['-o']) 
-wlen = 1.4
-
-wfe = wfe.wfe_model_z(rg,nmax,wlen,zodd,zeve)
-
-# Save 
-with open(args['-z'],mode='w') as f:
+  
+  # Get parameters from command line
+  nmax = int(args['-n'])   # Max order of Zernike polynomial
+  zeve = float(args['-e']) 
+  zodd = float(args['-o']) 
+  wlen = 1.4
+  
+  wfe = wfe.wfe_model_z(rg,nmax,wlen,zodd,zeve)
+  
+  # Save 
+  with open(args['-z'],mode='w') as f:
     json.dump(wfe, f, indent=2)

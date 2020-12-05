@@ -1,12 +1,11 @@
 #!/usr/bin/env python3.8
 # -*- coding: utf-8 -*-
-"""
-  Make a pixel cube
+"""Make a pixel cube
 
   usage:
     mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json [--psf psf.fits] -o pixcube [-m] [--persistence] 
 
- options:
+  options:
    --help         show this help message and exit
    -l lc.fits     light curve
    -x aX.fits     X-axis simulated ACE file

@@ -45,3 +45,12 @@ export CPLUS_INCLUDE_PATH="[jis-home]/src/jis/pixsim/include:$CPLUS_INCLUDE_PATH
 # Usage
 - To use modules in the jis package, you can call them by typing 'from jis import xxxx' in your script.
 - To use executables, you can execute files in [jis-home]/bin/xxxx.py.
+
+# Sphinx document
+
+'''
+sphinx-build -b html ./docs ./docs/_build/
+
+'''
+
+See docs/_build/index.html

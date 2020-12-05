@@ -1,7 +1,6 @@
 #!/usr/bin/env python3.8
 # -*- coding: utf-8 -*-
-"""
-  Simulate atitude control error
+"""Simulate atitude control error
 
   usage:
     simace.py [-h|--help] -n N -t T -e ace.json -m ace.fits [-p plot.png]
@@ -38,33 +37,34 @@ statistical properties than the legacy MT19937
 #  Command line interface
 if __name__ == '__main__':
   args = docopt(__doc__)
-
-# Get parameters from command line
-N = int(args['-n'])   # Total number of time steps
-T = float(args['-t']) # Total time
-
+  
+  # Get parameters from command line
+  N = int(args['-n'])   # Total number of time steps
+  T = float(args['-t']) # Total time
+  
 #  Command line interface
 if __name__ == '__main__':
   args = docopt(__doc__)
-
-# Atitude control error parameters from json file
-#  このパラメータは将来的に複雑化すると思われるので、ここでは
-#  json.load で得られる辞書型を渡すようにします。実質はファイル名を
-#  渡すのと変わりありませんが、ファイルアクセスは実行形式のほうで
-#  やっておこうという考えです。
-with open(args['-e']) as f:
-  acep = json.load(f)
-
-# one dimentional ace
-data,psdn = ace.calc_ace(rg,N,T,acep)
-
-# Save ACE map
-hdu = fits.PrimaryHDU(data)
-hdu.header["ACE-FILE"] = args['-e']
-hdu.header["ACE-TOTT"] = T
-hdulist = fits.HDUList([hdu])
-hdulist.writeto(args['-m'],overwrite=True)
-
-# plot
-if args['-p'] :
-  ace.plot_ace(N,T,data,psdn,args['-p'])
+  
+  # Atitude control error parameters from json file
+  #  このパラメータは将来的に複雑化すると思われるので、ここでは
+  #  json.load で得られる辞書型を渡すようにします。実質はファイル名を
+  #  渡すのと変わりありませんが、ファイルアクセスは実行形式のほうで
+  #  やっておこうという考えです。
+  with open(args['-e']) as f:
+    acep = json.load(f)
+  
+  # one dimentional ace
+  data,psdn = ace.calc_ace(rg,N,T,acep)
+  
+  # Save ACE map
+  hdu = fits.PrimaryHDU(data)
+  hdu.header["ACE-FILE"] = args['-e']
+  hdu.header["ACE-TOTT"] = T
+  hdulist = fits.HDUList([hdu])
+  hdulist.writeto(args['-m'],overwrite=True)
+  
+  # plot
+  if args['-p'] :
+    ace.plot_ace(N,T,data,psdn,args['-p'])
+  
