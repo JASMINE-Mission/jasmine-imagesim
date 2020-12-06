@@ -177,7 +177,7 @@
 <div class="section" id="pixsim">
 <h2>pixsim<a class="headerlink" href="#pixsim" title="Permalink to this headline">¶</a></h2>
 <p>combining detector characteristics. To use pixsim you need to specify include directory like</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">setenv</span> <span class="n">CPLUS_INCLUDE_PATH</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="k">user</span><span class="o">-</span><span class="n">name</span><span class="o">/</span><span class="n">jasmine</span><span class="o">-</span><span class="n">imagesim</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">jis</span><span class="o">/</span><span class="n">pixsim</span><span class="o">/</span><span class="n">include</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setenv</span> <span class="n">CPLUS_INCLUDE_PATH</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">name</span><span class="o">/</span><span class="n">jasmine</span><span class="o">-</span><span class="n">imagesim</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">jis</span><span class="o">/</span><span class="n">pixsim</span><span class="o">/</span><span class="n">include</span>
 </pre></div>
 </div>
 <p>or copy .h files to your “include” directory.</p>
@@ -205,14 +205,14 @@
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">for</span> <span class="k">global</span><span class="p">)</span> <span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">install</span>
-<span class="p">(</span><span class="k">for</span> <span class="k">local</span><span class="p">)</span> <span class="n">python</span> <span class="n">setup</span><span class="p">.</span><span class="n">py</span> <span class="n">install</span> <span class="c1">--user</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">for</span> <span class="k">global</span><span class="p">)</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+<span class="p">(</span><span class="k">for</span> <span class="n">local</span><span class="p">)</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>
 </pre></div>
 </div>
 <div class="section" id="setting-for-pixsim">
 <h2>setting for pixsim<a class="headerlink" href="#setting-for-pixsim" title="Permalink to this headline">¶</a></h2>
 <p>Add a line below in your .bash_profile.</p>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">CPLUS_INCLUDE_PATH</span><span class="o">=</span><span class="ss">&quot;[jis-home]/src/jis/pixsim/include:$CPLUS_INCLUDE_PATH&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">CPLUS_INCLUDE_PATH</span><span class="o">=</span><span class="s2">&quot;[jis-home]/src/jis/pixsim/include:$CPLUS_INCLUDE_PATH&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -233,7 +233,7 @@
 </div>
 <div class="section" id="sphinx-document">
 <h1>Sphinx document<a class="headerlink" href="#sphinx-document" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">html</span> <span class="p">.</span><span class="o">/</span><span class="n">docs</span> <span class="p">.</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">_build</span><span class="o">/</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">html</span> <span class="o">./</span><span class="n">docs</span> <span class="o">./</span><span class="n">docs</span><span class="o">/</span><span class="n">_build</span><span class="o">/</span>
 </pre></div>
 </div>
 <p>See docs/_build/index.html</p>
