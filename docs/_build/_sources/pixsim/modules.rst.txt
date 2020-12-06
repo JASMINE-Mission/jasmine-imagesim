@@ -1,0 +1,7 @@
+pixsim
+======
+
+.. toctree::
+   :maxdepth: 4
+
+   pixsim

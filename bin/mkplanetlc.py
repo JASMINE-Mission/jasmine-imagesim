@@ -1,20 +1,18 @@
 #!/usr/bin/env python3.8
 # -*- coding: utf-8 -*-
-"""
-  Make a planet signal 
+"""Make a planet signal 
 
   usage:
     mkplanetlc.py [-h|--help] [-m|--plot] -s tframe -f nframe -p planet.json -o lc.fits
 
  options:
    -h --help       show this help message and exit
-   -m --plot  plot light curve
-   -s tframe    exposure [sec] of a frame
-   -f nframe    number of the frames
-   -p planet.json planet parameters
-   -o lc.fits  output lightcurve fits
+   -m --plot       plot light curve
+   -s tframe       exposure [sec] of a frame
+   -f nframe       number of the frames
+   -p planet.json  planet parameters
+   -o lc.fits      output lightcurve fits
 """ 
-
 from docopt import docopt             # command line interface
 import numpy as np
 from jis.pixsim import transitmodel

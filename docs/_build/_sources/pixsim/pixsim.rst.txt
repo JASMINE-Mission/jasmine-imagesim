@@ -1,0 +1,94 @@
+pixsim package
+==============
+
+Submodules
+----------
+
+pixsim.addnoise module
+----------------------
+
+.. automodule:: pixsim.addnoise
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pixsim.faketarg module
+----------------------
+
+.. automodule:: pixsim.faketarg
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pixsim.gentraj module
+---------------------
+
+.. automodule:: pixsim.gentraj
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pixsim.integrate module
+-----------------------
+
+.. automodule:: pixsim.integrate
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pixsim.makeflat module
+----------------------
+
+.. automodule:: pixsim.makeflat
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pixsim.persistence module
+-------------------------
+
+.. automodule:: pixsim.persistence
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pixsim.randomgf module
+----------------------
+
+.. automodule:: pixsim.randomgf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pixsim.readflat module
+----------------------
+
+.. automodule:: pixsim.readflat
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pixsim.simpix\_stable module
+----------------------------
+
+.. automodule:: pixsim.simpix_stable
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pixsim.transitmodel module
+--------------------------
+
+.. automodule:: pixsim.transitmodel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: pixsim
+   :members:
+   :undoc-members:
+   :show-inheritance:
