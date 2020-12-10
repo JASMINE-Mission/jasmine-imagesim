@@ -3,7 +3,7 @@
 """Make an image
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--od outdir] [--overwrite] 
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format [--od outdir] [--overwrite] 
 
   options:
    --help                     show this help message and exit.
@@ -13,6 +13,7 @@
    --tel tel.json             json file containing telescope related parameters.
    --ace ace.json             json file containing ace parameters.
    --ctl ctl.json             json file containing control parameters.
+   --format format            format of the output file (platefits, fitscube, hdfcube).
    --od outdir                name of the directory to put the outputs.
    --overwrite                if set, overwrite option activated.
 
@@ -23,6 +24,7 @@ import os
 import sys
 import json
 import tqdm
+import h5py
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
@@ -66,6 +68,11 @@ if __name__ == '__main__':
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
     filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
 
+    output_format = args['--format']
+    if output_format not in ['platefits', 'fitscube', 'hdfcube']:
+        print("format must be 'platefits', 'fitscube' or 'hdfcube'.")
+        exit(-1)
+
     dirname_output = '.'
     if args['--od']:
         dirname_output = args['--od']
@@ -84,9 +91,15 @@ if __name__ == '__main__':
     filename_psf      = os.path.join(dirname_output, "psf.fits")
     filename_acex     = os.path.join(dirname_output, "aceX.fits")
     filename_acey     = os.path.join(dirname_output, "aceY.fits")
-    filename_images = []
-    for i in range(0, Nplate):
-        filename_images.append(os.path.join(dirname_output, "image{:02d}.fits".format(i)))
+
+    if output_format == 'platefits':
+        filename_images = []
+        for i in range(0, Nplate):
+            filename_images.append(os.path.join(dirname_output, "image{:02d}.fits".format(i)))
+    elif output_format == 'fitscube':
+        filename_images = [os.path.join(dirname_output, "image.fits")]
+    elif output_format == 'hdfcube':
+        filename_images = [os.path.join(dirname_output, "image.h5")]
 
     filenames_output = [filename_interpix, filename_intrapix,\
                         filename_wfejson, filename_wfe,\
@@ -275,9 +288,20 @@ if __name__ == '__main__':
     pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
     pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
     pf.writeto(filename_psf, psf, overwrite=overwrite)
-    pixcube_global = np.swapaxes(pixcube_global, 0, 2)
-    for i in range(0, Nplate):
-        pf.writeto(filename_images[i], pixcube_global[i].astype('int32'), overwrite=overwrite)
+    if output_format == 'hdfcube':
+        with h5py.File(filename_images[0]) as f:
+            f.create_group("header")
+            f.create_group("data")
+            f.create_dataset("header/tplate", data=tplate)
+            f.create_dataset("header/unit", data="e-/pix/plate")
+            f.create_dataset("data/pixcube", data=pixcube_global)
+    else:
+        pixcube_global = np.swapaxes(pixcube_global, 0, 2)
+        if output_format == 'platefits':
+            for i in range(0, Nplate):
+                pf.writeto(filename_images[i], pixcube_global[i].astype('int32'), overwrite=overwrite)
+        elif output_format == 'fitscube':
+            pf.writeto(filename_images[0], pixcube_global.astype('int32'), overwrite=overwrite)
     
     hdu = pf.PrimaryHDU(wfe)
     hdu.header["WFE-FILE"] = filename_wfejson
