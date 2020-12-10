@@ -84,13 +84,15 @@ if __name__ == '__main__':
     filename_psf      = os.path.join(dirname_output, "psf.fits")
     filename_acex     = os.path.join(dirname_output, "aceX.fits")
     filename_acey     = os.path.join(dirname_output, "aceY.fits")
-    filename_image    = os.path.join(dirname_output, "image.fits")
+    filename_images = []
+    for i in range(0, Nplate):
+        filename_images.append(os.path.join(dirname_output, "image{:02d}.fits".format(i)))
 
     filenames_output = [filename_interpix, filename_intrapix,\
                         filename_wfejson, filename_wfe,\
                         filename_aperture, filename_psf,\
-                        filename_acex, filename_acey,\
-                        filename_image]
+                        filename_acex, filename_acey]
+    filenames_output = filenames_output + filename_images
 
 
     # Checking the output directory. ###############################
@@ -273,7 +275,9 @@ if __name__ == '__main__':
     pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
     pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
     pf.writeto(filename_psf, psf, overwrite=overwrite)
-    pf.writeto(filename_image, (np.swapaxes(pixcube_global, 0, 2)).astype('int32'), overwrite=overwrite)
+    pixcube_global = np.swapaxes(pixcube_global, 0, 2)
+    for i in range(0, Nplate):
+        pf.writeto(filename_images[i], pixcube_global[i].astype('int32'), overwrite=overwrite)
     
     hdu = pf.PrimaryHDU(wfe)
     hdu.header["WFE-FILE"] = filename_wfejson
