@@ -49,7 +49,7 @@ spixdim  = [32, 32]  # subpixel dimension in a pixel (setting for intrapix patte
 acex_std = 0.276     # std of ace_x (arcsec).
 acey_std = 0.276     # std of ace_y (arcsec). 
 Nmargin = 10         # Margin for simpix calc.
-Nplate  = 11         # Number of plates in a small frame.
+Nplate  = 200         # Number of plates in a small frame.
 tplate  = 12.5       # Exposure time of a plate (sec).
 mag     = 12.5       # Stellar Hw band mag.
 
@@ -70,17 +70,13 @@ if __name__ == '__main__':
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
     filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
 
-    #########################
-    variability=mkVar(filename_varjson)
-    
-#    table_starplate = asc.read(filename_starplate)    
-#    for line in table_starplate:
-#        t=np.linspace(0,1,1000)
-#        injlc, b=variability.read_var(t,line['star index'],line['star index'])
-#        print(injlc)
-#    import sys
-#    sys.exit()
-    #########################
+    varsw=False
+    if args['--var']:
+        #load variability class
+        variability=mkVar(filename_varjson)
+        #define time array in the unit of day
+        tday=tplate*np.array(range(0,Nplate))/3600/24
+        
     output_format = args['--format']
     if output_format not in ['platefits', 'fitscube', 'hdfcube']:
         print("format must be 'platefits', 'fitscube' or 'hdfcube'.")
@@ -259,6 +255,11 @@ if __name__ == '__main__':
 
         # Making a cube containing plate data for a local region (small frame for a local region).
         pixcube = np.zeros((Npixcube, Npixcube, Nplate))   # Initialize (Axis order: X, Y, Z)
+
+        # Load variability
+        if args["--var"]:
+            varsw, injlc, b=variability.read_var(tday,line['plate index'],line['star index'])
+        
         for iplate in tqdm.tqdm(range(0, Nplate)):         # Loop to take each plate.
             # picking temporary trajectory and local position update
             istart = iplate    *Nts_per_plate
@@ -292,6 +293,8 @@ if __name__ == '__main__':
             # integrated is in adu/pix/plate.
 
             pixcube[:,:,iplate] = integrated
+            if varsw:
+                pixcube=pixcube*injlc[iplate]
             
             pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
                 pixcube[:,:,iplate]

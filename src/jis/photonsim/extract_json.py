@@ -494,16 +494,35 @@ class variability():
         print("print test")
     
     def read_var(self,t_day,plate_index,star_index):
+        """
+        Summary
+        -------        
+        read variability for given plate inex and star index
+
+        Parameters
+        ----------
+        t_day : time array in the unit of day
+        plate_index : plate index
+        star_index : star index
+
+        Returns
+        -------
+        sw: if True there is variability, else no variability.
+        injlc: variability
+        b : impact parameter for vartype = planet
+       
+        """
         from jis.pixsim import transitmodel 
         for i in range(0,self.Nvar):
-            print(plate_index,self.plate[i],star_index,self.star[i])
             if int(plate_index) == int(self.plate[i]) and int(star_index) == int(self.star[i]):
                 if self.vartype[i] == "planet":
                     injlc, b=transitmodel.gentransit_json(t_day,os.path.join(self.dirname[i],self.varfile[i]))
-                    return injlc, b
+                    sw=True
+                    return sw,injlc,b
                 else:
-                    return None,None
-            else:
-                return None,None
+                    sys.exit("No valid vartype")
+
+        sw=False
+        return sw,None,None
 
             
