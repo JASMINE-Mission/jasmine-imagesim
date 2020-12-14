@@ -3,12 +3,13 @@
 """Make an image
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format [--od outdir] [--overwrite] 
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format [--od outdir] [--overwrite] 
 
   options:
    --help                     show this help message and exit.
    --pd paramdir              name of the directory containing parameter files.
    --starplate star_plate.csv csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta)
+   --var variability.json     json file for stellar variability/transit (optional)
    --det det.json             json file containing detector related parameters.
    --tel tel.json             json file containing telescope related parameters.
    --ace ace.json             json file containing ace parameters.
@@ -28,7 +29,7 @@ import h5py
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
-from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel
+from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel, mkVar
 from jis.photonsim.wfe import wfe_model_z, calc_wfe
 from jis.photonsim.response import calc_response
 from jis.photonsim.psf import calc_psf
@@ -63,11 +64,23 @@ if __name__ == '__main__':
         dirname_params = args['--pd']
 
     filename_starplate = os.path.join(dirname_params, args['--starplate'])
+    filename_varjson   = os.path.join(dirname_params, args['--var'])
     filename_detjson   = os.path.join(dirname_params, args['--det'])
     filename_teljson   = os.path.join(dirname_params, args['--tel'])
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
     filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
 
+    #########################
+    variability=mkVar(filename_varjson)
+    
+#    table_starplate = asc.read(filename_starplate)    
+#    for line in table_starplate:
+#        t=np.linspace(0,1,1000)
+#        injlc, b=variability.read_var(t,line['star index'],line['star index'])
+#        print(injlc)
+#    import sys
+#    sys.exit()
+    #########################
     output_format = args['--format']
     if output_format not in ['platefits', 'fitscube', 'hdfcube']:
         print("format must be 'platefits', 'fitscube' or 'hdfcube'.")
@@ -279,7 +292,7 @@ if __name__ == '__main__':
             # integrated is in adu/pix/plate.
 
             pixcube[:,:,iplate] = integrated
-
+            
             pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
                 pixcube[:,:,iplate]
  

@@ -1,4 +1,5 @@
 import numpy as np
+import os 
 import json
 from jis.pixsim import makeflat as mf
 from jis.pixsim import readflat as rf
@@ -452,3 +453,57 @@ def mkTel(json_filename):
 
     return telescope
 
+def mkVar(json_filename):
+    """
+    Summary: This is dummy to initialize variability class, to match mkDet etc.
+    """            
+    _var = variability(json_filename)                    
+    return _var
+
+class variability():
+    """
+    Summary: stellar variability class.
+    """
+    def __init__(self,json_filename):
+        self.var = True
+        self.read_json(json_filename)
+
+    def read_json(self,json_filename):
+        """
+        Summary: this function is json i/o for stellar variability
+        """
+        with open(json_filename, "r") as f:
+            var_params = json.load(f)            
+            f.close()
+            self.Nvar=len(var_params)
+            self.plate=[]
+            self.star=[]
+            self.vartype=[]
+            self.varfile=[]
+            self.dirname=[]
+            for i in range(0,self.Nvar):
+                var=var_params[str(i)]
+                self.plate.append(var["plate"])
+                self.star.append(var["star"])
+                self.vartype.append(var["vartype"])
+                self.varfile.append(var["varfile"])
+                self.dirname.append(var["dirname"])
+
+    def print_test(self):
+        print(self.plate)
+        print("print test")
+    
+    def read_var(self,t_day,plate_index,star_index):
+        from jis.pixsim import transitmodel 
+        for i in range(0,self.Nvar):
+            print(plate_index,self.plate[i],star_index,self.star[i])
+            if int(plate_index) == int(self.plate[i]) and int(star_index) == int(self.star[i]):
+                if self.vartype[i] == "planet":
+                    injlc, b=transitmodel.gentransit_json(t_day,os.path.join(self.dirname[i],self.varfile[i]))
+                    return injlc, b
+                else:
+                    return None,None
+            else:
+                return None,None
+
+            
