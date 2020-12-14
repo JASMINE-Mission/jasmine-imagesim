@@ -289,7 +289,7 @@ if __name__ == '__main__':
     pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
     pf.writeto(filename_psf, psf, overwrite=overwrite)
     if output_format == 'hdfcube':
-        with h5py.File(filename_images[0]) as f:
+        with h5py.File(filename_images[0],"w") as f:
             f.create_group("header")
             f.create_group("data")
             f.create_dataset("header/tplate", data=tplate)
