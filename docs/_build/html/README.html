@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; Jasmine Image Simulator 0.1 documentation</title>
+  <title>how to generate sphinx documents &mdash; Jasmine Image Simulator 0.1 documentation</title>
   
 
   
@@ -130,7 +130,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>&lt;no title&gt;</li>
+      <li>how to generate sphinx documents</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -149,10 +149,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p>‘’’
+  <div class="section" id="how-to-generate-sphinx-documents">
+<h1>how to generate sphinx documents<a class="headerlink" href="#how-to-generate-sphinx-documents" title="Permalink to this headline">¶</a></h1>
+<p>‘’’
 sphinx-apidoc -f -o docs/bin bin
 sphinx-apidoc -f -o docs/src src
 ‘’‘</p>
+<p>then</p>
+<p>‘’’
+cd docs
+make clean
+make html
+‘’‘</p>
+</div>
 
 
            </div>
