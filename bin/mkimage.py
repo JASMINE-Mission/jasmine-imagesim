@@ -9,7 +9,7 @@
    --help                     show this help message and exit.
    --pd paramdir              name of the directory containing parameter files.
    --starplate star_plate.csv csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta)
-   --var variability.json     json file for stellar variability/transit (optional)
+   --var variability.json     json file for stellar variability/transit (optional). The input variability will be shown in variability_input().png 
    --det det.json             json file containing detector related parameters.
    --tel tel.json             json file containing telescope related parameters.
    --ace ace.json             json file containing ace parameters.
@@ -76,7 +76,13 @@ if __name__ == '__main__':
         variability=mkVar(filename_varjson)
         #define time array in the unit of day
         tday=tplate*np.array(range(0,Nplate))/3600/24
-        
+        for line in asc.read(filename_starplate):
+            varsw, injlc, b=variability.read_var(tday,line['plate index'],line['star index'])
+            if varsw:
+                plt.plot(tday,injlc)
+                plt.savefig("variability_input"+str(line['plate index'])+"_"+str(line['star index'])+".png")
+                plt.clf()
+                
     output_format = args['--format']
     if output_format not in ['platefits', 'fitscube', 'hdfcube']:
         print("format must be 'platefits', 'fitscube' or 'hdfcube'.")
@@ -284,6 +290,10 @@ if __name__ == '__main__':
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
 
+            # variability
+            if varsw:
+                pixar=pixar*injlc[iplate]
+
             # Adding dark current (including stray light).
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
             pixar = pixar + dark
@@ -291,10 +301,7 @@ if __name__ == '__main__':
             # Integrating, adding noise, and quantization.
             integrated = integrate(pixar, x0_global, y0_global, tplate, dtace, detector)
             # integrated is in adu/pix/plate.
-
             pixcube[:,:,iplate] = integrated
-            if varsw:
-                pixcube=pixcube*injlc[iplate]
             
             pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
                 pixcube[:,:,iplate]
