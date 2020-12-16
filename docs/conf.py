@@ -14,6 +14,8 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../bin'))
 sys.path.insert(0, os.path.abspath('../src/jis/pixsim'))
+sys.path.insert(0, os.path.abspath('../src/jis/photonsim'))
+sys.path.insert(0, os.path.abspath('../src/jis/jisplot'))
 
 # sys.path.insert(0, os.path.abspath('.'))
 

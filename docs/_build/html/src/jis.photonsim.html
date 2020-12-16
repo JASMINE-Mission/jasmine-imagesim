@@ -1,0 +1,861 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>jis.photonsim package &mdash; Jasmine Image Simulator 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="jis.pixsim package" href="jis.pixsim.html" />
+    <link rel="prev" title="jis.jisplot package" href="jis.jisplot.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Jasmine Image Simulator
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../bin/modules.html">bin</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="jis.html">jis package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="jis.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="jis.jisplot.html">jis.jisplot package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">jis.photonsim package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="jis.pixsim.html">jis.pixsim package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="jis.html#module-jis">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Jasmine Image Simulator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">src</a> &raquo;</li>
+        
+          <li><a href="jis.html">jis package</a> &raquo;</li>
+        
+      <li>jis.photonsim package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/src/jis.photonsim.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="jis-photonsim-package">
+<h1>jis.photonsim package<a class="headerlink" href="#jis-photonsim-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-jis.photonsim.ace">
+<span id="jis-photonsim-ace-module"></span><h2>jis.photonsim.ace module<a class="headerlink" href="#module-jis.photonsim.ace" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="jis.photonsim.ace.ace2d">
+<code class="sig-prename descclassname">jis.photonsim.ace.</code><code class="sig-name descname">ace2d</code><span class="sig-paren">(</span><em class="sig-param">x_scale</em>, <em class="sig-param">y_scale</em>, <em class="sig-param">pix_scale</em>, <em class="sig-param">N</em>, <em class="sig-param">xdata</em>, <em class="sig-param">ydata</em>, <em class="sig-param">xN</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.ace2d" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Summary:</dt><dd><p>This function returns 2D ace data array with considering
+the ace data scale and the pixel scale.</p>
+</dd>
+<dt>Args:  </dt><dd><p>x_scale   (float)  : Scale of xdata.
+y_scale   (float)  : Scale of ydata.
+pix_scale (float)  : Pixel scale of the output image.
+N         (int)    : Array size of the output image (N x N).
+xdata     (ndarray): X-axis simulated ACE array.
+ydata     (ndarray): Y-axis simulated ACE array
+xN        (int)    : Simulated ACE array size.</p>
+</dd>
+<dt>Returns:</dt><dd><p>data      (ndarray): 2D array of the ace data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.ace.calc_ace">
+<code class="sig-prename descclassname">jis.photonsim.ace.</code><code class="sig-name descname">calc_ace</code><span class="sig-paren">(</span><em class="sig-param">rg</em>, <em class="sig-param">N</em>, <em class="sig-param">T</em>, <em class="sig-param">ace</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.calc_ace" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Summary:</dt><dd><p>This function makes a one-dimensional attitude control error (ACE) data.
+The ACE is assumed to have a PSW which consists of a power-law function
+and some Lorenzian-type peaks (PS disturbance). The returned ace data (acedata)
+is normalized with its standard deviation. The generated PSD is also returned
+as ‘psdn’, but this is not normalized as ‘acedata’.</p>
+</dd>
+<dt>Args:</dt><dd><p>rg  (numpy.random.Generator): Random generator.
+N   (int)  : Number of time grids.
+T   (float): Range of time to simulate.
+ace (dict) : Parameterset about ace loaded from the ace json file.</p>
+</dd>
+<dt>Returns:</dt><dd><p>acedata (ndarray): Time-series data of the calculated ace normalized with stddev.
+psdn    (ndarray): Calculated PSD data (Not normalized; just for checking).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.ace.plot_ace">
+<code class="sig-prename descclassname">jis.photonsim.ace.</code><code class="sig-name descname">plot_ace</code><span class="sig-paren">(</span><em class="sig-param">N</em>, <em class="sig-param">T</em>, <em class="sig-param">data</em>, <em class="sig-param">psdn</em>, <em class="sig-param">plotfile</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.plot_ace" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Summary:</dt><dd><p>This function makes a plot of the ace data.
+The plot is saved as a file, ‘plotfile’.</p>
+</dd>
+<dt>Args:</dt><dd><p>N    (int)    : Number of time grids.
+T    (float)  : Range of time simulated.
+data (ndarray): Simulated ACE data.
+psdn (ndarray): Simulated PSD data.
+plotfile (str): Output file name.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-jis.photonsim.aperture">
+<span id="jis-photonsim-aperture-module"></span><h2>jis.photonsim.aperture module<a class="headerlink" href="#module-jis.photonsim.aperture" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="jis.photonsim.aperture.calc_aperture">
+<code class="sig-prename descclassname">jis.photonsim.aperture.</code><code class="sig-name descname">calc_aperture</code><span class="sig-paren">(</span><em class="sig-param">N</em>, <em class="sig-param">EPD</em>, <em class="sig-param">Robs</em>, <em class="sig-param">Tsp</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.aperture.calc_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function calculates the aperture pattern and its area.</p>
+<p>The aperture pattern consists of a circular aperture
+with an entrance pupil diameter of EPD, a central 
+circular obscuration with a radius of Robs, and
+a 3-vane spider pattern with a thickness of Tsp.</p>
+<p>The output pattern consists of N x N apt-cells with a value of 0 or 1.
+The parameters (EPD, Robs, and Tsp) are in “apt-cell”.
+But in the current simulation, we are assuming a scale of 1 mm/apt-cell.</p>
+</dd>
+<dt>Args:</dt><dd><p>N    (int)  : Number of apt-cells of the output aperture pattern (apt-cell).
+EPD  (float): Entrance pupil diameter (apt-cell).
+Robs (float): Radius of the central obscuration (apt-cell).
+Tsp  (float): Thickness of the spider (apt-cell).
+<strong>* Scale is assumed to be 1 mm/apt-cell!!! *</strong></p>
+</dd>
+<dt>Returns:</dt><dd><p>data (ndarray): N x N data array of the aperture pattern.
+S    (float)  : Total area (number of apt-cells=mm^2) of unmasked region.</p>
+</dd>
+<dt>Examples:</dt><dd><p>from jis.photonsim.aperture import calc_aperture</p>
+<p>N    = 100 # Number of apt-cells of the output aperture pattern.
+EPD  = 80  # Entrance pupil diameter in apt-cell.
+Robs = 20  # Central obscuration radius in apt-cell.
+Tsp  = 3   # Spider thickness in apt-cell.</p>
+<p>data, S = calc_aperture(N, EPD, Robs, Tsp)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-jis.photonsim.extract_json">
+<span id="jis-photonsim-extract-json-module"></span><h2>jis.photonsim.extract_json module<a class="headerlink" href="#module-jis.photonsim.extract_json" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="jis.photonsim.extract_json.extFlatInfo">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extFlatInfo</code><span class="sig-paren">(</span><em class="sig-param">det</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extFlatInfo" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Summary:</dt><dd><p>This function extracts information about detector flat.</p>
+</dd>
+<dt>Args:</dt><dd><p>det (dict): Decoded json data of the detector information.</p>
+</dd>
+<dt>Returns:</dt><dd><p>interpix (float): Stddev of the interpixel flat.
+intradir (str)  : Name of the directory containing intrapix pattern data.
+intrax   (str)  : Filename of the intrapix pattern in x direction.
+intray   (str)  : Filename of the intrapix pattern in y direction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.extIdark">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extIdark</code><span class="sig-paren">(</span><em class="sig-param">det</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extIdark" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Summary:</dt><dd><p>This function extracts dark current including stray light.</p>
+</dd>
+<dt>Args:</dt><dd><p>det (dict): Decoded json data of the detector information.</p>
+</dd>
+<dt>Returns:</dt><dd><p>idark (float): Dark current including stray light in e/sec/pix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.extPersistenceParams">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extPersistenceParams</code><span class="sig-paren">(</span><em class="sig-param">det</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extPersistenceParams" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Summary:</dt><dd><p>This function extracts persistence parameters.</p>
+</dd>
+<dt>Args:</dt><dd><p>det (dict): Decoded json data of the detector information.</p>
+</dd>
+<dt>Returns:</dt><dd><p>tau (ndarray): Detrapping time constants in sec.
+rho (ndarray): Trapping fractions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.extQE">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extQE</code><span class="sig-paren">(</span><em class="sig-param">det</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extQE" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function extracts quantum efficiency information
+from a decoded detector data, ‘det’.</p>
+</dd>
+<dt>Args:</dt><dd><p>det (dict): Decoded json data of the detector information.</p>
+</dd>
+<dt>Returns:</dt><dd><p>WLdet (ndarray): Wavelength data (um).
+QEdet (ndarray): Quantum efficiency of the detector.</p>
+</dd>
+<dt>Example:</dt><dd><p>import json
+from jis.photonsim.extract_json import extQE</p>
+<p>fp  = open(“<a href="#id1"><span class="problematic" id="id2">**</span></a><a href="#id3"><span class="problematic" id="id4">*</span></a>.json”)
+det = json.load(fp) 
+WL, QE = extQE(det)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.extsp">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extsp</code><span class="sig-paren">(</span><em class="sig-param">sp</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extsp" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function extracts spectral information 
+from a decoded spectral data, ‘sp’.</p>
+</dd>
+<dt>Args:</dt><dd><p>sp (dict): Decoded json data of the spectral information.</p>
+</dd>
+<dt>Returns:</dt><dd><p>k    (int)    : Number of output data points.
+WL   (ndarray): Wavelength data (um).
+NP   (ndarray): Number of detected photon (electron) flux (e-/s/m^2/um).
+Ntot (float)  : Total detected photon (electron) rate (e-/s/m^2).</p>
+</dd>
+<dt>Example:</dt><dd><p>import json
+from jis.photonsim.extract_json import extsp</p>
+<p>fp = open(“<a href="#id5"><span class="problematic" id="id6">**</span></a><a href="#id7"><span class="problematic" id="id8">*</span></a>.json”)
+sp = json.load(fp) 
+k, WL, NP, Ntot = extsp(sp)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.extsrc">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extsrc</code><span class="sig-paren">(</span><em class="sig-param">src</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extsrc" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function extracts object source information
+from a decoded object source data, ‘src’.</p>
+</dd>
+<dt>Args:</dt><dd><p>src (dict): Decoded json data of the object source information.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Rv  (float): Extinction factor Rv(=Av/E(B-V)).
+JH  (float): Color excess (E(J-H)=AJ-AH).
+alp (float): Interpolation factor to define the Hw-band mag</p>
+<blockquote>
+<div><p>Hw-mag = alp * J-mag + (1-alp) * H-mag</p>
+</div></blockquote>
+</dd>
+<dt>Example:</dt><dd><p>import json
+from jis.photonsim.extract_json import extsrc</p>
+<p>fp  = open(“<a href="#id9"><span class="problematic" id="id10">**</span></a><a href="#id11"><span class="problematic" id="id12">*</span></a>.json”)
+src = json(fp) 
+Rv, JH, alp = extsrc(src)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.exttel">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">exttel</code><span class="sig-paren">(</span><em class="sig-param">tel</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.exttel" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function extracts telescope information
+from a decoded telescope data, ‘tel’.</p>
+</dd>
+<dt>Args:</dt><dd><p>tel (dict): Decoded json data of the telescope information.</p>
+</dd>
+<dt>Returns:</dt><dd><p>k         (int)    : Number of output data points.
+WLdefined (ndarray): Wavelength data (um).
+EPdefined (ndarray): Optical efficiency.
+WLshort   (float)  : Shortest wavelength (um).
+WLlong    (float)  : Longest wavelength (um).</p>
+</dd>
+<dt>Example:</dt><dd><p>import json
+from jis.photonsim.extract_json import exttel</p>
+<p>fp  = open(“<a href="#id13"><span class="problematic" id="id14">**</span></a><a href="#id15"><span class="problematic" id="id16">*</span></a>.json”)
+tel = json.load(fp) 
+k, WL, EP, WLmin, WLmax = exttel(tel)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.mkControlParams">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">mkControlParams</code><span class="sig-paren">(</span><em class="sig-param">json_filename</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.mkControlParams" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Summary:</dt><dd><p>This method creates a control_params object,
+which contains control parameters written in the 
+json file for the control parameters.</p>
+</dd>
+<dt>Args:</dt><dd><p>json_filename (string): Input json filename.</p>
+</dd>
+<dt>Returns:</dt><dd><p>control_params (control_params): Created control_params object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.mkDet">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">mkDet</code><span class="sig-paren">(</span><em class="sig-param">det_json_filename, spixdim=[32, 32]</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.mkDet" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function extracts detector properties from an input json file
+and returns a detector class object which has the properties..</p>
+</dd>
+<dt>Args:</dt><dd><p>det_json_filename (str): Filename of the detector json file.
+spixdim    (array-like): Dimensions of the intrapixel pattern.</p>
+<blockquote>
+<div><p>(Default: [32, 32])</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>detector (detector): Detector object which has the extracted properties.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.mkTel">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">mkTel</code><span class="sig-paren">(</span><em class="sig-param">json_filename</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.mkTel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Summary:</dt><dd><p>This method creates a telescope object.</p>
+</dd>
+<dt>Args:</dt><dd><p>json_filename: Input json filename.</p>
+</dd>
+<dt>Returns:</dt><dd><p>telescope: Created telescope object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.extract_json.mkVar">
+<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">mkVar</code><span class="sig-paren">(</span><em class="sig-param">json_filename</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.mkVar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary: This is dummy to initialize variability class, to match mkDet etc.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="jis.photonsim.extract_json.variability">
+<em class="property">class </em><code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">variability</code><span class="sig-paren">(</span><em class="sig-param">json_filename</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.variability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Summary: stellar variability class.</p>
+<dl class="method">
+<dt id="jis.photonsim.extract_json.variability.print_test">
+<code class="sig-name descname">print_test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.variability.print_test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="jis.photonsim.extract_json.variability.read_json">
+<code class="sig-name descname">read_json</code><span class="sig-paren">(</span><em class="sig-param">json_filename</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.variability.read_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary: this function is json i/o for stellar variability</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="jis.photonsim.extract_json.variability.read_var">
+<code class="sig-name descname">read_var</code><span class="sig-paren">(</span><em class="sig-param">t_day</em>, <em class="sig-param">plate_index</em>, <em class="sig-param">star_index</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.variability.read_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>read variability for given plate inex and star index</p>
+<p>t_day : time array in the unit of day
+plate_index : plate index
+star_index : star index</p>
+<p>sw: if True there is variability, else no variability.
+injlc: variability
+b : impact parameter for vartype = planet</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-jis.photonsim.psf">
+<span id="jis-photonsim-psf-module"></span><h2>jis.photonsim.psf module<a class="headerlink" href="#module-jis.photonsim.psf" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="jis.photonsim.psf.calc_psf">
+<code class="sig-prename descclassname">jis.photonsim.psf.</code><code class="sig-name descname">calc_psf</code><span class="sig-paren">(</span><em class="sig-param">wfe</em>, <em class="sig-param">wN</em>, <em class="sig-param">k</em>, <em class="sig-param">WL</em>, <em class="sig-param">NP</em>, <em class="sig-param">Ntot</em>, <em class="sig-param">Stel</em>, <em class="sig-param">adata</em>, <em class="sig-param">M</em>, <em class="sig-param">aN</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.psf.calc_psf" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function calculates the psf in e-/sec/fp-cell
+based on the wavefront error (wfe),
+the spectral information (NP), and
+the aperture mask data (adata).
+The fp-cell scale is defined by the parameter M as
+(1/M) x 10^-3 rad/fp-cell.</p>
+</dd>
+<dt>Args:</dt><dd><p>wfe   (ndarray): Wavefront error data (um).
+wN    (int)    : Number of fp-cells on a side of the wfe data.
+k     (int)    : Number of wavelength data points.
+WL    (ndarray): Wavelength data (um).
+NP    (ndarray): Detected photon (electron) flux (e-/s/m^2/um).
+Ntot  (float)  : Total detected photon (electron) rate (e-/s/m^2).
+Stel  (float)  : Total area of the telescope aperture (m^2).
+adata (ndarray): Aperture mask data.
+M              : Inverse number of the PSF cell scale (mm/um).
+aN    (int)    : Number of apt-cells of the aperture mask data.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>image (nadarray): 520 x 520 fp-cell array of the psf (e-/s/fp-cell).</dt><dd><p>The fp-cell scale is (1/M) x 10^-3 rad/fp-cell.</p>
+</dd>
+</dl>
+</dd>
+<dt>Example:</dt><dd><p>import json
+from jis.photonsim import extract_json
+from jis.photonsim import readfits</p>
+<p># Reading source information.
+sp = json.load(open(“source.json”))
+k, WL, NP, Ntot = extract_json.extsp(sp)</p>
+<p># Reading aperture pattern.
+Stel, adata, aN, ahdr = readfits.read_aperture_mask(“aperture.fits”)</p>
+<p># Reading wavefront error pattern.
+wfe,wN,whdr=readfits.read_wfe_map(“wfe.fits”)</p>
+<p># Reading control parameters.
+cp = json.load(open(“ctrl_param.json”))
+M = cp[‘M’][‘val’]</p>
+<p># Getting psf pattern.
+image = psf.calc_psf(wfe,wN,k,WL,NP,Ntot,Stel,adata,M,aN)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-jis.photonsim.readfits">
+<span id="jis-photonsim-readfits-module"></span><h2>jis.photonsim.readfits module<a class="headerlink" href="#module-jis.photonsim.readfits" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="jis.photonsim.readfits.read_aperture_mask">
+<code class="sig-prename descclassname">jis.photonsim.readfits.</code><code class="sig-name descname">read_aperture_mask</code><span class="sig-paren">(</span><em class="sig-param">fitsfile</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.readfits.read_aperture_mask" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function reads the fits file of the aperture mask pattern.</p>
+</dd>
+<dt>Args:</dt><dd><p>fitsfile (str): Filename of the input fits file of the aperture mask pattern.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Stel  (float)  : Area of collecting photons written in the header (m^2).
+adata (ndarray): Aperture mask data.
+aN    (int)    : Number of apt-cells on a side of the aperture mask pattern.
+ahdr  (dict)   : Header of the input fits file.</p>
+</dd>
+<dt>Example:</dt><dd><p>from jis.photonsim.readfits import read_aperture_mask</p>
+<p>Stel, adata, aN, ahdr = read_aperture_mask(“aperture.fits”)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.readfits.read_wfe_map">
+<code class="sig-prename descclassname">jis.photonsim.readfits.</code><code class="sig-name descname">read_wfe_map</code><span class="sig-paren">(</span><em class="sig-param">fitsfile</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.readfits.read_wfe_map" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function reads the fits file of the wavefront error map.</p>
+</dd>
+<dt>Args:</dt><dd><p>fitsfile (str): Filename of the input fits file of the wavefront error map.</p>
+</dd>
+<dt>Returns:</dt><dd><p>wfe  (ndarray): Wavefront error data.
+wN   (int)    : Number of apt-cells on a side of the wavefront error map.
+whdr (dict)   : Header of the input fits file.</p>
+</dd>
+<dt>Example:</dt><dd><p>from jis.photonsim.readfits import read_wfe_map</p>
+<p>wfe, wN, whdr = read_wfe_map(“wfe.fits”)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-jis.photonsim.response">
+<span id="jis-photonsim-response-module"></span><h2>jis.photonsim.response module<a class="headerlink" href="#module-jis.photonsim.response" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="jis.photonsim.response.AWL">
+<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">AWL</code><span class="sig-paren">(</span><em class="sig-param">wl</em>, <em class="sig-param">R</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.AWL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.response.EXT_a">
+<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">EXT_a</code><span class="sig-paren">(</span><em class="sig-param">wl</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.EXT_a" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function returns the a(x) coefficient defining the 
+interstellar extinction curve in 1989ApJ…345..245C.
+A(lmd)/Av = a(x) + b(x)/Rv; x = 1/lmd(um);</p>
+</dd>
+<dt>Args:</dt><dd><p>wl (ndarray): Wavelength (um).</p>
+</dd>
+<dt>Returns:</dt><dd><p>ret (ndarray): Coefficients a(x).</p>
+</dd>
+<dt>Example:</dt><dd><p>import numpy as np
+from jis.photonsim.response import EXT_a</p>
+<p>wl = np.array([1.4, 1.5, 1.6])
+a_coeff = EXT_a(wl)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.response.EXT_b">
+<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">EXT_b</code><span class="sig-paren">(</span><em class="sig-param">wl</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.EXT_b" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function returns the b(x) coefficient defining the
+interstellar extinction curve in 1989ApJ…345..245C.
+A(lmd)/Av = a(x) + b(x)/Rv; x = 1/lmd(um);</p>
+</dd>
+<dt>Args:</dt><dd><p>wl (ndarray): Wavelength (um).</p>
+</dd>
+<dt>Returns:</dt><dd><p>ret (ndarray): Coefficients b(x).</p>
+</dd>
+<dt>Example:</dt><dd><p>import numpy as np
+from jis.photonsim.response import EXT_b</p>
+<p>wl = np.array([1.4, 1.5, 1.6])
+b_coeff = EXT_b(wl)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.response.Nphotons">
+<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">Nphotons</code><span class="sig-paren">(</span><em class="sig-param">WL</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.Nphotons" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function returns logarithmically 
+interpolated zero-mag photon flux (ph/s/m^2/um)
+in the MKO-NIR system at the wavelengths WL.</p>
+</dd>
+<dt>Args:</dt><dd><p>WL  (ndarray): Wavelength data (um).</p>
+</dd>
+<dt>Returns:</dt><dd><p>npw (ndarray): Zero-mag photon flux (ph/s/m^2/um).</p>
+</dd>
+<dt>Example:</dt><dd><p>import numpy as np
+from jis.photonsim.response import Nphotons</p>
+<p>wavelength = np.array([1.4, 1.5, 1.6])
+zm_ph_flux = Nphotons(wavelength)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.response.calc_response">
+<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">calc_response</code><span class="sig-paren">(</span><em class="sig-param">Rv</em>, <em class="sig-param">JH</em>, <em class="sig-param">alp</em>, <em class="sig-param">k</em>, <em class="sig-param">WLdefined</em>, <em class="sig-param">EPdefined</em>, <em class="sig-param">WLshort</em>, <em class="sig-param">WLlong</em>, <em class="sig-param">WLdet</em>, <em class="sig-param">QEdet</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.calc_response" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function calculates the electron rate (e-/s/m^2) detected by SJ
+based on the optics efficiency (EPdefined), the quantum efficiency (QEdet).
+The target object is assumed to have an interstellar extinction
+defined with Rv and JH (=E(J-H)) and show the same photon flux 
+at the Hw-band wavelength as a zero-mag object.
+The parameter ‘alp’ defines the weight to determine the Hw-band magnitude
+by interpolating the J- and H-band magnitudes.</p>
+</dd>
+<dt>Args:</dt><dd><p>Rv        (float)  : Extinction parasmeter Rv(=Av/E(B-V)).
+JH        (float)  : Color excess E(J-H)(=AJ-AH).
+alp       (float)  : Interpolation factor to define Hw-band mag.</p>
+<blockquote>
+<div><p>Hw-band mag = alp * J-mag + (1-alp) H-mag</p>
+</div></blockquote>
+<p>k         (int?)   : Number of wavelength data points? (not used).
+WLdefined (ndarray): Wavelength data.
+EPdefined (ndarray): Optical efficiency data.
+WLshort   (float)  : Shortest wavelength (um).
+WLlong    (float)  : Longest wavelength (um). 
+WLdet     (ndarray): Wavelength grid for the detector QE data, QEdet.
+QEdet     (ndarray): Quantum efficiency data of the detector.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Tr  (float)  : Total electron rate (e-/s/m^2).
+WL  (ndarray): Wavelength grid of Npr (um).
+Npr (ndarray): Electron flux (e-/s/m^2/um).</p>
+</dd>
+<dt>Example:</dt><dd><p>import numpy as np
+from jis.photonsim.response import calc_response</p>
+<p>Rv  = 3.1
+EJH = 0.3
+alp = 0.75
+WL  = np.array([1.4, 1.5, 1.6])
+EP  = np.array([0.9, 0.8, 0.7])
+QEdet = np.array([0.5, 0.4, 0.3])</p>
+<p>el_rate, wavelength, el_flux =            calc_response(Rv, EJH, alp, len(WL), WL, EP, np.min(WL), np.max(WL), WL, QEdet)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-jis.photonsim.wfe">
+<span id="jis-photonsim-wfe-module"></span><h2>jis.photonsim.wfe module<a class="headerlink" href="#module-jis.photonsim.wfe" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="jis.photonsim.wfe.calc_wfe">
+<code class="sig-prename descclassname">jis.photonsim.wfe.</code><code class="sig-name descname">calc_wfe</code><span class="sig-paren">(</span><em class="sig-param">EPD</em>, <em class="sig-param">efile</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.wfe.calc_wfe" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function calculates wavefront error pattern 
+by calculating summation of zernike polynomials.
+Coefficients and orders of the zernike terms are 
+given by the input json file, efile.
+In the simulation, the unit of the coefficients and 
+the calculated wfe is assumed to be um.</p>
+</dd>
+<dt>Args:</dt><dd><p>EPD   (float): Entrance pupil diameter (apt-cell=mm).
+efile (str)  : Filename of the json file having wavefront error parameters.
+<strong>* Apt-cell scale is assumed to be 1 mm/apt-cell!!! *</strong>
+<strong>* Coefficients are assumed to be in um!!!  *</strong></p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>data (ndarray): EPD+4 x EPD+4 data array of the calculated wavefront error pattern.</dt><dd><p>The unit is assumed to be um in the simulation.</p>
+</dd>
+</dl>
+</dd>
+<dt>Example:</dt><dd><p>from jis.photonsim.wfe import calc_wfe</p>
+<p>wfe_pattern = calc_wfe(500, “wfe.json”).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.wfe.wfe_model_z">
+<code class="sig-prename descclassname">jis.photonsim.wfe.</code><code class="sig-name descname">wfe_model_z</code><span class="sig-paren">(</span><em class="sig-param">rg</em>, <em class="sig-param">nmax</em>, <em class="sig-param">wlen</em>, <em class="sig-param">zodd</em>, <em class="sig-param">zeven</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.wfe.wfe_model_z" title="Permalink to this definition">¶</a></dt>
+<dd><p>wave front error のために zernike で n=2..(nmax-1) の 強度データを作成する。
+長さのスケールに用いる波長を wlen とする。
+n が奇数のときは、強度を wlen/zodd とし、偶数の時は wlen/zeven とする。
+そして、 m=0 ではこの強度をそのまま用い、 m がゼロでなければ、
+この強度を正の m の項に に cos(θ) 倍、 m が負の項に sin(θ) 倍したものを
+用いることにする。ここで θ は 0 から 2π の一様乱数である。</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-jis.photonsim.zernike">
+<span id="jis-photonsim-zernike-module"></span><h2>jis.photonsim.zernike module<a class="headerlink" href="#module-jis.photonsim.zernike" title="Permalink to this headline">¶</a></h2>
+<p>Zernike polynomial code</p>
+<dl class="function">
+<dt id="jis.photonsim.zernike.Radial">
+<code class="sig-prename descclassname">jis.photonsim.zernike.</code><code class="sig-name descname">Radial</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">m</em>, <em class="sig-param">rho</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.Radial" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function returns Zernike amplitude at rho with index n and m.</p>
+<dl class="simple">
+<dt>Zernike function is:</dt><dd><dl class="simple">
+<dt>Z^m_n(rho, phi) = R^m_n(rho) x cos(m phi)   (m&gt;=0)</dt><dd><p>R^m_n(rho) x sin(<a href="#id17"><span class="problematic" id="id18">|m|</span></a> phi) (m&lt;0),</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>This function returns R^m_n(rho)</p>
+</dd>
+<dt>Args:</dt><dd><p>n, m (int)  : Indices of the Zernike term (n&gt;=0; m&lt;=n).
+rho  (float/ndarray): Distance from the center.</p>
+</dd>
+<dt>Returns:</dt><dd><p>r (float/ndarray): R^m_n(rho) of the Zernike term.</p>
+</dd>
+<dt>Example:</dt><dd><p>import numpy as np
+from jis.photonsim.zernike import radial</p>
+<p>zernike_r_2_0 = radial(2, 0, 0.3)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.zernike.Zernike">
+<code class="sig-prename descclassname">jis.photonsim.zernike.</code><code class="sig-name descname">Zernike</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">m</em>, <em class="sig-param">rho</em>, <em class="sig-param">theta</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.Zernike" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary:</dt><dd><p>This function returns Zernike function values at (rho, theta)
+with indices of n and m, Z^m_n(rho, theta).</p>
+</dd>
+<dt>Args:</dt><dd><p>n, m  (int)  : Indices of the Zernike function.
+rho   (float/ndarray): Distance from the center.
+theta (float/ndarray): Azimuthal angle (rad).</p>
+</dd>
+<dt>Returns:</dt><dd><p>z (float/ndarray): Zernike (m, n) value at (rho, theta).</p>
+</dd>
+<dt>Example:</dt><dd><p>from jis.photonsim.zernike import Zernike</p>
+<p>z_2_0 = Zernike(2, 0, 0.3, 0.1)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="jis.photonsim.zernike.ZernikeID">
+<code class="sig-prename descclassname">jis.photonsim.zernike.</code><code class="sig-name descname">ZernikeID</code><span class="sig-paren">(</span><em class="sig-param">N</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.ZernikeID" title="Permalink to this definition">¶</a></dt>
+<dd><dl>
+<dt>Summary: </dt><dd><p>This function returns first N Zernike-indices n and m as arrays.</p>
+</dd>
+<dt>Args:</dt><dd><p>N (int): Number of the indices you want to obtain.</p>
+</dd>
+<dt>Return:</dt><dd><p>ZIDn (ndarray): Array of n-indices.
+ZIDm (ndarray): Array of m-indices.</p>
+</dd>
+<dt>Example:</dt><dd><p>from jis.photonsim.zernike import ZernikeID</p>
+<p>ns, ms = ZernikeID(6)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-jis.photonsim">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-jis.photonsim" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="jis.pixsim.html" class="btn btn-neutral float-right" title="jis.pixsim package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="jis.jisplot.html" class="btn btn-neutral float-left" title="jis.jisplot package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, JIS developer team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

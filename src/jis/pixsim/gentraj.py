@@ -1,3 +1,10 @@
+"""
+Summary
+---------
+Generating trajectory
+
+"""
+
 import numpy as np
 import argparse
 import pylab
