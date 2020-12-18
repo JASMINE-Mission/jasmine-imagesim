@@ -497,7 +497,7 @@ class variability():
         """
         Summary
         -------        
-        read variability for given plate inex and star index
+        read variability for given plate index and star index
 
         Parameters
         ----------
