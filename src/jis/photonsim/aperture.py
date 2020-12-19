@@ -3,17 +3,16 @@ import math
 
 def calc_aperture(N,EPD,Robs,Tsp):
     """
-    Summary:
-        This function calculates the aperture pattern and its area.
+    This function calculates the aperture pattern and its area.
 
-        The aperture pattern consists of a circular aperture
-        with an entrance pupil diameter of EPD, a central 
-        circular obscuration with a radius of Robs, and
-        a 3-vane spider pattern with a thickness of Tsp. 
+    The aperture pattern consists of a circular aperture
+    with an entrance pupil diameter of EPD, a central 
+    circular obscuration with a radius of Robs, and
+    a 3-vane spider pattern with a thickness of Tsp. 
 
-        The output pattern consists of N x N apt-cells with a value of 0 or 1.
-        The parameters (EPD, Robs, and Tsp) are in "apt-cell".
-        But in the current simulation, we are assuming a scale of 1 mm/apt-cell.
+    The output pattern consists of N x N apt-cells with a value of 0 or 1.
+    The parameters (EPD, Robs, and Tsp) are in "apt-cell".
+    But in the current simulation, we are assuming a scale of 1 mm/apt-cell.
 
     Args:
         N    (int)  : Number of apt-cells of the output aperture pattern (apt-cell).

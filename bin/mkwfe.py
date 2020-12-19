@@ -1,15 +1,17 @@
 #!/usr/bin/env python3.8
 
-"""Make a wave fromt error map
+""" Make a wave front error map.
+
+.. code-block:: bash
 
   usage:
     mkwfe.py [-h|--help] -t tel.json -e wfe.json -m wfe.fits
 
- options:
-   --help       show this help message and exit
-   -t tel.json  telescope parameter file
-   -e wfe.json  wave front error parameter file
-   -m wfe.fits  output wave front error map
+  options:
+    -h --help    show this help message and exit
+    -t tel.json  telescope parameter file
+    -e wfe.json  wave front error parameter file
+    -m wfe.fits  output wave front error map
 """
 from docopt import docopt             # command line interface
 import astropy.io.fits as fits

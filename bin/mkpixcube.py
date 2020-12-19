@@ -2,26 +2,28 @@
 # -*- coding: utf-8 -*-
 """Make a pixel cube
 
+.. code-block:: bash
+
   usage:
     mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json [--psf psf.fits] -o pixcube [-m] [--persistence] 
 
   options:
-   --help         show this help message and exit
-   -l lc.fits     light curve
-   -x aX.fits     X-axis simulated ACE file
-   -v xs          aX.fits is scaled by xs
-   -y aY.fits     Y-axis simulated ACE file
-   -w ys          aY.fits is scaled by ys
-   -n N           output image is N x N
-   -p ps          pixel scale of Output image
-   -s tframe      exposure [sec] of a frame
-   -f nframe      number of the frames
-   -d vd          drifting velocity [pixel scale/sec]
-   --det det.json detector param json file
-   --psf psf.fits  psf array file (if not given, an analytic donuts model will be used.
-   -o pixcube     output h5 of pixcube
-   -m             output sequential png files for movie
-   --persistence  considering persistence (not supported yet!).
+    -h --help       show this help message and exit
+    -l lc.fits      light curve
+    -x aX.fits      X-axis simulated ACE file
+    -v xs           aX.fits is scaled by xs
+    -y aY.fits      Y-axis simulated ACE file
+    -w ys           aY.fits is scaled by ys
+    -n N            output image is N x N
+    -p ps           pixel scale of Output image
+    -s tframe       exposure [sec] of a frame
+    -f nframe       number of the frames
+    -d vd           drifting velocity [pixel scale/sec]
+    --det det.json  detector param json file
+    --psf psf.fits  psf array file (if not given, an analytic donuts model will be used.
+    -o pixcube      output h5 of pixcube
+    -m              output sequential png files for movie
+    --persistence   considering persistence (not supported yet!).
 """ 
 
 from docopt import docopt             # command line interface

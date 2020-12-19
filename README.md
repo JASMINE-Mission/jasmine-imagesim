@@ -56,4 +56,4 @@ apt install python3-sphinx
 sphinx-build -b html ./docs ./docs/_build/
 ```
 
-See docs/_build/index.html
+Then, check docs/_build/index.html with your browser.

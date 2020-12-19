@@ -7,14 +7,13 @@ import sys
 
 def Radial(n,m,rho):
     """
-    Summary:
-        This function returns Zernike amplitude at rho with index n and m.
+    This function returns Zernike amplitude at rho with index n and m.
 
-        Zernike function is:
-          Z^m_n(rho, phi) = R^m_n(rho) x cos(m phi)   (m>=0)
-                            R^m_n(rho) x sin(|m| phi) (m<0),
+    Zernike function is:
+      Z^m_n(rho, phi) = R^m_n(rho) x cos(m phi)   (m>=0)
+                        R^m_n(rho) x sin(|m| phi) (m<0),
 
-        This function returns R^m_n(rho)
+    This function returns R^m_n(rho)
 
     Args:
         n, m (int)  : Indices of the Zernike term (n>=0; m<=n).
@@ -50,9 +49,8 @@ def Radial(n,m,rho):
 
 def Zernike(n,m,rho,theta):
     """
-    Summary:
-        This function returns Zernike function values at (rho, theta)
-        with indices of n and m, Z^m_n(rho, theta).
+    This function returns Zernike function values at (rho, theta)
+    with indices of n and m, Z^m_n(rho, theta).
 
     Args:
         n, m  (int)  : Indices of the Zernike function.
@@ -82,8 +80,7 @@ def Zernike(n,m,rho,theta):
 
 def ZernikeID(N):
     """
-    Summary: 
-        This function returns first N Zernike-indices n and m as arrays.
+    This function returns first N Zernike-indices n and m as arrays.
 
     Args:
         N (int): Number of the indices you want to obtain.
