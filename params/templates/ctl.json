@@ -25,7 +25,7 @@
   "dtace":  {"val": 15e-5, "description": "Timestep of ACE simulation in sec."},
   "tace":   {"val": 3600,   "description": "Time range of ACE simulation in sec (to be adjusted)."}},
 "Nplate":{
-  "title": "Number of plates which make up the small frame.",
+  "title": "Number of plates which make up a small frame.",
   "val"  : 11}
 }
 

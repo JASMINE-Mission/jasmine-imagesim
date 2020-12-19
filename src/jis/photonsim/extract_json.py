@@ -337,13 +337,15 @@ def mkControlParams(json_filename):
             M_parameter (int) : The M parameter which determine the cell scale of the psf.
                                 The fp-cell scale will be (1/M) x 10^-3 rad/fp-cell.
             ace_control (dict): Parameters related to the ace calculation.
+            nplate      (int) : Number of plates that make up a small frame.
 
         """
           
-        def __init__(self, wfe=None, M=None, ace=None):
+        def __init__(self, wfe=None, M=None, ace=None, nplate=None):
             self.wfe_control = wfe
             self.M_parameter = M
             self.ace_control = ace
+            self.nplate      = nplate
 
 
     with open(json_filename, "r") as fp:
@@ -360,9 +362,11 @@ def mkControlParams(json_filename):
             ace[item] = js['ACEcontrol'][item]['val'] 
         ace['nace'] = int(ace['tace']/ace['dtace'])+1
         ace['tace'] = ace['dtace']*ace['nace']
+
+        nplate = js['Nplate']['val']
     fp.close()
 
-    control_params = control_params(wfe=wfe, M=M, ace=ace)
+    control_params = control_params(wfe=wfe, M=M, ace=ace, nplate=nplate)
 
     return control_params
 
