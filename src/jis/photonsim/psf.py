@@ -5,13 +5,12 @@ from scipy.ndimage import shift
 
 def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
     """
-    Summary:
-        This function calculates the psf in e-/sec/fp-cell
-        based on the wavefront error (wfe),
-        the spectral information (NP), and
-        the aperture mask data (adata).
-        The fp-cell scale is defined by the parameter M as
-        (1/M) x 10^-3 rad/fp-cell.
+    This function calculates the psf in e-/sec/fp-cell
+    based on the wavefront error (wfe),
+    the spectral information (NP), and
+    the aperture mask data (adata).
+    The fp-cell scale is defined by the parameter M as
+    (1/M) x 10^-3 rad/fp-cell.
 
     Args:
         wfe   (ndarray): Wavefront error data (um).

@@ -1,14 +1,16 @@
 #!/usr/bin/env python3.8
 """PSF convolution
 
+.. code-block:: bash
+
   usage:
-    convolv.py [-h|--help] -p psf1.fits -c param.json -o output.fits
+    convolv.py [-h|--help] -p psf.fits -c param.json -o output.fits
 
   options:
-   --help           show this help message and exit
-   -p psf.fits
-   -c param.json
-   -o output.fits
+    -h --help       show this help message and exit
+    -p psf.fits
+    -c param.json
+    -o output.fits
 """
 from docopt import docopt             # command line interface
 import math

@@ -2,16 +2,18 @@
 # -*- coding: utf-8 -*-
 """Simulate atitude control error
 
+.. code-block:: bash
+
   usage:
     simace.py [-h|--help] -n N -t T -e ace.json -m ace.fits [-p plot.png]
 
- options:
-   -h --help    show this help message and exit
-   -n N         Length of output N steps
-   -t T         total time
-   -e ace.json  atitude control error parameter file
-   -m ace.fits  output atitude control error
-   -p plot.png  plot output
+  options:
+    -h --help    show this help message and exit
+    -n N         Length of output N steps
+    -t T         total time
+    -e ace.json  atitude control error parameter file
+    -m ace.fits  output atitude control error
+    -p plot.png  plot output
 
 """ 
 from docopt import docopt             # command line interface

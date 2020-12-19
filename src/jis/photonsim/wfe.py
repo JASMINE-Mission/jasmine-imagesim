@@ -6,13 +6,12 @@ import json
 
 def calc_wfe(EPD,efile):
     """
-    Summary:
-        This function calculates wavefront error pattern 
-        by calculating summation of zernike polynomials.
-        Coefficients and orders of the zernike terms are 
-        given by the input json file, efile.
-        In the simulation, the unit of the coefficients and 
-        the calculated wfe is assumed to be um. 
+    This function calculates wavefront error pattern 
+    by calculating summation of zernike polynomials.
+    Coefficients and orders of the zernike terms are 
+    given by the input json file, efile.
+    In the simulation, the unit of the coefficients and 
+    the calculated wfe is assumed to be um. 
 
     Args:
         EPD   (float): Entrance pupil diameter (apt-cell=mm).
