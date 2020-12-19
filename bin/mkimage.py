@@ -51,7 +51,6 @@ spixdim  = [32, 32]  # subpixel dimension in a pixel (setting for intrapix patte
 acex_std = 0.276     # std of ace_x (arcsec).
 acey_std = 0.276     # std of ace_y (arcsec). 
 Nmargin = 10         # Margin for simpix calc.
-Nplate  = 200         # Number of plates in a small frame.
 tplate  = 12.5       # Exposure time of a plate (sec).
 mag     = 10.5       # Stellar Hw band mag.
 
@@ -65,7 +64,10 @@ if __name__ == '__main__':
         dirname_params = args['--pd']
 
     filename_starplate = os.path.join(dirname_params, args['--starplate'])
-    filename_varjson   = os.path.join(dirname_params, args['--var'])
+
+    if args['--var']:
+        filename_varjson   = os.path.join(dirname_params, args['--var'])
+
     filename_detjson   = os.path.join(dirname_params, args['--det'])
     filename_teljson   = os.path.join(dirname_params, args['--tel'])
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
@@ -85,6 +87,18 @@ if __name__ == '__main__':
         overwrite = True
 
 
+    # Loading parameters. ##########################################
+    table_starplate = asc.read(filename_starplate)
+    detector        = mkDet(filename_detjson, spixdim=spixdim)
+    control_params  = mkControlParams(filename_ctljson)
+    telescope       = mkTel(filename_teljson)
+    with open(filename_acejson, "r") as f:
+        ace_params = json.load(f)
+    f.close()
+
+    detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi # det. pix. scale in arcsec/pix.
+
+
     # Setting output filenames. ####################################
     filename_interpix = os.path.join(dirname_output, "interpix.fits")
     filename_intrapix = os.path.join(dirname_output, "intrapix.fits")
@@ -97,7 +111,7 @@ if __name__ == '__main__':
 
     if output_format == 'platefits':
         filename_images = []
-        for i in range(0, Nplate):
+        for i in range(0, control_params.nplate):
             filename_images.append(os.path.join(dirname_output, "image{:02d}.fits".format(i)))
     elif output_format == 'fitscube':
         filename_images = [os.path.join(dirname_output, "image.fits")]
@@ -122,18 +136,6 @@ if __name__ == '__main__':
                     print("Please set --overwrite option to overwrite it.")
                     exit()
 
-
-    # Loading parameters. ##########################################
-    table_starplate = asc.read(filename_starplate)
-    detector        = mkDet(filename_detjson, spixdim=spixdim)
-    control_params  = mkControlParams(filename_ctljson)
-    telescope       = mkTel(filename_teljson)
-    with open(filename_acejson, "r") as f:
-        ace_params = json.load(f)
-    f.close()
-
-    detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi # det. pix. scale in arcsec/pix.
-        
 
     # Selecting the data for the first plate. ######################
     pos = np.where(table_starplate['plate index']==0)
@@ -217,7 +219,7 @@ if __name__ == '__main__':
         #load variability class
         variability=mkVar(filename_varjson)
         #define time array in the unit of day
-        tday=(tplate+tscan)*np.array(range(0,Nplate))/3600/24
+        tday=(tplate+tscan)*np.array(range(0,control_params.nplate))/3600/24
         for line in asc.read(filename_starplate):
             varsw, injlc, b=variability.read_var(tday,line['star index'])
             if varsw:
@@ -226,9 +228,9 @@ if __name__ == '__main__':
                 plt.clf()
 
     
-    if Nts_per_plate*Nplate >= theta_full.shape[1]:
+    if Nts_per_plate*control_params.nplate >= theta_full.shape[1]:
         print("Insufficient time length of ACE data.")
-        print("Nts_per_plate*Nplate: {}".format(Nts_per_plate*Nplate))
+        print("Nts_per_plate*Nplate: {}".format(Nts_per_plate*control_params.nplate))
         print("N_ace_data          : {}".format(theta_full.shape[1]))
         sys.exit(-1)
 
@@ -242,7 +244,7 @@ if __name__ == '__main__':
     # Making image. ################################################
 
     ## Making sky region.
-    pixcube_global = np.zeros(shape=(detector.npix, detector.npix, Nplate))
+    pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     pixcube_global += detector.idark * tplate
     pixcube_global, seed = addnoise(pixcube_global, np.sqrt(2.)*detector.readnoise)
     pixcube_global = np.round(pixcube_global/detector.gain) # in adu/pix/plate.
@@ -263,13 +265,13 @@ if __name__ == '__main__':
         interpix_local = rf.flat_interpix(detector.interpix, x0_global, y0_global, pixdim, figsw=0)
 
         # Making a cube containing plate data for a local region (small frame for a local region).
-        pixcube = np.zeros((Npixcube, Npixcube, Nplate))   # Initialize (Axis order: X, Y, Z)
+        pixcube = np.zeros((Npixcube, Npixcube, control_params.nplate))   # Initialize (Axis order: X, Y, Z)
 
         # Load variability
         if args["--var"]:
             varsw, injlc, b=variability.read_var(tday,line['star index'])
         
-        for iplate in tqdm.tqdm(range(0, Nplate)):         # Loop to take each plate.
+        for iplate in tqdm.tqdm(range(0, control_params.nplate)):         # Loop to take each plate.
             # picking temporary trajectory and local position update
             istart = iplate    *Nts_per_plate
             iend   = (iplate+1)*Nts_per_plate
@@ -327,7 +329,7 @@ if __name__ == '__main__':
     else:
         pixcube_global = np.swapaxes(pixcube_global, 0, 2)
         if output_format == 'platefits':
-            for i in range(0, Nplate):
+            for i in range(0, control_params.nplate):
                 pf.writeto(filename_images[i], pixcube_global[i].astype('int32'), overwrite=overwrite)
         elif output_format == 'fitscube':
             pf.writeto(filename_images[0], pixcube_global.astype('int32'), overwrite=overwrite)
