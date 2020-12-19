@@ -6,9 +6,8 @@ from jis.photonsim import aperture
 
 def extsp(sp):
     """
-    Summary:
-        This function extracts spectral information 
-        from a decoded spectral data, 'sp'.
+    This function extracts spectral information 
+    from a decoded spectral data, 'sp'.
 
     Args:
         sp (dict): Decoded json data of the spectral information.
@@ -46,9 +45,8 @@ def extsp(sp):
 
 def exttel(tel):
     """
-    Summary:
-        This function extracts telescope information
-        from a decoded telescope data, 'tel'.
+    This function extracts telescope information
+    from a decoded telescope data, 'tel'.
 
     Args:
         tel (dict): Decoded json data of the telescope information.
@@ -87,9 +85,8 @@ def exttel(tel):
 
 def mkDet(det_json_filename, spixdim=[32, 32]):
     """
-    Summary:
-        This function extracts detector properties from an input json file
-        and returns a detector class object which has the properties..
+    This function extracts detector properties from an input json file
+    and returns a detector class object which has the properties..
 
     Args:
         det_json_filename (str): Filename of the detector json file.
@@ -106,8 +103,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
                      tau=None, rho=None, readnoise=None, fullwell=None,\
                      gain=None, readparams=None, qe=None, pixsize=None):
             """
-            Summary:
-                This is a class to describe the detector properties.
+             This is a class to describe the detector properties.
 
             Attributes:
                 npix     (int)    : Number of pixels on a side.
@@ -193,8 +189,7 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
 
 def extIdark(det):
     """
-    Summary:
-        This function extracts dark current including stray light.
+    This function extracts dark current including stray light.
 
     Args:
         det (dict): Decoded json data of the detector information.
@@ -211,8 +206,7 @@ def extIdark(det):
 
 def extPersistenceParams(det):
     """
-    Summary:
-        This function extracts persistence parameters.
+    This function extracts persistence parameters.
 
     Args:
         det (dict): Decoded json data of the detector information.
@@ -231,8 +225,7 @@ def extPersistenceParams(det):
 
 def extFlatInfo(det):
     """
-    Summary:
-        This function extracts information about detector flat.
+    This function extracts information about detector flat.
 
     Args:
         det (dict): Decoded json data of the detector information.
@@ -256,9 +249,8 @@ def extFlatInfo(det):
 
 def extQE(det):
     """
-    Summary:
-        This function extracts quantum efficiency information
-        from a decoded detector data, 'det'.
+    This function extracts quantum efficiency information
+    from a decoded detector data, 'det'.
 
     Args:
         det (dict): Decoded json data of the detector information.
@@ -291,9 +283,8 @@ def extQE(det):
 
 def extsrc(src):
     """
-    Summary:
-        This function extracts object source information
-        from a decoded object source data, 'src'.
+    This function extracts object source information
+    from a decoded object source data, 'src'.
 
     Args:
         src (dict): Decoded json data of the object source information.
@@ -323,10 +314,9 @@ def extsrc(src):
 
 def mkControlParams(json_filename):
     """
-    Summary:
-        This method creates a control_params object,
-        which contains control parameters written in the 
-        json file for the control parameters.
+    This method creates a control_params object,
+    which contains control parameters written in the 
+    json file for the control parameters.
 
     Args:
         json_filename (string): Input json filename.
@@ -339,8 +329,7 @@ def mkControlParams(json_filename):
 
     class control_params:
         """
-        Summary:
-            This is a class to handle the control parameters.
+         This is a class to handle the control parameters.
 
         Attributes:
             wfe_control (dict): Parameters related to the wfe calculation.
@@ -379,8 +368,7 @@ def mkControlParams(json_filename):
 
 def mkTel(json_filename):
     """
-    Summary:
-        This method creates a telescope object.
+    This method creates a telescope object.
 
     Args:
         json_filename: Input json filename.
@@ -392,8 +380,7 @@ def mkTel(json_filename):
 
     class telescope:
         """
-        Summary:
-            This is a class to handle telescope parameters.
+         This is a class to handle telescope parameters.
 
         Attributs:
             epd              (float)  : Exit pupil diameter (mm).

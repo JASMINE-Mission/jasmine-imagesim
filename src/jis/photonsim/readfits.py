@@ -4,8 +4,7 @@ import math
 
 def read_wfe_map(fitsfile):
     """
-    Summary:
-        This function reads the fits file of the wavefront error map.
+    This function reads the fits file of the wavefront error map.
 
     Args:
         fitsfile (str): Filename of the input fits file of the wavefront error map.
@@ -41,8 +40,7 @@ def read_wfe_map(fitsfile):
 
 def read_aperture_mask(fitsfile):
     """
-    Summary:
-        This function reads the fits file of the aperture mask pattern.
+    This function reads the fits file of the aperture mask pattern.
 
     Args:
         fitsfile (str): Filename of the input fits file of the aperture mask pattern.

@@ -33,14 +33,13 @@ WL_H = 1.644
 
 def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEdet):
     """
-    Summary:
-        This function calculates the electron rate (e-/s/m^2) detected by SJ
-        based on the optics efficiency (EPdefined), the quantum efficiency (QEdet).
-        The target object is assumed to have an interstellar extinction
-        defined with Rv and JH (=E(J-H)) and show the same photon flux 
-        at the Hw-band wavelength as a zero-mag object.
-        The parameter 'alp' defines the weight to determine the Hw-band magnitude
-        by interpolating the J- and H-band magnitudes.
+    This function calculates the electron rate (e-/s/m^2) detected by SJ
+    based on the optics efficiency (EPdefined), the quantum efficiency (QEdet).
+    The target object is assumed to have an interstellar extinction
+    defined with Rv and JH (=E(J-H)) and show the same photon flux 
+    at the Hw-band wavelength as a zero-mag object.
+    The parameter 'alp' defines the weight to determine the Hw-band magnitude
+    by interpolating the J- and H-band magnitudes.
 
     Args:
         Rv        (float)  : Extinction parasmeter Rv(=Av/E(B-V)).
@@ -122,10 +121,9 @@ def calc_response(Rv, JH, alp, k, WLdefined, EPdefined, WLshort, WLlong, WLdet, 
 
 def Nphotons(WL):
     """
-    Summary:
-        This function returns logarithmically 
-        interpolated zero-mag photon flux (ph/s/m^2/um)
-        in the MKO-NIR system at the wavelengths WL.
+    This function returns logarithmically 
+    interpolated zero-mag photon flux (ph/s/m^2/um)
+    in the MKO-NIR system at the wavelengths WL.
 
     Args:
         WL  (ndarray): Wavelength data (um).
@@ -149,10 +147,9 @@ def Nphotons(WL):
 
 def EXT_a(wl):
     """
-    Summary:
-        This function returns the a(x) coefficient defining the 
-        interstellar extinction curve in 1989ApJ...345..245C.
-        A(lmd)/Av = a(x) + b(x)/Rv; x = 1/lmd(um); 
+    This function returns the a(x) coefficient defining the 
+    interstellar extinction curve in 1989ApJ...345..245C.
+    A(lmd)/Av = a(x) + b(x)/Rv; x = 1/lmd(um); 
 
     Args:
         wl (ndarray): Wavelength (um).
@@ -186,10 +183,9 @@ def EXT_a(wl):
     
 def EXT_b(wl):
     """
-    Summary:
-        This function returns the b(x) coefficient defining the
-        interstellar extinction curve in 1989ApJ...345..245C.
-        A(lmd)/Av = a(x) + b(x)/Rv; x = 1/lmd(um);
+    This function returns the b(x) coefficient defining the
+    interstellar extinction curve in 1989ApJ...345..245C.
+    A(lmd)/Av = a(x) + b(x)/Rv; x = 1/lmd(um);
 
     Args:
         wl (ndarray): Wavelength (um).

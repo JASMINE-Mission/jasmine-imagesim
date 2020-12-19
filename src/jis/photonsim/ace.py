@@ -6,12 +6,11 @@ import matplotlib.pyplot as plt
 
 def calc_ace(rg, N, T, ace):
     """
-    Summary:
-        This function makes a one-dimensional attitude control error (ACE) data.
-        The ACE is assumed to have a PSW which consists of a power-law function
-        and some Lorenzian-type peaks (PS disturbance). The returned ace data (acedata)
-        is normalized with its standard deviation. The generated PSD is also returned
-        as 'psdn', but this is not normalized as 'acedata'.
+    This function makes a one-dimensional attitude control error (ACE) data.
+    The ACE is assumed to have a PSW which consists of a power-law function
+    and some Lorenzian-type peaks (PS disturbance). The returned ace data (acedata)
+    is normalized with its standard deviation. The generated PSD is also returned
+    as 'psdn', but this is not normalized as 'acedata'.
 
     Args:
         rg  (numpy.random.Generator): Random generator.
@@ -111,9 +110,8 @@ def calc_ace(rg, N, T, ace):
 
 def plot_ace(N, T, data, psdn, plotfile):
     """
-    Summary:
-        This function makes a plot of the ace data.
-        The plot is saved as a file, 'plotfile'.
+    This function makes a plot of the ace data.
+    The plot is saved as a file, 'plotfile'.
 
     Args:
         N    (int)    : Number of time grids.
@@ -160,9 +158,8 @@ def plot_ace(N, T, data, psdn, plotfile):
 
 def ace2d(x_scale, y_scale, pix_scale, N, xdata, ydata, xN):
     """
-    Summary:
-        This function returns 2D ace data array with considering
-        the ace data scale and the pixel scale.
+    This function returns 2D ace data array with considering
+    the ace data scale and the pixel scale.
  
     Args:  
         x_scale   (float)  : Scale of xdata.
