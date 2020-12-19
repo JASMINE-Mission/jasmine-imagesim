@@ -12,7 +12,6 @@ jis.jisplot.plotace module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

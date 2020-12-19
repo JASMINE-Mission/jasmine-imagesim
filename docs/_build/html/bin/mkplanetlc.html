@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -169,21 +169,18 @@
   <div class="section" id="module-mkplanetlc">
 <span id="mkplanetlc-module"></span><h1>mkplanetlc module<a class="headerlink" href="#module-mkplanetlc" title="Permalink to this headline">¶</a></h1>
 <p>Make a planet signal</p>
-<blockquote>
-<div><dl class="simple">
-<dt>usage:</dt><dd><p>mkplanetlc.py [-h|–help] [-m|–plot] -s tframe -f nframe -p planet.json -o lc.fits</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="simple">
-<dt>options:</dt><dd><p>-h –help       show this help message and exit
--m –plot       plot light curve
--s tframe       exposure [sec] of a frame
--f nframe       number of the frames
--p planet.json  planet parameters
--o lc.fits      output lightcurve fits</p>
-</dd>
-</dl>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:
+  mkplanetlc.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> <span class="o">[</span>-m<span class="p">|</span>--plot<span class="o">]</span> -s tframe -f nframe -p planet.json -o lc.fits
+
+options:
+  -h --help       show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -m --plot       plot light curve
+  -s tframe       exposure <span class="o">[</span>sec<span class="o">]</span> of a frame
+  -f nframe       number of the frames
+  -p planet.json  planet parameters
+  -o lc.fits      output lightcurve fits
+</pre></div>
+</div>
 </div>
 
 

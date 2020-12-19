@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -169,27 +169,29 @@
   <div class="section" id="module-mksimace">
 <span id="mksimace-module"></span><h1>mksimace module<a class="headerlink" href="#module-mksimace" title="Permalink to this headline">¶</a></h1>
 <p>Simulate atitude control error</p>
-<blockquote>
-<div><dl class="simple">
-<dt>usage:</dt><dd><p>simace.py [-h|–help] -n N -t T -e ace.json -m ace.fits [-p plot.png]</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="simple">
-<dt>options:</dt><dd><p>-h –help    show this help message and exit
--n N         Length of output N steps
--t T         total time
--e ace.json  atitude control error parameter file
--m ace.fits  output atitude control error
--p plot.png  plot output</p>
-</dd>
-</dl>
-<dl class="data">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:
+  simace.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> -n N -t T -e ace.json -m ace.fits <span class="o">[</span>-p plot.png<span class="o">]</span>
+
+options:
+  -h --help    show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -n N         Length of output N steps
+  -t T         total <span class="nb">time</span>
+  -e ace.json  atitude control error parameter file
+  -m ace.fits  output atitude control error
+  -p plot.png  plot output
+</pre></div>
+</div>
+<dl class="py data">
 <dt id="mksimace.rg">
-<code class="sig-prename descclassname">mksimace.</code><code class="sig-name descname">rg</code><em class="property"> = Generator(PCG64) at 0x7EFE75BD1B88</em><a class="headerlink" href="#mksimace.rg" title="Permalink to this definition">¶</a></dt>
-<dd><p>See <a class="reference external" href="https://numpy.org/doc/1.18/reference/random/index.html">https://numpy.org/doc/1.18/reference/random/index.html</a> 
-By default, Generator uses bits provided by PCG64 which has better 
+<code class="sig-prename descclassname">mksimace.</code><code class="sig-name descname">rg</code><em class="property"> = Generator(PCG64) at 0x7F906FC2D9A8</em><a class="headerlink" href="#mksimace.rg" title="Permalink to this definition">¶</a></dt>
+<dd><p>//numpy.org/doc/1.18/reference/random/index.html
+By default, Generator uses bits provided by PCG64 which has better
 statistical properties than the legacy MT19937</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>See https</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

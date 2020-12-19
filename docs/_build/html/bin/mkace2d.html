@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -169,27 +169,20 @@
   <div class="section" id="module-mkace2d">
 <span id="mkace2d-module"></span><h1>mkace2d module<a class="headerlink" href="#module-mkace2d" title="Permalink to this headline">¶</a></h1>
 <p>Make an atitude control error map</p>
-<blockquote>
-<div><dl class="simple">
-<dt>usage:</dt><dd><p>mkace2d.py [-h|–help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -o out.fits</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl>
-<dt>options:</dt><dd><dl class="option-list">
-<dt><kbd><span class="option">--help</span></kbd></dt>
-<dd><p>show this help message and exit</p>
-</dd>
-</dl>
-<p>-x aX.fits   X-axis simulated ACE file
--v xs        aX.fits is scaled by xs
--y aY.fits   Y-axis simulated ACE file
--w ys        aY.fits is scaled by ys
--n N         output image is N x N 
--p ps        pixel scale of Output image
--o out.fits  output image file</p>
-</dd>
-</dl>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:
+  mkace2d.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -o out.fits
+
+options:
+  -h --help    show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -x aX.fits   X-axis simulated ACE file
+  -v xs        aX.fits is scaled by xs
+  -y aY.fits   Y-axis simulated ACE file
+  -w ys        aY.fits is scaled by ys
+  -n N         output image is N x N
+  -p ps        pixel scale of Output image
+  -o out.fits  output image file
+</pre></div>
+</div>
 </div>
 
 

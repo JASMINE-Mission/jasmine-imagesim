@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -168,24 +168,17 @@
             
   <div class="section" id="module-mkwfe">
 <span id="mkwfe-module"></span><h1>mkwfe module<a class="headerlink" href="#module-mkwfe" title="Permalink to this headline">¶</a></h1>
-<p>Make a wave fromt error map</p>
-<blockquote>
-<div><dl class="simple">
-<dt>usage:</dt><dd><p>mkwfe.py [-h|–help] -t tel.json -e wfe.json -m wfe.fits</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl>
-<dt>options:</dt><dd><dl class="option-list">
-<dt><kbd><span class="option">--help</span></kbd></dt>
-<dd><p>show this help message and exit</p>
-</dd>
-</dl>
-<p>-t tel.json  telescope parameter file
--e wfe.json  wave front error parameter file
--m wfe.fits  output wave front error map</p>
-</dd>
-</dl>
+<p>Make a wave front error map.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:
+  mkwfe.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> -t tel.json -e wfe.json -m wfe.fits
+
+options:
+  -h --help    show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -t tel.json  telescope parameter file
+  -e wfe.json  wave front error parameter file
+  -m wfe.fits  output wave front error map
+</pre></div>
+</div>
 </div>
 
 

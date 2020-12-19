@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -169,26 +169,28 @@
   <div class="section" id="module-rnd_wfe">
 <span id="rnd-wfe-module"></span><h1>rnd_wfe module<a class="headerlink" href="#module-rnd_wfe" title="Permalink to this headline">¶</a></h1>
 <p>Wave front error  random generattor</p>
-<blockquote>
-<div><dl class="simple">
-<dt>usage:</dt><dd><p>rnd_wfe.py [-h|–help] -n nmax -e z_even -o z_odd -z wfe.json</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="simple">
-<dt>options:</dt><dd><p>-h –help    show this help message and exit
--n nmax      Zernike max n
--e z_even    Strength of Zernike poly. at even odder is 1.4/z_even
--o z_odd     Strength of Zernike poly. at odd  odder is 1.4/z_odd 
--z wfe.json  Generated Zernike polynomials strength</p>
-</dd>
-</dl>
-<dl class="data">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:
+  rnd_wfe.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> -n nmax -e z_even -o z_odd -z wfe.json
+
+options:
+  -h --help    show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -n nmax      Zernike max n
+  -e z_even    Strength of Zernike poly. at even odder is <span class="m">1</span>.4/z_even
+  -o z_odd     Strength of Zernike poly. at odd  odder is <span class="m">1</span>.4/z_odd
+  -z wfe.json  Generated Zernike polynomials strength
+</pre></div>
+</div>
+<dl class="py data">
 <dt id="rnd_wfe.rg">
-<code class="sig-prename descclassname">rnd_wfe.</code><code class="sig-name descname">rg</code><em class="property"> = Generator(PCG64) at 0x7EFE75BD1D68</em><a class="headerlink" href="#rnd_wfe.rg" title="Permalink to this definition">¶</a></dt>
-<dd><p>See <a class="reference external" href="https://numpy.org/doc/1.18/reference/random/index.html">https://numpy.org/doc/1.18/reference/random/index.html</a> 
-By default, Generator uses bits provided by PCG64 which has better 
+<code class="sig-prename descclassname">rnd_wfe.</code><code class="sig-name descname">rg</code><em class="property"> = Generator(PCG64) at 0x7F906FC2DC78</em><a class="headerlink" href="#rnd_wfe.rg" title="Permalink to this definition">¶</a></dt>
+<dd><p>//numpy.org/doc/1.18/reference/random/index.html
+By default, Generator uses bits provided by PCG64 which has better
 statistical properties than the legacy MT19937</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>See https</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

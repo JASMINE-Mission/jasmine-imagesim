@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -169,31 +169,28 @@
   <div class="section" id="module-mkpixcube">
 <span id="mkpixcube-module"></span><h1>mkpixcube module<a class="headerlink" href="#module-mkpixcube" title="Permalink to this headline">¶</a></h1>
 <p>Make a pixel cube</p>
-<dl>
-<dt>usage:</dt><dd><p>mkpixcube.py [-h|–help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd –det det.json [–psf psf.fits] -o pixcube [-m] [–persistence]</p>
-</dd>
-<dt>options:</dt><dd><dl class="option-list">
-<dt><kbd><span class="option">--help</span></kbd></dt>
-<dd><p>show this help message and exit</p>
-</dd>
-</dl>
-<p>-l lc.fits     light curve
--x aX.fits     X-axis simulated ACE file
--v xs          aX.fits is scaled by xs
--y aY.fits     Y-axis simulated ACE file
--w ys          aY.fits is scaled by ys
--n N           output image is N x N
--p ps          pixel scale of Output image
--s tframe      exposure [sec] of a frame
--f nframe      number of the frames
--d vd          drifting velocity [pixel scale/sec]
-–det det.json detector param json file
-–psf psf.fits  psf array file (if not given, an analytic donuts model will be used.
--o pixcube     output h5 of pixcube
--m             output sequential png files for movie
-–persistence  considering persistence (not supported yet!).</p>
-</dd>
-</dl>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:
+  mkpixcube.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> <span class="o">[</span>-l lc.fits<span class="o">]</span> -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json <span class="o">[</span>--psf psf.fits<span class="o">]</span> -o pixcube <span class="o">[</span>-m<span class="o">]</span> <span class="o">[</span>--persistence<span class="o">]</span>
+
+options:
+  -h --help       show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -l lc.fits      light curve
+  -x aX.fits      X-axis simulated ACE file
+  -v xs           aX.fits is scaled by xs
+  -y aY.fits      Y-axis simulated ACE file
+  -w ys           aY.fits is scaled by ys
+  -n N            output image is N x N
+  -p ps           pixel scale of Output image
+  -s tframe       exposure <span class="o">[</span>sec<span class="o">]</span> of a frame
+  -f nframe       number of the frames
+  -d vd           drifting velocity <span class="o">[</span>pixel scale/sec<span class="o">]</span>
+  --det det.json  detector param json file
+  --psf psf.fits  psf array file <span class="o">(</span><span class="k">if</span> not given, an analytic donuts model will be used.
+  -o pixcube      output h5 of pixcube
+  -m              output sequential png files <span class="k">for</span> movie
+  --persistence   considering persistence <span class="o">(</span>not supported yet!<span class="o">)</span>.
+</pre></div>
+</div>
 </div>
 
 
