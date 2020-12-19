@@ -53,8 +53,7 @@ acey_std = 0.276     # std of ace_y (arcsec).
 Nmargin = 10         # Margin for simpix calc.
 Nplate  = 200         # Number of plates in a small frame.
 tplate  = 12.5       # Exposure time of a plate (sec).
-mag     = 12.5       # Stellar Hw band mag.
-
+mag     = 10.5       # Stellar Hw band mag.
 
 # Command line interface
 if __name__ == '__main__':
@@ -300,7 +299,7 @@ if __name__ == '__main__':
             """
             if varsw:
                 pixar=pixar*injlc[iplate]
-
+                
             # Adding dark current (including stray light).
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
             pixar = pixar + dark
