@@ -69,19 +69,6 @@ if __name__ == '__main__':
     filename_teljson   = os.path.join(dirname_params, args['--tel'])
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
     filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
-
-    varsw=False
-    if args['--var']:
-        #load variability class
-        variability=mkVar(filename_varjson)
-        #define time array in the unit of day
-        tday=tplate*np.array(range(0,Nplate))/3600/24
-        for line in asc.read(filename_starplate):
-            varsw, injlc, b=variability.read_var(tday,line['plate index'],line['star index'])
-            if varsw:
-                plt.plot(tday,injlc)
-                plt.savefig("variability_input"+str(line['plate index'])+"_"+str(line['star index'])+".png")
-                plt.clf()
                 
     output_format = args['--format']
     if output_format not in ['platefits', 'fitscube', 'hdfcube']:
@@ -223,6 +210,21 @@ if __name__ == '__main__':
     dtace = control_params.ace_control['dtace']
     Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.
 
+    ## Variablity
+    varsw=False
+    if args['--var']:
+        #load variability class
+        variability=mkVar(filename_varjson)
+        #define time array in the unit of day
+        tday=(tplate+tscan)*np.array(range(0,Nplate))/3600/24
+        for line in asc.read(filename_starplate):
+            varsw, injlc, b=variability.read_var(tday,line['star index'])
+            if varsw:
+                plt.plot(tday,injlc)
+                plt.savefig("variability_input"+"_"+str(line['star index'])+".png")
+                plt.clf()
+
+    
     if Nts_per_plate*Nplate >= theta_full.shape[1]:
         print("Insufficient time length of ACE data.")
         print("Nts_per_plate*Nplate: {}".format(Nts_per_plate*Nplate))
@@ -264,7 +266,7 @@ if __name__ == '__main__':
 
         # Load variability
         if args["--var"]:
-            varsw, injlc, b=variability.read_var(tday,line['plate index'],line['star index'])
+            varsw, injlc, b=variability.read_var(tday,line['star index'])
         
         for iplate in tqdm.tqdm(range(0, Nplate)):         # Loop to take each plate.
             # picking temporary trajectory and local position update
@@ -291,6 +293,9 @@ if __name__ == '__main__':
             pixar = pixar * 10.**(mag/(-2.5))
 
             # variability
+            """
+            Curretly, the time resolution should be prepared in the unit of tplate + tscan. We do not support the finest time resolution yet (dtace).
+            """
             if varsw:
                 pixar=pixar*injlc[iplate]
 
