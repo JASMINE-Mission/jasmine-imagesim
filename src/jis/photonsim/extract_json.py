@@ -1,4 +1,5 @@
 import numpy as np
+import os 
 import json
 from jis.pixsim import makeflat as mf
 from jis.pixsim import readflat as rf
@@ -439,3 +440,71 @@ def mkTel(json_filename):
 
     return telescope
 
+def mkVar(json_filename):
+    """
+    Summary: This is dummy to initialize variability class, to match mkDet etc.
+    """            
+    _var = variability(json_filename)                    
+    return _var
+
+class variability():
+    """
+    Summary: stellar variability class.
+    """
+    def __init__(self,json_filename):
+        self.var = True
+        self.read_json(json_filename)
+
+    def read_json(self,json_filename):
+        """
+        Summary: this function is json i/o for stellar variability
+        """
+        with open(json_filename, "r") as f:
+            var_params = json.load(f)            
+            f.close()
+            self.Nvar=len(var_params)
+            self.plate=[]
+            self.star=[]
+            self.vartype=[]
+            self.varfile=[]
+            self.dirname=[]
+            for i in range(0,self.Nvar):
+                var=var_params[str(i)]
+                self.plate.append(var["plate"])
+                self.star.append(var["star"])
+                self.vartype.append(var["vartype"])
+                self.varfile.append(var["varfile"])
+                self.dirname.append(var["dirname"])
+    
+    def read_var(self,t_day,star_index):
+        """
+        Summary
+        -------        
+        read variability for a given star index
+
+        Parameters
+        ----------
+        t_day : time array in the unit of day
+        star_index : star index
+
+        Returns
+        -------
+        sw: if True there is variability, else no variability.
+        injlc: variability
+        b : impact parameter for vartype = planet
+       
+        """
+        from jis.pixsim import transitmodel 
+        for i in range(0,self.Nvar):
+            if  int(star_index) == int(self.star[i]):
+                if self.vartype[i] == "planet":
+                    injlc, b=transitmodel.gentransit_json(t_day,os.path.join(self.dirname[i],self.varfile[i]))
+                    sw=True
+                    return sw,injlc,b
+                else:
+                    sys.exit("No valid vartype")
+
+        sw=False
+        return sw,None,None
+
+            

@@ -5,12 +5,13 @@
 .. code-block:: bash
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format [--od outdir] [--overwrite] 
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format [--od outdir] [--overwrite] 
 
   options:
    -h --help                   show this help message and exit.
    --pd paramdir               name of the directory containing parameter files.
    --starplate star_plate.csv  csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta)
+   --var variability.json     json file for stellar variability/transit (optional). The input variability will be shown in variability_input().png 
    --det det.json              json file containing detector related parameters.
    --tel tel.json              json file containing telescope related parameters.
    --ace ace.json              json file containing ace parameters.
@@ -30,7 +31,7 @@ import h5py
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
-from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel
+from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel, mkVar
 from jis.photonsim.wfe import wfe_model_z, calc_wfe
 from jis.photonsim.response import calc_response
 from jis.photonsim.psf import calc_psf
@@ -50,10 +51,9 @@ spixdim  = [32, 32]  # subpixel dimension in a pixel (setting for intrapix patte
 acex_std = 0.276     # std of ace_x (arcsec).
 acey_std = 0.276     # std of ace_y (arcsec). 
 Nmargin = 10         # Margin for simpix calc.
-Nplate  = 11         # Number of plates in a small frame.
+Nplate  = 200         # Number of plates in a small frame.
 tplate  = 12.5       # Exposure time of a plate (sec).
-mag     = 12.5       # Stellar Hw band mag.
-
+mag     = 10.5       # Stellar Hw band mag.
 
 # Command line interface
 if __name__ == '__main__':
@@ -65,11 +65,12 @@ if __name__ == '__main__':
         dirname_params = args['--pd']
 
     filename_starplate = os.path.join(dirname_params, args['--starplate'])
+    filename_varjson   = os.path.join(dirname_params, args['--var'])
     filename_detjson   = os.path.join(dirname_params, args['--det'])
     filename_teljson   = os.path.join(dirname_params, args['--tel'])
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
     filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
-
+                
     output_format = args['--format']
     if output_format not in ['platefits', 'fitscube', 'hdfcube']:
         print("format must be 'platefits', 'fitscube' or 'hdfcube'.")
@@ -210,6 +211,21 @@ if __name__ == '__main__':
     dtace = control_params.ace_control['dtace']
     Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.
 
+    ## Variablity
+    varsw=False
+    if args['--var']:
+        #load variability class
+        variability=mkVar(filename_varjson)
+        #define time array in the unit of day
+        tday=(tplate+tscan)*np.array(range(0,Nplate))/3600/24
+        for line in asc.read(filename_starplate):
+            varsw, injlc, b=variability.read_var(tday,line['star index'])
+            if varsw:
+                plt.plot(tday,injlc)
+                plt.savefig("variability_input"+"_"+str(line['star index'])+".png")
+                plt.clf()
+
+    
     if Nts_per_plate*Nplate >= theta_full.shape[1]:
         print("Insufficient time length of ACE data.")
         print("Nts_per_plate*Nplate: {}".format(Nts_per_plate*Nplate))
@@ -248,6 +264,11 @@ if __name__ == '__main__':
 
         # Making a cube containing plate data for a local region (small frame for a local region).
         pixcube = np.zeros((Npixcube, Npixcube, Nplate))   # Initialize (Axis order: X, Y, Z)
+
+        # Load variability
+        if args["--var"]:
+            varsw, injlc, b=variability.read_var(tday,line['star index'])
+        
         for iplate in tqdm.tqdm(range(0, Nplate)):         # Loop to take each plate.
             # picking temporary trajectory and local position update
             istart = iplate    *Nts_per_plate
@@ -272,6 +293,13 @@ if __name__ == '__main__':
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
 
+            # variability
+            """
+            Curretly, the time resolution should be prepared in the unit of tplate + tscan. We do not support the finest time resolution yet (dtace).
+            """
+            if varsw:
+                pixar=pixar*injlc[iplate]
+                
             # Adding dark current (including stray light).
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
             pixar = pixar + dark
@@ -279,9 +307,8 @@ if __name__ == '__main__':
             # Integrating, adding noise, and quantization.
             integrated = integrate(pixar, x0_global, y0_global, tplate, dtace, detector)
             # integrated is in adu/pix/plate.
-
             pixcube[:,:,iplate] = integrated
-
+            
             pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
                 pixcube[:,:,iplate]
  
