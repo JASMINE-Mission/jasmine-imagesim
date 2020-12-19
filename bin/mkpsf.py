@@ -2,16 +2,18 @@
 # -*- coding: utf-8 -*-
 """Make a PSF
 
+.. code-block:: bash
+
   usage:
     mkpsf.py [-h|--help] -a apt -w wfe -s spec -c cntl -p psf.fits
 
- options:
-   --help         show this help message and exit
-   -a apt         aperture mask
-   -w wfe         wfe map or null
-   -s spec        electrons/sec/um at lambada
-   -c cntl        control parameter
-   -p psf.fits
+  options:
+    -h --help    show this help message and exit
+    -a apt       aperture mask
+    -w wfe       wfe map or null
+    -s spec      electrons/sec/um at lambada
+    -c cntl      control parameter
+    -p psf.fits
 """
 from docopt import docopt             # command line interface
 import json

@@ -2,15 +2,17 @@
 # -*- coding: utf-8 -*-
 """Wave front error  random generattor
 
+.. code-block:: bash
+
   usage:
     rnd_wfe.py [-h|--help] -n nmax -e z_even -o z_odd -z wfe.json
 
- options:
-   -h --help    show this help message and exit
-   -n nmax      Zernike max n
-   -e z_even    Strength of Zernike poly. at even odder is 1.4/z_even
-   -o z_odd     Strength of Zernike poly. at odd  odder is 1.4/z_odd 
-   -z wfe.json  Generated Zernike polynomials strength
+  options:
+    -h --help    show this help message and exit
+    -n nmax      Zernike max n
+    -e z_even    Strength of Zernike poly. at even odder is 1.4/z_even
+    -o z_odd     Strength of Zernike poly. at odd  odder is 1.4/z_odd 
+    -z wfe.json  Generated Zernike polynomials strength
 
 """ 
 from docopt import docopt             # command line interface

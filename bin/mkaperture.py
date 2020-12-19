@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 """Make an aperture image
 
+.. code-block:: bash
+
   usage:
     mkaperture.py [-h|--help] -t tel.json -a aperture.fits
 
- options:
-   -h --help        show this help message and exit
-   -t tel.json      telescope parameter file
-   -a aperture.fits output aperture image
+  options:
+    -h --help         show this help message and exit
+    -t tel.json       telescope parameter file
+    -a aperture.fits  output aperture image
 """
 from docopt import docopt             # command line interface
 import math

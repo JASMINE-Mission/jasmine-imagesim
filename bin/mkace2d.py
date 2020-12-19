@@ -2,18 +2,20 @@
 # -*- coding: utf-8 -*-
 """Make an atitude control error map
 
+.. code-block:: bash
+
   usage:
     mkace2d.py [-h|--help] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -o out.fits
 
- options:
-   --help       show this help message and exit
-   -x aX.fits   X-axis simulated ACE file
-   -v xs        aX.fits is scaled by xs
-   -y aY.fits   Y-axis simulated ACE file
-   -w ys        aY.fits is scaled by ys
-   -n N         output image is N x N 
-   -p ps        pixel scale of Output image
-   -o out.fits  output image file
+  options:
+    -h --help    show this help message and exit
+    -x aX.fits   X-axis simulated ACE file
+    -v xs        aX.fits is scaled by xs
+    -y aY.fits   Y-axis simulated ACE file
+    -w ys        aY.fits is scaled by ys
+    -n N         output image is N x N 
+    -p ps        pixel scale of Output image
+    -o out.fits  output image file
 
 """ 
 from docopt import docopt             # command line interface

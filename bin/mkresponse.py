@@ -1,15 +1,17 @@
 #!/usr/bin/env python3.8
 """Make a response distribution
 
+.. code-block:: bash
+
   usage:
     mkresponse.py [-h|--help] -t tel -s src -d det -r res
 
- options:
-   --help      show this help message and exit
-   -t tel      Telescope parameter
-   -s src      Source (Object) parameter
-   -d det      Detectir parameter
-   -r res      output Responce file
+  options:
+    --help  show this help message and exit
+    -t tel  Telescope parameter
+    -s src  Source (Object) parameter
+    -d det  Detectir parameter
+    -r res  output Responce file
 """
 from docopt import docopt             # command line interface
 import json

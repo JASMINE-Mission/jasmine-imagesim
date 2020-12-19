@@ -2,20 +2,22 @@
 # -*- coding: utf-8 -*-
 """Make an image
 
+.. code-block:: bash
+
   usage:
     mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format [--od outdir] [--overwrite] 
 
   options:
-   --help                     show this help message and exit.
-   --pd paramdir              name of the directory containing parameter files.
-   --starplate star_plate.csv csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta)
-   --det det.json             json file containing detector related parameters.
-   --tel tel.json             json file containing telescope related parameters.
-   --ace ace.json             json file containing ace parameters.
-   --ctl ctl.json             json file containing control parameters.
-   --format format            format of the output file (platefits, fitscube, hdfcube).
-   --od outdir                name of the directory to put the outputs.
-   --overwrite                if set, overwrite option activated.
+   -h --help                   show this help message and exit.
+   --pd paramdir               name of the directory containing parameter files.
+   --starplate star_plate.csv  csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta)
+   --det det.json              json file containing detector related parameters.
+   --tel tel.json              json file containing telescope related parameters.
+   --ace ace.json              json file containing ace parameters.
+   --ctl ctl.json              json file containing control parameters.
+   --format format             format of the output file (platefits, fitscube, hdfcube).
+   --od outdir                 name of the directory to put the outputs.
+   --overwrite                 if set, overwrite option activated.
 
 """
 
