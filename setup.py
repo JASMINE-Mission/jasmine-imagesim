@@ -9,11 +9,11 @@ from setuptools import find_packages, setup
 
 NAME = "jasmine-imagesim"
 PACKAGES = find_packages(where="src")
-META_PATH = os.path.join("src", "pixsim", "__init__.py")
+META_PATH = os.path.join("src", "jis", "__init__.py")
 CLASSIFIERS = [
     "Programming Language :: Python",
 ]
-INSTALL_REQUIRES = ["numpy","tqdm","scipy"]
+INSTALL_REQUIRES = ["numpy","tqdm","scipy","docopt","pyfftw","h5py","m2r2","sphinx_rtd_theme"]
 
 # END PROJECT SPECIFIC
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
         name=NAME,
         use_scm_version={
             "write_to": os.path.join(
-                "src", NAME, "{0}_version.py".format(NAME)
+                "src", "jis", "{0}_version.py".format(NAME)
             ),
             "write_to_template": '__version__ = "{version}"\n',
         },
