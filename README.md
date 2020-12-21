@@ -26,6 +26,7 @@ This package basically consists of 'bin' and 'src' directories.
 - CUDA 10.1, RTX 2080 MAX-Q, Python 3.7.3,  Ubuntu 18.04.3 LTS
 - CUDA 10.0, TESLA V100, Python 3.7.4, Ubuntu 18.04.5 LTS
 - CUDA 9.1, Titan X, Python 3.7.0, Ubuntu 18.04.1 LTS
+- CUDA 9.1, TESLA V100, Python 3.7.0, Ubuntu 18.04.1 LTS
 - CUDA 9.1, GTX 1080Ti, Python 3.7.3, Linux Mint 19
 - CUDA 7.5, GTX Titan, Python 3.6.8, Ubuntu 14.04
 
