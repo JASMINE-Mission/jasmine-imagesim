@@ -2,13 +2,7 @@
 This is an image simulator package developed for the JASMINE project.
 
 ## pixsim
-combining detector characteristics. To use pixsim you need to specify include directory like
-
-```
-setenv CPLUS_INCLUDE_PATH /home/user-name/jasmine-imagesim/src/jis/pixsim/include
-```
-
-or copy .h files to your "include" directory.
+Detector simulator in a subpixel level. Pixsim uses a GPU parallel computing to boost the computation.
 
 ## photonsim
 This module calculates PSF taking the pupil pattern, wavefront error, spectral response, 
@@ -23,7 +17,18 @@ This package basically consists of 'bin' and 'src' directories.
 - src: Modules are stored. The modules can be used for general purposes.
 
 # Requirements
-- python 3.8 (3.7 might be ok)
+- python3 >= 3.7
+- numpy >= 1.17
+- cuda >= 7.5 (at least)
+
+# Tested
+
+- CUDA 10.1, RTX 2080 MAX-Q, Python 3.7.3,  Ubuntu 18.04.3 LTS
+- CUDA 10.0, TESLA V100, Python 3.7.4, Ubuntu 18.04.5 LTS
+- CUDA 9.1, Titan X, Python 3.7.0, Ubuntu 18.04.1 LTS
+- CUDA 9.1, TESLA V100, Python 3.7.0, Ubuntu 18.04.1 LTS
+- CUDA 9.1, GTX 1080Ti, Python 3.7.3, Linux Mint 19
+- CUDA 7.5, GTX Titan, Python 3.6.8, Ubuntu 14.04
 
 # Installation
 
@@ -39,8 +44,25 @@ Add a line below in your .bash_profile.
 export CPLUS_INCLUDE_PATH="[jis-home]/src/jis/pixsim/include:$CPLUS_INCLUDE_PATH"
 ```
 
+For a c shell-based environment, add the below in your .cshrc or .tcsrh etc.
+```
+setenv CPLUS_INCLUDE_PATH [jis-home]/src/jis/pixsim/include
+```
+or copy .h files to your "include" directory.
+
+
+The error such as 
+```
+fatal error: pixlight_custom.h: No such file or directory\n     #include "pixlight_custom.h"\n                                 ^\ncompilation terminated.\n']
+```
+indicates that you do not set CPLUS_INCLUDE_PATH properly.
 
 # Test
+- modify some parameter files.
+  - [jis-home]/params/templates/det.json
+    - rename intrapix.dirname ("/home/kamizuka/jasmine-imagesim/" -> [jis-home])
+  - [jis-home]/params/templates/variability.json
+    - rename dirname(s) ("/home/kawahara/jasmine-imagesim/" -> [jis-home])
 - cd [jis-home]/bin
 - bash test.sh
 
