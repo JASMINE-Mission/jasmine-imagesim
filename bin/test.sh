@@ -18,6 +18,10 @@ python mksimace.py  -n 104850 -t 15 -e ../photonsim/data/ace_001.json -m ../phot
 
 #python mkace2d.py  -v 1 -w 1 -p 0.025 -x ../photonsim/data/ace_1_0001.fits -y ../photonsim/data/ace_1_0002.fits -n 520 -o ../photonsim/data/ace2d_001_00010002.fits
 
+echo "test mkpixcube"
 python mkpixcube.py -v 0.276 -w 0.276 -p 0.423 -x ../photonsim/data/ace_1_0001.fits -y ../photonsim/data/ace_1_0002.fits -n 520 -s 12.5 -f 1 -d 0.0 --det ../params/templates/det.json --psf ../photonsim/data/psf400-2-125-917.fits.gz -o pixcube_v1.h5 -m
+
+echo "test mkimage"
+python mkimage.py --pd ../params/templates/ --starplate star_plate.csv --var variability.json --det det.json --tel tel.json --ace ace_001.json --ctl ctl.json --format platefits --overwrite
 
 echo "finish."
