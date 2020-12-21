@@ -23,7 +23,7 @@
 "ACEcontrol":{
   "title": "ACE simulation control parameters.",
   "dtace":  {"val": 15e-5, "description": "Timestep of ACE simulation in sec."},
-  "tace":   {"val": 3600,   "description": "Time range of ACE simulation in sec (to be adjusted)."}},
+  "tace":   {"val": 360,   "description": "Time range of ACE simulation in sec (to be adjusted)."}},
 "Nplate":{
   "title": "Number of plates which make up a small frame.",
   "val"  : 11}
