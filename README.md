@@ -57,6 +57,11 @@ fatal error: pixlight_custom.h: No such file or directory\n     #include "pixlig
 indicates that you do not set CPLUS_INCLUDE_PATH properly.
 
 # Test
+- modify some parameter files.
+  - [jis-home]/params/templates/det.json
+    - rename intrapix.dirname ("/home/kamizuka/jasmine-imagesim/" -> [jis-home])
+  - [jis-home]/params/templates/variability.json
+    - rename dirname(s) ("/home/kawahara/jasmine-imagesim/" -> [jis-home])
 - cd [jis-home]/bin
 - bash test.sh
 
