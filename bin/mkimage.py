@@ -5,7 +5,7 @@
 .. code-block:: bash
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format [--od outdir] [--overwrite] 
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--dft drift.json] --format format [--od outdir] [--overwrite] 
 
   options:
    -h --help                   show this help message and exit.
@@ -16,6 +16,7 @@
    --tel tel.json              json file containing telescope related parameters.
    --ace ace.json              json file containing ace parameters.
    --ctl ctl.json              json file containing control parameters.
+   --dft drift.json            json file containing drift parameterers.
    --format format             format of the output file (platefits, fitscube, hdfcube).
    --od outdir                 name of the directory to put the outputs.
    --overwrite                 if set, overwrite option activated.
@@ -31,7 +32,7 @@ import h5py
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
-from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel, mkVar
+from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel, mkVar, mkDft
 from jis.photonsim.wfe import wfe_model_z, calc_wfe
 from jis.photonsim.response import calc_response
 from jis.photonsim.psf import calc_psf
@@ -198,18 +199,29 @@ if __name__ == '__main__':
     acey, psdy = calc_ace(np.random, ace_cp['nace'], ace_cp['tace'], ace_params)
     # acey is normalized by the std.
 
+    # Detector
+    tscan = detector.t_overhead +\
+            detector.tsmpl*(detector.npix_pre+detector.ncol_ch+detector.npix_post)*detector.nrow_ch
 
+    
+    # Drift
+    if args["--dft"]:
+        dft=mkDft(args["--dft"])
+        dft.compute_drift(tplate,tscan,control_params.nplate)
+        
     # Preparation for making image. ################################
 
     ## Full data of the displacement in detpix.
     ## (ace[x|y] scaled and converted to detpix)
-    theta_full = np.array([acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
+    # Setting and plotting full trajectory.
+    if args["--dft"]:
+        theta_full = np.array([acex*acex_std/detpix_scale+dft.drift_theta[0,:], acey*acey_std/detpix_scale+dft.drift_theta[1,:]])
+    else:
+        theta_full = np.array([acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
 
     Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
 
-    tscan = detector.t_overhead +\
-            detector.tsmpl*(detector.npix_pre+detector.ncol_ch+detector.npix_post)*detector.nrow_ch
     dtace = control_params.ace_control['dtace']
     Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.
 
