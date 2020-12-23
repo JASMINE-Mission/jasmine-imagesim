@@ -73,6 +73,8 @@ if __name__ == '__main__':
     filename_teljson   = os.path.join(dirname_params, args['--tel'])
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
     filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
+    filename_dftjson   = os.path.join(dirname_params, args['--dft'])
+    
                 
     output_format = args['--format']
     if output_format not in ['platefits', 'fitscube', 'hdfcube']:
@@ -170,6 +172,7 @@ if __name__ == '__main__':
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
 
+    
     ## Currently, only one PSF.
     print("Calculating PSF...")
     psf = calc_psf(wfe, wfe.shape[0],\
@@ -187,8 +190,7 @@ if __name__ == '__main__':
     # with some J-H colors and use them with interpolating.
     # PSF calculation takes a long time.
     ############################################################################.
-
-
+       
     # Ace simulation. ##############################################   
     ace_cp = control_params.ace_control
     print("Making ACE (X)...")
@@ -202,12 +204,14 @@ if __name__ == '__main__':
     # Detector
     tscan = detector.t_overhead +\
             detector.tsmpl*(detector.npix_pre+detector.ncol_ch+detector.npix_post)*detector.nrow_ch
+    dtace = control_params.ace_control['dtace']
+    Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.
 
     
     # Drift
     if args["--dft"]:
-        dft=mkDft(args["--dft"])
-        dft.compute_drift(tplate,tscan,control_params.nplate)
+        dft=mkDft(filename_dftjson)
+        dft.compute_drift(dtace,ace_cp['nace'])
         
     # Preparation for making image. ################################
 
@@ -222,8 +226,6 @@ if __name__ == '__main__':
     Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
 
-    dtace = control_params.ace_control['dtace']
-    Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.
 
     ## Variablity
     varsw=False

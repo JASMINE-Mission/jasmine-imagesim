@@ -521,7 +521,6 @@ def mkDft(json_filename):
     return _dft
 
 class drift():
-    from jis.pixsim import gentraj
 
     """
     Summary: drift class.
@@ -537,10 +536,13 @@ class drift():
         with open(json_filename, "r") as f:
             var_params = json.load(f)            
             f.close()
-            self.drift_velocity=var_params["drift_velocity"]
-            self.drift_azimuth = var_params["drift_azimuth"]
-    def compute_drift(self,tplate,tscan,Nplate):
-        self.drifttime=(tplate+tscan)*Nplate
+            self.drift_velocity=var_params["linear"]["drift_velocity"]
+            self.drift_azimuth = var_params["linear"]["drift_azimuth"]
+            
+    def compute_drift(self,dtace,Nace):
+        from jis.pixsim import gentraj
+
+        self.drifttime=dtace*Nace
         self.drift_length=self.drift_velocity*self.drifttime
-        self.drift_theta=gentraj.gentraj_drift(Nplate,self.drift_length,self.drift_azimuth)
+        self.drift_theta=gentraj.gentraj_drift(Nace,self.drift_length,self.drift_azimuth)
 
