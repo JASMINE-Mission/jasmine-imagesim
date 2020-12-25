@@ -68,12 +68,12 @@ if __name__ == '__main__':
 
     if args['--var']:
         filename_varjson   = os.path.join(dirname_params, args['--var'])
-
     filename_detjson   = os.path.join(dirname_params, args['--det'])
     filename_teljson   = os.path.join(dirname_params, args['--tel'])
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
     filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
-    filename_dftjson   = os.path.join(dirname_params, args['--dft'])
+    if args['--dft']:
+        filename_dftjson   = os.path.join(dirname_params, args['--dft'])
     
                 
     output_format = args['--format']
