@@ -260,6 +260,7 @@ if __name__ == '__main__':
         y0_global = int(yc_global - Npixcube*0.5 + 0.5) # Origin pix position in global coord (y).
         xc_local  = xc_global - x0_global  # Stellar position (local; x).
         yc_local  = yc_global - y0_global  # Stellar position (local; y).
+        mag = line['Hwmag']
 
         # Making local flat data.
         interpix_local = rf.flat_interpix(detector.interpix, x0_global, y0_global, pixdim, figsw=0)
