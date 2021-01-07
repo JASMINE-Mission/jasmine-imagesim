@@ -10,7 +10,7 @@
   options:
    -h --help                   show this help message and exit.
    --pd paramdir               name of the directory containing parameter files.
-   --starplate star_plate.csv  csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta、Hwmag)
+   --starplate star_plate.csv  csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta, Hwmag)
    --var variability.json      json file for stellar variability/transit (optional). The input variability will be shown in variability_input().png 
    --det det.json              json file containing detector related parameters.
    --tel tel.json              json file containing telescope related parameters.
