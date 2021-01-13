@@ -144,12 +144,16 @@ def set_custom(theta,psfarr,psfcenter,psfscale,pixdim,spixdim):
             if jx >= 0 and jx < psfdim[0]:
                 subtilex[ix,iy]=jx
             else:
+                print("jx=",jx)
+                print("Must be between 0 and "+str(psfdim[0]-1))
                 sys.exit("OVER jx")
 
             jy=int(minpsfpos[1]-full_pixsize-1)
             if jy >= 0 and jy < psfdim[1]:
                 subtiley[ix,iy]=jy
             else:
+                print("jy=",jy)
+                print("Must be between 0 and "+str(psfdim[1]-1))
                 sys.exit("OVER jy")
             
             #check the maximum size of subtile

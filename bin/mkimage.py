@@ -220,14 +220,15 @@ if __name__ == '__main__':
     # Setting and plotting full trajectory.
     if args["--dft"]:
         theta_full = np.array([acex*acex_std/detpix_scale+dft.drift_theta[0,:], acey*acey_std/detpix_scale+dft.drift_theta[1,:]])
+        plt.plot(acex*acex_std/detpix_scale+dft.drift_theta[0,:], acey*acey_std/detpix_scale+dft.drift_theta[1,:], ".")
+        plt.savefig("theta.png")
     else:
         theta_full = np.array([acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
 
     Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
 
-
-    ## Variablity
+# Variablity
     varsw=False
     if args['--var']:
         #load variability class
