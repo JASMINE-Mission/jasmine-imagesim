@@ -10,8 +10,8 @@
   options:
    -h --help                   show this help message and exit.
    --pd paramdir               name of the directory containing parameter files.
-   --starplate star_plate.csv  csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta)
-   --var variability.json     json file for stellar variability/transit (optional). The input variability will be shown in variability_input().png 
+   --starplate star_plate.csv  csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta, Hwmag)
+   --var variability.json      json file for stellar variability/transit (optional). The input variability will be shown in variability_input().png 
    --det det.json              json file containing detector related parameters.
    --tel tel.json              json file containing telescope related parameters.
    --ace ace.json              json file containing ace parameters.
@@ -52,7 +52,7 @@ acex_std = 0.276     # std of ace_x (arcsec).
 acey_std = 0.276     # std of ace_y (arcsec). 
 Nmargin = 10         # Margin for simpix calc.
 tplate  = 12.5       # Exposure time of a plate (sec).
-mag     = 10.5       # Stellar Hw band mag.
+
 
 # Command line interface
 if __name__ == '__main__':
@@ -260,6 +260,7 @@ if __name__ == '__main__':
         y0_global = int(yc_global - Npixcube*0.5 + 0.5) # Origin pix position in global coord (y).
         xc_local  = xc_global - x0_global  # Stellar position (local; x).
         yc_local  = yc_global - y0_global  # Stellar position (local; y).
+        mag = line['Hwmag']
 
         # Making local flat data.
         interpix_local = rf.flat_interpix(detector.interpix, x0_global, y0_global, pixdim, figsw=0)
