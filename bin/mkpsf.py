@@ -5,7 +5,7 @@
 .. code-block:: bash
 
   usage:
-    mkpsf.py [-h|--help] -a apt -w wfe -s spec -c cntl -p psf.fits
+    mkpsf.py [-h|--help] -a apt -w wfe -s spec -c cntl -n fn -p psf.fits
 
   options:
     -h --help    show this help message and exit
@@ -13,6 +13,7 @@
     -w wfe       wfe map or null
     -s spec      electrons/sec/um at lambada
     -c cntl      control parameter
+    -n fn        number of fp-cells of the output psf image.
     -p psf.fits
 """
 from docopt import docopt             # command line interface
@@ -46,9 +47,18 @@ if __name__ == '__main__':
   with open(args['-c']) as f:
     cp = json.load(f)
   M = cp['M']['val']
-  
+ 
+  # get the number of fp-cells
+  if args['-f']:
+    fN = int(args['-f'])
+  else:
+    fN = None
+
   ### psf
-  image=psf.calc_psf(wfe,wN,k,WL,NP,Ntot,Stel,adata,M,aN)
+  if fN is None:
+    image = psf.calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN)
+  else:
+    image = psf.calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN)
   
   # Save 
   hdu = fits.PrimaryHDU(image)
