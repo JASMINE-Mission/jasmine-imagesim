@@ -5,7 +5,7 @@
 .. code-block:: bash
 
   usage:
-    mkpsf.py [-h|--help] -a apt -w wfe -s spec -c cntl -n fn -p psf.fits
+    mkpsf.py [-h|--help] -a apt -w wfe -s spec -c cntl [-n fn] -p psf.fits
 
   options:
     -h --help    show this help message and exit
@@ -49,8 +49,8 @@ if __name__ == '__main__':
   M = cp['M']['val']
  
   # get the number of fp-cells
-  if args['-f']:
-    fN = int(args['-f'])
+  if args['-n']:
+    fN = int(args['-n'])
   else:
     fN = None
 
