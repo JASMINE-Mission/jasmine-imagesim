@@ -68,9 +68,10 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     # 口径 D で、計算領域の大きさを N とするとき、
     # フーリエ変換で得られる PSF は D/N x lambda/D=lambda/N の角度スケールになる。 
     # 異なるいくつかの波長 WL0, WL1, ..., WLn で生成したPSFのセルスケールを
-    # 合わせようとおもったら、計算領域を波長に比例させて
-    # N0 = M WL0 , N1 = M WL1 ,,, Nn = M WLn 
-    # と選べばよい。
+    # 合わせようとおもったら、FFT計算領域を波長に比例させて
+    # N=M WL (ここでWLはミクロン単位の波長)として設定し、
+    # 得られた結果を PSF として fN x fN のサイズで切り取って加算すればよい。
+    # なお、Mは計算する波長WLに対してNが整数になるように選んでおく。
 
     image = np.zeros( (fN, fN) ,dtype ='float' )
 
