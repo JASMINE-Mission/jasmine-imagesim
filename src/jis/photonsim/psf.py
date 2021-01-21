@@ -3,7 +3,7 @@ import numpy as np
 import pyfftw
 from scipy.ndimage import shift
 
-def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
+def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     """
     This function calculates the psf in e-/sec/fp-cell
     based on the wavefront error (wfe),
@@ -23,9 +23,10 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         adata (ndarray): Aperture mask data.
         M              : Inverse number of the PSF cell scale (mm/um).
         aN    (int)    : Number of apt-cells of the aperture mask data.
+        fN    (int)    : Number of fp-cells of the output psf data (Default: 520). 
 
     Returns:
-        image (nadarray): 520 x 520 fp-cell array of the psf (e-/s/fp-cell).
+        image (nadarray): fN x fN fp-cell array of the psf (e-/s/fp-cell).
                           The fp-cell scale is (1/M) x 10^-3 rad/fp-cell.
 
     Example:
@@ -67,12 +68,12 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
     # 口径 D で、計算領域の大きさを N とするとき、
     # フーリエ変換で得られる PSF は D/N x lambda/D=lambda/N の角度スケールになる。 
     # 異なるいくつかの波長 WL0, WL1, ..., WLn で生成したPSFのセルスケールを
-    # 合わせようとおもったら、計算領域を波長に比例させて
-    # N0 = M WL0 , N1 = M WL1 ,,, Nn = M WLn 
-    # と選べばよい。
+    # 合わせようとおもったら、FFT計算領域を波長に比例させて
+    # N=M WL (ここでWLはミクロン単位の波長)として設定し、
+    # 得られた結果を PSF として fN x fN のサイズで切り取って加算すればよい。
+    # なお、Mは計算する波長WLに対してNが整数になるように選んでおく。
 
-    N0    = 520
-    image = np.zeros( (N0,N0) ,dtype ='float' )
+    image = np.zeros( (fN, fN) ,dtype ='float' )
 
     # WL として、1.1, 1.2, ,,, 1.6 としているとき、
     # 1.1-1.2 の範囲のフォトンを 波長 1.15 で代表させて加え、
@@ -102,17 +103,17 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN):
         fts = np.fft.fftshift(ft)
 
         # 結果を入射光子数(電子数)の重みを付けて加算する。
-        i1 = int(N/2-N0/2)
-        i2 = int(N/2+N0/2)
+        i1 = int(N/2-fN/2)
+        i2 = int(N/2+fN/2)
         NPm   = (NP[i] + NP[i+1])/2
 
         tmp_img = NPm*(fts.real[i1:i2, i1:i2]**2.+fts.imag[i1:i2, i1:i2]**2.)
         offset = 0.0
-        if   (N%2==0) and (N0%2==1):
+        if   (N%2==0) and (fN%2==1):
             offset=1.0
-        elif (N%2==0) and (N0%2==0):
+        elif (N%2==0) and (fN%2==0):
             offset=0.5
-        elif (N%2==1) and (N0%2==0):
+        elif (N%2==1) and (fN%2==0):
             offset=0.5
         tmp_img = shift(tmp_img, [-offset, -offset], order=1)
 
