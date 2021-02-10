@@ -27,7 +27,7 @@
   "val"  : 0.01},
 "intrapix":{
   "title": "Information about files describing intrapixel pattern",
-  "dirname": "/home/kawahara/jasmine-imagesim/src/jis/pixsim/data/intrapix",
+  "dirname": "/home/hirano/work/jasmine/jasmine-imagesim/src/jis/pixsim/data/intrapix",
   "filex": "intravx.csv",
   "filey": "intravy.csv"},
 "persistence":{

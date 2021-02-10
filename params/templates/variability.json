@@ -4,7 +4,7 @@
 	"plate": 0,
 	"star": 0,
 	"vartype":"planet",
-	"dirname":"/home/kawahara/jasmine-imagesim/params/templates/",
+	"dirname":"/home/hirano/work/jasmine/jasmine-imagesim/params/templates/",
 	"varfile":"planet.json"
     },   
     "1":{
@@ -12,7 +12,7 @@
 	"plate": 0,
 	"star": 1,
 	"vartype":"planet",
-	"dirname":"/home/kawahara/jasmine-imagesim/params/templates/",
+	"dirname":"/home/hirano/work/jasmine/jasmine-imagesim/params/templates/",
 	"varfile":"planet2.json"
     }
 }

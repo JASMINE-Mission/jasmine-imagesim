@@ -120,8 +120,8 @@ def set_custom(theta,psfarr,psfcenter,psfscale,pixdim,spixdim):
     subtilex=np.zeros(pixdim)
     subtiley=np.zeros(pixdim)
 
-    thetamax=np.max(theta,axis=1)
-    thetamin=np.min(theta,axis=1)
+    thetamax=np.max(theta,axis=1) #maximum values of trajectory
+    thetamin=np.min(theta,axis=1) #minimum values of trajectory
     thetamed=np.median(theta,axis=1)
 
     # psfscale [pix/fp-cell]
@@ -140,7 +140,8 @@ def set_custom(theta,psfarr,psfcenter,psfscale,pixdim,spixdim):
             maxpsfpos=pix2psfpix(pixpos,thetamin,psfcenter,psfscale)
             minpsfpos=pix2psfpix(pixpos,thetamax,psfcenter,psfscale)
 
-            jx=int(minpsfpos[0]-full_pixsize-1)
+#            jx=int(minpsfpos[0]-full_pixsize-1)
+            jx=int(minpsfpos[0]-2)
             if jx >= 0 and jx < psfdim[0]:
                 subtilex[ix,iy]=jx
             else:
@@ -148,7 +149,8 @@ def set_custom(theta,psfarr,psfcenter,psfscale,pixdim,spixdim):
                 print("Must be between 0 and "+str(psfdim[0]-1))
                 sys.exit("OVER jx")
 
-            jy=int(minpsfpos[1]-full_pixsize-1)
+#            jy=int(minpsfpos[1]-full_pixsize-1)
+            jy=int(minpsfpos[1]-2)
             if jy >= 0 and jy < psfdim[1]:
                 subtiley[ix,iy]=jy
             else:
