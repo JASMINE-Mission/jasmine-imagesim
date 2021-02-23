@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -170,12 +170,13 @@
 <span id="mkimage-module"></span><h1>mkimage module<a class="headerlink" href="#module-mkimage" title="Permalink to this headline">¶</a></h1>
 <p>Make an image</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:
-  mkimage.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> <span class="o">[</span>--pd paramdir<span class="o">]</span> --starplate star_plate.csv --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format <span class="o">[</span>--od outdir<span class="o">]</span> <span class="o">[</span>--overwrite<span class="o">]</span>
+  mkimage.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> <span class="o">[</span>--pd paramdir<span class="o">]</span> --starplate star_plate.csv <span class="o">[</span>--var variability.json<span class="o">]</span> --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format <span class="o">[</span>--od outdir<span class="o">]</span> <span class="o">[</span>--overwrite<span class="o">]</span>
 
 options:
  -h --help                   show this <span class="nb">help</span> message and exit.
  --pd paramdir               name of the directory containing parameter files.
- --starplate star_plate.csv  csv file containing star info <span class="o">(</span>plate index, star index, x pixel, y pixel, lambda, beta<span class="o">)</span>
+ --starplate star_plate.csv  csv file containing star info <span class="o">(</span>plate index, star index, x pixel, y pixel, lambda, beta, Hwmag<span class="o">)</span>
+ --var variability.json      json file <span class="k">for</span> stellar variability/transit <span class="o">(</span>optional<span class="o">)</span>. The input variability will be shown in variability_input<span class="o">()</span>.png
  --det det.json              json file containing detector related parameters.
  --tel tel.json              json file containing telescope related parameters.
  --ace ace.json              json file containing ace parameters.

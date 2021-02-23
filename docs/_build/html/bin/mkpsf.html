@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -170,7 +170,7 @@
 <span id="mkpsf-module"></span><h1>mkpsf module<a class="headerlink" href="#module-mkpsf" title="Permalink to this headline">¶</a></h1>
 <p>Make a PSF</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:
-  mkpsf.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> -a apt -w wfe -s spec -c cntl -p psf.fits
+  mkpsf.py <span class="o">[</span>-h<span class="p">|</span>--help<span class="o">]</span> -a apt -w wfe -s spec -c cntl <span class="o">[</span>-n fn<span class="o">]</span> -p psf.fits
 
 options:
   -h --help    show this <span class="nb">help</span> message and <span class="nb">exit</span>
@@ -178,6 +178,7 @@ options:
   -w wfe       wfe map or null
   -s spec      electrons/sec/um at lambada
   -c cntl      control parameter
+  -n fn        number of fp-cells of the output psf image.
   -p psf.fits
 </pre></div>
 </div>

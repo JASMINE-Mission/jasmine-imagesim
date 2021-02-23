@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -175,77 +175,6 @@
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="jasmine-imagesim-jis">
-<h1>jasmine-imagesim (jis)<a class="headerlink" href="#jasmine-imagesim-jis" title="Permalink to this headline">¶</a></h1>
-<p>This is an image simulator package developed for the JASMINE project.</p>
-<div class="section" id="pixsim">
-<h2>pixsim<a class="headerlink" href="#pixsim" title="Permalink to this headline">¶</a></h2>
-<p>combining detector characteristics. To use pixsim you need to specify include directory like</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setenv</span> <span class="n">CPLUS_INCLUDE_PATH</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">name</span><span class="o">/</span><span class="n">jasmine</span><span class="o">-</span><span class="n">imagesim</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">jis</span><span class="o">/</span><span class="n">pixsim</span><span class="o">/</span><span class="n">include</span>
-</pre></div>
-</div>
-<p>or copy .h files to your &quot;include&quot; directory.</p>
-</div>
-<div class="section" id="photonsim">
-<h2>photonsim<a class="headerlink" href="#photonsim" title="Permalink to this headline">¶</a></h2>
-<p>This module calculates PSF taking the pupil pattern, wavefront error, spectral response,</p>
-<p>and spectral property of the target into account. This module also calculates</p>
-<p>the attitude control error.</p>
-</div>
-</div>
-<div class="section" id="structure">
-<h1>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h1>
-<p>This package basically consists of 'bin' and 'src' directories.</p>
-<ul class="simple">
-<li><p>bin: Executables are stored.</p></li>
-<li><p>src: Modules are stored. The modules can be used for general purposes.</p></li>
-</ul>
-</div>
-<div class="section" id="requirements">
-<h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>python 3.8 (3.7 might be ok)</p></li>
-</ul>
-</div>
-<div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">for</span> <span class="k">global</span><span class="p">)</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
-<span class="p">(</span><span class="k">for</span> <span class="n">local</span><span class="p">)</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>
-</pre></div>
-</div>
-<div class="section" id="setting-for-pixsim">
-<h2>setting for pixsim<a class="headerlink" href="#setting-for-pixsim" title="Permalink to this headline">¶</a></h2>
-<p>Add a line below in your .bash_profile.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">CPLUS_INCLUDE_PATH</span><span class="o">=</span><span class="s2">&quot;[jis-home]/src/jis/pixsim/include:$CPLUS_INCLUDE_PATH&quot;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="test">
-<h1>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>cd [jis-home]/bin</p></li>
-<li><p>bash test.sh</p></li>
-</ul>
-</div>
-<div class="section" id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>To use modules in the jis package, you can call them by typing 'from jis import xxxx' in your script.</p></li>
-<li><p>To use executables, you can execute files in [jis-home]/bin/xxxx.py.</p></li>
-</ul>
-</div>
-<div class="section" id="sphinx-documents">
-<h1>Sphinx documents<a class="headerlink" href="#sphinx-documents" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>To generate sphinx documents, perform</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">python3</span><span class="o">-</span><span class="n">sphinx</span>
-<span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">html</span> <span class="o">./</span><span class="n">docs</span> <span class="o">./</span><span class="n">docs</span><span class="o">/</span><span class="n">_build</span><span class="o">/</span>
-</pre></div>
-</div>
-<p>Then, check docs/_build/index.html with your browser.</p>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>

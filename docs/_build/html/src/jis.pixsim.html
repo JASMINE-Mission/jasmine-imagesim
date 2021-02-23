@@ -26,10 +26,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -173,9 +173,9 @@
 </div>
 <div class="section" id="module-jis.pixsim.addnoise">
 <span id="jis-pixsim-addnoise-module"></span><h2>jis.pixsim.addnoise module<a class="headerlink" href="#module-jis.pixsim.addnoise" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.addnoise.addnoise">
-<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">addnoise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">readnoise</span></em>, <em class="sig-param"><span class="n">rg_shot</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rg_read</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.addnoise" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">addnoise</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">readnoise</em>, <em class="sig-param">rg_shot=None</em>, <em class="sig-param">rg_read=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.addnoise" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function adds shotnoise and readnoise.</p>
 </dd>
@@ -207,14 +207,14 @@ seed (dictionary): Seed created when rg_* are not given.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.addnoise.convfactor_photon">
-<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">convfactor_photon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ppm</span></em>, <em class="sig-param"><span class="n">meanar</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.convfactor_photon" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">convfactor_photon</code><span class="sig-paren">(</span><em class="sig-param">ppm</em>, <em class="sig-param">meanar</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.convfactor_photon" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.addnoise.mk_readnoise">
-<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">mk_readnoise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">sigma</span></em>, <em class="sig-param"><span class="n">rg</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.mk_readnoise" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">mk_readnoise</code><span class="sig-paren">(</span><em class="sig-param">shape</em>, <em class="sig-param">sigma</em>, <em class="sig-param">rg=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.mk_readnoise" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function returns readnoise cube.</p>
 </dd>
@@ -244,9 +244,9 @@ If rg is given, this is not returned.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.addnoise.mk_shotnoise">
-<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">mk_shotnoise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">rg</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.mk_shotnoise" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">mk_shotnoise</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">rg=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.mk_shotnoise" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function returns shotnoise cube.</p>
 </dd>
@@ -275,9 +275,9 @@ If rg is given, this is not returned.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.addnoise.ppm2nphoton">
-<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">ppm2nphoton</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ppm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.ppm2nphoton" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.addnoise.</code><code class="sig-name descname">ppm2nphoton</code><span class="sig-paren">(</span><em class="sig-param">ppm</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.addnoise.ppm2nphoton" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -289,53 +289,53 @@ If rg is given, this is not returned.</p>
 <div class="section" id="summary">
 <h3>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
 <p>Generating trajectory</p>
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.gentraj.gentraj_drift">
-<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_drift</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Nts</span></em>, <em class="sig-param"><span class="n">drift_length</span></em>, <em class="sig-param"><span class="n">drift_azimuth</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_drift" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_drift</code><span class="sig-paren">(</span><em class="sig-param">Nts</em>, <em class="sig-param">drift_length</em>, <em class="sig-param">drift_azimuth</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_drift" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.gentraj.gentraj_encircled_k2like">
-<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_encircled_k2like</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ntime</span></em>, <em class="sig-param"><span class="n">basepos</span></em>, <em class="sig-param"><span class="n">nsub</span></em>, <em class="sig-param"><span class="n">radius</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">lpix</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">lpixsig</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">pixret</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">grad</span><span class="o">=</span><span class="default_value">0.74</span></em>, <em class="sig-param"><span class="n">gradsig</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_encircled_k2like" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_encircled_k2like</code><span class="sig-paren">(</span><em class="sig-param">ntime</em>, <em class="sig-param">basepos</em>, <em class="sig-param">nsub</em>, <em class="sig-param">radius=1.0</em>, <em class="sig-param">lpix=1.0</em>, <em class="sig-param">lpixsig=0.1</em>, <em class="sig-param">pixret=30</em>, <em class="sig-param">grad=0.74</em>, <em class="sig-param">gradsig=0.01</em>, <em class="sig-param">seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_encircled_k2like" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.gentraj.gentraj_encircled_k2like_old">
-<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_encircled_k2like_old</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ntime</span></em>, <em class="sig-param"><span class="n">basepos</span></em>, <em class="sig-param"><span class="n">radius</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">lpix</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">lpixsig</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">pixret</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">grad</span><span class="o">=</span><span class="default_value">0.74</span></em>, <em class="sig-param"><span class="n">gradsig</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_encircled_k2like_old" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_encircled_k2like_old</code><span class="sig-paren">(</span><em class="sig-param">ntime</em>, <em class="sig-param">basepos</em>, <em class="sig-param">radius=1.0</em>, <em class="sig-param">lpix=1.0</em>, <em class="sig-param">lpixsig=0.1</em>, <em class="sig-param">pixret=30</em>, <em class="sig-param">grad=0.74</em>, <em class="sig-param">gradsig=0.01</em>, <em class="sig-param">seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_encircled_k2like_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.gentraj.gentraj_encircled_random_old">
-<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_encircled_random_old</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ntime</span></em>, <em class="sig-param"><span class="n">basepos</span></em>, <em class="sig-param"><span class="n">radius</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_encircled_random_old" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_encircled_random_old</code><span class="sig-paren">(</span><em class="sig-param">ntime</em>, <em class="sig-param">basepos</em>, <em class="sig-param">radius=1.0</em>, <em class="sig-param">seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_encircled_random_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.gentraj.gentraj_k2like">
-<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_k2like</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ntime</span></em>, <em class="sig-param"><span class="n">basepos</span></em>, <em class="sig-param"><span class="n">nsub</span></em>, <em class="sig-param"><span class="n">basesig</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">lpix</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">lpixsig</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">pixret</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">grad</span><span class="o">=</span><span class="default_value">0.74</span></em>, <em class="sig-param"><span class="n">gradsig</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_k2like" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_k2like</code><span class="sig-paren">(</span><em class="sig-param">ntime</em>, <em class="sig-param">basepos</em>, <em class="sig-param">nsub</em>, <em class="sig-param">basesig=0.1</em>, <em class="sig-param">lpix=1.0</em>, <em class="sig-param">lpixsig=0.1</em>, <em class="sig-param">pixret=30</em>, <em class="sig-param">grad=0.74</em>, <em class="sig-param">gradsig=0.1</em>, <em class="sig-param">seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_k2like" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.gentraj.gentraj_random">
-<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_random</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ntime</span></em>, <em class="sig-param"><span class="n">basepos</span></em>, <em class="sig-param"><span class="n">nsub</span></em>, <em class="sig-param"><span class="n">basesig</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">subsig</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_random" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_random</code><span class="sig-paren">(</span><em class="sig-param">ntime</em>, <em class="sig-param">basepos</em>, <em class="sig-param">nsub</em>, <em class="sig-param">basesig=1.0</em>, <em class="sig-param">subsig=0.1</em>, <em class="sig-param">seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_random" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.gentraj.gentraj_random_old">
-<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_random_old</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ntime</span></em>, <em class="sig-param"><span class="n">basepos</span></em>, <em class="sig-param"><span class="n">basesig</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_random_old" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_random_old</code><span class="sig-paren">(</span><em class="sig-param">ntime</em>, <em class="sig-param">basepos</em>, <em class="sig-param">basesig=1.0</em>, <em class="sig-param">seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_random_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.gentraj.gentraj_ranwalk_old">
-<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_ranwalk_old</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ntime</span></em>, <em class="sig-param"><span class="n">basepos</span></em>, <em class="sig-param"><span class="n">dr</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_ranwalk_old" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.gentraj.</code><code class="sig-name descname">gentraj_ranwalk_old</code><span class="sig-paren">(</span><em class="sig-param">ntime</em>, <em class="sig-param">basepos</em>, <em class="sig-param">dr=0.1</em>, <em class="sig-param">seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.gentraj.gentraj_ranwalk_old" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
 </div>
 <div class="section" id="module-jis.pixsim.integrate">
 <span id="jis-pixsim-integrate-module"></span><h2>jis.pixsim.integrate module<a class="headerlink" href="#module-jis.pixsim.integrate" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.integrate.integrate">
-<code class="sig-prename descclassname">jis.pixsim.integrate.</code><code class="sig-name descname">integrate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pixar</span></em>, <em class="sig-param"><span class="n">jx</span></em>, <em class="sig-param"><span class="n">jy</span></em>, <em class="sig-param"><span class="n">texp</span></em>, <em class="sig-param"><span class="n">dt</span></em>, <em class="sig-param"><span class="n">det</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.integrate.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.integrate.</code><code class="sig-name descname">integrate</code><span class="sig-paren">(</span><em class="sig-param">pixar</em>, <em class="sig-param">jx</em>, <em class="sig-param">jy</em>, <em class="sig-param">texp</em>, <em class="sig-param">dt</em>, <em class="sig-param">det</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.integrate.integrate" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function integrates the pixar array
 calculated by simpix with taking the sampling
@@ -348,9 +348,7 @@ shotnoise, and digitize. Saturation is also considered.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pixar</strong> (<em>ndarray</em>) -- Movie data created by simpix.
 The shape is (X, Y, Z) not (Z, Y, X).</p></li>
-<li><p><strong>jx</strong> (<em>int</em>) -- Global pixel positions correspond to the
-origin of the simulated local image (pixar).</p></li>
-<li><p><strong>jy</strong> (<em>int</em>) -- Global pixel positions correspond to the
+<li><p><strong>jy</strong> (<em>jx</em><em>,</em>) -- Global pixel positions correspond to the
 origin of the simulated local image (pixar).</p></li>
 <li><p><strong>texp</strong> (<em>float</em>) -- Exposure time in sec.</p></li>
 <li><p><strong>dt</strong> (<em>float</em>) -- Timestep of the simulated data (pixar).</p></li>
@@ -369,9 +367,9 @@ origin of the simulated local image (pixar).</p></li>
 </div>
 <div class="section" id="module-jis.pixsim.makeflat">
 <span id="jis-pixsim-makeflat-module"></span><h2>jis.pixsim.makeflat module<a class="headerlink" href="#module-jis.pixsim.makeflat" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.makeflat.gaussian_flat">
-<code class="sig-prename descclassname">jis.pixsim.makeflat.</code><code class="sig-name descname">gaussian_flat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Nside</span><span class="o">=</span><span class="default_value">1024</span></em>, <em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">0.01</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.makeflat.gaussian_flat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.makeflat.</code><code class="sig-name descname">gaussian_flat</code><span class="sig-paren">(</span><em class="sig-param">Nside=1024</em>, <em class="sig-param">sigma=0.01</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.makeflat.gaussian_flat" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function makes an interpixel flat
 consists of gaussian noise.</p>
@@ -402,9 +400,9 @@ consists of gaussian noise.</p>
 </div>
 <div class="section" id="module-jis.pixsim.persistence">
 <span id="jis-pixsim-persistence-module"></span><h2>jis.pixsim.persistence module<a class="headerlink" href="#module-jis.pixsim.persistence" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.persistence.dQ_const">
-<code class="sig-prename descclassname">jis.pixsim.persistence.</code><code class="sig-name descname">dQ_const</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">rho</span></em>, <em class="sig-param"><span class="n">Ei0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.persistence.dQ_const" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.persistence.</code><code class="sig-name descname">dQ_const</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">rho</em>, <em class="sig-param">Ei0</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.persistence.dQ_const" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function calculates the increase of the trapped charge
 during an exposure time x (=Texp/tau), based on the model in Tulloch+19.
@@ -432,9 +430,9 @@ x is described as [Texp/tau1, Texp/tau2,...].</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.persistence.persistence_const">
-<code class="sig-prename descclassname">jis.pixsim.persistence.</code><code class="sig-name descname">persistence_const</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">rho</span></em>, <em class="sig-param"><span class="n">Ei0</span></em>, <em class="sig-param"><span class="n">Qij</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.persistence.persistence_const" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.persistence.</code><code class="sig-name descname">persistence_const</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">rho</em>, <em class="sig-param">Ei0</em>, <em class="sig-param">Qij</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.persistence.persistence_const" title="Permalink to this definition">¶</a></dt>
 <dd><dl>
 <dt>Summary:</dt><dd><p>This function returns the trapped charges (Qij and Qi)
 and photocharge (Ei) after a time x (=t/tau).
@@ -491,17 +489,17 @@ Ei  (float)  : Updated photocharge on the pixel.</p>
 </div>
 <div class="section" id="module-jis.pixsim.randomgf">
 <span id="jis-pixsim-randomgf-module"></span><h2>jis.pixsim.randomgf module<a class="headerlink" href="#module-jis.pixsim.randomgf" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.randomgf.simple_gp">
-<code class="sig-prename descclassname">jis.pixsim.randomgf.</code><code class="sig-name descname">simple_gp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nsamp</span></em>, <em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.randomgf.simple_gp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.randomgf.</code><code class="sig-name descname">simple_gp</code><span class="sig-paren">(</span><em class="sig-param">nsamp</em>, <em class="sig-param">alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.randomgf.simple_gp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
 <div class="section" id="module-jis.pixsim.readflat">
 <span id="jis-pixsim-readflat-module"></span><h2>jis.pixsim.readflat module<a class="headerlink" href="#module-jis.pixsim.readflat" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.readflat.flat_interpix">
-<code class="sig-prename descclassname">jis.pixsim.readflat.</code><code class="sig-name descname">flat_interpix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flat</span></em>, <em class="sig-param"><span class="n">ix</span></em>, <em class="sig-param"><span class="n">iy</span></em>, <em class="sig-param"><span class="n">pixdim</span></em>, <em class="sig-param"><span class="n">figsw</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.readflat.flat_interpix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.readflat.</code><code class="sig-name descname">flat_interpix</code><span class="sig-paren">(</span><em class="sig-param">flat</em>, <em class="sig-param">ix</em>, <em class="sig-param">iy</em>, <em class="sig-param">pixdim</em>, <em class="sig-param">figsw=0</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.readflat.flat_interpix" title="Permalink to this definition">¶</a></dt>
 <dd><dl>
 <dt>Summary:</dt><dd><p>This function calculates an interpixel flat pattern
 based on the given flat data 'flat'. From the flat data,
@@ -518,9 +516,7 @@ returns the result as a 2-d array data.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>flat</strong> (<em>array</em>) -- Original 2-d array data.
 0th axis is x axis, 1st axis is yaxis.</p></li>
-<li><p><strong>ix</strong> (<em>int</em>) -- Initial pixel indices to select a region
-from the flat data (0 origin).</p></li>
-<li><p><strong>iy</strong> (<em>int</em>) -- Initial pixel indices to select a region
+<li><p><strong>iy</strong> (<em>ix</em><em>,</em>) -- Initial pixel indices to select a region
 from the flat data (0 origin).</p></li>
 <li><p><strong>pixdim</strong> (<em>array</em>) -- Pixel dimensions (2-values).
 The 1st/2nd values are the x/y dimensions.</p></li>
@@ -537,9 +533,9 @@ If figsw=1, a preview figure is shown.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.readflat.haya2interpix">
-<code class="sig-prename descclassname">jis.pixsim.readflat.</code><code class="sig-name descname">haya2interpix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ix</span></em>, <em class="sig-param"><span class="n">iy</span></em>, <em class="sig-param"><span class="n">pixdim</span></em>, <em class="sig-param"><span class="n">dirh</span><span class="o">=</span><span class="default_value">'/home/hirano/virtual-jasmine/pixsim/data/'</span></em>, <em class="sig-param"><span class="n">file</span><span class="o">=</span><span class="default_value">'v_flatn.fits'</span></em>, <em class="sig-param"><span class="n">figsw</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.readflat.haya2interpix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.readflat.</code><code class="sig-name descname">haya2interpix</code><span class="sig-paren">(</span><em class="sig-param">ix</em>, <em class="sig-param">iy</em>, <em class="sig-param">pixdim</em>, <em class="sig-param">dirh='/home/hirano/virtual-jasmine/pixsim/data/'</em>, <em class="sig-param">file='v_flatn.fits'</em>, <em class="sig-param">figsw=0</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.readflat.haya2interpix" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function returns a interpixel flat pattern
 based on the haya2 data.
@@ -549,9 +545,7 @@ based on the haya2 data.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ix</strong> (<em>int</em>) -- Initial pixel indices to select a region
-from the flat data (0 origin).</p></li>
-<li><p><strong>iy</strong> (<em>int</em>) -- Initial pixel indices to select a region
+<li><p><strong>iy</strong> (<em>ix</em><em>,</em>) -- Initial pixel indices to select a region
 from the flat data (0 origin).</p></li>
 <li><p><strong>pixdim</strong> (<em>array</em>) -- Pixel dimensions (2-values).
 The 1st/2nd values are the x/y dimensions.</p></li>
@@ -571,9 +565,9 @@ If figsw=1, a preview figure is shown.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.readflat.read_intrapix">
-<code class="sig-prename descclassname">jis.pixsim.readflat.</code><code class="sig-name descname">read_intrapix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filex</span></em>, <em class="sig-param"><span class="n">filey</span></em>, <em class="sig-param"><span class="n">spixdim</span></em>, <em class="sig-param"><span class="n">dirh</span><span class="o">=</span><span class="default_value">'/home/hirano/virtual-jasmine/pixsim/data/'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.readflat.read_intrapix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.readflat.</code><code class="sig-name descname">read_intrapix</code><span class="sig-paren">(</span><em class="sig-param">filex</em>, <em class="sig-param">filey</em>, <em class="sig-param">spixdim</em>, <em class="sig-param">dirh='/home/hirano/virtual-jasmine/pixsim/data/'</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.readflat.read_intrapix" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function returns an intrapixel flat pattern
 from the data, 'filex' and 'filey', in the directory, 'dirh'.
@@ -609,34 +603,34 @@ The numbers of sub-pixels are set by 'spixdim'.</p>
 </div>
 <div class="section" id="module-jis.pixsim.simpix_stable">
 <span id="jis-pixsim-simpix-stable-module"></span><h2>jis.pixsim.simpix_stable module<a class="headerlink" href="#module-jis.pixsim.simpix_stable" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.simpix_stable.emurate_pixlight_custom">
-<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">emurate_pixlight_custom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">theta_instant</span></em>, <em class="sig-param"><span class="n">psfarr</span></em>, <em class="sig-param"><span class="n">pixdim</span></em>, <em class="sig-param"><span class="n">spixdim</span></em>, <em class="sig-param"><span class="n">subtilex</span></em>, <em class="sig-param"><span class="n">subtiley</span></em>, <em class="sig-param"><span class="n">Nsubtilex</span></em>, <em class="sig-param"><span class="n">Nsubtiley</span></em>, <em class="sig-param"><span class="n">psfcenter</span></em>, <em class="sig-param"><span class="n">psfscale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.emurate_pixlight_custom" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">emurate_pixlight_custom</code><span class="sig-paren">(</span><em class="sig-param">theta_instant</em>, <em class="sig-param">psfarr</em>, <em class="sig-param">pixdim</em>, <em class="sig-param">spixdim</em>, <em class="sig-param">subtilex</em>, <em class="sig-param">subtiley</em>, <em class="sig-param">Nsubtilex</em>, <em class="sig-param">Nsubtiley</em>, <em class="sig-param">psfcenter</em>, <em class="sig-param">psfscale</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.emurate_pixlight_custom" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.simpix_stable.genimg_custom">
-<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">genimg_custom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">psfdim</span></em>, <em class="sig-param"><span class="n">spixdim</span></em>, <em class="sig-param"><span class="n">psfcenter</span></em>, <em class="sig-param"><span class="n">psfscale</span></em>, <em class="sig-param"><span class="n">Nsubtilex</span></em>, <em class="sig-param"><span class="n">Nsubtiley</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.genimg_custom" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">genimg_custom</code><span class="sig-paren">(</span><em class="sig-param">psfdim</em>, <em class="sig-param">spixdim</em>, <em class="sig-param">psfcenter</em>, <em class="sig-param">psfscale</em>, <em class="sig-param">Nsubtilex</em>, <em class="sig-param">Nsubtiley</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.genimg_custom" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.simpix_stable.genimg_donut">
-<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">genimg_donut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spixdim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.genimg_donut" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">genimg_donut</code><span class="sig-paren">(</span><em class="sig-param">spixdim</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.genimg_donut" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.simpix_stable.pix2psfpix">
-<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">pix2psfpix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pixpos</span></em>, <em class="sig-param"><span class="n">pixcenter</span></em>, <em class="sig-param"><span class="n">psfcenter</span></em>, <em class="sig-param"><span class="n">psfscale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.pix2psfpix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">pix2psfpix</code><span class="sig-paren">(</span><em class="sig-param">pixpos</em>, <em class="sig-param">pixcenter</em>, <em class="sig-param">psfcenter</em>, <em class="sig-param">psfscale</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.pix2psfpix" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.simpix_stable.set_custom">
-<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">set_custom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">theta</span></em>, <em class="sig-param"><span class="n">psfarr</span></em>, <em class="sig-param"><span class="n">psfcenter</span></em>, <em class="sig-param"><span class="n">psfscale</span></em>, <em class="sig-param"><span class="n">pixdim</span></em>, <em class="sig-param"><span class="n">spixdim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.set_custom" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">set_custom</code><span class="sig-paren">(</span><em class="sig-param">theta</em>, <em class="sig-param">psfarr</em>, <em class="sig-param">psfcenter</em>, <em class="sig-param">psfscale</em>, <em class="sig-param">pixdim</em>, <em class="sig-param">spixdim</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.set_custom" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.simpix_stable.set_simpix">
-<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">set_simpix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">theta</span></em>, <em class="sig-param"><span class="n">interpix</span></em>, <em class="sig-param"><span class="n">intrapix</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.set_simpix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">set_simpix</code><span class="sig-paren">(</span><em class="sig-param">theta</em>, <em class="sig-param">interpix</em>, <em class="sig-param">intrapix</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.set_simpix" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function makes preparations for simpix.
 (Gloabl memory allocation etc.)</p>
@@ -668,9 +662,9 @@ pixlc        (ndarray)         : Array for output movie data.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.simpix_stable.simpix">
-<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">simpix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">theta</span></em>, <em class="sig-param"><span class="n">interpix</span></em>, <em class="sig-param"><span class="n">intrapix</span></em>, <em class="sig-param"><span class="n">psfarr</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">psfcenter</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">psfscale</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.simpix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.simpix_stable.</code><code class="sig-name descname">simpix</code><span class="sig-paren">(</span><em class="sig-param">theta</em>, <em class="sig-param">interpix</em>, <em class="sig-param">intrapix</em>, <em class="sig-param">psfarr=None</em>, <em class="sig-param">psfcenter=None</em>, <em class="sig-param">psfscale=None</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.simpix_stable.simpix" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function makes a movie data
 based on the time-series data of the observed position (theta)
@@ -703,9 +697,9 @@ If psfarr,psfcenter,psfscale are given, the bilinear interporation of psfarr pro
 </div>
 <div class="section" id="module-jis.pixsim.transitmodel">
 <span id="jis-pixsim-transitmodel-module"></span><h2>jis.pixsim.transitmodel module<a class="headerlink" href="#module-jis.pixsim.transitmodel" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.transitmodel.gentransit">
-<code class="sig-prename descclassname">jis.pixsim.transitmodel.</code><code class="sig-name descname">gentransit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">t0</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">Porb</span><span class="o">=</span><span class="default_value">14.0</span></em>, <em class="sig-param"><span class="n">Rp</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">Mp</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">Rs</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">Ms</span><span class="o">=</span><span class="default_value">0.15</span></em>, <em class="sig-param"><span class="n">ideg</span><span class="o">=</span><span class="default_value">90.0</span></em>, <em class="sig-param"><span class="n">w</span><span class="o">=</span><span class="default_value">90.0</span></em>, <em class="sig-param"><span class="n">e</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">u1</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">u2</span><span class="o">=</span><span class="default_value">0.3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.transitmodel.gentransit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.transitmodel.</code><code class="sig-name descname">gentransit</code><span class="sig-paren">(</span><em class="sig-param">t</em>, <em class="sig-param">t0=0.0</em>, <em class="sig-param">Porb=14.0</em>, <em class="sig-param">Rp=1.0</em>, <em class="sig-param">Mp=1.0</em>, <em class="sig-param">Rs=0.2</em>, <em class="sig-param">Ms=0.15</em>, <em class="sig-param">ideg=90.0</em>, <em class="sig-param">w=90.0</em>, <em class="sig-param">e=0.0</em>, <em class="sig-param">u1=0.1</em>, <em class="sig-param">u2=0.3</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.transitmodel.gentransit" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function calculates a transit light curve
 based on the input parameters.</p>
@@ -734,9 +728,7 @@ to calculate the transit model in days.</p></li>
 (Default: 90.0)</p></li>
 <li><p><strong>e</strong> (<em>float</em>) -- Eccentricity in deg.
 (Default: 0.0)</p></li>
-<li><p><strong>u1</strong> (<em>float</em>) -- Limb-darkening parameters.
-(Default: u1=0.1; u2=0.3)</p></li>
-<li><p><strong>u2</strong> (<em>float</em>) -- Limb-darkening parameters.
+<li><p><strong>u2</strong> (<em>u1</em><em>,</em>) -- Limb-darkening parameters.
 (Default: u1=0.1; u2=0.3)</p></li>
 </ul>
 </dd>
@@ -750,14 +742,14 @@ b     (float)  : Apparent size of the orbital semi-major axis in Rstar?</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.transitmodel.gentransit_json">
-<code class="sig-prename descclassname">jis.pixsim.transitmodel.</code><code class="sig-name descname">gentransit_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">json_file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.transitmodel.gentransit_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.transitmodel.</code><code class="sig-name descname">gentransit_json</code><span class="sig-paren">(</span><em class="sig-param">t</em>, <em class="sig-param">json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.transitmodel.gentransit_json" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="jis.pixsim.transitmodel.inject_transit">
-<code class="sig-prename descclassname">jis.pixsim.transitmodel.</code><code class="sig-name descname">inject_transit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">p</span></em>, <em class="sig-param"><span class="n">t0</span></em>, <em class="sig-param"><span class="n">depth</span></em>, <em class="sig-param"><span class="n">ntime</span></em>, <em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">15.0</span></em>, <em class="sig-param"><span class="n">inc</span><span class="o">=</span><span class="default_value">87.0</span></em>, <em class="sig-param"><span class="n">ecc</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">w</span><span class="o">=</span><span class="default_value">90.0</span></em>, <em class="sig-param"><span class="n">ld_coeff</span><span class="o">=</span><span class="default_value">[0.1, 0.3]</span></em>, <em class="sig-param"><span class="n">ld_model</span><span class="o">=</span><span class="default_value">'quadratic'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.transitmodel.inject_transit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">jis.pixsim.transitmodel.</code><code class="sig-name descname">inject_transit</code><span class="sig-paren">(</span><em class="sig-param">p, t0, depth, ntime, a=15.0, inc=87.0, ecc=0.0, w=90.0, ld_coeff=[0.1, 0.3], ld_model='quadratic'</em><span class="sig-paren">)</span><a class="headerlink" href="#jis.pixsim.transitmodel.inject_transit" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Summary:</dt><dd><p>This function calculates a transit light curve.
 The transit model is calculated based on the input parameters.</p>
