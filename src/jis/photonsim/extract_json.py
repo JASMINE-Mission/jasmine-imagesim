@@ -1,13 +1,14 @@
 import numpy as np
-import os 
+import os
 import json
+import dataclasses
 from jis.pixsim import makeflat as mf
 from jis.pixsim import readflat as rf
 from jis.photonsim import aperture
 
 def extsp(sp):
     """
-    This function extracts spectral information 
+    This function extracts spectral information
     from a decoded spectral data, 'sp'.
 
     Args:
@@ -24,7 +25,7 @@ def extsp(sp):
         from jis.photonsim.extract_json import extsp
 
         fp = open("***.json")
-        sp = json.load(fp) 
+        sp = json.load(fp)
         k, WL, NP, Ntot = extsp(sp)
 
     """
@@ -57,14 +58,14 @@ def exttel(tel):
         WLdefined (ndarray): Wavelength data (um).
         EPdefined (ndarray): Optical efficiency.
         WLshort   (float)  : Shortest wavelength (um).
-        WLlong    (float)  : Longest wavelength (um).        
+        WLlong    (float)  : Longest wavelength (um).
 
     Example:
         import json
         from jis.photonsim.extract_json import exttel
 
         fp  = open("***.json")
-        tel = json.load(fp) 
+        tel = json.load(fp)
         k, WL, EP, WLmin, WLmax = exttel(tel)
 
     """
@@ -265,10 +266,10 @@ def extQE(det):
         from jis.photonsim.extract_json import extQE
 
         fp  = open("***.json")
-        det = json.load(fp) 
+        det = json.load(fp)
         WL, QE = extQE(det)
 
-    """ 
+    """
 
     # read QE from det
     k = int((len(det['QE'])-1)/2 ) # number of definition points
@@ -301,11 +302,11 @@ def extsrc(src):
         from jis.photonsim.extract_json import extsrc
 
         fp  = open("***.json")
-        src = json(fp) 
-        Rv, JH, alp = extsrc(src) 
+        src = json(fp)
+        Rv, JH, alp = extsrc(src)
 
     """
-    
+
     Rv  = src['Rv']['val']
     JH  = src['J-H']['val']
     alp = src['Hwband']['val']
@@ -316,7 +317,7 @@ def extsrc(src):
 def mkControlParams(json_filename):
     """
     This method creates a control_params object,
-    which contains control parameters written in the 
+    which contains control parameters written in the
     json file for the control parameters.
 
     Args:
@@ -328,6 +329,7 @@ def mkControlParams(json_filename):
     """
 
 
+    @dataclasses.dataclass(frozen=True)
     class control_params:
         """
          This is a class to handle the control parameters.
@@ -338,35 +340,54 @@ def mkControlParams(json_filename):
                                 The fp-cell scale will be (1/M) x 10^-3 rad/fp-cell.
             ace_control (dict): Parameters related to the ace calculation.
             nplate      (int) : Number of plates that make up a small frame.
+            switch      (dict): Flags to enable/disable components.
 
         """
-          
-        def __init__(self, wfe=None, M=None, ace=None, nplate=None):
-            self.wfe_control = wfe
-            self.M_parameter = M
-            self.ace_control = ace
-            self.nplate      = nplate
+        wfe_control: dict
+        M_parameter: int
+        ace_control: dict
+        nplate     : int
+        switch     : dict
 
 
     with open(json_filename, "r") as fp:
         js = json.load(fp)
 
         wfe = {}
-        for item in ['zernike_nmax', 'zernike_even', 'zernike_odd', 'reference_wl']:
-            wfe[item] = js['WFEcontrol'][item]['val']
+        wfe_control = js.get('WFEcontrol')
+        wfe_items = [
+            'zernike_nmax', 'zernike_even', 'zernike_odd', 'reference_wl']
+        if wfe_control:
+            for item in wfe_items:
+                wfe[item] = wfe_control[item]['val']
 
         M = js['M']['val']
 
         ace = {}
-        for item in ['dtace', 'tace']:
-            ace[item] = js['ACEcontrol'][item]['val'] 
-        ace['nace'] = int(ace['tace']/ace['dtace'])+1
-        ace['tace'] = ace['dtace']*ace['nace']
+        ace_control = js.get('ACEcontrol')
+        ace_items = ['dtace', 'tace']
+        if ace_control:
+            for item in ace_items:
+                ace[item] = ace_control[item]['val']
+            ace['nace'] = int(ace['tace']/ace['dtace'])+1
+            ace['tace'] = ace['dtace']*ace['nace']
 
         nplate = js['Nplate']['val']
-    fp.close()
 
-    control_params = control_params(wfe=wfe, M=M, ace=ace, nplate=nplate)
+        simulation = js.get('simulation')
+        simulation_items = [
+            'ace', 'wfe', 'flat_interpix', 'flat_intrapix',
+            'psf', 'rolling_shutter'
+        ]
+        switch = { s:False for s in simulation_items }
+        if simulation:
+            for key,val in simulation.items():
+                switch[key] = val
+
+
+    control_params = control_params(
+        wfe_control=wfe, M_parameter=M, ace_control=ace,
+        nplate=nplate, switch=switch)
 
     return control_params
 
@@ -398,7 +419,7 @@ def mkTel(json_filename):
             opt_efficiency   (dict)   : Optical efficiency.
 
         """
-           
+
         def __init__(self, epd=None, aperture=None,\
                      cobs=None, spider=None, total_area=None,\
                      opt_efficiency=None, efl=None):
@@ -447,8 +468,8 @@ def mkTel(json_filename):
 def mkVar(json_filename):
     """
     Summary: This is dummy to initialize variability class, to match mkDet etc.
-    """            
-    _var = variability(json_filename)                    
+    """
+    _var = variability(json_filename)
     return _var
 
 class variability():
@@ -464,7 +485,7 @@ class variability():
         Summary: this function is json i/o for stellar variability
         """
         with open(json_filename, "r") as f:
-            var_params = json.load(f)            
+            var_params = json.load(f)
             f.close()
             self.Nvar=len(var_params)
             self.plate=[]
@@ -479,11 +500,11 @@ class variability():
                 self.vartype.append(var["vartype"])
                 self.varfile.append(var["varfile"])
                 self.dirname.append(var["dirname"])
-    
+
     def read_var(self,t_day,star_index):
         """
         Summary
-        -------        
+        -------
         read variability for a given star index
 
         Parameters
@@ -496,9 +517,9 @@ class variability():
         sw: if True there is variability, else no variability.
         injlc: variability
         b : impact parameter for vartype = planet
-       
+
         """
-        from jis.pixsim import transitmodel 
+        from jis.pixsim import transitmodel
         for i in range(0,self.Nvar):
             if  int(star_index) == int(self.star[i]):
                 if self.vartype[i] == "planet":
@@ -510,5 +531,3 @@ class variability():
 
         sw=False
         return sw,None,None
-
-            
