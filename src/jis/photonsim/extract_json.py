@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import json
-import dataclasses
+from dataclasses import dataclass, fields
 from jis.pixsim import makeflat as mf
 from jis.pixsim import readflat as rf
 from jis.photonsim import aperture
@@ -328,26 +328,46 @@ def mkControlParams(json_filename):
 
     """
 
+    @dataclass(frozen=True)
+    class effect_switch:
+        """
+        This class handles the switch to enable/disable the effects.
 
-    @dataclasses.dataclass(frozen=True)
+        Attributes:
+            ace (bool): incorporate the Attitude Control Error.
+            wfe (bool): incorpolate the Wave Front Error.
+            flat_interpix (bool): incorporate the Interpix Flat Error.
+            flat_intrapix (bool): incorporate the Intrapix Flat Error.
+            psf (bool): simulate a physically realistic Point Spread Function.
+            rolling_shutter (bool): incorpolate the time-delay due to rolling shutter.
+        """
+        ace: bool
+        wfe: bool
+        flat_interpix: bool
+        flat_intrapix: bool
+        psf: bool
+        rolling_shutter: bool
+
+
+    @dataclass(frozen=True)
     class control_params:
         """
-         This is a class to handle the control parameters.
+        This is a class to handle the control parameters.
 
         Attributes:
             wfe_control (dict): Parameters related to the wfe calculation.
-            M_parameter (int) : The M parameter which determine the cell scale of the psf.
-                                The fp-cell scale will be (1/M) x 10^-3 rad/fp-cell.
+            M_parameter (int): The M parameter which determine the cell scale of the psf.
+                               The fp-cell scale will be (1/M) x 10^-3 rad/fp-cell.
             ace_control (dict): Parameters related to the ace calculation.
-            nplate      (int) : Number of plates that make up a small frame.
-            switch      (dict): Flags to enable/disable components.
+            nplate (int): Number of plates that make up a small frame.
+            effect (effect_switch): Flags to enable/disable components.
 
         """
         wfe_control: dict
         M_parameter: int
         ace_control: dict
         nplate     : int
-        switch     : dict
+        effect     : effect_switch
 
 
     with open(json_filename, "r") as fp:
@@ -374,20 +394,19 @@ def mkControlParams(json_filename):
 
         nplate = js['Nplate']['val']
 
-        simulation = js.get('simulation')
-        simulation_items = [
-            'ace', 'wfe', 'flat_interpix', 'flat_intrapix',
-            'psf', 'rolling_shutter'
-        ]
-        switch = { s:False for s in simulation_items }
-        if simulation:
-            for key,val in simulation.items():
-                switch[key] = val
-
+        effect_obj = js.get('effect')
+        effect = {}
+        for field in fields(effect_switch):
+            try:
+                item = effect_obj.get(field.name)
+                effect[field.name] = item.get('value', False)
+            except:
+                effect[field.name] = False
+        effect = effect_switch(**effect)
 
     control_params = control_params(
         wfe_control=wfe, M_parameter=M, ace_control=ace,
-        nplate=nplate, switch=switch)
+        nplate=nplate, effect=effect)
 
     return control_params
 

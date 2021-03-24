@@ -1,6 +1,6 @@
 {
-"simulation": {
-  "title" : "enable/disable simulation components",
+"effect": {
+  "title" : "enable/disable emulator effects",
   "ace": {
     "title": "incorporate the attitude control error",
     "value": true },
