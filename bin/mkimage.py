@@ -143,9 +143,13 @@ if __name__ == '__main__':
 
 
     # Making random wfe. ###########################################
-    wp  = control_params.wfe_control
-    wfe_amplitudes = wfe_model_z(np.random, wp['zernike_nmax'], wp['reference_wl'],\
-                                 wp['zernike_odd'], wp['zernike_even'])
+    if control_params.effect.wfe is True:
+        wp  = control_params.wfe_control
+        wfe_amplitudes = wfe_model_z(
+            np.random, wp['zernike_nmax'], wp['reference_wl'],
+            wp['zernike_odd'], wp['zernike_even'])
+    else:
+        wfe_amplitudes = wfe_model_z(np.random,3,0,1,1)
 
     # Saving amplitude data...
     with open(filename_wfejson, mode='w') as f:
