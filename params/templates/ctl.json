@@ -3,22 +3,22 @@
   "title" : "enable/disable emulator effects",
   "ace": {
     "title": "incorporate the attitude control error",
-    "value": true },
+    "val": true },
   "wfe": {
     "title": "incorporate the wave front error error",
-    "value": true },
+    "val": true },
   "flat_interpix": {
     "title": "incorporate the interpix flat non-uniformity",
-    "value": true },
+    "val": true },
   "flat_intrapix": {
     "title": "incorporate the intrapix flat non-uniformity",
-    "value": true },
+    "val": true },
   "psf": {
     "title": "simulate a physically realistic point spread function",
-    "value": true },
+    "val": true },
   "rolling_shutter": {
     "title": "incorporate the time-delay due to rolling shutter",
-    "value": true }},
+    "val": true }},
 "M":{
  "title"  :"Cell scale is 1/M [um/mm] ",
  "val"   :6320},

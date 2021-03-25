@@ -399,7 +399,7 @@ def mkControlParams(json_filename):
         for field in fields(EffectSelector):
             try:
                 item = effect_obj.get(field.name)
-                effect[field.name] = item.get('value', False)
+                effect[field.name] = item.get('val', False)
             except:
                 effect[field.name] = False
         effect = EffectSelector(**effect)
