@@ -316,7 +316,7 @@ def extsrc(src):
 
 def mkControlParams(json_filename):
     """
-    This method creates a control_params object,
+    This method creates an instance of ControlParams,
     which contains control parameters written in the
     json file for the control parameters.
 
@@ -324,12 +324,12 @@ def mkControlParams(json_filename):
         json_filename (string): Input json filename.
 
     Returns:
-        control_params (control_params): Created control_params object.
+        ControlParams: Created ControlParams object.
 
     """
 
     @dataclass(frozen=True)
-    class effect_switch:
+    class EffectSelector:
         """
         This class handles the switch to enable/disable the effects.
 
@@ -350,7 +350,7 @@ def mkControlParams(json_filename):
 
 
     @dataclass(frozen=True)
-    class control_params:
+    class ControlParams:
         """
         This is a class to handle the control parameters.
 
@@ -360,14 +360,14 @@ def mkControlParams(json_filename):
                                The fp-cell scale will be (1/M) x 10^-3 rad/fp-cell.
             ace_control (dict): Parameters related to the ace calculation.
             nplate (int): Number of plates that make up a small frame.
-            effect (effect_switch): Flags to enable/disable components.
+            effect (EffectSelector): Flags to enable/disable components.
 
         """
         wfe_control: dict
         M_parameter: int
         ace_control: dict
         nplate     : int
-        effect     : effect_switch
+        effect     : EffectSelector
 
 
     with open(json_filename, "r") as fp:
@@ -396,15 +396,15 @@ def mkControlParams(json_filename):
 
         effect_obj = js.get('effect')
         effect = {}
-        for field in fields(effect_switch):
+        for field in fields(EffectSelector):
             try:
                 item = effect_obj.get(field.name)
                 effect[field.name] = item.get('value', False)
             except:
                 effect[field.name] = False
-        effect = effect_switch(**effect)
+        effect = EffectSelector(**effect)
 
-    control_params = control_params(
+    control_params = ControlParams(
         wfe_control=wfe, M_parameter=M, ace_control=ace,
         nplate=nplate, effect=effect)
 
