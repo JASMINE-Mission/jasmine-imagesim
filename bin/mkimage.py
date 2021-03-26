@@ -44,12 +44,10 @@ import matplotlib.pylab as plt
 
 
 # Constants ########################################################
-Rv  = 3.1
-JH  = 2.0
-alp = 0.75
+Rv  = 3.1            # total-to-selective extinction
+JH  = 2.0            # color excess E(J-H)
+alp = 0.75           # interpolation factor
 spixdim  = [32, 32]  # subpixel dimension in a pixel (setting for intrapix pattern).
-acex_std = 0.276     # std of ace_x (arcsec).
-acey_std = 0.276     # std of ace_y (arcsec). 
 Nmargin = 10         # Margin for simpix calc.
 tplate  = 12.5       # Exposure time of a plate (sec).
 
@@ -207,6 +205,8 @@ if __name__ == '__main__':
 
     ## Full data of the displacement in detpix.
     ## (ace[x|y] scaled and converted to detpix)
+    acex_std = control_params.ace_control.get('acex_std')
+    acey_std = control_params.ace_control.get('acey_std')
     theta_full = np.array([acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
 
     Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)

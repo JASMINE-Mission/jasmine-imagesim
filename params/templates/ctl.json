@@ -3,10 +3,10 @@
   "title" : "enable/disable emulator effects",
   "ace": {
     "title": "incorporate the attitude control error",
-    "val": true },
+    "val": false },
   "wfe": {
     "title": "incorporate the wave front error error",
-    "val": true },
+    "val": false },
   "flat_interpix": {
     "title": "incorporate the interpix flat non-uniformity",
     "val": true },
@@ -15,7 +15,7 @@
     "val": true },
   "psf": {
     "title": "simulate a physically realistic point spread function",
-    "val": true },
+    "val": false },
   "rolling_shutter": {
     "title": "incorporate the time-delay due to rolling shutter",
     "val": true }},
@@ -55,7 +55,13 @@
     "description": "Timestep of ACE simulation in sec."},
   "tace":   {
     "val": 360,
-    "description": "Time range of ACE simulation in sec (to be adjusted)."}},
+    "description": "Time range of ACE simulation in sec (to be adjusted)."},
+  "acex_std": {
+    "val": 0.276,
+    "description": "standard deviation of ACE along with X-axis (arcsec)."},
+  "acey_std": {
+    "val": 0.276,
+    "description": "standard deviation of ACE along with Y-axis (arcsec)."}},
 "Nplate":{
   "title": "Number of plates which make up a small frame.",
   "val"  : 11}

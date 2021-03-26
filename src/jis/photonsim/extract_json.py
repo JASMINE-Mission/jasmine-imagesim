@@ -385,7 +385,7 @@ def mkControlParams(json_filename):
 
         ace = {}
         ace_control = js.get('ACEcontrol')
-        ace_items = ['dtace', 'tace']
+        ace_items = ['dtace', 'tace', 'acex_std', 'acey_std']
         if ace_control:
             for item in ace_items:
                 ace[item] = ace_control[item]['val']
