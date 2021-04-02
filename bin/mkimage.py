@@ -43,13 +43,6 @@ from jis.pixsim.addnoise import addnoise
 import matplotlib.pylab as plt
 
 
-# Constants ########################################################
-Rv  = 3.1            # total-to-selective extinction
-JH  = 2.0            # color excess E(J-H)
-alp = 0.75           # interpolation factor
-tplate  = 12.5       # Exposure time of a plate (sec).
-
-
 # Command line interface
 if __name__ == '__main__':
     args = docopt(__doc__)
@@ -162,8 +155,11 @@ if __name__ == '__main__':
     qe = detector.qe
 
     ## Currently, only one case of (Rv, JH).
+    Rv = control_params.Rv
+    JH = control_params.JH
+    alpha = control_params.alpha
     total_e_rate, wl_e_rate, e_rate = \
-        calc_response(Rv, JH, alp, opteff.wavelength, opteff.efficiency,
+        calc_response(Rv, JH, alpha, opteff.wavelength, opteff.efficiency,
                       np.min(opteff.wavelength), np.max(opteff.wavelength), qe.wl, qe.val)
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
@@ -214,6 +210,7 @@ if __name__ == '__main__':
     Npixcube = int((np.max(np.abs(theta_full))+detector.nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
 
+    tplate = control_params.tplate
     tscan = detector.readparams.t_scan
     dtace = control_params.ace_control['dtace']
     Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.

@@ -306,12 +306,20 @@ class ControlParams:
                            The fp-cell scale will be (1/M) x 10^-3 rad/fp-cell.
         ace_control (dict): Parameters related to the ace calculation.
         nplate (int): Number of plates that make up a small frame.
+        tplate (float): Exposure time of each plate in second.
+        Rv (float): Total-to-selective extinction of the field.
+        JH (float): Color excess E(J-h) for each source.
+        alpha (float): Hw-band interpolation factor.
         effect (EffectSelector): Flags to enable/disable components.
     """
     wfe_control: dict
     M_parameter: int
     ace_control: dict
     nplate     : int
+    tplate     : float
+    Rv         : float
+    JH         : float
+    alpha      : float
     effect     : EffectSelector
 
     @classmethod
@@ -351,6 +359,10 @@ class ControlParams:
             ace['tace'] = ace['dtace']*ace['nace']
 
         nplate = js['Nplate']['val']
+        tplate = js['tplate']['val']
+        Rv = js['Rv']['val']
+        JH = js['J-H']['val']
+        alpha = js['alpha']['val']
 
         effect_obj = js.get('effect')
         effect = {}
@@ -363,8 +375,8 @@ class ControlParams:
         effect = EffectSelector(**effect)
 
         control_params = ControlParams(
-            wfe_control=wfe, M_parameter=M, ace_control=ace,
-            nplate=nplate, effect=effect)
+            wfe_control=wfe, M_parameter=M, ace_control=ace, nplate=nplate,
+            tplate=tplate, Rv=Rv, JH=JH, alpha=alpha, effect=effect)
 
         return control_params
 

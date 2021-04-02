@@ -16,22 +16,22 @@
   "flat_intrapix": {
     "title": "incorporate the intrapix flat non-uniformity",
     "val": true }},
-"M":{
+"M": {
  "title"  :"Cell scale is 1/M [um/mm] ",
  "val"   :6320},
-"CellPix":{
+"CellPix": {
  "title"  :"Number of cells corresponds to detector pixel size",
  "val"   : 13 },
-"PixNum":{
+"PixNum": {
  "title"  :"Number of detector pixels for the side length of a single area",
  "val" : 9 },
-"dx":{
+"dx": {
   "title" :"x difference between psf center and detector pixel center ",
   "val" : 0 },
-"dy":{
+"dy": {
   "title" :"y difference between psf center and detector pixel center ",
   "val" : 0 },
-"WFEcontrol":{
+"WFEcontrol": {
   "title": "WFE control parameters.",
   "zernike_nmax": {
     "val": 8,
@@ -45,7 +45,7 @@
   "reference_wl": {
     "val": 1.4,
     "title": "Reference wavelength in micron."}},
-"ACEcontrol":{
+"ACEcontrol": {
   "title": "ACE simulation control parameters.",
   "dtace":  {
     "val": 15e-5,
@@ -59,7 +59,19 @@
   "acey_std": {
     "val": 0.276,
     "title": "standard deviation of ACE along with Y-axis (arcsec)."}},
-"Nplate":{
+"Nplate": {
   "title": "Number of plates which make up a small frame.",
-  "val"  : 11}
+  "val"  : 11},
+"tplate": {
+  "title": "Exposure time of plate in second.",
+  "val": 12.5},
+"Rv": {
+  "title": "Total-to-selective extinction.",
+  "val": 3.1},
+"J-H": {
+  "title": "Color excess E(J-h).",
+  "val": 2.0},
+"alpha": {
+  "title": "Interpolation factor",
+  "val": 0.75}
 }
