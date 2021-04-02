@@ -170,16 +170,6 @@ if __name__ == '__main__':
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
 
-    # Ace simulation. ##############################################   
-    ace_cp = control_params.ace_control
-    print("Making ACE (X)...")
-    acex, psdx = calc_ace(np.random, ace_cp['nace'], ace_cp['tace'], ace_params)
-    # acex is normalized by the std.
-
-    print("Making ACE (Y)...")
-    acey, psdy = calc_ace(np.random, ace_cp['nace'], ace_cp['tace'], ace_params)
-    # acey is normalized by the std.
-
     if control_params.effect.psf is True:
         ## Currently, only one PSF.
         print("Calculating PSF...")
@@ -200,6 +190,22 @@ if __name__ == '__main__':
         psf = psf/psf.sum() * total_e_rate * telescope.total_area
 
 
+    # Ace simulation. ##############################################
+    nace = control_params.ace_control.get('nace')
+    tace = control_params.ace_control.get('tace')
+    if control_params.effect.ace is True:
+        print("Making ACE (X)...")
+        acex, psdx = calc_ace(np.random, nace, tace, ace_params)
+        # the standard deviation of acex is normalized to unity.
+
+        print("Making ACE (Y)...")
+        acey, psdy = calc_ace(np.random, nace, tace, ace_params)
+        # the standard deviation of acey is normalized to unity.
+    else:
+        print("ACE simulation is skipped.")
+        print("Generate face ACE(X) and ACE(Y)...")
+        acex = np.zeros(nace)
+        acey = np.zeros(nace)
 
     # Preparation for making image. ################################
 
