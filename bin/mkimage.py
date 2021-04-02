@@ -154,7 +154,6 @@ if __name__ == '__main__':
     # Saving amplitude data...
     with open(filename_wfejson, mode='w') as f:
         json.dump(wfe_amplitudes, f, indent=2)
-    f.close()
 
     # Making wfe map...
     wfe = calc_wfe(telescope.epd, filename_wfejson)
@@ -165,32 +164,11 @@ if __name__ == '__main__':
     qe = detector.qe
 
     ## Currently, only one case of (Rv, JH).
-    total_e_rate, wl_e_rate, e_rate =\
-        calc_response(Rv, JH, alp,\
-                      len(opteff['wl']), opteff['wl'], opteff['val'],\
-                      np.min(opteff['wl']), np.max(opteff['wl']),\
-                      qe['wl'], qe['val'])
+    total_e_rate, wl_e_rate, e_rate = \
+        calc_response(Rv, JH, alp, len(opteff['wl']), opteff['wl'], opteff['val'],
+                      np.min(opteff['wl']), np.max(opteff['wl']), qe['wl'], qe['val'])
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
-
-    ## Currently, only one PSF.
-    print("Calculating PSF...")
-    psf = calc_psf(wfe, wfe.shape[0],\
-                   len(wl_e_rate), wl_e_rate, e_rate, total_e_rate,\
-                   telescope.total_area, telescope.aperture,\
-                   control_params.M_parameter, telescope.aperture.shape[0])
-    # psf is that of an object which has the JH color of the set value and Hw=0.
-    # The unit is e/sec/pix.
-
-    # TK #######################################################################
-    # Why do we need Rv and JH color excess?
-    # I think we need apparent Hw mag and apparent J-H color instead of those.
-    #
-    # For considering various color objects, it might be good to calculate PSFs
-    # with some J-H colors and use them with interpolating.
-    # PSF calculation takes a long time.
-    ############################################################################.
-
 
     # Ace simulation. ##############################################   
     ace_cp = control_params.ace_control
@@ -201,6 +179,26 @@ if __name__ == '__main__':
     print("Making ACE (Y)...")
     acey, psdy = calc_ace(np.random, ace_cp['nace'], ace_cp['tace'], ace_params)
     # acey is normalized by the std.
+
+    if control_params.effect.psf is True:
+        ## Currently, only one PSF.
+        print("Calculating PSF...")
+        psf = calc_psf(wfe, wfe.shape[0],
+                       len(wl_e_rate), wl_e_rate, e_rate, total_e_rate,
+                       telescope.total_area, telescope.aperture,
+                       control_params.M_parameter, telescope.aperture.shape[0])
+        # psf is that of an object which has the JH color of the set value and Hw=0.
+        # The unit is e/sec/pix.
+    else:
+        print("Realistic PSF simulation is skipped.")
+        print("Generate fake PSF...")
+        fwhm = 1.0
+        sigma = fwhm/2.0/np.sqrt(2*np.log(2))
+        arr = np.linspace(-10,10,520)
+        xx,yy = np.meshgrid(arr,arr)
+        psf = np.exp(-(xx**2+yy**2)/2.0/sigma**2)
+        psf = psf/psf.sum() * total_e_rate * telescope.total_area
+
 
 
     # Preparation for making image. ################################
