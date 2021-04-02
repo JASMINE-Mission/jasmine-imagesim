@@ -1,21 +1,21 @@
 {
 "effect": {
   "title" : "enable/disable emulator effects",
-  "ace": {
-    "title": "incorporate the attitude control error",
-    "val": false },
   "wfe": {
     "title": "incorporate the wave front error error",
-    "val": false },
-  "flat_interpix": {
-    "title": "incorporate the interpix flat non-uniformity",
-    "val": false },
-  "flat_intrapix": {
-    "title": "incorporate the intrapix flat non-uniformity",
-    "val": false },
+    "val": true },
   "psf": {
     "title": "simulate a physically realistic point spread function",
-    "val": false }},
+    "val": true },
+  "ace": {
+    "title": "incorporate the attitude control error",
+    "val": true },
+  "flat_interpix": {
+    "title": "incorporate the interpix flat non-uniformity",
+    "val": true },
+  "flat_intrapix": {
+    "title": "incorporate the intrapix flat non-uniformity",
+    "val": true }},
 "M":{
  "title"  :"Cell scale is 1/M [um/mm] ",
  "val"   :6320},
