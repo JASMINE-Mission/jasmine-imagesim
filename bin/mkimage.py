@@ -32,7 +32,7 @@ import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
 from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel, mkVar
-from jis.photonsim.wfe import wfe_model_z, calc_wfe
+from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe
 from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
 from jis.photonsim.psf import calc_psf, calc_dummy_psf
@@ -147,16 +147,16 @@ if __name__ == '__main__':
         wfe_amplitudes = wfe_model_z(
             np.random, wp['zernike_nmax'], wp['reference_wl'],
             wp['zernike_odd'], wp['zernike_even'])
+
+        # Saving amplitude data...
+        with open(filename_wfejson, mode='w') as f:
+            json.dump(wfe_amplitudes, f, indent=2)
+
+            # Making wfe map...
+            wfe = calc_wfe(telescope.epd, filename_wfejson)
     else:
         print("WFE simulation is skipped.")
-        wfe_amplitudes = wfe_model_z(np.random,3,0,1,1)
-
-    # Saving amplitude data...
-    with open(filename_wfejson, mode='w') as f:
-        json.dump(wfe_amplitudes, f, indent=2)
-
-    # Making wfe map...
-    wfe = calc_wfe(telescope.epd, filename_wfejson)
+        wfe = calc_dummy_wfe(telescope.epd, 'dummy.json')
 
 
     # Making PSFs ##################################################
