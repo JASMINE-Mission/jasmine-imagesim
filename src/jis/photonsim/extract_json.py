@@ -161,6 +161,15 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
 
 
     @dataclasses.dataclass(frozen=True)
+    class FlatFrame:
+        """
+        This class contains the inter- and intra-pixel flat frames.
+        """
+        intrapix   : np.ndarray
+        interpix   : np.ndarray
+
+
+    @dataclasses.dataclass(frozen=True)
     class Detector:
         """
         This is a class to describe the detector properties.
@@ -180,12 +189,11 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
         """
         npix       : int
         idark      : float
-        intrapix   : np.ndarray
-        interpix   : np.ndarray
         readnoise  : float
         fullwell   : float
         gain       : float
         pixsize    : float
+        flat       : FlatFrame
         qe         : QuantumEfficiency
         persistence: Persistence
         readparams : ReadParams
@@ -202,12 +210,13 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
     detector = Detector(
         npix       = npix,
         idark      = extIdark(js),
-        interpix   = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma),
-        intrapix   = rf.read_intrapix(intrax, intray, spixdim),
         readnoise  = js['readnoise']['val'],
         fullwell   = js['Fullwell']['val'],
         gain       = js['gain']['val'],
         pixsize    = js['pixsize']['val'],
+        flat       = FlatFrame(
+            interpix = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma),
+            intrapix = rf.read_intrapix(intrax, intray, spixdim)),
         qe         = QuantumEfficiency(wl = wl_qe, val = val_qe),
         persistence= Persistence(tau = tau, rho = rho),
         readparams = ReadParams(

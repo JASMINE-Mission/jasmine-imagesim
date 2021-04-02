@@ -249,6 +249,8 @@ if __name__ == '__main__':
 
 
     # Making image. ################################################
+    uniform_flat_interpix = np.ones_like(detector.flat.interpix)
+    uniform_flat_intrapix = np.ones_like(detector.flat.intrapix)
 
     ## Making sky region.
     pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
@@ -270,7 +272,12 @@ if __name__ == '__main__':
         mag = line['Hwmag']
 
         # Making local flat data.
-        interpix_local = rf.flat_interpix(detector.interpix, x0_global, y0_global, pixdim, figsw=0)
+        if control_params.effect.flat_interpix is True:
+            interpix_local = rf.flat_interpix(
+                detector.flat.interpix, x0_global, y0_global, pixdim, figsw=0)
+        else:
+            interpix_local = rf.flat_interpix(
+                uniform_flat_interpix, x0_global, y0_global, pixdim, figsw=0)
 
         # Making a cube containing plate data for a local region (small frame for a local region).
         pixcube = np.zeros((Npixcube, Npixcube, control_params.nplate))   # Initialize (Axis order: X, Y, Z)
@@ -295,9 +302,14 @@ if __name__ == '__main__':
             #   Output: array of images in each time bin in the exposure.
             #   When the PSF is given in e/fp-cell/sec,
             #   simpix/(psfscale*psfscale) is in e/pix/(1./Nts_per_plate sec).
-            pixar = sp.simpix(theta, interpix_local, detector.intrapix,\
-                              psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
-                              /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
+            if control_params.effect.flat_intrapix:
+                pixar = sp.simpix(theta, interpix_local, detector.flat.intrapix,\
+                                  psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
+                                  /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
+            else:
+                pixar = sp.simpix(theta, interpix_local, uniform_flat_intrapix,\
+                                  psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
+                                  /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
 
             # magnitude scaling.
@@ -324,8 +336,14 @@ if __name__ == '__main__':
 
 
     # Saving the outputs. ##########################################
-    pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
-    pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
+    if control_params.effect.flat_interpix is True:
+        pf.writeto(filename_interpix, detector.flat.interpix, overwrite=overwrite)
+    else:
+        pf.writeto(filename_interpix, uniform_flat_interpix, overwrite=overwrite)
+    if control_params.effect.flat_interpix is True:
+        pf.writeto(filename_intrapix, detector.flat.intrapix, overwrite=overwrite)
+    else:
+        pf.writeto(filename_intrapix, uniform_flat_intrapix, overwrite=overwrite)
     pf.writeto(filename_psf, psf, overwrite=overwrite)
     if output_format == 'hdfcube':
         with h5py.File(filename_images[0],"w") as f:

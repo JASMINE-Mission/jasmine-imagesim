@@ -151,12 +151,12 @@ if __name__ == '__main__':
 
     # Preparing flat (intrapix/interpix). ##########
     ## Setting intrapixel pattern.
-    intrapix = det.intrapix
+    intrapix = det.flat.intrapix
     intrapix = np.ones(np.shape(intrapix))
 
     ## Setting GLOBAL interpixel pattern (flat).
-    #flat    = det.interpix
-    flat    = np.ones(np.shape(det.interpix))
+    #flat    = det.flat.interpix
+    flat    = np.ones(np.shape(det.flat.interpix))
 
     gpixdim = np.shape(flat) # dimension for global pixel positions
 

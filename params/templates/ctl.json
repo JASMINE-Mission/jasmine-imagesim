@@ -9,16 +9,13 @@
     "val": false },
   "flat_interpix": {
     "title": "incorporate the interpix flat non-uniformity",
-    "val": true },
+    "val": false },
   "flat_intrapix": {
     "title": "incorporate the intrapix flat non-uniformity",
-    "val": true },
+    "val": false },
   "psf": {
     "title": "simulate a physically realistic point spread function",
-    "val": false },
-  "rolling_shutter": {
-    "title": "incorporate the time-delay due to rolling shutter",
-    "val": true }},
+    "val": false }},
 "M":{
  "title"  :"Cell scale is 1/M [um/mm] ",
  "val"   :6320},
@@ -66,4 +63,3 @@
   "title": "Number of plates which make up a small frame.",
   "val"  : 11}
 }
-
