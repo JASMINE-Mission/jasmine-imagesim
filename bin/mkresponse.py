@@ -15,6 +15,7 @@
 """
 from docopt import docopt             # command line interface
 import json
+import numpy as np
 from jis import photonsim
 from jis.photonsim import response
 from jis.photonsim import extract_json
@@ -40,26 +41,21 @@ if __name__ == '__main__':
   Tr,WL,Npr=response.calc_response(
     Rv,JH,alp,WLdefined,EPdefined,np.min(WLdefined),np.max(WLdefined),WLdet,QEdet)
 
+  data = {
+    "Ntot": {
+      "title": "Zero-mag total detected photon (electron) rate (e-/m^2/sec).",
+      "val": Tr,
+    },
+    "wavelength": {
+      "title": "Wavelength grid in micron.",
+      "val": list(WL),
+    },
+    "spectrum": {
+      "title": "Spectal distribution of detected photon (electron) rate (e-/m^2/sec/um).",
+      "val": list(Npr),
+    },
+  }
+
   #fits
   with open(args['-r'],mode="w") as f:
-    f.write('{\n')
-    f.write('\"Ntot":{\n')
-    f.write('  \"title\" : \"0 mag Total electrons/m2/sec \",\n')
-    f.write('  \"val\" : {:.8e}'.format(Tr)+' },\n')
-    f.write('\"WLdef\":{\n')
-    f.write('  \"title\" : \"wavlength points\",\n')
-    for i in range(len(WL)):
-      f.write('  \"v{:02d}\" : {:.8e}'.format(i,WL[i]))
-      if i < len(WL)-1 :
-        f.write(',\n')
-      else :
-        f.write('},\n')
-    f.write('\"SPR\":{\n')
-    f.write('  \"title\" : \"Spectal distribution of input photons\",\n')
-    for i in range(len(WL)):
-      f.write('  \"v{:02d}\" : {:.8e}'.format(i,Npr[i]))
-      if i < len(WL)-1 :
-        f.write(',\n')
-      else :
-        f.write('}\n')
-    f.write('}\n')
+    f.write(json.dumps(data, indent=True))
