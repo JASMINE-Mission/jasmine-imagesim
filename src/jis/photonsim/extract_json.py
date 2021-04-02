@@ -197,13 +197,13 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
     npix = js['Npix']['val']
     tau, rho = extPersistenceParams(js)
     wl_qe, val_qe = extQE(js)
-    interpix_sigma, intradir, intrax, intray = extFlatInfo(js)
+    interpix_sigma, intrax, intray = extFlatInfo(js)
 
     detector = Detector(
         npix       = npix,
         idark      = extIdark(js),
         interpix   = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma),
-        intrapix   = rf.read_intrapix(intrax, intray, spixdim, intradir),
+        intrapix   = rf.read_intrapix(intrax, intray, spixdim),
         readnoise  = js['readnoise']['val'],
         fullwell   = js['Fullwell']['val'],
         gain       = js['gain']['val'],
@@ -266,19 +266,16 @@ def extFlatInfo(det):
 
     Returns:
         interpix (float): Stddev of the interpixel flat.
-        intradir (str)  : Name of the directory containing intrapix pattern data.
         intrax   (str)  : Filename of the intrapix pattern in x direction.
         intray   (str)  : Filename of the intrapix pattern in y direction.
 
     """
 
-    interpix = det['interpix']['val']
+    interpix = det['interpix']['stddev']['val']
+    intrax   = det['intrapix']['file_x']['val']
+    intray   = det['intrapix']['file_y']['val']
 
-    intradir = det['intrapix']['dirname']
-    intrax   = det['intrapix']['filex']
-    intray   = det['intrapix']['filey']
-
-    return interpix, intradir, intrax, intray
+    return interpix, intrax, intray
 
 
 def extQE(det):

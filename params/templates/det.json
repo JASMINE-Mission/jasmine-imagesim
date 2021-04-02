@@ -19,13 +19,16 @@
   "wavelength": {"val": [0.9, 1.4, 1.6], "title": "Wavelength in micron."},
   "qe_value": {"val": [0.6, 0.6, 0.6], "title": "QE values." }},
 "interpix":{
-  "title": "STDDEV of the interpixel flat",
-  "val"  : 0.01},
+  "title": "Paramters of the interpixel flat",
+  "stddev": {"val": 0.01, "title": "standard deviation of the interpixel flat."}},
 "intrapix":{
   "title": "Information about files describing intrapixel pattern",
-  "dirname": "/home/hirano/work/jasmine/jasmine-imagesim/src/jis/pixsim/data/intrapix",
-  "filex": "intravx.csv",
-  "filey": "intravy.csv"},
+  "file_x": {
+    "val": "pixsim/data/intrapix/intravx.csv",
+    "title": "Path to the definiton file of the intrapix flat pattern along with the x-axis."},
+  "file_y": {
+    "val": "pixsim/data/intrapix/intravy.csv",
+    "title": "Path to the definiton file of the intrapix flat pattern along with the y-axis."}},
 "persistence":{
   "title": "Persistence parameters",
   "tau": {"val": [1, 10, 100, 1000, 10000], "title": "Detrapping times in second."},
