@@ -5,7 +5,7 @@
 "wavelength":{
   "title" : "Wavlength grid in micron.",
   "val": [1.10e+0, 1.20e+0, 1.30e+0,  1.40e+0, 1.50e+0, 1.60e+0]},
-"SPR":{
+"spectrum":{
   "title" : "Spectal distribution of detected photon (electron) rate (e-/m^2/sec/um).",
   "val": [
     2.28576257e+09, 4.33658661e+09, 7.05412716e+09,
