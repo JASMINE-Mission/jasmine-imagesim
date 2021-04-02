@@ -34,8 +34,8 @@ import astropy.io.fits as pf
 from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel, mkVar
 from jis.photonsim.wfe import wfe_model_z, calc_wfe
 from jis.photonsim.response import calc_response
-from jis.photonsim.psf import calc_psf
 from jis.photonsim.ace import calc_ace
+from jis.photonsim.psf import calc_psf, calc_dummy_psf
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
@@ -182,12 +182,10 @@ if __name__ == '__main__':
     else:
         print("Realistic PSF simulation is skipped.")
         print("Generate fake PSF...")
-        fwhm = 1.0
-        sigma = fwhm/2.0/np.sqrt(2*np.log(2))
-        arr = np.linspace(-10,10,520)
-        xx,yy = np.meshgrid(arr,arr)
-        psf = np.exp(-(xx**2+yy**2)/2.0/sigma**2)
-        psf = psf/psf.sum() * total_e_rate * telescope.total_area
+        psf = calc_dummy_psf(wfe, wfe.shape[0],
+                       len(wl_e_rate), wl_e_rate, e_rate, total_e_rate,
+                       telescope.total_area, telescope.aperture,
+                       control_params.M_parameter, telescope.aperture.shape[0])
 
 
     # Ace simulation. ##############################################

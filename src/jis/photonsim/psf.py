@@ -21,9 +21,9 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
         Ntot  (float)  : Total detected photon (electron) rate (e-/s/m^2).
         Stel  (float)  : Total area of the telescope aperture (m^2).
         adata (ndarray): Aperture mask data.
-        M              : Inverse number of the PSF cell scale (mm/um).
+        M     (float)  : Inverse number of the PSF cell scale (mm/um).
         aN    (int)    : Number of apt-cells of the aperture mask data.
-        fN    (int)    : Number of fp-cells of the output psf data (Default: 520). 
+        fN    (int)    : Number of fp-cells of the output psf data (Default: 520).
 
     Returns:
         image (nadarray): fN x fN fp-cell array of the psf (e-/s/fp-cell).
@@ -124,3 +124,34 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     image = image/s * Ntot * Stel
 
     return image
+
+
+def calc_dummy_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
+    """
+    This function calculates a dummy point-spread function image in e-/sec/fp-cell.
+    The arguments are the same as `calc_psf` but not used except for `Ntot`, `Stel`, and `fN`.
+    Currently the FWHM of the PSF is the one-tenth of the fp-array.
+
+    Args:
+        wfe   (ndarray): Wavefront error data (um).
+        wN    (int)    : Number of fp-cells on a side of the wfe data.
+        k     (int)    : Number of wavelength data points.
+        WL    (ndarray): Wavelength data (um).
+        NP    (ndarray): Detected photon (electron) flux (e-/s/m^2/um).
+        Ntot  (float)  : Total detected photon (electron) rate (e-/s/m^2).
+        Stel  (float)  : Total area of the telescope aperture (m^2).
+        adata (ndarray): Aperture mask data.
+        M     (float)  : Inverse number of the PSF cell scale (mm/um).
+        aN    (int)    : Number of apt-cells of the aperture mask data.
+        fN    (int)    : Number of fp-cells of the output psf data (Default: 520).
+
+    Returns:
+        image (nadarray): fN x fN fp-cell array of the psf (e-/s/fp-cell).
+                          The fp-cell scale is (1/M) x 10^-3 rad/fp-cell.
+    """
+    fwhm = 2.0
+    sigma = fwhm/2.0/np.sqrt(2*np.log(2))
+    arr = np.linspace(-10,10,fN)
+    xx,yy = np.meshgrid(arr,arr)
+    image = np.exp(-(xx**2+yy**2)/2.0/sigma**2)
+    return image/image.sum() * Ntot * Stel
