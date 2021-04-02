@@ -108,6 +108,26 @@ def calc_ace(rg, N, T, ace):
 
     return acedata, psdn
 
+
+def calc_dummy_ace(rg, N, T, ace):
+    """
+    This function generates a one-dimensional dummy attitue control error (ACE) data.
+    The arguents are the same as `calc_ace` but not used except for the number of elements, `N`.
+    The generated ACE is just a zero-padded one-dimensional array.
+
+    Args:
+        rg  (numpy.random.Generator): Random generator.
+        N   (int)  : Number of time grids.
+        T   (float): Range of time to simulate.
+        ace (dict) : Parameter set about ace loaded from the ace json file.
+
+    Returns:
+        dummyace (ndarray): A dummy ACE, zero-padded array with the size of `N`.
+
+    """
+    return np.zeros(N)
+
+
 def plot_ace(N, T, data, psdn, plotfile):
     """
     This function makes a plot of the ace data.

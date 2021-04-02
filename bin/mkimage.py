@@ -34,7 +34,7 @@ import astropy.io.fits as pf
 from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel, mkVar
 from jis.photonsim.wfe import wfe_model_z, calc_wfe
 from jis.photonsim.response import calc_response
-from jis.photonsim.ace import calc_ace
+from jis.photonsim.ace import calc_ace, calc_dummy_ace
 from jis.photonsim.psf import calc_psf, calc_dummy_psf
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
@@ -202,8 +202,8 @@ if __name__ == '__main__':
     else:
         print("ACE simulation is skipped.")
         print("Generate face ACE(X) and ACE(Y)...")
-        acex = np.zeros(nace)
-        acey = np.zeros(nace)
+        acex = calc_dummy_ace(nace)
+        acey = calc_dummy_ace(nace)
 
     # Preparation for making image. ################################
 
