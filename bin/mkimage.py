@@ -142,11 +142,13 @@ if __name__ == '__main__':
 
     # Making random wfe. ###########################################
     if control_params.effect.wfe is True:
+        print("calculate WFE...")
         wp  = control_params.wfe_control
         wfe_amplitudes = wfe_model_z(
             np.random, wp['zernike_nmax'], wp['reference_wl'],
             wp['zernike_odd'], wp['zernike_even'])
     else:
+        print("WFE simulation is skipped.")
         wfe_amplitudes = wfe_model_z(np.random,3,0,1,1)
 
     # Saving amplitude data...
