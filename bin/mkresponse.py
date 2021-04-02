@@ -30,16 +30,15 @@ if __name__ == '__main__':
     src = json.load(f)
   with open(args['-d']) as f:
     det = json.load(f)
-  
+
   #extract values from json/array
-  k,WLdefined,EPdefined,WLshort,WLlong=extract_json.exttel(tel)
+  WLdefined,EPdefined=extract_json.extTel(tel)
   WLdet,QEdet=extract_json.extQE(det)
-  Rv, JH, alp=extract_json.extsrc(src)
-  
+  Rv, JH, alp=extract_json.extSrc(src)
+
   #calc response
-  Tr,WL,Npr=response.calc_response(Rv, JH, alp, k,\
-                      WLdefined,EPdefined,WLshort,WLlong,\
-                      WLdet,QEdet)
+  Tr,WL,Npr=response.calc_response(
+    Rv,JH,alp,WLdefined,EPdefined,np.min(WLdefined),np.max(WLdefined),WLdet,QEdet)
 
   #fits
   with open(args['-r'],mode="w") as f:

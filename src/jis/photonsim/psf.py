@@ -3,7 +3,7 @@ import numpy as np
 import pyfftw
 from scipy.ndimage import shift
 
-def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
+def calc_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     """
     This function calculates the psf in e-/sec/fp-cell
     based on the wavefront error (wfe),
@@ -15,7 +15,6 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     Args:
         wfe   (ndarray): Wavefront error data (um).
         wN    (int)    : Number of fp-cells on a side of the wfe data.
-        k     (int)    : Number of wavelength data points.
         WL    (ndarray): Wavelength data (um).
         NP    (ndarray): Detected photon (electron) flux (e-/s/m^2/um).
         Ntot  (float)  : Total detected photon (electron) rate (e-/s/m^2).
@@ -36,7 +35,7 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
 
         # Reading source information.
         sp = json.load(open("source.json"))
-        k, WL, NP, Ntot = extract_json.extsp(sp)
+        WL, NP, Ntot = extract_json.extSp(sp)
 
         # Reading aperture pattern.
         Stel, adata, aN, ahdr = readfits.read_aperture_mask("aperture.fits")
@@ -49,7 +48,7 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
         M = cp['M']['val']
 
         # Getting psf pattern.
-        image = psf.calc_psf(wfe,wN,k,WL,NP,Ntot,Stel,adata,M,aN)
+        image = psf.calc_psf(wfe,wN,WL,NP,Ntot,Stel,adata,M,aN)
 
 
     """
@@ -78,7 +77,7 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     # WL として、1.1, 1.2, ,,, 1.6 としているとき、
     # 1.1-1.2 の範囲のフォトンを 波長 1.15 で代表させて加え、
     # 1.2-1.3, ,,, 1.5-1.6 を加える、としていこう。
-    for i in range(k-1):
+    for i in range(len(WL)-1):
         WLm = (WL[i] + WL[i+1])/2
         N = int(WLm*M)
 
@@ -126,7 +125,7 @@ def calc_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     return image
 
 
-def calc_dummy_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
+def calc_dummy_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     """
     This function calculates a dummy point-spread function image in e-/sec/fp-cell.
     The arguments are the same as `calc_psf` but not used except for `Ntot`, `Stel`, and `fN`.
@@ -135,7 +134,6 @@ def calc_dummy_psf(wfe, wN, k, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     Args:
         wfe   (ndarray): Wavefront error data (um).
         wN    (int)    : Number of fp-cells on a side of the wfe data.
-        k     (int)    : Number of wavelength data points.
         WL    (ndarray): Wavelength data (um).
         NP    (ndarray): Detected photon (electron) flux (e-/s/m^2/um).
         Ntot  (float)  : Total detected photon (electron) rate (e-/s/m^2).

@@ -31,7 +31,7 @@ import h5py
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
-from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel, mkVar
+from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Variability
 from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe
 from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
@@ -47,8 +47,6 @@ import matplotlib.pylab as plt
 Rv  = 3.1            # total-to-selective extinction
 JH  = 2.0            # color excess E(J-H)
 alp = 0.75           # interpolation factor
-spixdim  = [32, 32]  # subpixel dimension in a pixel (setting for intrapix pattern).
-Nmargin = 10         # Margin for simpix calc.
 tplate  = 12.5       # Exposure time of a plate (sec).
 
 
@@ -87,9 +85,9 @@ if __name__ == '__main__':
 
     # Loading parameters. ##########################################
     table_starplate = asc.read(filename_starplate)
-    detector        = mkDet(filename_detjson, spixdim=spixdim)
-    control_params  = mkControlParams(filename_ctljson)
-    telescope       = mkTel(filename_teljson)
+    detector        = Detector.from_json(filename_detjson)
+    control_params  = ControlParams.from_json(filename_ctljson)
+    telescope       = Telescope.from_json(filename_teljson)
     with open(filename_acejson, "r") as f:
         ace_params = json.load(f)
     f.close()
@@ -152,8 +150,8 @@ if __name__ == '__main__':
         with open(filename_wfejson, mode='w') as f:
             json.dump(wfe_amplitudes, f, indent=2)
 
-            # Making wfe map...
-            wfe = calc_wfe(telescope.epd, filename_wfejson)
+        # Making wfe map...
+        wfe = calc_wfe(telescope.epd, filename_wfejson)
     else:
         print("WFE simulation is skipped.")
         wfe = calc_dummy_wfe(telescope.epd, 'dummy.json')
@@ -165,8 +163,8 @@ if __name__ == '__main__':
 
     ## Currently, only one case of (Rv, JH).
     total_e_rate, wl_e_rate, e_rate = \
-        calc_response(Rv, JH, alp, len(opteff['wl']), opteff['wl'], opteff['val'],
-                      np.min(opteff['wl']), np.max(opteff['wl']), qe.wl, qe.val)
+        calc_response(Rv, JH, alp, opteff.wavelength, opteff.efficiency,
+                      np.min(opteff.wavelength), np.max(opteff.wavelength), qe.wl, qe.val)
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
 
@@ -174,7 +172,7 @@ if __name__ == '__main__':
         ## Currently, only one PSF.
         print("Calculating PSF...")
         psf = calc_psf(wfe, wfe.shape[0],
-                       len(wl_e_rate), wl_e_rate, e_rate, total_e_rate,
+                       wl_e_rate, e_rate, total_e_rate,
                        telescope.total_area, telescope.aperture,
                        control_params.M_parameter, telescope.aperture.shape[0])
         # psf is that of an object which has the JH color of the set value and Hw=0.
@@ -183,7 +181,7 @@ if __name__ == '__main__':
         print("Realistic PSF simulation is skipped.")
         print("Generate fake PSF...")
         psf = calc_dummy_psf(wfe, wfe.shape[0],
-                       len(wl_e_rate), wl_e_rate, e_rate, total_e_rate,
+                       wl_e_rate, e_rate, total_e_rate,
                        telescope.total_area, telescope.aperture,
                        control_params.M_parameter, telescope.aperture.shape[0])
 
@@ -213,7 +211,7 @@ if __name__ == '__main__':
     acey_std = control_params.ace_control.get('acey_std')
     theta_full = np.array([acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
 
-    Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
+    Npixcube = int((np.max(np.abs(theta_full))+detector.nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
 
     tscan = detector.readparams.t_scan
@@ -224,7 +222,7 @@ if __name__ == '__main__':
     varsw=False
     if args['--var']:
         #load variability class
-        variability=mkVar(filename_varjson)
+        variability=Variability.from_json(filename_varjson)
         #define time array in the unit of day
         tday=(tplate+tscan)*np.array(range(0,control_params.nplate))/3600/24
         for line in asc.read(filename_starplate):
@@ -370,7 +368,7 @@ if __name__ == '__main__':
     hdu.header["APTFILE"] = filename_teljson
     hdu.header["EPD"]     = telescope.epd
     hdu.header["COBS"]    = telescope.cobs
-    hdu.header["STYPE"]   = telescope.spider_type
+    hdu.header["STYPE"]   = telescope.spider.type
     hdu.header["STEL"]    = telescope.total_area  # total area in m^2
     hdu.list = pf.HDUList([hdu])
     hdulist.writeto(filename_aperture, overwrite=overwrite)

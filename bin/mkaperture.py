@@ -24,32 +24,32 @@ from jis.photonsim import aperture
 #  command line interface
 if __name__ == '__main__':
   args = docopt(__doc__)
-  
+
   # get telescope parameter
   with open(args['-t']) as f:
     p = json.load(f)
-  
+
   EPD = float(p['EPD']['val'])  # D must be given in mm unit. A cell size is 1 mm.
   Cobs = float(p['Cobs']['val'])
   Robs = EPD/2*Cobs
-  Stype = p['Stype']['val']
+  Stype = p['Spider']['type']['val']
   if Stype  == 'tripod':
-    Tsp =  float(p['Stype']['thick'])
+    Tsp =  float(p['Spider']['thickness']['val'])
   else:
     print('Stype error')
     sys.exit()
-  
+
   N = int(EPD+4)   # 2mm larger than D
   if N%2 == 1:   # should be even
-    N = N+1 
-  
+    N = N+1
+
   data,S=aperture.calc_aperture(N,EPD,Robs,Tsp)
-  
+
   # save the data
   hdu = fits.PrimaryHDU(data)
   hdu.header['APTFILE'] = args['-t']  # telescope parameter file
   hdu.header['EPD']      = EPD         # pupil diameter (mm)
-  hdu.header['COBS']     = Cobs        # central obscuration ratio 
+  hdu.header['COBS']     = Cobs        # central obscuration ratio
   hdu.header['STYPE']    = Stype       # Spider type
   hdu.header['TSP']      = Tsp         # spider thickness (mm)
   hdu.header['STEL']     = S*1e-6      # Area of telescope aperture (m2)
