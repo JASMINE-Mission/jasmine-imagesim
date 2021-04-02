@@ -5,13 +5,13 @@
 .. code-block:: bash
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format [--od outdir] [--overwrite] 
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json --format format [--od outdir] [--overwrite]
 
   options:
    -h --help                   show this help message and exit.
    --pd paramdir               name of the directory containing parameter files.
    --starplate star_plate.csv  csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta, Hwmag)
-   --var variability.json      json file for stellar variability/transit (optional). The input variability will be shown in variability_input().png 
+   --var variability.json      json file for stellar variability/transit (optional). The input variability will be shown in variability_input().png
    --det det.json              json file containing detector related parameters.
    --tel tel.json              json file containing telescope related parameters.
    --ace ace.json              json file containing ace parameters.
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     filename_teljson   = os.path.join(dirname_params, args['--tel'])
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
     filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
-                
+
     output_format = args['--format']
     if output_format not in ['platefits', 'fitscube', 'hdfcube']:
         print("format must be 'platefits', 'fitscube' or 'hdfcube'.")
@@ -160,13 +160,13 @@ if __name__ == '__main__':
 
 
     # Making PSFs ##################################################
-    opteff = telescope.opt_efficiency 
+    opteff = telescope.opt_efficiency
     qe = detector.qe
 
     ## Currently, only one case of (Rv, JH).
     total_e_rate, wl_e_rate, e_rate = \
         calc_response(Rv, JH, alp, len(opteff['wl']), opteff['wl'], opteff['val'],
-                      np.min(opteff['wl']), np.max(opteff['wl']), qe['wl'], qe['val'])
+                      np.min(opteff['wl']), np.max(opteff['wl']), qe.wl, qe.val)
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
 
@@ -202,8 +202,8 @@ if __name__ == '__main__':
     else:
         print("ACE simulation is skipped.")
         print("Generate face ACE(X) and ACE(Y)...")
-        acex = calc_dummy_ace(nace)
-        acey = calc_dummy_ace(nace)
+        acex = calc_dummy_ace(np.random, nace, tace, ace_params)
+        acey = calc_dummy_ace(np.random, nace, tace, ace_params)
 
     # Preparation for making image. ################################
 
@@ -216,8 +216,7 @@ if __name__ == '__main__':
     Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
 
-    tscan = detector.t_overhead +\
-            detector.tsmpl*(detector.npix_pre+detector.ncol_ch+detector.npix_post)*detector.nrow_ch
+    tscan = detector.readparams.t_scan
     dtace = control_params.ace_control['dtace']
     Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.
 
@@ -235,7 +234,7 @@ if __name__ == '__main__':
                 plt.savefig("variability_input"+"_"+str(line['star index'])+".png")
                 plt.clf()
 
-    
+
     if Nts_per_plate*control_params.nplate >= theta_full.shape[1]:
         print("Insufficient time length of ACE data.")
         print("Nts_per_plate*Nplate: {}".format(Nts_per_plate*control_params.nplate))
@@ -279,7 +278,7 @@ if __name__ == '__main__':
         # Load variability
         if args["--var"]:
             varsw, injlc, b=variability.read_var(tday,line['star index'])
-        
+
         for iplate in tqdm.tqdm(range(0, control_params.nplate)):         # Loop to take each plate.
             # picking temporary trajectory and local position update
             istart = iplate    *Nts_per_plate
@@ -310,7 +309,7 @@ if __name__ == '__main__':
             """
             if varsw:
                 pixar=pixar*injlc[iplate]
-                
+
             # Adding dark current (including stray light).
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
             pixar = pixar + dark
@@ -319,10 +318,10 @@ if __name__ == '__main__':
             integrated = integrate(pixar, x0_global, y0_global, tplate, dtace, detector)
             # integrated is in adu/pix/plate.
             pixcube[:,:,iplate] = integrated
-            
+
             pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
                 pixcube[:,:,iplate]
- 
+
 
     # Saving the outputs. ##########################################
     pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
@@ -342,7 +341,7 @@ if __name__ == '__main__':
                 pf.writeto(filename_images[i], pixcube_global[i].astype('int32'), overwrite=overwrite)
         elif output_format == 'fitscube':
             pf.writeto(filename_images[0], pixcube_global.astype('int32'), overwrite=overwrite)
-    
+
     hdu = pf.PrimaryHDU(wfe)
     hdu.header["WFE-FILE"] = filename_wfejson
     hdu.header["WFE-EPD"]  = telescope.epd
@@ -369,4 +368,3 @@ if __name__ == '__main__':
     hdu.header["ACE-TOTT"] = control_params.ace_control['tace']
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filename_acey, overwrite=overwrite)
-    

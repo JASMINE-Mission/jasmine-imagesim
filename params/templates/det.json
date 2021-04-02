@@ -4,8 +4,8 @@
   "val"  : 15.0 },
 "Npix":{
   "title": "Number of pixels on a side",
-  "val"  : 1296 }, 
-"readnoise":{ 
+  "val"  : 1296 },
+"readnoise":{
   "title": "Read out noise (e-)",
   "val"  : 15 },
 "Idark":{
@@ -16,12 +16,8 @@
   "val"  : 150000},
 "QE": {
   "title": "Spectral distribution of quantum efficiency (W?? in um; V?? QE value)",
-  "W00": 0.9,
-  "V00": 0.6,
-  "W01": 1.4,
-  "V01": 0.6,
-  "W02": 1.6,
-  "V02": 0.6},
+  "wavelength": {"val": [0.9, 1.4, 1.6], "title": "Wavelength in micron."},
+  "qe_value": {"val": [0.6, 0.6, 0.6], "title": "QE values." }},
 "interpix":{
   "title": "STDDEV of the interpixel flat",
   "val"  : 0.01},
@@ -31,9 +27,9 @@
   "filex": "intravx.csv",
   "filey": "intravy.csv"},
 "persistence":{
-  "title": "Persistence parameters (tau: detrap. time in sec; rho: frac. of trap.)",
-  "tau": [1, 10, 100, 1000, 10000],
-  "rho": [1e-3, 1.5e-3, 1.5e-3, 2e-3, 3e-3]},
+  "title": "Persistence parameters",
+  "tau": {"val": [1, 10, 100, 1000, 10000], "title": "Detrapping times in second."},
+  "rho": {"val": [1e-3, 1.5e-3, 1.5e-3, 2e-3, 3e-3], "title": "Trapping fractions."}},
 "readparams":{
   "title": "Parameters related to the reset/read operation.",
   "fsmpl"     : {"val": 200e3, "title": "Sampling frequency in Hz."},

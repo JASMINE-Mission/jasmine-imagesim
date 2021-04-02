@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import json
-from dataclasses import dataclass, fields
+import dataclasses
 from jis.pixsim import makeflat as mf
 from jis.pixsim import readflat as rf
 from jis.photonsim import aperture
@@ -100,91 +100,123 @@ def mkDet(det_json_filename, spixdim=[32, 32]):
 
     """
 
-    class detector:
-        def __init__(self, npix=None, idark=None, intrapix=None, interpix=None,\
-                     tau=None, rho=None, readnoise=None, fullwell=None,\
-                     gain=None, readparams=None, qe=None, pixsize=None):
-            """
-             This is a class to describe the detector properties.
+    @dataclasses.dataclass(frozen=True)
+    class Persistence:
+        """
+        This class contains the detector persistence parameters.
 
-            Attributes:
-                npix     (int)    : Number of pixels on a side.
-                idark    (float)  : Dark current including stray light (e/s/pix).
-                intrapix (ndarray): Intrapixel pattern.
-                interpix (ndarray): Interpixel pattern.
-                persistence (dict): Persistence parameters consists of tau and rho.
-                                    tau is the detrapping timescales in sec.
-                                    rho is the trapping fractions.
-                readnoise  (float): Readnoise (e/read).
-                fullwell   (float): Full-well in electrons.
-                gain       (float): Conversion gain in e/adu.
-                fsmpl      (float): Sampling frequency in Hz.
-                tsmpl      (float): Sampling time in sec (1/fsmpl).
-                ncol_ch    (int)  : Num. of col. in one ch.
-                nrow_ch    (int)  : Num. of row in one ch.
-                npix_pre   (int)  : Npix before reading each row.
-                npix_post  (int)  : Npix after reading each row.
-                t_overhead (float): Overhead time between reset and the 1st read in sec.
-                qe         (dict) : Quantum efficiency (wl: wavelength in um; val: qe values).
-                pixelsize  (float): Pixel size in um.
+        Attributes:
+            tau (ndarray): Detrapping timescales in seconds.
+            rho (ndarray): Trapping fractions.
+        """
+        tau : np.ndarray
+        rho : np.ndarray
 
-            """
 
-            self.npix  = npix
-            self.idark = idark
-            self.intrapix = intrapix
-            self.interpix = interpix
-            self.persistence = {'tau': np.array(tau), 'rho': np.array(rho)}
-            self.readnoise = readnoise
-            self.fullwell = fullwell
-            self.gain = gain
-            self.qe = qe
-            self.pixsize=pixsize
-            if readparams is not None:
-                self.fsmpl      = readparams['fsmpl']['val']
-                self.tsmpl      = 1./self.fsmpl
-                self.ncol_ch    = readparams['ncol_ch']['val']
-                self.nrow_ch    = readparams['nrow_ch']['val']
-                self.npix_pre   = readparams['npix_pre']['val']
-                self.npix_post  = readparams['npix_post']['val']
-                self.t_overhead = readparams['t_overhead']['val']
-            else:
-                self.fsmpl      = None
-                self.tsmpl      = None
-                self.ncol_ch    = None
-                self.nrow_ch    = None
-                self.npix_pre   = None
-                self.npix_pos   = None
-                self.t_overhead = None
+    @dataclasses.dataclass(frozen=True)
+    class ReadParams:
+        """
+        This class contains the detector readout parameters.
+
+        Attributes:
+            fsmpl      (float): Sampling frequency in Hz.
+            tsmpl (float)          : Sampling time in sec (1/fsmpl).
+            ncol_ch (int)          : Number of columns in one ch.
+            nrow_ch (int)          : Number of rows in one ch.
+            npix_pre (int)         : Number of pixels before reading each row.
+            npix_post (int)        : Number of pixels after reading each row.
+            t_overhead (float)     : Overhead time between reset and the 1st read in sec.
+            npix_read_per_row (int): Number of pixels in a row including pre/post pixels.
+        """
+        fsmpl            : float = None
+        tsmpl            : float = dataclasses.field(init=False)
+        ncol_ch          : int   = None
+        nrow_ch          : int   = None
+        npix_pre         : int   = None
+        npix_post        : int   = None
+        npix_read_per_row: int = dataclasses.field(init=False)
+        t_overhead       : float = None
+        t_scan           : float = dataclasses.field(init=False)
+
+        def __post_init__(self):
+            tsmpl = 1.0/self.fsmpl if self.fsmpl else None
+            npix_read_per_row = self.ncol_ch + self.npix_pre + self.npix_post
+            t_scan = self.t_overhead + tsmpl * npix_read_per_row * self.nrow_ch
+            object.__setattr__(self, 'tsmpl', tsmpl)
+            object.__setattr__(self, 'npix_read_per_row', npix_read_per_row)
+            object.__setattr__(self, 't_scan', t_scan)
+
+
+    @dataclasses.dataclass(frozen=True)
+    class QuantumEfficiency:
+        """
+        This class defines the detector quantum efficiency.
+
+        Attributes:
+            wl (ndarray) : Wavelengthes in um.
+            val (ndarray): Quantum efficiencies.
+        """
+        wl : np.ndarray
+        val: np.ndarray
+
+
+    @dataclasses.dataclass(frozen=True)
+    class Detector:
+        """
+        This is a class to describe the detector properties.
+
+        Attributes:
+            npix (int)               : Number of pixels on a side.
+            idark (float)            : Dark current including stray light (e/s/pix).
+            intrapix (ndarray)       : Intrapixel pattern.
+            interpix (ndarray)       : Interpixel pattern.
+            readnoise (float)        : Readnoise (e/read).
+            fullwell (float)         : Full-well in electrons.
+            gain (float)             : Conversion gain in e/adu.
+            pixsize (float)          : Pixel size in um.
+            qe (QuantumEfficiency)   : Quantum efficiency.
+            persistence (Persistence): Persistence parameters consists of tau and rho.
+            readparams (ReadParams)  : Detector readout parameters.
+        """
+        npix       : int
+        idark      : float
+        intrapix   : np.ndarray
+        interpix   : np.ndarray
+        readnoise  : float
+        fullwell   : float
+        gain       : float
+        pixsize    : float
+        qe         : QuantumEfficiency
+        persistence: Persistence
+        readparams : ReadParams
 
 
     with open(det_json_filename, "r") as fp:
         js = json.load(fp)
 
-        idark    = extIdark(js)
-        tau, rho = extPersistenceParams(js)
-        interpix_sigma, intradir, intrax, intray = extFlatInfo(js)
+    npix = js['Npix']['val']
+    tau, rho = extPersistenceParams(js)
+    wl_qe, val_qe = extQE(js)
+    interpix_sigma, intradir, intrax, intray = extFlatInfo(js)
 
-        npix       = js['Npix']['val']
-        readnoise  = js['readnoise']['val']
-        readparams = js['readparams']
-        fullwell   = js['Fullwell']['val']
-        gain       = js['gain']['val']
-        pixsize    = js['pixsize']['val']
-
-        wl_qe, val_qe = extQE(js)
-    fp.close()
-
-    qe = {'wl': np.array(wl_qe), 'val': np.array(val_qe)}
-
-    interpix = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma)
-    intrapix = rf.read_intrapix(intrax, intray, spixdim, intradir)
-
-    detector = detector(npix=npix, idark=idark, \
-                        interpix=interpix, intrapix=intrapix, \
-                        tau=tau, rho=rho, readnoise=readnoise,\
-                        fullwell=fullwell, gain=gain,\
-                        readparams=readparams, qe=qe, pixsize=pixsize)
+    detector = Detector(
+        npix       = npix,
+        idark      = extIdark(js),
+        interpix   = mf.gaussian_flat(Nside=npix, sigma=interpix_sigma),
+        intrapix   = rf.read_intrapix(intrax, intray, spixdim, intradir),
+        readnoise  = js['readnoise']['val'],
+        fullwell   = js['Fullwell']['val'],
+        gain       = js['gain']['val'],
+        pixsize    = js['pixsize']['val'],
+        qe         = QuantumEfficiency(wl = wl_qe, val = val_qe),
+        persistence= Persistence(tau = tau, rho = rho),
+        readparams = ReadParams(
+            fsmpl      = js['readparams']['fsmpl']['val'],
+            ncol_ch    = js['readparams']['ncol_ch']['val'],
+            nrow_ch    = js['readparams']['nrow_ch']['val'],
+            npix_pre   = js['readparams']['npix_pre']['val'],
+            npix_post  = js['readparams']['npix_post']['val'],
+            t_overhead = js['readparams']['t_overhead']['val']))
 
     return detector
 
@@ -219,8 +251,8 @@ def extPersistenceParams(det):
 
     """
 
-    tau = det['persistence']['tau']
-    rho = det['persistence']['rho']
+    tau = np.array(det['persistence']['tau']['val'])
+    rho = np.array(det['persistence']['rho']['val'])
 
     return tau, rho
 
@@ -270,17 +302,10 @@ def extQE(det):
         WL, QE = extQE(det)
 
     """
+    wl = np.array(det['QE']['wavelength']['val'])
+    qe = np.array(det['QE']['qe_value']['val'])
 
-    # read QE from det
-    k = int((len(det['QE'])-1)/2 ) # number of definition points
-
-    WLdet = np.empty(k) # Wave length
-    QEdet = np.empty(k) # Efficiency of optics
-    for i in range(k):
-        WLdet[i] = det['QE']['W{:02d}'.format(i)]
-        QEdet[i] = det['QE']['V{:02d}'.format(i)]
-
-    return WLdet, QEdet
+    return wl, qe
 
 
 def extsrc(src):
@@ -328,7 +353,7 @@ def mkControlParams(json_filename):
 
     """
 
-    @dataclass(frozen=True)
+    @dataclasses.dataclass(frozen=True)
     class EffectSelector:
         """
         This class handles the switch to enable/disable the effects.
@@ -349,7 +374,7 @@ def mkControlParams(json_filename):
         rolling_shutter: bool
 
 
-    @dataclass(frozen=True)
+    @dataclasses.dataclass(frozen=True)
     class ControlParams:
         """
         This is a class to handle the control parameters.
@@ -396,7 +421,7 @@ def mkControlParams(json_filename):
 
         effect_obj = js.get('effect')
         effect = {}
-        for field in fields(EffectSelector):
+        for field in dataclasses.fields(EffectSelector):
             try:
                 item = effect_obj.get(field.name)
                 effect[field.name] = item.get('val', False)

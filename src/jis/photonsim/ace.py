@@ -58,7 +58,7 @@ def calc_ace(rg, N, T, ace):
         Fourier domain ACE F(f) should...
           F(0 or N/2 ) should be real
           F(N-f) = conjugete( F(f) )
-            then 
+            then
               ReF(-f) = ReF(f) ,  ImF(-f) = -ImF(f)
         -----------------------------------------------
         """
@@ -142,7 +142,7 @@ def plot_ace(N, T, data, psdn, plotfile):
 
     Returns:
         None.
- 
+
     """
 
     dT  = T/N # time step
@@ -180,8 +180,8 @@ def ace2d(x_scale, y_scale, pix_scale, N, xdata, ydata, xN):
     """
     This function returns 2D ace data array with considering
     the ace data scale and the pixel scale.
- 
-    Args:  
+
+    Args:
         x_scale   (float)  : Scale of xdata.
         y_scale   (float)  : Scale of ydata.
         pix_scale (float)  : Pixel scale of the output image.
