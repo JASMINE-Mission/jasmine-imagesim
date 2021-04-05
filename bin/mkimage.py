@@ -32,7 +32,7 @@ import h5py
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
-from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Variability, mkDft
+from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Variability, Drift
 from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe
 from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
@@ -42,7 +42,6 @@ from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
 from jis.pixsim.addnoise import addnoise
 import matplotlib.pylab as plt
-
 
 # Command line interface
 if __name__ == '__main__':
@@ -209,8 +208,8 @@ if __name__ == '__main__':
 
     # Drift
     if args["--dft"]:
-        dft=mkDft(filename_dftjson)
-        dft.compute_drift(dtace,ace_cp['nace'])
+        dft=Drift.from_json(filename_dftjson)
+        dft.compute_drift(dtace,nace)
 
     # Preparation for making image. ################################
 

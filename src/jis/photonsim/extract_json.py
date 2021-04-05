@@ -492,6 +492,7 @@ class Variability():
     Summary: stellar variability class.
 
     Attributes:
+        var     (bool)     : Variability flag.
         Nvar    (int)      : Number of variable objects.
         plate   (list[int]): Plate number for each object.
         star    (list[int]): Star ID number for each object.
@@ -499,6 +500,7 @@ class Variability():
         varfile (list[str]): File name which contains variable template.
         dirname (list[str]): Directory which contains `varfile`.
     """
+    var    : bool
     Nvar   : int
     plate  : List[int] = dataclasses.field(default_factory=list)
     star   : List[int] = dataclasses.field(default_factory=list)
@@ -527,7 +529,7 @@ class Variability():
             varfile.append(var["varfile"])
             dirname.append(var["dirname"])
         var = Variability(
-            Nvar=Nvar, plate=plate, star=star,
+            var=True, Nvar=Nvar, plate=plate, star=star,
             vartype=vartype, varfile=varfile, dirname=dirname)
         return var
 
@@ -565,35 +567,41 @@ class Variability():
         return sw,None,None
 
 
-def mkDft(json_filename):
-    """
-    Summary: This is dummy to initialize drift class, to match mkDet etc.
-    """
-    _dft = drift(json_filename)
-    return _dft
-
-class drift():
-
+@dataclasses.dataclass(frozen=False)
+class Drift:
     """
     Summary: drift class.
-    """
-    def __init__(self,json_filename):
-        self.dft = True
-        self.read_json(json_filename)
 
-    def read_json(self,json_filename):
+    Attributes:
+        dft            (bool)  : Drift flag.
+        drift_velocity (float) : Drift velocity in ???.
+        drift_azimuth  (float) : Drift azimuth angle in ???.
+        drift_time     (float) : Drift duration in second.
+        drift_length   (float) : ??? length of the drift motion in ???.
+        drift_theta    (float) : trajectory?
+    """
+    dft           : bool
+    drift_velocity: float
+    drift_azimuth : float
+    drift_time    : float = dataclasses.field(init=False)
+    drift_length  : float = dataclasses.field(init=False)
+    drift_theta   : float = dataclasses.field(init=False)
+
+    @classmethod
+    def from_json(self,dft_json_filename):
         """
         Summary: this function is json i/o for drift
         """
-        with open(json_filename, "r") as f:
+        with open(dft_json_filename, "r") as f:
             var_params = json.load(f)
-            f.close()
-            self.drift_velocity=var_params["linear"]["drift_velocity"]
-            self.drift_azimuth = var_params["linear"]["drift_azimuth"]
+        velocity = var_params["linear"]["drift_velocity"]
+        azimuth  = var_params["linear"]["drift_azimuth"]
+        dft = Drift(dft=True, drift_velocity=velocity, drift_azimuth=azimuth)
+        return dft
 
     def compute_drift(self,dtace,Nace):
         from jis.pixsim import gentraj
 
-        self.drifttime=dtace*Nace
-        self.drift_length=self.drift_velocity*self.drifttime
+        self.drift_time=dtace*Nace
+        self.drift_length=self.drift_velocity*self.drift_time
         self.drift_theta=gentraj.gentraj_drift(Nace,self.drift_length,self.drift_azimuth)
