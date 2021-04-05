@@ -25,7 +25,7 @@
   "title": "Number of margin pixels for simpix calculation.",
   "val": 10},
 "interpix": {
-  "title": "Paramters of the interpixel flat",
+  "title": "Parameters of the interpixel flat",
   "stddev": {"val": 0.01, "title": "standard deviation of the interpixel flat."}},
 "intrapix": {
   "title": "Information about files describing intrapixel pattern",
