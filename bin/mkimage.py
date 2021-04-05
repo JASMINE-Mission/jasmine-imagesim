@@ -22,6 +22,8 @@
    --overwrite                 if set, overwrite option activated.
 
 """
+import matplotlib
+matplotlib.use('Agg')
 
 from docopt import docopt
 import os
