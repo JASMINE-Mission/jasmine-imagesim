@@ -1,0 +1,31 @@
+{
+"M":{
+ "title"  :"Cell scale is 1/M [um/mm] ",
+ "val"   :6320},
+"CellPix":{
+ "title"  :"Number of cells corresponds to detector pixel size",
+ "val"   : 13 },
+"PixNum":{
+ "title"  :"Number of detector pixels for the side length of a single area",
+ "val" : 9 },
+"dx":{
+  "title" :"x difference between psf center and detector pixel center ",
+  "val" : 0 },
+"dy":{
+  "title" :"y difference between psf center and detector pixel center ",
+  "val" : 0 },
+"WFEcontrol":{
+  "title": "WFE control parameters.",
+  "zernike_nmax": {"val": 8,  "description": "Zernike max n."},
+  "zernike_even": {"val": 50, "description": "Amplitude parameter of even terms (ref_wl/zernike_even)."},
+  "zernike_odd":  {"val": 25, "description": "Amplitude parameter of odd terms (ref_wl/zernike_odd)."},
+  "reference_wl": {"val": 1.4, "description": "Reference wavelength in micron."}},
+"ACEcontrol":{
+  "title": "ACE simulation control parameters.",
+  "dtace":  {"val": 15e-5, "description": "Timestep of ACE simulation in sec."},
+  "tace":   {"val": 3600,   "description": "Time range of ACE simulation in sec (to be adjusted)."}},
+"Nplate":{
+  "title": "Number of plates which make up a small frame.",
+  "val"  : 200}
+}
+
