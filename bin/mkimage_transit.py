@@ -279,7 +279,7 @@ if __name__ == '__main__':
 
         # Making local flat data.
         interpix_local = rf.flat_interpix(detector.interpix, x0_global, y0_global, pixdim, figsw=0)
-
+        
         # Making a cube containing plate data for a local region (small frame for a local region).
         pixcube = np.zeros((Npixcube, Npixcube, control_params.nplate))   # Initialize (Axis order: X, Y, Z)
 
