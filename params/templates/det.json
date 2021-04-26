@@ -1,21 +1,21 @@
 {
 "pixsize": {
-  "title": "Pixel size (micron)",
+  "title": "Pixel size (micron).",
   "val"  : 15.0 },
 "Npix":{
-  "title": "Number of pixels on a side",
+  "title": "Number of pixels on a side.",
   "val"  : 1296 },
 "readnoise": {
-  "title": "Read out noise (e-)",
+  "title": "Read out noise (e-).",
   "val"  : 15 },
 "Idark":{
-  "title": "Dark current w stray light (e-/sec/pix)",
+  "title": "Dark current w stray light (e-/sec/pix).",
   "val"  :  24.5 },
 "Fullwell": {
-  "title": "Full well (e-)",
+  "title": "Full well (e-).",
   "val"  : 150000},
 "QE": {
-  "title": "Spectral distribution of quantum efficiency (W?? in um; V?? QE value)",
+  "title": "Spectral distribution of quantum efficiency (W?? in um; V?? QE value).",
   "wavelength": {"val": [0.9, 1.4, 1.6], "title": "Wavelength in micron."},
   "qe_value": {"val": [0.6, 0.6, 0.6], "title": "QE values." }},
 "spixdim": {
@@ -25,10 +25,10 @@
   "title": "Number of margin pixels for simpix calculation.",
   "val": 10},
 "interpix": {
-  "title": "Parameters of the interpixel flat",
+  "title": "Parameters of the interpixel flat.",
   "stddev": {"val": 0.01, "title": "standard deviation of the interpixel flat."}},
 "intrapix": {
-  "title": "Information about files describing intrapixel pattern",
+  "title": "Information about files describing intrapixel pattern.",
   "file_x": {
     "val": "pixsim/data/intrapix/intravx.csv",
     "title": "Path to the definiton file of the intrapix flat pattern along with the x-axis."},
@@ -36,7 +36,7 @@
     "val": "pixsim/data/intrapix/intravy.csv",
     "title": "Path to the definiton file of the intrapix flat pattern along with the y-axis."}},
 "persistence": {
-  "title": "Persistence parameters",
+  "title": "Persistence parameters.",
   "tau": {"val": [1, 10, 100, 1000, 10000], "title": "Detrapping times in second."},
   "rho": {"val": [1e-3, 1.5e-3, 1.5e-3, 2e-3, 3e-3], "title": "Trapping fractions."}},
 "readparams": {
