@@ -34,31 +34,31 @@
 "WFEcontrol": {
   "title": "WFE control parameters.",
   "zernike_nmax": {
-    "val": 8,
-    "title": "Zernike max n."},
+    "title": "Zernike max n.",
+    "val": 8},
   "zernike_even": {
-    "val": 50,
-    "title": "Amplitude parameter of even terms (ref_wl/zernike_even)."},
+    "title": "Amplitude parameter of even terms (ref_wl/zernike_even).",
+    "val": 50},
   "zernike_odd":  {
-    "val": 25,
-    "title": "Amplitude parameter of odd terms (ref_wl/zernike_odd)."},
+    "title": "Amplitude parameter of odd terms (ref_wl/zernike_odd).",
+    "val": 25},
   "reference_wl": {
-    "val": 1.4,
-    "title": "Reference wavelength in micron."}},
+    "title": "Reference wavelength in micron.",
+    "val": 1.4}},
 "ACEcontrol": {
   "title": "ACE simulation control parameters.",
   "dtace":  {
-    "val": 15e-5,
-    "title": "Timestep of ACE simulation in sec."},
+    "title": "Timestep of ACE simulation in sec.",
+    "val": 15e-5},
   "tace":   {
-    "val": 360,
-    "title": "Time range of ACE simulation in sec (to be adjusted)."},
+    "title": "Time range of ACE simulation in sec (to be adjusted).",
+    "val": 360},
   "acex_std": {
-    "val": 0.276,
-    "title": "standard deviation of ACE along with X-axis (arcsec)."},
+    "title": "standard deviation of ACE along with X-axis (arcsec).",
+    "val": 0.276{,
   "acey_std": {
-    "val": 0.276,
-    "title": "standard deviation of ACE along with Y-axis (arcsec)."}},
+    "title": "standard deviation of ACE along with Y-axis (arcsec).",
+    "val": 0.276}},
 "Nplate": {
   "title": "Number of plates which make up a small frame.",
   "val"  : 11},
