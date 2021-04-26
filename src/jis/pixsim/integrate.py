@@ -7,12 +7,12 @@ def integrate(pixar, jx, jy, texp, dt, det):
     """
     Summary:
         This function integrates the pixar array
-        calculated by simpix with taking the sampling 
+        calculated by simpix with taking the sampling
         timing. This function also adds readnoise and
         shotnoise, and digitize. Saturation is also considered.
 
     Args:
-        pixar  (ndarray): Movie data created by simpix. 
+        pixar  (ndarray): Movie data created by simpix.
                           The shape is (X, Y, Z) not (Z, Y, X).
         jx, jy (int)    : Global pixel positions correspond to the
                           origin of the simulated local image (pixar).
@@ -24,9 +24,6 @@ def integrate(pixar, jx, jy, texp, dt, det):
         adu (ndarray): Integrated data in adu.
 
     """
-
-    # Number of pixels in a row including pre/post pixels.
-    npix_read_per_row = det.ncol_ch + det.npix_pre + det.npix_post
 
     pixar = pixar.T
     nz, ny, nx = pixar.shape
@@ -42,25 +39,25 @@ def integrate(pixar, jx, jy, texp, dt, det):
 
     # Channel coordinate.
     y_ch = np.copy(y_global)
-    x_ch = x_global%det.ncol_ch
- 
+    x_ch = x_global%det.readparams.ncol_ch
+
     # First sampling time since the end of reset.
-    t1 = det.t_overhead + \
-         det.tsmpl * (npix_read_per_row * y_ch + det.npix_pre + x_ch) 
+    t1 = det.readparams.t_overhead + \
+         det.readparams.tsmpl*(det.readparams.npix_read_per_row*y_ch+det.readparams.npix_pre+x_ch)
 
     # Second sampling time since the end of reset.
     t2 = t1 + texp
 
     # Weight array for the first sampling.
-    tmp = (time-t1)/det.tsmpl
+    tmp = (time-t1)/det.readparams.tsmpl
     w1 = np.zeros(shape=pixar.shape)
     w1[tmp<=0.] = 1.0
     w1[tmp>=1.] = 0.0
     pos = np.where((tmp>0.)*(tmp<1.))
     w1[pos] = 1.0 - tmp[pos]
-    
+
     # Weight array for the second sampling.
-    tmp = (time-t2)/det.tsmpl
+    tmp = (time-t2)/det.readparams.tsmpl
     w2 = np.zeros(shape=pixar.shape)
     w2[tmp<=0.] = 1.0
     w2[tmp>=1.] = 0.0
@@ -80,7 +77,7 @@ def integrate(pixar, jx, jy, texp, dt, det):
 
     ###################################################
     # If needed, non-linearity can be implemented here
-    # instead of the saturation cut below. 
+    # instead of the saturation cut below.
     ###################################################
 
     # Saturation cut

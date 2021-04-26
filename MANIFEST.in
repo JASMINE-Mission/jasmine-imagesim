@@ -1,0 +1,3 @@
+include src/jis/pixsim/data/v_flatn.fits
+include src/jis/pixsim/data/intrapix/intravx.csv
+include src/jis/pixsim/data/intrapix/intravy.csv

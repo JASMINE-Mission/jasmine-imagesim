@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
   This code is a test for R1.
-  Make a pixel cube with uniform inter/intra pix 
+  Make a pixel cube with uniform inter/intra pix
 
   usage:
     mkpixcube.py [-h|--help] [-l lc.fits] -x aX.fits -y aY.fits -v xs -w ys -p ps -n N -s tframe -f nframe -d vd --det det.json [--psf psf.fits] -o pixcube [-m] [--persistence] -u desample
@@ -26,7 +26,7 @@
    --persistence  considering persistence (not supported yet!).
    -u desample    desampling [int]
 
-""" 
+"""
 
 from docopt import docopt             # command line interface
 import numpy as np
@@ -36,7 +36,7 @@ from jis.pixsim import gentraj
 from jis.pixsim import makeflat as mf
 from jis.pixsim.addnoise import addnoise
 from jis.pixsim.integrate import integrate
-from jis.jisplot import plotace 
+from jis.jisplot import plotace
 from jis.photonsim.extract_json import mkDet
 import tqdm
 import astropy.io.fits as fits
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     ts = time.time() # Starting time.
 
     args = docopt(__doc__)
-    desample   = int(args['-u'])    
+    desample   = int(args['-u'])
     # Get parameters from command line
     tframe   = float(args['-s']) # Exposure time per frame (sec).
     nframe   = int(args['-f'])   # Number of frames.
@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     t = np.array(range(0,nframe))*tframe # Total time to simulate (sec).
     det = mkDet(det_json, spixdim=spixdim) # Making a detector class object.
-        
+
     # Loading light curve data.
     if args['-l']:
         lhdul = fits.open(args['-l'])
@@ -73,7 +73,7 @@ if __name__ == '__main__':
         injlc = ldata[1,:]
         if np.sum((t-tl)**2) > 0:
             sys.exit("time mismatch of "+str(args["-l"]))
-    
+
     x_scale = float(args['-v'])   # stddev of ACE-x (ex. arcsec).
     y_scale = float(args['-w'])   # stddev of ACE-y (ex. arcsec).
     pix_scale = float(args['-p']) # pixel scale (ex. arcsec/pix).
@@ -86,8 +86,8 @@ if __name__ == '__main__':
         psfarr = phdul[0].data
         psfheader = phdul[0].header
         psfcenter = (np.array(np.shape(psfarr))-1.0)*0.5 #psf center in the unit of fp-cell
-        
-        M=psfheader['M']    # Number of FFT cells per wavelength in um        
+
+        M=psfheader['M']    # Number of FFT cells per wavelength in um
         fp_cellsize_rad=(1/M)*1.e-3 #[rad/fp-cell]
         fp_scale=fp_cellsize_rad*3600*180/np.pi #[arcsec/fp-cell]
         psfscale = fp_scale/pix_scale #[pix/fp-cell]
@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
     xdata=xdata[::desample]
     ydata=ydata[::desample]
-    
+
     if xN != yN:
         print("NAXIS1 is not the same")
         sys.exit(-1)
@@ -142,8 +142,7 @@ if __name__ == '__main__':
     plotace.trajectory(theta_full[0,:], theta_full[1,:])
     #    sys.exit()
 
-    tscan = det.t_overhead +\
-            det.tsmpl*(det.npix_pre+det.ncol_ch+det.npix_post)*det.nrow_ch
+    tscan = det.readparams.t_scan
     Nts_per_frame = int((tframe+tscan)/dtace+0.5) # Number of timesteps per a frame.
 
     print("Current settings: dt(ace)={:.1e}; tscan={:.1e}".format(dtace, tscan))
@@ -157,13 +156,13 @@ if __name__ == '__main__':
 
     # Preparing flat (intrapix/interpix). ##########
     ## Setting intrapixel pattern.
-    intrapix = det.intrapix
+    intrapix = det.flat.intrapix
     intrapix = np.ones(np.shape(intrapix))
-    
+
     ## Setting GLOBAL interpixel pattern (flat).
-    #flat    = det.interpix
-    flat    = np.ones(np.shape(det.interpix))
-    
+    #flat    = det.flat.interpix
+    flat    = np.ones(np.shape(det.flat.interpix))
+
     gpixdim = np.shape(flat) # dimension for global pixel positions
 
     # Setting initial global position. #############
@@ -174,8 +173,8 @@ if __name__ == '__main__':
 
     # Setting persistence parameters. ##############
     if args["--persistence"]:
-        tau = det.persistence['tau']
-        rho = det.persistence['rho']
+        tau = det.persistence.tau
+        rho = det.persistence.rho
         # tau: detrapping timescales in sec.
         # rho: trapping fractions.
 
@@ -189,25 +188,25 @@ if __name__ == '__main__':
     interpix = rf.flat_interpix(flat, jx, jy, pixdim, figsw=0)
     interpix = np.ones(np.shape(interpix))
 
-    lc = []        
+    lc = []
     pixcube = np.zeros((Npixcube, Npixcube, nframe))
     for iframe in tqdm.tqdm(range(0,nframe)):
 
         #the positioning system is designed to match to the future upgrade of the large drift.
         #jx,jy=np.int(x),np.int(y)
         #interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
-        
+
         # picking temporary trajectory and local position update
         istart = iframe*Nts_per_frame
         iend   = (iframe+1)*Nts_per_frame
         if iend >= Nace:
             print("insufficient time length of ACE fits.")
-            sys.exit(-1)            
+            sys.exit(-1)
 
         # PSF center for iframe
         theta = np.copy(theta_full[:,istart:iend])
         theta = theta+np.array([pixdim]).T/2
-        
+
         # Perform the PSF integration
         # output: array of images taken at each frame.
         # When the PSF is given in e/fp-cell/sec, simpix/(psfscale*psfscale) is in e/pix/(1./Nts_per_frame sec).
@@ -218,7 +217,7 @@ if __name__ == '__main__':
         # Adding dark current (including stray light).
         #dark = np.ones(shape=pixar.shape) * det.idark * dtace
         #pixar = pixar + dark
-        
+
         if args["--persistence"]:
             #persistence
             Qij = read_trapped_charge(Qtrap, jx, jy, pixdim, figsw=0)
@@ -234,7 +233,7 @@ if __name__ == '__main__':
         # integrated is in e-/pix/exposure.
         #pixcube[:,:,iframe] = integrated # Storing the integrated frame in pixcube.
         pixcube[:,:,iframe] = np.sum(pixar,axis=2)
-        
+
     if args["-l"]:
         pixcube = pixcube*injlc
 
@@ -248,7 +247,7 @@ if __name__ == '__main__':
         f.create_dataset("header/unit", data="e-/pix/sec")
         f.create_dataset("data/pixcube", data=pixcube)
         f.create_dataset("data/interpix", data=interpix)
-    
+
     # Plotting light curve data.
     fig = plt.figure()
     ax  = fig.add_subplot(111)
@@ -260,7 +259,7 @@ if __name__ == '__main__':
     # Saving each frame in pixcube.
     if args["-m"]:
         for iframe in range(0,1):
-            fig=plt.figure()                    
+            fig=plt.figure()
             a=plt.imshow(np.log10(pixcube[:,:,iframe]))
             plt.colorbar(a)
             plt.savefig("pixcube"+str(iframe)+".png")
