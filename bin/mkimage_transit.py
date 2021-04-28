@@ -264,6 +264,10 @@ if __name__ == '__main__':
     pixcube_global, seed = addnoise(pixcube_global, np.sqrt(2.)*detector.readnoise)
     pixcube_global = np.round(pixcube_global/detector.gain) # in adu/pix/plate.
 
+    pixcube_global_adu1 = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
+    pixcube_global_adu2 = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
+
+    
     ## Making data around each star.
     for line in table_starplate:
         print("StarID: {}".format(line['star index']))
@@ -282,6 +286,8 @@ if __name__ == '__main__':
         
         # Making a cube containing plate data for a local region (small frame for a local region).
         pixcube = np.zeros((Npixcube, Npixcube, control_params.nplate))   # Initialize (Axis order: X, Y, Z)
+        pixcube_adu1 = np.zeros((Npixcube, Npixcube, control_params.nplate))   # Initialize (Axis order: X, Y, Z)
+        pixcube_adu2 = np.zeros((Npixcube, Npixcube, control_params.nplate))   # Initialize (Axis order: X, Y, Z)
 
         # Load variability
         if args["--var"]:
@@ -323,12 +329,20 @@ if __name__ == '__main__':
             pixar = pixar + dark
 
             # Integrating, adding noise, and quantization.
-            integrated = integrate(pixar, x0_global, y0_global, tplate, dtace, detector)
+            adu2,adu1 = integrate(pixar, x0_global, y0_global, tplate, dtace, detector, raw=True)
+            integrated= adu2 - adu1
+
             # integrated is in adu/pix/plate.
             pixcube[:,:,iplate] = integrated
-            
+            pixcube_adu1[:,:,iplate] = adu1
+            pixcube_adu2[:,:,iplate] = adu2
+
             pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
-                pixcube[:,:,iplate]
+                pixcube[:,:,iplate]            
+            pixcube_global_adu1[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
+                pixcube_adu1[:,:,iplate]
+            pixcube_global_adu2[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
+                pixcube_adu2[:,:,iplate]
  
 
     # Saving the outputs. ##########################################
@@ -342,6 +356,9 @@ if __name__ == '__main__':
             f.create_dataset("header/tplate", data=tplate)
             f.create_dataset("header/unit", data="e-/pix/plate")
             f.create_dataset("data/pixcube", data=pixcube_global)
+            f.create_dataset("data/pixcube_adu1", data=pixcube_global_adu1)
+            f.create_dataset("data/pixcube_adu2", data=pixcube_global_adu2)
+
     else:
         pixcube_global = np.swapaxes(pixcube_global, 0, 2)
         if output_format == 'platefits':
