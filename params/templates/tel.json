@@ -1,21 +1,19 @@
 {
 "EPD":{
- "title"  :"Entrance pupil diameter (mm)",
+ "title": "Entrance pupil diameter (mm)",
  "val"   :400 },
 "Cobs":{
- "title"  :"Central obscuration ratio",
+ "title": "Central obscuration ratio",
  "val" :0.31},
-"Stype":{
- "title"  :"Spider type and thickness (mm)",
- "val" :"tripod",
- "thick":5 },
+"Spider":{
+  "title": "Spider type and thickness (mm)",
+  "type": {"val": "tripod", "title": "Spider type."},
+  "thickness": {"val": 5, "title": "Spider thickness in mm."}},
 "Eopt":{
-  "title" : "Spectral efficiency of the optics with filters (W?? in um)",
-  "W00" : 1.1,
-  "V00" : 0.88,
-  "W01" : 1.6,
-  "V01" : 0.88},
+  "title": "Spectral efficiency of the optics with filters.",
+  "wavelength": {"val": [1.1, 1.6], "title": "Wavelengths in micron."},
+  "efficiency": {"val": [0.88, 0.88], "title": "Efficiencies."}},
 "EFL":{
- "title"  :"Effective focal length (mm)",
- "val"    :7300.0}
+ "title": "Effective focal length (mm)",
+ "val": 7300.0}
 }

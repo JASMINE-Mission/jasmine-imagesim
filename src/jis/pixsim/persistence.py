@@ -7,13 +7,13 @@ def dQ_const(x,rho,Ei0):
         This function calculates the increase of the trapped charge
         during an exposure time x (=Texp/tau), based on the model in Tulloch+19.
         This calculation assumes that pixel charge is zero at the beginning of the exposure.
-        (See also, persistence_const and Kawahara-san's document.) 
+        (See also, persistence_const and Kawahara-san's document.)
 
     Args:
         x   (ndarray): Exposure time normalized by the detrapping time constants.
                        The detector has various detrapping time constants (tau1, tau2,...).
-                       If the exposure time is expressed as Texp, 
-                       x is described as [Texp/tau1, Texp/tau2,...]. 
+                       If the exposure time is expressed as Texp,
+                       x is described as [Texp/tau1, Texp/tau2,...].
         rho (ndarray): Fraction of trapped photocharge in each time constant bin at equilibrium.
         Ei0 (float)  : Photocharge on the pixel after the exposure.
 
@@ -28,13 +28,13 @@ def dQ_const(x,rho,Ei0):
 def persistence_const(x, rho, Ei0, Qij):
     """
     Summary:
-        This function returns the trapped charges (Qij and Qi) 
-        and photocharge (Ei) after a time x (=t/tau). 
+        This function returns the trapped charges (Qij and Qi)
+        and photocharge (Ei) after a time x (=t/tau).
         This calculation is based on the model by Tulloch+19.
         (for H2RG; See Tulloch+19 arXiv:1908.06469v1 and Kawahara-san's document.)
 
         For calculating the trapping process, please ensure that the photocharge
-        is zero at the beggining of the exposure and set x and Ei0 to Texp/tau and 
+        is zero at the beggining of the exposure and set x and Ei0 to Texp/tau and
         the photocharge expected at the end of the exposure without trapping, respectively.
         Do not use this function to calculate an increase of the trapped charge
         in a small part of time in an exposure, because except for the first part,
@@ -42,12 +42,12 @@ def persistence_const(x, rho, Ei0, Qij):
 
         For calculating the detrapping process after a reset, you can divide the time
         after the reset and calculate the decrease of the trapped charge in each time bin
-        by setting x and Ei0 to dt/tau and zero, respectively. 
+        by setting x and Ei0 to dt/tau and zero, respectively.
 
     Args:
         x   (ndarray) : A time normalized by the detrapping time constants.
                         The dector has various detrapping time constants (tau1, tau2...).
-                        At a time t, x is described as [t/tau1, t/tau2,...]. 
+                        At a time t, x is described as [t/tau1, t/tau2,...].
                         For calculating the trapping process in an exposure time Texp,
                         set x to Texp/tau.
         rho (ndarray) : Fraction of trapped photocharge in each time constant bin at equilibrium.
@@ -68,8 +68,8 @@ def persistence_const(x, rho, Ei0, Qij):
 
     """
 
-    Qij_prev = np.copy(Qij)           # Copying the initial trapped charge as Qij_prev.   
-    dQij = dQ_const(x, rho, Ei0)      # Calculating the increase of the trapped charge. 
+    Qij_prev = np.copy(Qij)           # Copying the initial trapped charge as Qij_prev.
+    dQij = dQ_const(x, rho, Ei0)      # Calculating the increase of the trapped charge.
     dQi  = np.sum(dQij)               # Calculating the increase of the total trapped charge.
                                       # (\sum_{j} dQi_j)
     Qij  = dQij + Qij_prev*np.exp(-x) # Updated trapped charge in each time constant bin.
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     N = 40    # Number of the up-the-ramp sequences.
     T = 600.0 # Exposure time of the sequence (sec).
     tframe = np.array(range(0,N)) * T
-    
+
     Qi  = 0.0              # Initial trapped charge
     E0  = 7.5e4*np.ones(N) # Signal at the T-sec exp (75ke-/Tsec).
     tau = np.array([1.0,10.0,100.0,1000.0,10000.0])      # Detrapping time constants.

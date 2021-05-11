@@ -6,12 +6,12 @@ import json
 
 def calc_wfe(EPD,efile):
     """
-    This function calculates wavefront error pattern 
+    This function calculates wavefront error pattern
     by calculating summation of zernike polynomials.
-    Coefficients and orders of the zernike terms are 
+    Coefficients and orders of the zernike terms are
     given by the input json file, efile.
-    In the simulation, the unit of the coefficients and 
-    the calculated wfe is assumed to be um. 
+    In the simulation, the unit of the coefficients and
+    the calculated wfe is assumed to be um.
 
     Args:
         EPD   (float): Entrance pupil diameter (apt-cell=mm).
@@ -31,9 +31,9 @@ def calc_wfe(EPD,efile):
     """
 
     # make a little bit larger data
-    N    = int(EPD + 4) 
+    N    = int(EPD + 4)
     data = np.zeros((N,N),dtype=float)
-    
+
     # Get wavefront error parameters from json file
     with open(efile) as f:
         p = json.load(f)
@@ -45,7 +45,7 @@ def calc_wfe(EPD,efile):
             Zn[i] = int(p['z{:03d}-n'.format(i+1)])
             Zm[i] = int(p['z{:03d}-m'.format(i+1)])
             Za[i] = float(p['z{:03d}-a'.format(i+1)])
-            
+
 
     iy, ix = np.indices((N, N))
     y = iy - N/2
@@ -60,6 +60,35 @@ def calc_wfe(EPD,efile):
         data[pos] = data[pos] + Za[i]*zernike.Zernike(Zn[i], Zm[i], rho[pos], theta[pos])
 
     return data
+
+
+def calc_dummy_wfe(EPD,efile):
+    """
+    This function calculates a dummy wavefront error pattern.
+    The arguments are the same as `calc_wfe` but not used except for `EPD`.
+    This returns an array, where the inside of the entrance pupil is filled with zeros.
+
+    Args:
+        EPD   (float): Entrance pupil diameter (apt-cell=mm).
+        efile (str)  : Filename of the json file having wavefront error parameters.
+        *** Apt-cell scale is assumed to be 1 mm/apt-cell!!! ***
+        *** Coefficients are assumed to be in um!!!  ***
+
+    Returns:
+        data (ndarray): EPD+4 x EPD+4 data array of the calculated wavefront error pattern.
+                        The unit is assumed to be um in the simulation.
+    """
+    # make a little bit larger data
+    N    = int(EPD + 4)
+    data = np.zeros((N,N),dtype=float)
+
+    iy,ix = np.indices((N, N))
+    y,x = iy - N/2, ix - N/2
+    rho   = np.sqrt(y*y+x*x)/(EPD/2)
+
+    data[rho>1] = np.nan
+    return data
+
 
 
 def wfe_model_z(rg,nmax,wlen,zodd,zeven):

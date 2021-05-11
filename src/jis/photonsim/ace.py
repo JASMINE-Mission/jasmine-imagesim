@@ -58,7 +58,7 @@ def calc_ace(rg, N, T, ace):
         Fourier domain ACE F(f) should...
           F(0 or N/2 ) should be real
           F(N-f) = conjugete( F(f) )
-            then 
+            then
               ReF(-f) = ReF(f) ,  ImF(-f) = -ImF(f)
         -----------------------------------------------
         """
@@ -108,6 +108,26 @@ def calc_ace(rg, N, T, ace):
 
     return acedata, psdn
 
+
+def calc_dummy_ace(rg, N, T, ace):
+    """
+    This function generates a one-dimensional dummy attitue control error (ACE) data.
+    The arguents are the same as `calc_ace` but not used except for the number of elements, `N`.
+    The generated ACE is just a zero-padded one-dimensional array.
+
+    Args:
+        rg  (numpy.random.Generator): Random generator.
+        N   (int)  : Number of time grids.
+        T   (float): Range of time to simulate.
+        ace (dict) : Parameter set about ace loaded from the ace json file.
+
+    Returns:
+        dummyace (ndarray): A dummy ACE, zero-padded array with the size of `N`.
+
+    """
+    return np.zeros(N)
+
+
 def plot_ace(N, T, data, psdn, plotfile):
     """
     This function makes a plot of the ace data.
@@ -122,7 +142,7 @@ def plot_ace(N, T, data, psdn, plotfile):
 
     Returns:
         None.
- 
+
     """
 
     dT  = T/N # time step
@@ -160,8 +180,8 @@ def ace2d(x_scale, y_scale, pix_scale, N, xdata, ydata, xN):
     """
     This function returns 2D ace data array with considering
     the ace data scale and the pixel scale.
- 
-    Args:  
+
+    Args:
         x_scale   (float)  : Scale of xdata.
         y_scale   (float)  : Scale of ydata.
         pix_scale (float)  : Pixel scale of the output image.

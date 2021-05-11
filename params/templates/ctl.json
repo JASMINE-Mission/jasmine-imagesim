@@ -1,31 +1,77 @@
 {
-"M":{
+"effect": {
+  "title" : "enable/disable emulator effects",
+  "wfe": {
+    "title": "incorporate the wave front error error",
+    "val": true },
+  "psf": {
+    "title": "simulate a physically realistic point spread function",
+    "val": true },
+  "ace": {
+    "title": "incorporate the attitude control error",
+    "val": true },
+  "flat_interpix": {
+    "title": "incorporate the interpix flat non-uniformity",
+    "val": true },
+  "flat_intrapix": {
+    "title": "incorporate the intrapix flat non-uniformity",
+    "val": true }},
+"M": {
  "title"  :"Cell scale is 1/M [um/mm] ",
  "val"   :6320},
-"CellPix":{
+"CellPix": {
  "title"  :"Number of cells corresponds to detector pixel size",
  "val"   : 13 },
-"PixNum":{
+"PixNum": {
  "title"  :"Number of detector pixels for the side length of a single area",
  "val" : 9 },
-"dx":{
+"dx": {
   "title" :"x difference between psf center and detector pixel center ",
   "val" : 0 },
-"dy":{
+"dy": {
   "title" :"y difference between psf center and detector pixel center ",
   "val" : 0 },
-"WFEcontrol":{
+"WFEcontrol": {
   "title": "WFE control parameters.",
-  "zernike_nmax": {"val": 8,  "description": "Zernike max n."},
-  "zernike_even": {"val": 50, "description": "Amplitude parameter of even terms (ref_wl/zernike_even)."},
-  "zernike_odd":  {"val": 25, "description": "Amplitude parameter of odd terms (ref_wl/zernike_odd)."},
-  "reference_wl": {"val": 1.4, "description": "Reference wavelength in micron."}},
-"ACEcontrol":{
+  "zernike_nmax": {
+    "title": "Zernike max n.",
+    "val": 8},
+  "zernike_even": {
+    "title": "Amplitude parameter of even terms (ref_wl/zernike_even).",
+    "val": 50},
+  "zernike_odd":  {
+    "title": "Amplitude parameter of odd terms (ref_wl/zernike_odd).",
+    "val": 25},
+  "reference_wl": {
+    "title": "Reference wavelength in micron.",
+    "val": 1.4}},
+"ACEcontrol": {
   "title": "ACE simulation control parameters.",
-  "dtace":  {"val": 15e-5, "description": "Timestep of ACE simulation in sec."},
-  "tace":   {"val": 360,   "description": "Time range of ACE simulation in sec (to be adjusted)."}},
-"Nplate":{
+  "dtace":  {
+    "title": "Timestep of ACE simulation in sec.",
+    "val": 15e-5},
+  "tace":   {
+    "title": "Time range of ACE simulation in sec (to be adjusted).",
+    "val": 360},
+  "acex_std": {
+    "title": "standard deviation of ACE along with X-axis (arcsec).",
+    "val": 0.276{,
+  "acey_std": {
+    "title": "standard deviation of ACE along with Y-axis (arcsec).",
+    "val": 0.276}},
+"Nplate": {
   "title": "Number of plates which make up a small frame.",
-  "val"  : 11}
+  "val"  : 11},
+"tplate": {
+  "title": "Exposure time of plate in second.",
+  "val": 12.5},
+"Rv": {
+  "title": "Total-to-selective extinction.",
+  "val": 3.1},
+"J-H": {
+  "title": "Color excess E(J-h).",
+  "val": 2.0},
+"alpha": {
+  "title": "Interpolation factor",
+  "val": 0.75}
 }
-
