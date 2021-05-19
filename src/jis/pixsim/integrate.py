@@ -3,7 +3,7 @@ from jis.pixsim.addnoise import mk_readnoise
 from jis.pixsim.addnoise import mk_shotnoise
 import matplotlib.pylab as plt
 
-def integrate(pixar, jx, jy, texp, dt, det):
+def integrate(pixar, jx, jy, texp, dt, det, raw=False):
     """
     Summary:
         This function integrates the pixar array
@@ -19,10 +19,11 @@ def integrate(pixar, jx, jy, texp, dt, det):
         texp   (float)  : Exposure time in sec.
         dt     (float)  : Timestep of the simulated data (pixar).
         det    (detctor): Detector class object.
+        raw    (boolen) : Provide two images before subtraction?
 
     Returns:
-        adu (ndarray): Integrated data in adu.
-
+        adu (ndarray): Integrated data in adu. if raw=True, [adu2, adu1] are given.
+    
     """
 
     pixar = pixar.T
@@ -90,7 +91,9 @@ def integrate(pixar, jx, jy, texp, dt, det):
     adu2 = signal2 + mk_readnoise(signal2.shape, det.readnoise)[0]
     adu2 = np.round(adu2/det.gain)
 
-    # Subtraction.
-    adu = (adu2 - adu1).T
-
-    return adu
+    if raw:
+        return adu2.T, adu1.T
+    else:
+        # Subtraction.
+        adu = (adu2 - adu1).T
+        return adu
