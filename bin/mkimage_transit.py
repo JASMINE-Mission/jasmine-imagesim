@@ -5,13 +5,13 @@
 .. code-block:: bash
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--dft drift.json] --format format [--od outdir] [--overwrite] 
+    mkimage_transit.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--dft drift.json] --format format [--od outdir] [--overwrite]
 
   options:
    -h --help                   show this help message and exit.
    --pd paramdir               name of the directory containing parameter files.
    --starplate star_plate.csv  csv file containing star info (plate index, star index, x pixel, y pixel, lambda, beta, Hwmag)
-   --var variability.json      json file for stellar variability/transit (optional). The input variability will be shown in variability_input().png 
+   --var variability.json      json file for stellar variability/transit (optional). The input variability will be shown in variability_input().png
    --det det.json              json file containing detector related parameters.
    --tel tel.json              json file containing telescope related parameters.
    --ace ace.json              json file containing ace parameters.
@@ -22,6 +22,8 @@
    --overwrite                 if set, overwrite option activated.
 
 """
+import matplotlib
+matplotlib.use('Agg')
 
 from docopt import docopt
 import os
@@ -32,28 +34,16 @@ import h5py
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
-from jis.photonsim.extract_json import mkDet, mkControlParams, mkTel, mkVar, mkDft
-from jis.photonsim.wfe import wfe_model_z, calc_wfe
+from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Variability, Drift
+from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe
 from jis.photonsim.response import calc_response
-from jis.photonsim.psf import calc_psf
-from jis.photonsim.ace import calc_ace
+from jis.photonsim.ace import calc_ace, calc_dummy_ace
+from jis.photonsim.psf import calc_psf, calc_dummy_psf
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
 from jis.pixsim.addnoise import addnoise
 import matplotlib.pylab as plt
-
-
-# Constants ########################################################
-Rv  = 3.1
-JH  = 2.0
-alp = 0.75
-spixdim  = [32, 32]  # subpixel dimension in a pixel (setting for intrapix pattern).
-acex_std = 0.276     # std of ace_x (arcsec).
-acey_std = 0.276     # std of ace_y (arcsec). 
-Nmargin = 10         # Margin for simpix calc.
-tplate  = 12.5       # Exposure time of a plate (sec).
-
 
 # Command line interface
 if __name__ == '__main__':
@@ -72,10 +62,10 @@ if __name__ == '__main__':
     filename_teljson   = os.path.join(dirname_params, args['--tel'])
     filename_acejson   = os.path.join(dirname_params, args['--ace'])
     filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
+
     if args['--dft']:
         filename_dftjson   = os.path.join(dirname_params, args['--dft'])
-    
-                
+
     output_format = args['--format']
     if output_format not in ['platefits', 'fitscube', 'hdfcube']:
         print("format must be 'platefits', 'fitscube' or 'hdfcube'.")
@@ -92,9 +82,9 @@ if __name__ == '__main__':
 
     # Loading parameters. ##########################################
     table_starplate = asc.read(filename_starplate)
-    detector        = mkDet(filename_detjson, spixdim=spixdim)
-    control_params  = mkControlParams(filename_ctljson)
-    telescope       = mkTel(filename_teljson)
+    detector        = Detector.from_json(filename_detjson)
+    control_params  = ControlParams.from_json(filename_ctljson)
+    telescope       = Telescope.from_json(filename_teljson)
     with open(filename_acejson, "r") as f:
         ace_params = json.load(f)
     f.close()
@@ -146,77 +136,89 @@ if __name__ == '__main__':
 
 
     # Making random wfe. ###########################################
-    wp  = control_params.wfe_control
-    wfe_amplitudes = wfe_model_z(np.random, wp['zernike_nmax'], wp['reference_wl'],\
-                                 wp['zernike_odd'], wp['zernike_even'])
+    if control_params.effect.wfe is True:
+        print("calculate WFE...")
+        wp  = control_params.wfe_control
+        wfe_amplitudes = wfe_model_z(
+            np.random, wp['zernike_nmax'], wp['reference_wl'],
+            wp['zernike_odd'], wp['zernike_even'])
 
-    # Saving amplitude data...
-    with open(filename_wfejson, mode='w') as f:
-        json.dump(wfe_amplitudes, f, indent=2)
-    f.close()
+        # Saving amplitude data...
+        with open(filename_wfejson, mode='w') as f:
+            json.dump(wfe_amplitudes, f, indent=2)
 
-    # Making wfe map...
-    wfe = calc_wfe(telescope.epd, filename_wfejson)
+        # Making wfe map...
+        wfe = calc_wfe(telescope.epd, filename_wfejson)
+    else:
+        print("WFE simulation is skipped.")
+        wfe = calc_dummy_wfe(telescope.epd, 'dummy.json')
 
 
     # Making PSFs ##################################################
-    opteff = telescope.opt_efficiency 
+    opteff = telescope.opt_efficiency
     qe = detector.qe
 
     ## Currently, only one case of (Rv, JH).
-    total_e_rate, wl_e_rate, e_rate =\
-        calc_response(Rv, JH, alp,\
-                      len(opteff['wl']), opteff['wl'], opteff['val'],\
-                      np.min(opteff['wl']), np.max(opteff['wl']),\
-                      qe['wl'], qe['val'])
+    Rv = control_params.Rv
+    JH = control_params.JH
+    alpha = control_params.alpha
+    total_e_rate, wl_e_rate, e_rate = \
+        calc_response(Rv, JH, alpha, opteff.wavelength, opteff.efficiency,
+                      np.min(opteff.wavelength), np.max(opteff.wavelength), qe.wl, qe.val)
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
 
-    
-    ## Currently, only one PSF.
-    print("Calculating PSF...")
-    psf = calc_psf(wfe, wfe.shape[0],\
-                   len(wl_e_rate), wl_e_rate, e_rate, total_e_rate,\
-                   telescope.total_area, telescope.aperture,\
-                   control_params.M_parameter, telescope.aperture.shape[0],1040)
-    # psf is that of an object which has the JH color of the set value and Hw=0.
-    # The unit is e/sec/pix.
+    if control_params.effect.psf is True:
+        ## Currently, only one PSF.
+        print("Calculating PSF...")
+        psf = calc_psf(wfe, wfe.shape[0],
+                       wl_e_rate, e_rate, total_e_rate,
+                       telescope.total_area, telescope.aperture,
+                       control_params.M_parameter, telescope.aperture.shape[0])
+        # psf is that of an object which has the JH color of the set value and Hw=0.
+        # The unit is e/sec/pix.
+    else:
+        print("Realistic PSF simulation is skipped.")
+        print("Generate fake PSF...")
+        psf = calc_dummy_psf(wfe, wfe.shape[0],
+                       wl_e_rate, e_rate, total_e_rate,
+                       telescope.total_area, telescope.aperture,
+                       control_params.M_parameter, telescope.aperture.shape[0])
 
-    # TK #######################################################################
-    # Why do we need Rv and JH color excess?
-    # I think we need apparent Hw mag and apparent J-H color instead of those.
-    #
-    # For considering various color objects, it might be good to calculate PSFs
-    # with some J-H colors and use them with interpolating.
-    # PSF calculation takes a long time.
-    ############################################################################.
-       
-    # Ace simulation. ##############################################   
-    ace_cp = control_params.ace_control
-    print("Making ACE (X)...")
-    acex, psdx = calc_ace(np.random, ace_cp['nace'], ace_cp['tace'], ace_params)
-    # acex is normalized by the std.
 
-    print("Making ACE (Y)...")
-    acey, psdy = calc_ace(np.random, ace_cp['nace'], ace_cp['tace'], ace_params)
-    # acey is normalized by the std.
+    # Ace simulation. ##############################################
+    nace = control_params.ace_control.get('nace')
+    tace = control_params.ace_control.get('tace')
+    if control_params.effect.ace is True:
+        print("Making ACE (X)...")
+        acex, psdx = calc_ace(np.random, nace, tace, ace_params)
+        # the standard deviation of acex is normalized to unity.
 
-    # Detector
-    tscan = detector.t_overhead +\
-            detector.tsmpl*(detector.npix_pre+detector.ncol_ch+detector.npix_post)*detector.nrow_ch
+        print("Making ACE (Y)...")
+        acey, psdy = calc_ace(np.random, nace, tace, ace_params)
+        # the standard deviation of acey is normalized to unity.
+    else:
+        print("ACE simulation is skipped.")
+        print("Generate face ACE(X) and ACE(Y)...")
+        acex = calc_dummy_ace(np.random, nace, tace, ace_params)
+        acey = calc_dummy_ace(np.random, nace, tace, ace_params)
+
+    tplate = control_params.tplate
+    tscan = detector.readparams.t_scan
     dtace = control_params.ace_control['dtace']
     Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.
 
-    
     # Drift
     if args["--dft"]:
-        dft=mkDft(filename_dftjson)
-        dft.compute_drift(dtace,ace_cp['nace'])
-        
+        dft=Drift.from_json(filename_dftjson)
+        dft.compute_drift(dtace,nace)
+
     # Preparation for making image. ################################
 
     ## Full data of the displacement in detpix.
     ## (ace[x|y] scaled and converted to detpix)
+    acex_std = control_params.ace_control.get('acex_std')
+    acey_std = control_params.ace_control.get('acey_std')
     # Setting and plotting full trajectory.
     if args["--dft"]:
         theta_full = np.array([acex*acex_std/detpix_scale+dft.drift_theta[0,:], acey*acey_std/detpix_scale+dft.drift_theta[1,:]])
@@ -225,14 +227,14 @@ if __name__ == '__main__':
     else:
         theta_full = np.array([acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
 
-    Npixcube = int((np.max(np.abs(theta_full))+Nmargin)*2)
+    Npixcube = int((np.max(np.abs(theta_full))+detector.nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
 
-# Variablity
+    ## Variablity
     varsw=False
     if args['--var']:
         #load variability class
-        variability=mkVar(filename_varjson)
+        variability=Variability.from_json(filename_varjson)
         #define time array in the unit of day
         tday=(tplate+tscan)*np.array(range(0,control_params.nplate))/3600/24
         for line in asc.read(filename_starplate):
@@ -242,7 +244,7 @@ if __name__ == '__main__':
                 plt.savefig("variability_input"+"_"+str(line['star index'])+".png")
                 plt.clf()
 
-    
+
     if Nts_per_plate*control_params.nplate >= theta_full.shape[1]:
         print("Insufficient time length of ACE data.")
         print("Nts_per_plate*Nplate: {}".format(Nts_per_plate*control_params.nplate))
@@ -257,6 +259,8 @@ if __name__ == '__main__':
 
 
     # Making image. ################################################
+    uniform_flat_interpix = np.ones_like(detector.flat.interpix)
+    uniform_flat_intrapix = np.ones_like(detector.flat.intrapix)
 
     ## Making sky region.
     pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
@@ -267,7 +271,7 @@ if __name__ == '__main__':
     pixcube_global_adu1 = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     pixcube_global_adu2 = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
 
-    
+
     ## Making data around each star.
     for line in table_starplate:
         print("StarID: {}".format(line['star index']))
@@ -282,8 +286,13 @@ if __name__ == '__main__':
         mag = line['Hwmag']
 
         # Making local flat data.
-        interpix_local = rf.flat_interpix(detector.interpix, x0_global, y0_global, pixdim, figsw=0)
-        
+        if control_params.effect.flat_interpix is True:
+            interpix_local = rf.flat_interpix(
+                detector.flat.interpix, x0_global, y0_global, pixdim, figsw=0)
+        else:
+            interpix_local = rf.flat_interpix(
+                uniform_flat_interpix, x0_global, y0_global, pixdim, figsw=0)
+
         # Making a cube containing plate data for a local region (small frame for a local region).
         pixcube = np.zeros((Npixcube, Npixcube, control_params.nplate))   # Initialize (Axis order: X, Y, Z)
         pixcube_adu1 = np.zeros((Npixcube, Npixcube, control_params.nplate))   # Initialize (Axis order: X, Y, Z)
@@ -292,7 +301,7 @@ if __name__ == '__main__':
         # Load variability
         if args["--var"]:
             varsw, injlc, b=variability.read_var(tday,line['star index'])
-        
+
         for iplate in tqdm.tqdm(range(0, control_params.nplate)):         # Loop to take each plate.
             # picking temporary trajectory and local position update
             istart = iplate    *Nts_per_plate
@@ -309,9 +318,14 @@ if __name__ == '__main__':
             #   Output: array of images in each time bin in the exposure.
             #   When the PSF is given in e/fp-cell/sec,
             #   simpix/(psfscale*psfscale) is in e/pix/(1./Nts_per_plate sec).
-            pixar = sp.simpix(theta, interpix_local, detector.intrapix,\
-                              psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
-                              /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
+            if control_params.effect.flat_intrapix:
+                pixar = sp.simpix(theta, interpix_local, detector.flat.intrapix,\
+                                  psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
+                                  /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
+            else:
+                pixar = sp.simpix(theta, interpix_local, uniform_flat_intrapix,\
+                                  psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
+                                  /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
 
             # magnitude scaling.
@@ -323,7 +337,7 @@ if __name__ == '__main__':
             """
             if varsw:
                 pixar=pixar*injlc[iplate]
-                
+
             # Adding dark current (including stray light).
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
             pixar = pixar + dark
@@ -338,16 +352,22 @@ if __name__ == '__main__':
             pixcube_adu2[:,:,iplate] = adu2
 
             pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
-                pixcube[:,:,iplate]            
+                pixcube[:,:,iplate]
             pixcube_global_adu1[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
                 pixcube_adu1[:,:,iplate]
             pixcube_global_adu2[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
                 pixcube_adu2[:,:,iplate]
- 
+
 
     # Saving the outputs. ##########################################
-    pf.writeto(filename_interpix, detector.interpix, overwrite=overwrite)
-    pf.writeto(filename_intrapix, detector.intrapix, overwrite=overwrite)
+    if control_params.effect.flat_interpix is True:
+        pf.writeto(filename_interpix, detector.flat.interpix, overwrite=overwrite)
+    else:
+        pf.writeto(filename_interpix, uniform_flat_interpix, overwrite=overwrite)
+    if control_params.effect.flat_interpix is True:
+        pf.writeto(filename_intrapix, detector.flat.intrapix, overwrite=overwrite)
+    else:
+        pf.writeto(filename_intrapix, uniform_flat_intrapix, overwrite=overwrite)
     pf.writeto(filename_psf, psf, overwrite=overwrite)
     if output_format == 'hdfcube':
         with h5py.File(filename_images[0],"w") as f:
@@ -366,7 +386,7 @@ if __name__ == '__main__':
                 pf.writeto(filename_images[i], pixcube_global[i].astype('int32'), overwrite=overwrite)
         elif output_format == 'fitscube':
             pf.writeto(filename_images[0], pixcube_global.astype('int32'), overwrite=overwrite)
-    
+
     hdu = pf.PrimaryHDU(wfe)
     hdu.header["WFE-FILE"] = filename_wfejson
     hdu.header["WFE-EPD"]  = telescope.epd
@@ -377,7 +397,7 @@ if __name__ == '__main__':
     hdu.header["APTFILE"] = filename_teljson
     hdu.header["EPD"]     = telescope.epd
     hdu.header["COBS"]    = telescope.cobs
-    hdu.header["STYPE"]   = telescope.spider_type
+    hdu.header["STYPE"]   = telescope.spider.type
     hdu.header["STEL"]    = telescope.total_area  # total area in m^2
     hdu.list = pf.HDUList([hdu])
     hdulist.writeto(filename_aperture, overwrite=overwrite)
@@ -393,4 +413,3 @@ if __name__ == '__main__':
     hdu.header["ACE-TOTT"] = control_params.ace_control['tace']
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filename_acey, overwrite=overwrite)
-    
