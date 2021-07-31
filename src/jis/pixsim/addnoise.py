@@ -78,6 +78,7 @@ def mk_shotnoise(data, rg=None):
 
     seed = None
     if rg is None:
+        time.sleep(0.1) # avoiding the same seed as before.
         seed = round(time.time()*10)
         rg   = np.random.Generator(np.random.PCG64(seed))
 
@@ -118,6 +119,7 @@ def mk_readnoise(shape, sigma, rg=None):
 
     seed = None
     if rg is None:
+        time.sleep(0.1) # avoiding the same seed as before.
         seed = round(time.time()*10)
         rg   = np.random.Generator(np.random.PCG64(seed))
 
