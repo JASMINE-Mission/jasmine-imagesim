@@ -8,8 +8,10 @@ def calc_ace(rg, N, T, ace):
     """
     This function makes a one-dimensional attitude control error (ACE) data.
     The ACE is assumed to have a power spectral distribution (PSD) 
-    which consists of a power-law function and some Lorenzian-type peaks (PS disturbance).
-    The returned ACE data (acedata) is normalized with its standard deviation.
+    which consists of a white noise spectrum in low frequencies,
+    a power-law function in high frequencies (index=-2), 
+    and some Lorenzian-type peaks (PS disturbance).
+    The returned ACE data (acedata) is normalized with the resulted standard deviation.
     The generated PSD is also returned as 'psdn', but this is not normalized as 'acedata'.
 
     Args:
@@ -33,9 +35,9 @@ def calc_ace(rg, N, T, ace):
         print("Not supported title {0}".format(title))
         sys.exit()
     else:
-        f0   = ace['f0']  # Reference frequency to define the power-law PSD.
-        alp  = ace['alp'] # Factor which determines the fraction of the gaussian component.
-        bet  = ace['bet']
+        f0   = ace['f0']  # Boundary frequency between low-freq white noise region and high-freq pow-law region in PSD.
+        alp  = ace['alp'] # Factor which determines the fraction of the gaussian amplitude noise.
+        bet  = ace['bet'] # Factor which determines the amplitude dependence of the gaussian amplitude noise.
         nmax = ace['n']   # Number of the PS disturbance peaks (see below).
 
         # Settings for the PS disturbance (peaks of some specific frequencies).
