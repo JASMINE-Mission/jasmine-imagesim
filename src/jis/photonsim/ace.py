@@ -67,34 +67,34 @@ def calc_ace(rg, N, T, ace):
         # initialize data for fft
         data = pyfftw.zeros_aligned((N),dtype='complex128')
 
-        # independent data
-        for t in range(int(N/2)+1):
-            f   = t/(N*dT)           # Frequency
-            psd = 1/f0/(1+(f/f0)**2) # Power-law component
+        # independent data (i=0-N/2) ####################
+        t   = np.arange(0, int(N/2)+1, dtype='int')
 
-            # Adding PS-disturbance peaks (Lorenzian function).
-            if nmax > 0:
-                for i in range(nmax):
-                    psd = psd + P[i]/H[i]/(1+((f-F[i])/H[i])**2)
+        f   = t/N/dT                 # Freq. grid.
+        psd = 1/f0/(1+(f/f0)**2.)    # PSD of the continuum comp.
 
-            s0    = math.sqrt(psd)       # Amplitude without noise.
-            sig   = math.pow(s0, bet)    # Sigma of the gaussian noise in the next line.
-            noise = rg.normal(scale=sig) # Gaussian noise.
-            s     = s0 + alp * noise     # Amplitude with noise.
+        # Adding PS-disturbance peaks (Lorenzian function).
+        if nmax > 0:
+            for i in range(nmax):
+                psd = psd + P[i]/H[i]/(1+((f-F[i])/H[i])**2)
 
-            # Making phase th (=theta).
-            if (t==0 or t==N/2) : # real
-                th = 0.0
-            else :
-                th = rg.uniform() * 2*math.pi
-            data.real[t] = s*math.cos(th)
-            data.imag[t] = s*math.sin(th)
+        s0    = np.sqrt(psd)         # Amplitude without noise.
+        sig   = s0**bet              # Sigma of the gaussian noise in the next line.
+        noise = rg.normal(scale=sig) # Gaussian noise.
+        s     = s0 + alp * noise     # Amplitude with noise.
+
+        # Making phase th (=theta).
+        th = np.zeros(shape=s.shape)
+        th[1:np.size(th)-1] = rg.uniform(size=np.size(th)-2) * 2. * np.pi
+
+        data.real[t] = s*np.cos(th)
+        data.imag[t] = s*np.sin(th)
 
         # dependent data
-        for t in range(int(N/2)-1):
-            tt = N-t-1
-            data.real[tt] =  data.real[t+1]
-            data.imag[tt] = -data.imag[t+1]
+        t = np.arange(0, int(N/2)-1, dtype='int')
+        tt = N - t - 1
+        data.real[tt] =  data.real[t+1]
+        data.imag[tt] = -data.imag[t+1]
 
         # iFFT
         ft = pyfftw.interfaces.numpy_fft.ifft(data)
