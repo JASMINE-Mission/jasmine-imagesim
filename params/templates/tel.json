@@ -12,8 +12,8 @@
 "Eopt":{
   "title": "Spectral efficiency of the optics with filters.",
   "wavelength": {"val": [1.1, 1.6], "title": "Wavelengths in micron."},
-  "efficiency": {"val": [0.88, 0.88], "title": "Efficiencies."}},
+  "efficiency": {"val": [0.77, 0.77], "title": "Efficiencies."}},
 "EFL":{
  "title": "Effective focal length (mm)",
- "val": 7300.0}
+ "val": 4860.0}
 }
