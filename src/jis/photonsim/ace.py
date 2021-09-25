@@ -67,7 +67,7 @@ def calc_ace(rg, N, T, ace):
         # initialize data for fft
         data = pyfftw.zeros_aligned((N),dtype='complex128')
 
-        # independent data (i=0-N/2) ####################
+        # independent data (i = 0,...,N/2) ######################
         t   = np.arange(0, int(N/2)+1, dtype='int')
 
         f   = t/N/dT                 # Freq. grid.
@@ -90,7 +90,7 @@ def calc_ace(rg, N, T, ace):
         data.real[t] = s*np.cos(th)
         data.imag[t] = s*np.sin(th)
 
-        # dependent data
+        # dependent data (i = N/2+1,...,N-1) ####################
         t = np.arange(0, int(N/2)-1, dtype='int')
         tt = N - t - 1
         data.real[tt] =  data.real[t+1]
