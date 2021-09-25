@@ -39,16 +39,17 @@ def calc_ace(rg, N, T, ace):
         nmax = ace['n']   # Number of the PS disturbance peaks (see below).
 
         # Settings for the PS disturbance (peaks of some specific frequencies).
-        P = np.empty(nmax) # Power
-        F = np.empty(nmax) # Frequency
-        H = np.empty(nmax) # Half-width half-maximum
-        for i in range(nmax):
-            pi = "p{}".format(i+1)
-            hi = "h{}".format(i+1)
-            fi = "f{}".format(i+1)
-            P[i] = ace[pi]
-            H[i] = ace[hi]
-            F[i] = ace[fi]
+        if nmax > 0:
+            P = np.empty(nmax) # Power
+            F = np.empty(nmax) # Frequency
+            H = np.empty(nmax) # Half-width half-maximum
+            for i in range(nmax):
+                pi = "p{}".format(i+1)
+                hi = "h{}".format(i+1)
+                fi = "f{}".format(i+1)
+                P[i] = ace[pi]
+                H[i] = ace[hi]
+                F[i] = ace[fi]
 
         """
         -----------------------------------------------
@@ -72,8 +73,9 @@ def calc_ace(rg, N, T, ace):
             psd = 1/f0/(1+(f/f0)**2) # Power-law component
 
             # Adding PS-disturbance peaks (Lorenzian function).
-            for i in range(nmax):
-                psd = psd + P[i]/H[i]/(1+((f-F[i])/H[i])**2)
+            if nmax > 0:
+                for i in range(nmax):
+                    psd = psd + P[i]/H[i]/(1+((f-F[i])/H[i])**2)
 
             s0    = math.sqrt(psd)       # Amplitude without noise.
             sig   = math.pow(s0, bet)    # Sigma of the gaussian noise in the next line.
