@@ -84,9 +84,14 @@ def calc_ace(rg, N, T, ace):
         s     = s0 + alp * noise     # Amplitude with noise.
 
         # Making phase th (=theta).
-        th = np.zeros(shape=s.shape)
-        th[1:np.size(th)-1] = rg.uniform(size=np.size(th)-2) * 2. * np.pi
+        th = rg.uniform(size=np.size(s))*2.*np.pi
 
+        ## To make the data real values, set some phases to be zero.
+        th[0] = 0.
+        if N%2 == 0:
+            th[int(N/2)] = 0.
+
+        # Making Fourier components.
         data.real[t] = s*np.cos(th)
         data.imag[t] = s*np.sin(th)
 
