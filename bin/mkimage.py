@@ -172,7 +172,8 @@ if __name__ == '__main__':
         psf = calc_psf(wfe, wfe.shape[0],
                        wl_e_rate, e_rate, total_e_rate,
                        telescope.total_area, telescope.aperture,
-                       control_params.M_parameter, telescope.aperture.shape[0])
+                       control_params.M_parameter, telescope.aperture.shape[0],
+                       control_params.fN_parameter)
         # psf is that of an object which has the JH color of the set value and Hw=0.
         # The unit is e/sec/pix.
     else:
