@@ -304,6 +304,7 @@ class ControlParams:
         wfe_control (dict): Parameters related to the wfe calculation.
         M_parameter (int): The M parameter which determine the cell scale of the psf.
                            The fp-cell scale will be (1/M) x 10^-3 rad/fp-cell.
+        fN_parameter (int): Number of fp-cells of the psf data calculated by calc_psf.
         ace_control (dict): Parameters related to the ace calculation.
         nplate (int): Number of plates that make up a small frame.
         tplate (float): Exposure time of each plate in second.
@@ -314,6 +315,7 @@ class ControlParams:
     """
     wfe_control: dict
     M_parameter: int
+    fN_parameter: int
     ace_control: dict
     nplate     : int
     tplate     : float
@@ -348,6 +350,7 @@ class ControlParams:
                 wfe[item] = wfe_control[item]['val']
 
         M = js['M']['val']
+        fN = js['fN']['val']
 
         ace = {}
         ace_control = js.get('ACEcontrol')
@@ -375,7 +378,7 @@ class ControlParams:
         effect = EffectSelector(**effect)
 
         control_params = ControlParams(
-            wfe_control=wfe, M_parameter=M, ace_control=ace, nplate=nplate,
+            wfe_control=wfe, M_parameter=M, fN_parameter=fN, ace_control=ace, nplate=nplate,
             tplate=tplate, Rv=Rv, JH=JH, alpha=alpha, effect=effect)
 
         return control_params
