@@ -37,6 +37,8 @@ def gentraj_k2like(ntime,basepos,nsub,basesig=0.1,lpix=1.0,lpixsig=0.1,pixret=30
         thetax=np.hstack([thetax,tx])
         thetay=np.hstack([thetay,ty])
     theta=np.array([thetax[0:ntime],thetay[0:ntime]])
+    np.random.seed()
+
     return theta
 
 def gentraj_encircled_k2like(ntime, basepos, nsub, radius=1.0, lpix=1.0, lpixsig=0.1, pixret=30, \
@@ -66,6 +68,8 @@ def gentraj_encircled_k2like(ntime, basepos, nsub, radius=1.0, lpix=1.0, lpixsig
                 j = j + len(tx[mask])
 
     theta = np.array([thetax[0:ntime], thetay[0:ntime]])
+    np.random.seed()
+
     return theta
 
 
@@ -81,6 +85,8 @@ def gentraj_random(ntime,basepos,nsub,basesig=1.0,subsig=0.1,seed=None):
         thetay=np.hstack([thetay,basepos[1]+retposy[i]+np.random.randn(nsub)*subsig])
 
     theta=np.array([thetax[0:ntime],thetay[0:ntime]])
+    np.random.seed()
+
     return theta
 
 
@@ -90,6 +96,8 @@ def gentraj_random_old(ntime,basepos,basesig=1.0,seed=None):
     thetax=basepos[0]+np.random.randn(ntime)*basesig
     thetay=basepos[1]+np.random.randn(ntime)*basesig
     theta=np.array([thetax[0:ntime],thetay[0:ntime]])
+    np.random.seed()
+
     return theta
 
 def gentraj_ranwalk_old(ntime,basepos,dr=0.1,seed=None):
@@ -98,6 +106,8 @@ def gentraj_ranwalk_old(ntime,basepos,dr=0.1,seed=None):
     dx=dr*np.cos(phi)
     dy=dr*np.sin(phi)
     theta=np.array([np.cumsum(dx)+basepos[0],np.cumsum(dy)+basepos[1]])
+    np.random.seed()
+
     return theta
 
 def gentraj_encircled_random_old(ntime,basepos,radius=1.0,seed=None):
@@ -114,6 +124,7 @@ def gentraj_encircled_random_old(ntime,basepos,radius=1.0,seed=None):
             j=j+1
 
     theta = np.array([thetax[0:ntime], thetay[0:ntime]])
+    np.random.seed()
 
     return theta
 
@@ -144,6 +155,8 @@ def gentraj_encircled_k2like_old(ntime, basepos, radius=1.0, lpix=1.0, lpixsig=0
                 j = j + len(tx[mask])
 
     theta = np.array([thetax[0:ntime], thetay[0:ntime]])
+    np.random.seed()
+
     return theta
 
 if __name__ == "__main__":
