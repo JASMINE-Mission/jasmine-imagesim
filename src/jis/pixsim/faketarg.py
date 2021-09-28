@@ -204,6 +204,7 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(dirh, outdir, "flattraj.png"))
 
 #    np.savez(os.path.join(dirh, outdir, "pixar"),pixar)
+    np.random.seed()
     
     ### DETREND
     if det==True:

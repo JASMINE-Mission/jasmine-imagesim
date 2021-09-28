@@ -22,7 +22,8 @@ def gaussian_flat(Nside=1024,sigma=0.01, seed=1):
     np.random.seed(seed)
     flat = np.random.normal(1.0, sigma, Nside*Nside)
     flat = flat.reshape((Nside,Nside))
-
+    np.random.seed() #reset random seed
+    
     return flat
 
 
