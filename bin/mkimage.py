@@ -189,11 +189,13 @@ if __name__ == '__main__':
     tace = control_params.ace_control.get('tace')
     if control_params.effect.ace is True:
         print("Making ACE (X)...")
-        acex, psdx = calc_ace(np.random, nace, tace, ace_params)
+        rg_acex = np.random.default_rng(control_params.ace_control.get('acex_seed'))
+        acex, psdx = calc_ace(rg_acex, nace, tace, ace_params)
         # the standard deviation of acex is normalized to unity.
 
         print("Making ACE (Y)...")
-        acey, psdy = calc_ace(np.random, nace, tace, ace_params)
+        rg_acey = np.random.default_rng(control_params.ace_control.get('acey_seed'))
+        acey, psdy = calc_ace(rg_acey, nace, tace, ace_params)
         # the standard deviation of acey is normalized to unity.
     else:
         print("ACE simulation is skipped.")
