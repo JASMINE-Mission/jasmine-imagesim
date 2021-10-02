@@ -351,7 +351,7 @@ class ControlParams:
 
         ace = {}
         ace_control = js.get('ACEcontrol')
-        ace_items = ['dtace', 'tace', 'acex_std', 'acey_std']
+        ace_items = ['dtace', 'tace', 'acex_std', 'acey_std', 'acex_seed', 'acey_seed']
         if ace_control:
             for item in ace_items:
                 ace[item] = ace_control[item]['val']
