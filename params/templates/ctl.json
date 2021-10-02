@@ -64,7 +64,7 @@
     "val": 1},
   "acey_seed": {
     "title": "random number seed for ACE along with Y axis.",
-    "val": 1}},
+    "val": 2}},
 "Nplate": {
   "title": "Number of plates which make up a small frame.",
   "val"  : 11},
