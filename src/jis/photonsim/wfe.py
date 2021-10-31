@@ -20,8 +20,8 @@ def calc_wfe(EPD,efile):
         *** Coefficients are assumed to be in um!!!  ***
 
     Returns:
-        data (ndarray): EPD+4 x EPD+4 data array of the calculated wavefront error pattern.
-                        The unit is assumed to be um in the simulation.
+        wfe (ndarray): EPD+4 x EPD+4 data array of the calculated wavefront error pattern.
+                       The unit is assumed to be um in the simulation.
 
     Example:
         from jis.photonsim.wfe import calc_wfe
@@ -29,10 +29,6 @@ def calc_wfe(EPD,efile):
         wfe_pattern = calc_wfe(500, "wfe.json").
 
     """
-
-    # make a little bit larger data
-    N    = int(EPD + 4)
-    data = np.zeros((N,N),dtype=float)
 
     # Get wavefront error parameters from json file
     with open(efile) as f:
@@ -46,20 +42,43 @@ def calc_wfe(EPD,efile):
             Zm[i] = int(p['z{:03d}-m'.format(i+1)])
             Za[i] = float(p['z{:03d}-a'.format(i+1)])
 
+    wfe = calc_wfe_from_Zernike_param_array(EPD, Zn, Zm, Za)
 
-    iy, ix = np.indices((N, N))
-    y = iy - N/2
-    x = ix - N/2
+    return wfe
+
+
+def calc_wfe_from_Zernike_param_array(EPD, Zn, Zm, Za):
+    """
+    This function calculates wavefront error map from
+    given Zernike parametes.
+
+    Args:
+        EPD  (float): Entrance pupil diameter (apt-cell=mm).
+        Zn (ndarray): 1D array containing radial indices n of the Zernike polynomials (Z^m_n).
+        Zm (ndarray): 1D array containing azimuthal indices m of the Zernike polynomials (Z^m_n).
+        Za (ndarray): 1D array containing amplitudes of the Zernike polynomials in um.
+
+    Returns:
+        wfe (ndarray): (EPD+4) x (EPD+4) array of the calculated wavefront error map in um.
+
+    """
+
+    # Making a little bit large array.
+    N   = int(EPD+4.)
+    wfe = np.zeros((N, N), dtype=float)
+
+    # Calculating x, y, rho, and theta.
+    y, x  = np.indices((N, N)) - N/2
     rho   = np.sqrt(y*y+x*x)/(EPD/2)
     theta = np.arctan2(y, x)
 
-    data[rho>1] = np.nan
-
+    # Calculating wfe map.
+    wfe[rho>1] = np.nan
     pos = np.where(rho<=1)
-    for i in range(NP):
-        data[pos] = data[pos] + Za[i]*zernike.Zernike(Zn[i], Zm[i], rho[pos], theta[pos])
+    for i in range(np.size(Za)):
+        wfe[pos] += Za[i]*zernike.Zernike(Zn[i], Zm[i], rho[pos], theta[pos])
 
-    return data
+    return wfe
 
 
 def calc_dummy_wfe(EPD,efile):
