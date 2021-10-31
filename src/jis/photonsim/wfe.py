@@ -3,6 +3,8 @@ import numpy as np
 from jis import photonsim
 from jis.photonsim import zernike                       # Zernike polynomials functions
 import json
+import pandas as pd
+from scipy.interpolate import interp2d
 
 def calc_wfe(EPD,efile):
     """
@@ -148,3 +150,48 @@ def wfe_model_z(rg,nmax,wlen,zodd,zeven):
       wfe['z{:03d}-a'.format(k)] = a*math.sin(th)
       k=k+1
   return wfe
+
+
+def read_FringeZernike37(filename):
+    '''
+    This function reads a csv file containing
+    2D Zernike coefficient data and returns a
+    dictionary of interpolation functions.
+
+    The first column of the csv data must be
+    'xan', 'yan', 1, 2, ..., 37. 'xan' and 'yan'
+    represent positions on the focal plane in deg.
+    1, 2, ..., 37 are the Fringe Zernike indices.
+    Other columns must have the positions (row1, row2) and
+    Zernike coefficients (row3 to row39; in um).
+
+    The returned dictionary has 37 functions.
+    The keys are 1, 2, ..., 37 which correspond to the
+    Fringe Zernike indices. The function that is stored
+    as j is the interpolation function of the
+    j-th Fringe Zernike coefficient.
+    If you want to have the j-th coefficient
+    at a position of (x, y) (in deg), it is calculated
+    by functions[j](x, y).
+
+    Args:
+        filename (str): Filename of the input csv file.
+
+    Returns:
+        functions (dict): Dictionary of the interpolation functions.
+
+    '''
+
+    # Loading data.
+    df = pd.read_csv(filename, index_col=0, header=None).T
+
+    # Grid data.
+    xan = df['xan']
+    yan = df['yan']
+
+    # Making and storing interpolation functions.
+    functions = {}
+    for i in range(1,38):
+        functions[i] = interp2d(xan, yan, df[str(i)])
+
+    return functions
