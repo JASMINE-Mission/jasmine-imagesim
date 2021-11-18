@@ -173,6 +173,7 @@ if __name__ == "__main__":
     sigsec_intraframe=11.0 #arcsec
 
     theta=gentraj_random(ntime,basepos,nsub,basesig=sigsec_interframe/pixsec,subsig=sigsec_intraframe/pixsec,seed=None)
+    print(theta)
 #    theta = gentraj_encircled_k2like(ntime,basepos,nsub, radius=2.0, lpix=1.4,gradsig=3.0)
     fig=plt.figure(figsize=(10,10))
     plt.gca().invert_yaxis()
