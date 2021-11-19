@@ -39,16 +39,17 @@ def calc_ace(rg, N, T, ace):
         nmax = ace['n']   # Number of the PS disturbance peaks (see below).
 
         # Settings for the PS disturbance (peaks of some specific frequencies).
-        P = np.empty(nmax) # Power
-        F = np.empty(nmax) # Frequency
-        H = np.empty(nmax) # Half-width half-maximum
-        for i in range(nmax):
-            pi = "p{}".format(i+1)
-            hi = "h{}".format(i+1)
-            fi = "f{}".format(i+1)
-            P[i] = ace[pi]
-            H[i] = ace[hi]
-            F[i] = ace[fi]
+        if nmax > 0:
+            P = np.empty(nmax) # Power
+            F = np.empty(nmax) # Frequency
+            H = np.empty(nmax) # Half-width half-maximum
+            for i in range(nmax):
+                pi = "p{}".format(i+1)
+                hi = "h{}".format(i+1)
+                fi = "f{}".format(i+1)
+                P[i] = ace[pi]
+                H[i] = ace[hi]
+                F[i] = ace[fi]
 
         """
         -----------------------------------------------
@@ -66,33 +67,39 @@ def calc_ace(rg, N, T, ace):
         # initialize data for fft
         data = pyfftw.zeros_aligned((N),dtype='complex128')
 
-        # independent data
-        for t in range(int(N/2)+1):
-            f   = t/(N*dT)           # Frequency
-            psd = 1/f0/(1+(f/f0)**2) # Power-law component
+        # independent data (i = 0,...,N/2) ######################
+        t   = np.arange(0, int(N/2)+1, dtype='int')
 
-            # Adding PS-disturbance peaks (Lorenzian function).
+        f   = t/N/dT                 # Freq. grid.
+        psd = 1/f0/(1+(f/f0)**2.)    # PSD of the continuum comp.
+
+        # Adding PS-disturbance peaks (Lorenzian function).
+        if nmax > 0:
             for i in range(nmax):
                 psd = psd + P[i]/H[i]/(1+((f-F[i])/H[i])**2)
 
-            s0    = math.sqrt(psd)       # Amplitude without noise.
-            sig   = math.pow(s0, bet)    # Sigma of the gaussian noise in the next line.
-            noise = rg.normal(scale=sig) # Gaussian noise.
-            s     = s0 + alp * noise     # Amplitude with noise.
+        s0    = np.sqrt(psd)         # Amplitude without noise.
+        sig   = s0**bet              # Sigma of the gaussian noise in the next line.
+        noise = rg.normal(scale=sig) # Gaussian noise.
+        s     = s0 + alp * noise     # Amplitude with noise.
 
-            # Making phase th (=theta).
-            if (t==0 or t==N/2) : # real
-                th = 0.0
-            else :
-                th = rg.uniform() * 2*math.pi
-            data.real[t] = s*math.cos(th)
-            data.imag[t] = s*math.sin(th)
+        # Making phase th (=theta).
+        th = rg.uniform(size=np.size(s))*2.*np.pi
 
-        # dependent data
-        for t in range(int(N/2)-1):
-            tt = N-t-1
-            data.real[tt] =  data.real[t+1]
-            data.imag[tt] = -data.imag[t+1]
+        ## To make the data real values, set some phases to be zero.
+        th[0] = 0.
+        if N%2 == 0:
+            th[int(N/2)] = 0.
+
+        # Making Fourier components.
+        data.real[t] = s*np.cos(th)
+        data.imag[t] = s*np.sin(th)
+
+        # dependent data (i = N/2+1,...,N-1) ####################
+        t = np.arange(0, int(N/2)-1, dtype='int')
+        tt = N - t - 1
+        data.real[tt] =  data.real[t+1]
+        data.imag[tt] = -data.imag[t+1]
 
         # iFFT
         ft = pyfftw.interfaces.numpy_fft.ifft(data)
