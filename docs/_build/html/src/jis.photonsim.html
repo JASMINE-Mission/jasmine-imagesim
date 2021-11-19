@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>jis.photonsim package &mdash; Jasmine Image Simulator 0.1 documentation</title>
   
@@ -13,10 +13,15 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
+
   
+  
+
   
 
   
@@ -26,10 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -51,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Jasmine Image Simulator
+            <a href="../index.html" class="icon icon-home"> Jasmine Image Simulator
           
 
           
@@ -138,6 +143,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -153,7 +160,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/src/jis.photonsim.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -175,8 +182,8 @@
 <div class="section" id="module-jis.photonsim.ace">
 <span id="jis-photonsim-ace-module"></span><h2>jis.photonsim.ace module<a class="headerlink" href="#module-jis.photonsim.ace" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="jis.photonsim.ace.ace2d">
-<code class="sig-prename descclassname">jis.photonsim.ace.</code><code class="sig-name descname">ace2d</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_scale</span></em>, <em class="sig-param"><span class="n">y_scale</span></em>, <em class="sig-param"><span class="n">pix_scale</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">xdata</span></em>, <em class="sig-param"><span class="n">ydata</span></em>, <em class="sig-param"><span class="n">xN</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.ace2d" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.ace.ace2d">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.ace.</span></span><span class="sig-name descname"><span class="pre">ace2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xN</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.ace2d" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns 2D ace data array with considering
 the ace data scale and the pixel scale.</p>
 <dl class="field-list simple">
@@ -201,8 +208,8 @@ the ace data scale and the pixel scale.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.ace.calc_ace">
-<code class="sig-prename descclassname">jis.photonsim.ace.</code><code class="sig-name descname">calc_ace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rg</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">ace</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.calc_ace" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.ace.calc_ace">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.ace.</span></span><span class="sig-name descname"><span class="pre">calc_ace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ace</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.calc_ace" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function makes a one-dimensional attitude control error (ACE) data.
 The ACE is assumed to have a PSW which consists of a power-law function
 and some Lorenzian-type peaks (PS disturbance). The returned ace data (acedata)
@@ -228,8 +235,32 @@ psdn    (ndarray): Calculated PSD data (Not normalized; just for checking).</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.ace.plot_ace">
-<code class="sig-prename descclassname">jis.photonsim.ace.</code><code class="sig-name descname">plot_ace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">psdn</span></em>, <em class="sig-param"><span class="n">plotfile</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.plot_ace" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.ace.calc_dummy_ace">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.ace.</span></span><span class="sig-name descname"><span class="pre">calc_dummy_ace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ace</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.calc_dummy_ace" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function generates a one-dimensional dummy attitue control error (ACE) data.
+The arguents are the same as <cite>calc_ace</cite> but not used except for the number of elements, <cite>N</cite>.
+The generated ACE is just a zero-padded one-dimensional array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rg</strong> (<em>numpy.random.Generator</em>) -- Random generator.</p></li>
+<li><p><strong>N</strong> (<em>int</em>) -- Number of time grids.</p></li>
+<li><p><strong>T</strong> (<em>float</em>) -- Range of time to simulate.</p></li>
+<li><p><strong>ace</strong> (<em>dict</em>) -- Parameter set about ace loaded from the ace json file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dummy ACE, zero-padded array with the size of <cite>N</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dummyace (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jis.photonsim.ace.plot_ace">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.ace.</span></span><span class="sig-name descname"><span class="pre">plot_ace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psdn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.ace.plot_ace" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function makes a plot of the ace data.
 The plot is saved as a file, 'plotfile'.</p>
 <dl class="field-list simple">
@@ -252,8 +283,8 @@ The plot is saved as a file, 'plotfile'.</p>
 <div class="section" id="module-jis.photonsim.aperture">
 <span id="jis-photonsim-aperture-module"></span><h2>jis.photonsim.aperture module<a class="headerlink" href="#module-jis.photonsim.aperture" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="jis.photonsim.aperture.calc_aperture">
-<code class="sig-prename descclassname">jis.photonsim.aperture.</code><code class="sig-name descname">calc_aperture</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">EPD</span></em>, <em class="sig-param"><span class="n">Robs</span></em>, <em class="sig-param"><span class="n">Tsp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.aperture.calc_aperture" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.aperture.calc_aperture">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.aperture.</span></span><span class="sig-name descname"><span class="pre">calc_aperture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EPD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Robs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tsp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.aperture.calc_aperture" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function calculates the aperture pattern and its area.</p>
 <p>The aperture pattern consists of a circular aperture
 with an entrance pupil diameter of EPD, a central
@@ -292,64 +323,1138 @@ Tsp  = 3   # Spider thickness in apt-cell.</p>
 </div>
 <div class="section" id="module-jis.photonsim.extract_json">
 <span id="jis-photonsim-extract-json-module"></span><h2>jis.photonsim.extract_json module<a class="headerlink" href="#module-jis.photonsim.extract_json" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
-<dt id="jis.photonsim.extract_json.extFlatInfo">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extFlatInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">det</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extFlatInfo" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extracts information about detector flat.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">ControlParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wfe_control</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M_parameter</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fN_parameter</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ace_control</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nplate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tplate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rv</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">JH</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#jis.photonsim.extract_json.EffectSelector" title="jis.photonsim.extract_json.EffectSelector"><span class="pre">jis.photonsim.extract_json.EffectSelector</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is a class to handle the control parameters.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.wfe_control">
+<span class="sig-name descname"><span class="pre">wfe_control</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.wfe_control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters related to the wfe calculation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>det</strong> (<em>dict</em>) -- Decoded json data of the detector information.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Stddev of the interpixel flat.
-intradir (str)  : Name of the directory containing intrapix pattern data.
-intrax   (str)  : Filename of the intrapix pattern in x direction.
-intray   (str)  : Filename of the intrapix pattern in y direction.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>interpix (float)</p>
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt id="jis.photonsim.extract_json.extIdark">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extIdark</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">det</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extIdark" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extracts dark current including stray light.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.M_parameter">
+<span class="sig-name descname"><span class="pre">M_parameter</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.M_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>The M parameter which determine the cell scale of the psf.
+The fp-cell scale will be (1/M) x 10^-3 rad/fp-cell.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>det</strong> (<em>dict</em>) -- Decoded json data of the detector information.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dark current including stray light in e/sec/pix.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>idark (float)</p>
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt id="jis.photonsim.extract_json.extPersistenceParams">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extPersistenceParams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">det</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extPersistenceParams" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extracts persistence parameters.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.fN_parameter">
+<span class="sig-name descname"><span class="pre">fN_parameter</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.fN_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of fp-cells of the psf data calculated by calc_psf.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>det</strong> (<em>dict</em>) -- Decoded json data of the detector information.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Detrapping time constants in sec.
-rho (ndarray): Trapping fractions.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tau (ndarray)</p>
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.ace_control">
+<span class="sig-name descname"><span class="pre">ace_control</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.ace_control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameters related to the ace calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.nplate">
+<span class="sig-name descname"><span class="pre">nplate</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.nplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of plates that make up a small frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.tplate">
+<span class="sig-name descname"><span class="pre">tplate</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.tplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exposure time of each plate in second.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.Rv">
+<span class="sig-name descname"><span class="pre">Rv</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.Rv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total-to-selective extinction of the field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.JH">
+<span class="sig-name descname"><span class="pre">JH</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.JH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color excess E(J-h) for each source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.alpha">
+<span class="sig-name descname"><span class="pre">alpha</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hw-band interpolation factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.effect">
+<span class="sig-name descname"><span class="pre">effect</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.effect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flags to enable/disable components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jis.photonsim.extract_json.EffectSelector" title="jis.photonsim.extract_json.EffectSelector">EffectSelector</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">JH</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">M_parameter</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">Rv</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">ace_control</span></span><em class="property"><span class="pre">:</span> <span class="pre">dict</span></em><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">alpha</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">effect</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#jis.photonsim.extract_json.EffectSelector" title="jis.photonsim.extract_json.EffectSelector"><span class="pre">jis.photonsim.extract_json.EffectSelector</span></a></em><a class="headerlink" href="#id9" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">fN_parameter</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#id10" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ControlParams.from_json">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctl_json_filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.ControlParams.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method creates an instance of ControlParams,
+which contains control parameters written in the
+json file for the control parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ctl_json_filename</strong> (<em>string</em>) -- Input json filename.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Created ControlParams object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jis.photonsim.extract_json.ControlParams" title="jis.photonsim.extract_json.ControlParams">ControlParams</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">nplate</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#id11" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">tplate</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id12" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">wfe_control</span></span><em class="property"><span class="pre">:</span> <span class="pre">dict</span></em><a class="headerlink" href="#id13" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">Detector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idark</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readnoise</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fullwell</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gain</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixsize</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmargin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#jis.photonsim.extract_json.FlatFrame" title="jis.photonsim.extract_json.FlatFrame"><span class="pre">jis.photonsim.extract_json.FlatFrame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">qe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#jis.photonsim.extract_json.QuantumEfficiency" title="jis.photonsim.extract_json.QuantumEfficiency"><span class="pre">jis.photonsim.extract_json.QuantumEfficiency</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistence</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#jis.photonsim.extract_json.Persistence" title="jis.photonsim.extract_json.Persistence"><span class="pre">jis.photonsim.extract_json.Persistence</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">readparams</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#jis.photonsim.extract_json.ReadParams" title="jis.photonsim.extract_json.ReadParams"><span class="pre">jis.photonsim.extract_json.ReadParams</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is a class to describe the detector properties.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.npix">
+<span class="sig-name descname"><span class="pre">npix</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.npix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of pixels on a side.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.idark">
+<span class="sig-name descname"><span class="pre">idark</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.idark" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dark current including stray light (e/s/pix).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.readnoise">
+<span class="sig-name descname"><span class="pre">readnoise</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.readnoise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Readnoise (e/read).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.fullwell">
+<span class="sig-name descname"><span class="pre">fullwell</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.fullwell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full-well in electrons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.gain">
+<span class="sig-name descname"><span class="pre">gain</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.gain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conversion gain in e/adu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.pixsize">
+<span class="sig-name descname"><span class="pre">pixsize</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.pixsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pixel size in um.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.nmargin">
+<span class="sig-name descname"><span class="pre">nmargin</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.nmargin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of margin pixels for simpix calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.qe">
+<span class="sig-name descname"><span class="pre">qe</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.qe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quantum efficiency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jis.photonsim.extract_json.QuantumEfficiency" title="jis.photonsim.extract_json.QuantumEfficiency">QuantumEfficiency</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.persistence">
+<span class="sig-name descname"><span class="pre">persistence</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.persistence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Persistence parameters consists of tau and rho.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jis.photonsim.extract_json.Persistence" title="jis.photonsim.extract_json.Persistence">Persistence</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.readparams">
+<span class="sig-name descname"><span class="pre">readparams</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.readparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detector readout parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jis.photonsim.extract_json.ReadParams" title="jis.photonsim.extract_json.ReadParams">ReadParams</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.flat">
+<span class="sig-name descname"><span class="pre">flat</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#jis.photonsim.extract_json.FlatFrame" title="jis.photonsim.extract_json.FlatFrame"><span class="pre">jis.photonsim.extract_json.FlatFrame</span></a></em><a class="headerlink" href="#jis.photonsim.extract_json.Detector.flat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Detector.from_json">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">det_json_filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Detector.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts detector properties from an input json file
+and returns a detector class object which has the properties..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>det_json_filename</strong> (<em>str</em>) -- Filename of the detector json file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Detector object which has the extracted properties.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>detector (detector)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">fullwell</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id14" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">gain</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id15" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id16">
+<span class="sig-name descname"><span class="pre">idark</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id16" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id17">
+<span class="sig-name descname"><span class="pre">nmargin</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id17" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">npix</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#id18" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id19">
+<span class="sig-name descname"><span class="pre">persistence</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#jis.photonsim.extract_json.Persistence" title="jis.photonsim.extract_json.Persistence"><span class="pre">jis.photonsim.extract_json.Persistence</span></a></em><a class="headerlink" href="#id19" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id20">
+<span class="sig-name descname"><span class="pre">pixsize</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id20" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">qe</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#jis.photonsim.extract_json.QuantumEfficiency" title="jis.photonsim.extract_json.QuantumEfficiency"><span class="pre">jis.photonsim.extract_json.QuantumEfficiency</span></a></em><a class="headerlink" href="#id21" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">readnoise</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id22" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id23">
+<span class="sig-name descname"><span class="pre">readparams</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#jis.photonsim.extract_json.ReadParams" title="jis.photonsim.extract_json.ReadParams"><span class="pre">jis.photonsim.extract_json.ReadParams</span></a></em><a class="headerlink" href="#id23" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Drift">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">Drift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dft</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drift_velocity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drift_azimuth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Drift" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Summary: drift class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Drift.dft">
+<span class="sig-name descname"><span class="pre">dft</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Drift.dft" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drift flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Drift.drift_velocity">
+<span class="sig-name descname"><span class="pre">drift_velocity</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Drift.drift_velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drift velocity in ???.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Drift.drift_azimuth">
+<span class="sig-name descname"><span class="pre">drift_azimuth</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Drift.drift_azimuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drift azimuth angle in ???.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Drift.drift_time">
+<span class="sig-name descname"><span class="pre">drift_time</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Drift.drift_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drift duration in second.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Drift.drift_length">
+<span class="sig-name descname"><span class="pre">drift_length</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Drift.drift_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>??? length of the drift motion in ???.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Drift.drift_theta">
+<span class="sig-name descname"><span class="pre">drift_theta</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Drift.drift_theta" title="Permalink to this definition">¶</a></dt>
+<dd><p>trajectory?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Drift.compute_drift">
+<span class="sig-name descname"><span class="pre">compute_drift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nace</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Drift.compute_drift" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id24">
+<span class="sig-name descname"><span class="pre">dft</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#id24" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id25">
+<span class="sig-name descname"><span class="pre">drift_azimuth</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id25" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id26">
+<span class="sig-name descname"><span class="pre">drift_length</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id26" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id27">
+<span class="sig-name descname"><span class="pre">drift_theta</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id27" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id28">
+<span class="sig-name descname"><span class="pre">drift_time</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id28" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id29">
+<span class="sig-name descname"><span class="pre">drift_velocity</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id29" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Drift.from_json">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dft_json_filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Drift.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary: this function is json i/o for drift</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.EffectSelector">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">EffectSelector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ace</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wfe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat_interpix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat_intrapix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psf</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.EffectSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class handles the switch to enable/disable the effects.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.EffectSelector.ace">
+<span class="sig-name descname"><span class="pre">ace</span></span><a class="headerlink" href="#jis.photonsim.extract_json.EffectSelector.ace" title="Permalink to this definition">¶</a></dt>
+<dd><p>incorporate the Attitude Control Error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.EffectSelector.wfe">
+<span class="sig-name descname"><span class="pre">wfe</span></span><a class="headerlink" href="#jis.photonsim.extract_json.EffectSelector.wfe" title="Permalink to this definition">¶</a></dt>
+<dd><p>incorpolate the Wave Front Error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.EffectSelector.flat_interpix">
+<span class="sig-name descname"><span class="pre">flat_interpix</span></span><a class="headerlink" href="#jis.photonsim.extract_json.EffectSelector.flat_interpix" title="Permalink to this definition">¶</a></dt>
+<dd><p>incorporate the Interpix Flat Error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.EffectSelector.flat_intrapix">
+<span class="sig-name descname"><span class="pre">flat_intrapix</span></span><a class="headerlink" href="#jis.photonsim.extract_json.EffectSelector.flat_intrapix" title="Permalink to this definition">¶</a></dt>
+<dd><p>incorporate the Intrapix Flat Error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.EffectSelector.psf">
+<span class="sig-name descname"><span class="pre">psf</span></span><a class="headerlink" href="#jis.photonsim.extract_json.EffectSelector.psf" title="Permalink to this definition">¶</a></dt>
+<dd><p>simulate a physically realistic Point Spread Function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id30">
+<span class="sig-name descname"><span class="pre">ace</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#id30" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id31">
+<span class="sig-name descname"><span class="pre">flat_interpix</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#id31" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id32">
+<span class="sig-name descname"><span class="pre">flat_intrapix</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#id32" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id33">
+<span class="sig-name descname"><span class="pre">psf</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#id33" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id34">
+<span class="sig-name descname"><span class="pre">wfe</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#id34" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.FlatFrame">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">FlatFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intrapix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.FlatFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class contains the inter- and intra-pixel flat frames.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.FlatFrame.intrapix">
+<span class="sig-name descname"><span class="pre">intrapix</span></span><a class="headerlink" href="#jis.photonsim.extract_json.FlatFrame.intrapix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Intrapixel pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.FlatFrame.interpix">
+<span class="sig-name descname"><span class="pre">interpix</span></span><a class="headerlink" href="#jis.photonsim.extract_json.FlatFrame.interpix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpixel pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id35">
+<span class="sig-name descname"><span class="pre">interpix</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id35" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id36">
+<span class="sig-name descname"><span class="pre">intrapix</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id36" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.OpticalEfficiency">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">OpticalEfficiency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">efficiency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.OpticalEfficiency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class defines the optical efficiency of the telescope.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.OpticalEfficiency.wavelength">
+<span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#jis.photonsim.extract_json.OpticalEfficiency.wavelength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wavelengths in micron.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.OpticalEfficiency.efficiency">
+<span class="sig-name descname"><span class="pre">efficiency</span></span><a class="headerlink" href="#jis.photonsim.extract_json.OpticalEfficiency.efficiency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Efficiencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id37">
+<span class="sig-name descname"><span class="pre">efficiency</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id37" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id38">
+<span class="sig-name descname"><span class="pre">wavelength</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id38" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Persistence">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">Persistence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Persistence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class contains the detector persistence parameters.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Persistence.tau">
+<span class="sig-name descname"><span class="pre">tau</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Persistence.tau" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detrapping timescales in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Persistence.rho">
+<span class="sig-name descname"><span class="pre">rho</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Persistence.rho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trapping fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id39">
+<span class="sig-name descname"><span class="pre">rho</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id39" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id40">
+<span class="sig-name descname"><span class="pre">tau</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id40" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.QuantumEfficiency">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">QuantumEfficiency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wl</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.QuantumEfficiency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class defines the detector quantum efficiency.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.QuantumEfficiency.wl">
+<span class="sig-name descname"><span class="pre">wl</span></span><a class="headerlink" href="#jis.photonsim.extract_json.QuantumEfficiency.wl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wavelengthes in um.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.QuantumEfficiency.val">
+<span class="sig-name descname"><span class="pre">val</span></span><a class="headerlink" href="#jis.photonsim.extract_json.QuantumEfficiency.val" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quantum efficiencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id41">
+<span class="sig-name descname"><span class="pre">val</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id41" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id42">
+<span class="sig-name descname"><span class="pre">wl</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#id42" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">ReadParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fsmpl</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncol_ch</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrow_ch</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npix_pre</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npix_post</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_overhead</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class contains the detector readout parameters.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams.fsmpl">
+<span class="sig-name descname"><span class="pre">fsmpl</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams.fsmpl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sampling frequency in Hz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams.tsmpl">
+<span class="sig-name descname"><span class="pre">tsmpl</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams.tsmpl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sampling time in sec (1/fsmpl).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams.ncol_ch">
+<span class="sig-name descname"><span class="pre">ncol_ch</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams.ncol_ch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of columns in one ch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams.nrow_ch">
+<span class="sig-name descname"><span class="pre">nrow_ch</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams.nrow_ch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of rows in one ch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams.npix_pre">
+<span class="sig-name descname"><span class="pre">npix_pre</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams.npix_pre" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of pixels before reading each row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams.npix_post">
+<span class="sig-name descname"><span class="pre">npix_post</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams.npix_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of pixels after reading each row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams.t_overhead">
+<span class="sig-name descname"><span class="pre">t_overhead</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams.t_overhead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overhead time between reset and the 1st read in sec.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams.npix_read_per_row">
+<span class="sig-name descname"><span class="pre">npix_read_per_row</span></span><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams.npix_read_per_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of pixels in a row including pre/post pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id43">
+<span class="sig-name descname"><span class="pre">fsmpl</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#id43" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id44">
+<span class="sig-name descname"><span class="pre">ncol_ch</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#id44" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id45">
+<span class="sig-name descname"><span class="pre">npix_post</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#id45" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id46">
+<span class="sig-name descname"><span class="pre">npix_pre</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#id46" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id47">
+<span class="sig-name descname"><span class="pre">npix_read_per_row</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#id47" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id48">
+<span class="sig-name descname"><span class="pre">nrow_ch</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#id48" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id49">
+<span class="sig-name descname"><span class="pre">t_overhead</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#id49" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.ReadParams.t_scan">
+<span class="sig-name descname"><span class="pre">t_scan</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#jis.photonsim.extract_json.ReadParams.t_scan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id50">
+<span class="sig-name descname"><span class="pre">tsmpl</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id50" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.SpiderInfo">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">SpiderInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.SpiderInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class defines the spider type and thickness.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.SpiderInfo.type">
+<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#jis.photonsim.extract_json.SpiderInfo.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spider type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.SpiderInfo.thickness">
+<span class="sig-name descname"><span class="pre">thickness</span></span><a class="headerlink" href="#jis.photonsim.extract_json.SpiderInfo.thickness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spider thickness (mm).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id51">
+<span class="sig-name descname"><span class="pre">thickness</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#id51" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id52">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#id52" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Telescope">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">Telescope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epd</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aperture</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">efl</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_area</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spider</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#jis.photonsim.extract_json.SpiderInfo" title="jis.photonsim.extract_json.SpiderInfo"><span class="pre">jis.photonsim.extract_json.SpiderInfo</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_efficiency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#jis.photonsim.extract_json.OpticalEfficiency" title="jis.photonsim.extract_json.OpticalEfficiency"><span class="pre">jis.photonsim.extract_json.OpticalEfficiency</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Telescope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is a class to handle telescope parameters.</p>
+<dl class="simple">
+<dt>Attributs:</dt><dd><p>epd            (float)  : Exit pupil diameter (mm).
+aperture       (ndarray): Aperture pattern array (ap-cell size = 1 mm).
+cobs           (float)  : Obscuration ratio (R(obscuration)*2/EPD).
+efl            (float)  : Effective focal length (mm).
+total_area     (float)  : Telescope total area (m^2).
+spider         (Spider) : Spider type.
+opt_efficiency (OpticalEfficiency) : Optical efficiency.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Telescope.aperture">
+<span class="sig-name descname"><span class="pre">aperture</span></span><em class="property"><span class="pre">:</span> <span class="pre">numpy.ndarray</span></em><a class="headerlink" href="#jis.photonsim.extract_json.Telescope.aperture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Telescope.cobs">
+<span class="sig-name descname"><span class="pre">cobs</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#jis.photonsim.extract_json.Telescope.cobs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Telescope.efl">
+<span class="sig-name descname"><span class="pre">efl</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#jis.photonsim.extract_json.Telescope.efl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Telescope.epd">
+<span class="sig-name descname"><span class="pre">epd</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#jis.photonsim.extract_json.Telescope.epd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Telescope.from_json">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tel_json_filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Telescope.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method creates a telescope object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tel_json_filename</strong> -- Input json filename.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Created telescope object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#jis.photonsim.extract_json.Telescope" title="jis.photonsim.extract_json.Telescope">Telescope</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Telescope.opt_efficiency">
+<span class="sig-name descname"><span class="pre">opt_efficiency</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#jis.photonsim.extract_json.OpticalEfficiency" title="jis.photonsim.extract_json.OpticalEfficiency"><span class="pre">jis.photonsim.extract_json.OpticalEfficiency</span></a></em><a class="headerlink" href="#jis.photonsim.extract_json.Telescope.opt_efficiency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Telescope.spider">
+<span class="sig-name descname"><span class="pre">spider</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#jis.photonsim.extract_json.SpiderInfo" title="jis.photonsim.extract_json.SpiderInfo"><span class="pre">jis.photonsim.extract_json.SpiderInfo</span></a></em><a class="headerlink" href="#jis.photonsim.extract_json.Telescope.spider" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Telescope.total_area">
+<span class="sig-name descname"><span class="pre">total_area</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#jis.photonsim.extract_json.Telescope.total_area" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">Variability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">var:</span> <span class="pre">bool</span></em>, <em class="sig-param"><span class="pre">Nvar:</span> <span class="pre">int</span></em>, <em class="sig-param"><span class="pre">plate:</span> <span class="pre">List[int]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">star:</span> <span class="pre">List[int]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">vartype:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">varfile:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">dirname:</span> <span class="pre">List[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Variability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Summary: stellar variability class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability.var">
+<span class="sig-name descname"><span class="pre">var</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Variability.var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variability flag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability.Nvar">
+<span class="sig-name descname"><span class="pre">Nvar</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Variability.Nvar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of variable objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability.plate">
+<span class="sig-name descname"><span class="pre">plate</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Variability.plate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plate number for each object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability.star">
+<span class="sig-name descname"><span class="pre">star</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Variability.star" title="Permalink to this definition">¶</a></dt>
+<dd><p>Star ID number for each object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability.vartype">
+<span class="sig-name descname"><span class="pre">vartype</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Variability.vartype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variable type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability.varfile">
+<span class="sig-name descname"><span class="pre">varfile</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Variability.varfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>File name which contains variable template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability.dirname">
+<span class="sig-name descname"><span class="pre">dirname</span></span><a class="headerlink" href="#jis.photonsim.extract_json.Variability.dirname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Directory which contains <cite>varfile</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id53">
+<span class="sig-name descname"><span class="pre">Nvar</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#id53" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id54">
+<span class="sig-name descname"><span class="pre">dirname</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id54" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability.from_json">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var_json_filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Variability.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary: this function is json i/o for stellar variability</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id55">
+<span class="sig-name descname"><span class="pre">plate</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id55" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.Variability.read_var">
+<span class="sig-name descname"><span class="pre">read_var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_day</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">star_index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.Variability.read_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>read variability for a given star index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_day</strong> (<em>time array in the unit of day</em>) -- </p></li>
+<li><p><strong>star_index</strong> (<em>star index</em>) -- </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>sw</strong> (<em>if True there is variability, else no variability.</em>)</p></li>
+<li><p><strong>injlc</strong> (<em>variability</em>)</p></li>
+<li><p><strong>b</strong> (<em>impact parameter for vartype = planet</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id56">
+<span class="sig-name descname"><span class="pre">star</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id56" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id57">
+<span class="sig-name descname"><span class="pre">var</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#id57" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id58">
+<span class="sig-name descname"><span class="pre">varfile</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id58" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id59">
+<span class="sig-name descname"><span class="pre">vartype</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id59" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
-<dt id="jis.photonsim.extract_json.extQE">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extQE</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">det</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extQE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.extQE">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">extQE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">det</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extQE" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function extracts quantum efficiency information
 from a decoded detector data, 'det'.</p>
 <dl class="field-list simple">
@@ -367,14 +1472,14 @@ QEdet (ndarray): Quantum efficiency of the detector.</p>
 <p class="rubric">Example</p>
 <p>import json
 from jis.photonsim.extract_json import extQE</p>
-<p>fp  = open(&quot;<a href="#id5"><span class="problematic" id="id6">**</span></a><a href="#id7"><span class="problematic" id="id8">*</span></a>.json&quot;)
+<p>fp  = open(&quot;<a href="#id60"><span class="problematic" id="id61">**</span></a><a href="#id62"><span class="problematic" id="id63">*</span></a>.json&quot;)
 det = json.load(fp)
 WL, QE = extQE(det)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.extract_json.extsp">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extsp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extsp" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.extSp">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">extSp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extSp" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function extracts spectral information
 from a decoded spectral data, 'sp'.</p>
 <dl class="field-list simple">
@@ -382,26 +1487,25 @@ from a decoded spectral data, 'sp'.</p>
 <dd class="field-odd"><p><strong>sp</strong> (<em>dict</em>) -- Decoded json data of the spectral information.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Number of output data points.
-WL   (ndarray): Wavelength data (um).
-NP   (ndarray): Number of detected photon (electron) flux (e-/s/m^2/um).
-Ntot (float)  : Total detected photon (electron) rate (e-/s/m^2).</p>
+<dd class="field-even"><p>Wavelength data (um).
+spectrum   (ndarray): Number of detected photon (electron) flux (e-/s/m^2/um).
+Ntotal     (float)  : Total detected photon (electron) rate (e-/s/m^2).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>k    (int)</p>
+<dd class="field-odd"><p>wavelength (ndarray)</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
 <p>import json
-from jis.photonsim.extract_json import extsp</p>
-<p>fp = open(&quot;<a href="#id9"><span class="problematic" id="id10">**</span></a><a href="#id11"><span class="problematic" id="id12">*</span></a>.json&quot;)
+from jis.photonsim.extract_json import extSp</p>
+<p>fp = open(&quot;<a href="#id64"><span class="problematic" id="id65">**</span></a><a href="#id66"><span class="problematic" id="id67">*</span></a>.json&quot;)
 sp = json.load(fp)
-k, WL, NP, Ntot = extsp(sp)</p>
+WL, NP, Ntot = extSp(sp)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.extract_json.extsrc">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">extsrc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">src</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extsrc" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.extSrc">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">extSrc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extSrc" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function extracts object source information
 from a decoded object source data, 'src'.</p>
 <dl class="field-list simple">
@@ -423,104 +1527,77 @@ alp (float): Interpolation factor to define the Hw-band mag</p>
 </dl>
 <p class="rubric">Example</p>
 <p>import json
-from jis.photonsim.extract_json import extsrc</p>
-<p>fp  = open(&quot;<a href="#id13"><span class="problematic" id="id14">**</span></a><a href="#id15"><span class="problematic" id="id16">*</span></a>.json&quot;)
+from jis.photonsim.extract_json import extSrc</p>
+<p>fp  = open(&quot;<a href="#id68"><span class="problematic" id="id69">**</span></a><a href="#id70"><span class="problematic" id="id71">*</span></a>.json&quot;)
 src = json(fp)
-Rv, JH, alp = extsrc(src)</p>
+Rv, JH, alp = extSrc(src)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.extract_json.exttel">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">exttel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tel</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.exttel" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extracts telescope information
+<dt class="sig sig-object py" id="jis.photonsim.extract_json.extTel">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.extract_json.</span></span><span class="sig-name descname"><span class="pre">extTel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.extTel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function extracts telescope optical efficiency
 from a decoded telescope data, 'tel'.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>tel</strong> (<em>dict</em>) -- Decoded json data of the telescope information.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Number of output data points.
-WLdefined (ndarray): Wavelength data (um).
-EPdefined (ndarray): Optical efficiency.
-WLshort   (float)  : Shortest wavelength (um).
-WLlong    (float)  : Longest wavelength (um).</p>
+<dd class="field-even"><p>Wavelength data (um).
+efficiency (ndarray): Optical efficiency.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>k         (int)</p>
+<dd class="field-odd"><p>wavelength (ndarray)</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
 <p>import json
-from jis.photonsim.extract_json import exttel</p>
-<p>fp  = open(&quot;<a href="#id17"><span class="problematic" id="id18">**</span></a><a href="#id19"><span class="problematic" id="id20">*</span></a>.json&quot;)
+from jis.photonsim.extract_json import extTel</p>
+<p>fp  = open(&quot;<a href="#id72"><span class="problematic" id="id73">**</span></a><a href="#id74"><span class="problematic" id="id75">*</span></a>.json&quot;)
 tel = json.load(fp)
-k, WL, EP, WLmin, WLmax = exttel(tel)</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="jis.photonsim.extract_json.mkControlParams">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">mkControlParams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.mkControlParams" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method creates a control_params object,
-which contains control parameters written in the
-json file for the control parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>json_filename</strong> (<em>string</em>) -- Input json filename.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Created control_params object.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>control_params (control_params)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="jis.photonsim.extract_json.mkDet">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">mkDet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">det_json_filename</span></em>, <em class="sig-param"><span class="n">spixdim</span><span class="o">=</span><span class="default_value">[32, 32]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.mkDet" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function extracts detector properties from an input json file
-and returns a detector class object which has the properties..</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>det_json_filename</strong> (<em>str</em>) -- Filename of the detector json file.</p></li>
-<li><p><strong>spixdim</strong> (<em>array-like</em>) -- Dimensions of the intrapixel pattern.
-(Default: [32, 32])</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Detector object which has the extracted properties.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>detector (detector)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="jis.photonsim.extract_json.mkTel">
-<code class="sig-prename descclassname">jis.photonsim.extract_json.</code><code class="sig-name descname">mkTel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.extract_json.mkTel" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method creates a telescope object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>json_filename</strong> -- Input json filename.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Created telescope object.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>telescope</p>
-</dd>
-</dl>
+WL, EP = extTel(tel)</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-jis.photonsim.psf">
 <span id="jis-photonsim-psf-module"></span><h2>jis.photonsim.psf module<a class="headerlink" href="#module-jis.photonsim.psf" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="jis.photonsim.psf.calc_psf">
-<code class="sig-prename descclassname">jis.photonsim.psf.</code><code class="sig-name descname">calc_psf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wfe</span></em>, <em class="sig-param"><span class="n">wN</span></em>, <em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">WL</span></em>, <em class="sig-param"><span class="n">NP</span></em>, <em class="sig-param"><span class="n">Ntot</span></em>, <em class="sig-param"><span class="n">Stel</span></em>, <em class="sig-param"><span class="n">adata</span></em>, <em class="sig-param"><span class="n">M</span></em>, <em class="sig-param"><span class="n">aN</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.psf.calc_psf" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.psf.calc_dummy_psf">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.psf.</span></span><span class="sig-name descname"><span class="pre">calc_dummy_psf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wfe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ntot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Stel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fN</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">520</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.psf.calc_dummy_psf" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates a dummy point-spread function image in e-/sec/fp-cell.
+The arguments are the same as <cite>calc_psf</cite> but not used except for <cite>Ntot</cite>, <cite>Stel</cite>, and <cite>fN</cite>.
+Currently the FWHM of the PSF is the one-tenth of the fp-array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wfe</strong> (<em>ndarray</em>) -- Wavefront error data (um).</p></li>
+<li><p><strong>wN</strong> (<em>int</em>) -- Number of fp-cells on a side of the wfe data.</p></li>
+<li><p><strong>WL</strong> (<em>ndarray</em>) -- Wavelength data (um).</p></li>
+<li><p><strong>NP</strong> (<em>ndarray</em>) -- Detected photon (electron) flux (e-/s/m^2/um).</p></li>
+<li><p><strong>Ntot</strong> (<em>float</em>) -- Total detected photon (electron) rate (e-/s/m^2).</p></li>
+<li><p><strong>Stel</strong> (<em>float</em>) -- Total area of the telescope aperture (m^2).</p></li>
+<li><p><strong>adata</strong> (<em>ndarray</em>) -- Aperture mask data.</p></li>
+<li><p><strong>M</strong> (<em>float</em>) -- Inverse number of the PSF cell scale (mm/um).</p></li>
+<li><p><strong>aN</strong> (<em>int</em>) -- Number of apt-cells of the aperture mask data.</p></li>
+<li><p><strong>fN</strong> (<em>int</em>) -- Number of fp-cells of the output psf data (Default: 520).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>fN x fN fp-cell array of the psf (e-/s/fp-cell).</dt><dd><p>The fp-cell scale is (1/M) x 10^-3 rad/fp-cell.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>image (nadarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jis.photonsim.psf.calc_psf">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.psf.</span></span><span class="sig-name descname"><span class="pre">calc_psf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wfe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ntot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Stel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aN</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fN</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">520</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.psf.calc_psf" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function calculates the psf in e-/sec/fp-cell
 based on the wavefront error (wfe),
 the spectral information (NP), and
@@ -532,19 +1609,19 @@ The fp-cell scale is defined by the parameter M as
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wfe</strong> (<em>ndarray</em>) -- Wavefront error data (um).</p></li>
 <li><p><strong>wN</strong> (<em>int</em>) -- Number of fp-cells on a side of the wfe data.</p></li>
-<li><p><strong>k</strong> (<em>int</em>) -- Number of wavelength data points.</p></li>
 <li><p><strong>WL</strong> (<em>ndarray</em>) -- Wavelength data (um).</p></li>
 <li><p><strong>NP</strong> (<em>ndarray</em>) -- Detected photon (electron) flux (e-/s/m^2/um).</p></li>
 <li><p><strong>Ntot</strong> (<em>float</em>) -- Total detected photon (electron) rate (e-/s/m^2).</p></li>
 <li><p><strong>Stel</strong> (<em>float</em>) -- Total area of the telescope aperture (m^2).</p></li>
 <li><p><strong>adata</strong> (<em>ndarray</em>) -- Aperture mask data.</p></li>
-<li><p><strong>M</strong> -- Inverse number of the PSF cell scale (mm/um).</p></li>
+<li><p><strong>M</strong> (<em>int</em>) -- Inverse number of the PSF cell scale (mm/um).</p></li>
 <li><p><strong>aN</strong> (<em>int</em>) -- Number of apt-cells of the aperture mask data.</p></li>
+<li><p><strong>fN</strong> (<em>int</em>) -- Number of fp-cells of the output psf data (Default: 520).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><dl class="simple">
-<dt>520 x 520 fp-cell array of the psf (e-/s/fp-cell).</dt><dd><p>The fp-cell scale is (1/M) x 10^-3 rad/fp-cell.</p>
+<dt>fN x fN fp-cell array of the psf (e-/s/fp-cell).</dt><dd><p>The fp-cell scale is (1/M) x 10^-3 rad/fp-cell.</p>
 </dd>
 </dl>
 </p>
@@ -559,7 +1636,7 @@ from jis.photonsim import extract_json
 from jis.photonsim import readfits</p>
 <p># Reading source information.
 sp = json.load(open(&quot;source.json&quot;))
-k, WL, NP, Ntot = extract_json.extsp(sp)</p>
+WL, NP, Ntot = extract_json.extSp(sp)</p>
 <p># Reading aperture pattern.
 Stel, adata, aN, ahdr = readfits.read_aperture_mask(&quot;aperture.fits&quot;)</p>
 <p># Reading wavefront error pattern.
@@ -568,15 +1645,15 @@ wfe,wN,whdr=readfits.read_wfe_map(&quot;wfe.fits&quot;)</p>
 cp = json.load(open(&quot;ctrl_param.json&quot;))
 M = cp['M']['val']</p>
 <p># Getting psf pattern.
-image = psf.calc_psf(wfe,wN,k,WL,NP,Ntot,Stel,adata,M,aN)</p>
+image = psf.calc_psf(wfe,wN,WL,NP,Ntot,Stel,adata,M,aN)</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-jis.photonsim.readfits">
 <span id="jis-photonsim-readfits-module"></span><h2>jis.photonsim.readfits module<a class="headerlink" href="#module-jis.photonsim.readfits" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="jis.photonsim.readfits.read_aperture_mask">
-<code class="sig-prename descclassname">jis.photonsim.readfits.</code><code class="sig-name descname">read_aperture_mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fitsfile</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.readfits.read_aperture_mask" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.readfits.read_aperture_mask">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.readfits.</span></span><span class="sig-name descname"><span class="pre">read_aperture_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.readfits.read_aperture_mask" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function reads the fits file of the aperture mask pattern.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -598,8 +1675,8 @@ ahdr  (dict)   : Header of the input fits file.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.readfits.read_wfe_map">
-<code class="sig-prename descclassname">jis.photonsim.readfits.</code><code class="sig-name descname">read_wfe_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fitsfile</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.readfits.read_wfe_map" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.readfits.read_wfe_map">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.readfits.</span></span><span class="sig-name descname"><span class="pre">read_wfe_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.readfits.read_wfe_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function reads the fits file of the wavefront error map.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -623,13 +1700,13 @@ whdr (dict)   : Header of the input fits file.</p>
 <div class="section" id="module-jis.photonsim.response">
 <span id="jis-photonsim-response-module"></span><h2>jis.photonsim.response module<a class="headerlink" href="#module-jis.photonsim.response" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="jis.photonsim.response.AWL">
-<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">AWL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wl</span></em>, <em class="sig-param"><span class="n">R</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.AWL" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.response.AWL">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.response.</span></span><span class="sig-name descname"><span class="pre">AWL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.AWL" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.response.EXT_a">
-<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">EXT_a</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wl</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.EXT_a" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.response.EXT_a">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.response.</span></span><span class="sig-name descname"><span class="pre">EXT_a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.EXT_a" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns the a(x) coefficient defining the
 interstellar extinction curve in 1989ApJ...345..245C.
 A(lmd)/Av = a(x) + b(x)/Rv; x = 1/lmd(um);</p>
@@ -652,8 +1729,8 @@ a_coeff = EXT_a(wl)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.response.EXT_b">
-<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">EXT_b</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wl</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.EXT_b" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.response.EXT_b">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.response.</span></span><span class="sig-name descname"><span class="pre">EXT_b</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.EXT_b" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns the b(x) coefficient defining the
 interstellar extinction curve in 1989ApJ...345..245C.
 A(lmd)/Av = a(x) + b(x)/Rv; x = 1/lmd(um);</p>
@@ -676,8 +1753,8 @@ b_coeff = EXT_b(wl)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.response.Nphotons">
-<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">Nphotons</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">WL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.Nphotons" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.response.Nphotons">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.response.</span></span><span class="sig-name descname"><span class="pre">Nphotons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">WL</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.Nphotons" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns logarithmically
 interpolated zero-mag photon flux (ph/s/m^2/um)
 in the MKO-NIR system at the wavelengths WL.</p>
@@ -700,8 +1777,8 @@ zm_ph_flux = Nphotons(wavelength)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.response.calc_response">
-<code class="sig-prename descclassname">jis.photonsim.response.</code><code class="sig-name descname">calc_response</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Rv</span></em>, <em class="sig-param"><span class="n">JH</span></em>, <em class="sig-param"><span class="n">alp</span></em>, <em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">WLdefined</span></em>, <em class="sig-param"><span class="n">EPdefined</span></em>, <em class="sig-param"><span class="n">WLshort</span></em>, <em class="sig-param"><span class="n">WLlong</span></em>, <em class="sig-param"><span class="n">WLdet</span></em>, <em class="sig-param"><span class="n">QEdet</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.calc_response" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.response.calc_response">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.response.</span></span><span class="sig-name descname"><span class="pre">calc_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">JH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WLdefined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EPdefined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WLshort</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WLlong</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WLdet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QEdet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.response.calc_response" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function calculates the electron rate (e-/s/m^2) detected by SJ
 based on the optics efficiency (EPdefined), the quantum efficiency (QEdet).
 The target object is assumed to have an interstellar extinction
@@ -716,7 +1793,6 @@ by interpolating the J- and H-band magnitudes.</p>
 <li><p><strong>JH</strong> (<em>float</em>) -- Color excess E(J-H)(=AJ-AH).</p></li>
 <li><p><strong>alp</strong> (<em>float</em>) -- Interpolation factor to define Hw-band mag.
 Hw-band mag = alp * J-mag + (1-alp) H-mag</p></li>
-<li><p><strong>k</strong> (<em>int?</em>) -- Number of wavelength data points? (not used).</p></li>
 <li><p><strong>WLdefined</strong> (<em>ndarray</em>) -- Wavelength data.</p></li>
 <li><p><strong>EPdefined</strong> (<em>ndarray</em>) -- Optical efficiency data.</p></li>
 <li><p><strong>WLshort</strong> (<em>float</em>) -- Shortest wavelength (um).</p></li>
@@ -750,8 +1826,36 @@ QEdet = np.array([0.5, 0.4, 0.3])</p>
 <div class="section" id="module-jis.photonsim.wfe">
 <span id="jis-photonsim-wfe-module"></span><h2>jis.photonsim.wfe module<a class="headerlink" href="#module-jis.photonsim.wfe" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="jis.photonsim.wfe.calc_wfe">
-<code class="sig-prename descclassname">jis.photonsim.wfe.</code><code class="sig-name descname">calc_wfe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">EPD</span></em>, <em class="sig-param"><span class="n">efile</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.wfe.calc_wfe" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.wfe.calc_dummy_wfe">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.wfe.</span></span><span class="sig-name descname"><span class="pre">calc_dummy_wfe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">EPD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">efile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.wfe.calc_dummy_wfe" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates a dummy wavefront error pattern.
+The arguments are the same as <cite>calc_wfe</cite> but not used except for <cite>EPD</cite>.
+This returns an array, where the inside of the entrance pupil is filled with zeros.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>EPD</strong> (<em>float</em>) -- Entrance pupil diameter (apt-cell=mm).</p></li>
+<li><p><strong>efile</strong> (<em>str</em>) -- Filename of the json file having wavefront error parameters.</p></li>
+<li><p><strong>Apt-cell scale is assumed to be 1 mm/apt-cell!!! ***</strong> (<em>***</em>) -- </p></li>
+<li><p><strong>Coefficients are assumed to be in um!!!  ***</strong> (<em>***</em>) -- </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>EPD+4 x EPD+4 data array of the calculated wavefront error pattern.</dt><dd><p>The unit is assumed to be um in the simulation.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>data (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jis.photonsim.wfe.calc_wfe">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.wfe.</span></span><span class="sig-name descname"><span class="pre">calc_wfe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">EPD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">efile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.wfe.calc_wfe" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function calculates wavefront error pattern
 by calculating summation of zernike polynomials.
 Coefficients and orders of the zernike terms are
@@ -775,7 +1879,7 @@ the calculated wfe is assumed to be um.</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>data (ndarray)</p>
+<dd class="field-odd"><p>wfe (ndarray)</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -784,8 +1888,64 @@ the calculated wfe is assumed to be um.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.wfe.wfe_model_z">
-<code class="sig-prename descclassname">jis.photonsim.wfe.</code><code class="sig-name descname">wfe_model_z</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rg</span></em>, <em class="sig-param"><span class="n">nmax</span></em>, <em class="sig-param"><span class="n">wlen</span></em>, <em class="sig-param"><span class="n">zodd</span></em>, <em class="sig-param"><span class="n">zeven</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.wfe.wfe_model_z" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.wfe.calc_wfe_from_Zernike_param_array">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.wfe.</span></span><span class="sig-name descname"><span class="pre">calc_wfe_from_Zernike_param_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">EPD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Zn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Zm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Za</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.wfe.calc_wfe_from_Zernike_param_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates wavefront error map from
+given Zernike parametes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>EPD</strong> (<em>float</em>) -- Entrance pupil diameter (apt-cell=mm).</p></li>
+<li><p><strong>Zn</strong> (<em>ndarray</em>) -- 1D array containing radial indices n of the Zernike polynomials (Z^m_n).</p></li>
+<li><p><strong>Zm</strong> (<em>ndarray</em>) -- 1D array containing azimuthal indices m of the Zernike polynomials (Z^m_n).</p></li>
+<li><p><strong>Za</strong> (<em>ndarray</em>) -- 1D array containing amplitudes of the Zernike polynomials in um.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(EPD+4) x (EPD+4) array of the calculated wavefront error map in um.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>wfe (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jis.photonsim.wfe.read_FringeZernike37">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.wfe.</span></span><span class="sig-name descname"><span class="pre">read_FringeZernike37</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.wfe.read_FringeZernike37" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads a csv file containing
+2D Zernike coefficient data and returns a
+dictionary of interpolation functions.</p>
+<p>The first column of the csv data must be
+'xan', 'yan', 1, 2, ..., 37. 'xan' and 'yan'
+represent positions on the focal plane in deg.
+1, 2, ..., 37 are the Fringe Zernike indices.
+Other columns must have the positions (row1, row2) and
+Zernike coefficients (row3 to row39; in um).</p>
+<p>The returned dictionary has 37 functions.
+The keys are 1, 2, ..., 37 which correspond to the
+Fringe Zernike indices. The function that is stored
+as j is the interpolation function of the
+j-th Fringe Zernike coefficient.
+If you want to have the j-th coefficient
+at a position of (x, y) (in deg), it is calculated
+by functions[j](x, y).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- Filename of the input csv file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of the interpolation functions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>functions (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jis.photonsim.wfe.wfe_model_z">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.wfe.</span></span><span class="sig-name descname"><span class="pre">wfe_model_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wlen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zodd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeven</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.wfe.wfe_model_z" title="Permalink to this definition">¶</a></dt>
 <dd><p>wave front error のために zernike で n=2..(nmax-1) の 強度データを作成する。
 長さのスケールに用いる波長を wlen とする。
 n が奇数のときは、強度を wlen/zodd とし、偶数の時は wlen/zeven とする。
@@ -799,12 +1959,42 @@ n が奇数のときは、強度を wlen/zodd とし、偶数の時は wlen/zeve
 <span id="jis-photonsim-zernike-module"></span><h2>jis.photonsim.zernike module<a class="headerlink" href="#module-jis.photonsim.zernike" title="Permalink to this headline">¶</a></h2>
 <p>Zernike polynomial code</p>
 <dl class="py function">
-<dt id="jis.photonsim.zernike.Radial">
-<code class="sig-prename descclassname">jis.photonsim.zernike.</code><code class="sig-name descname">Radial</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">rho</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.Radial" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.zernike.FringeID37">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.zernike.</span></span><span class="sig-name descname"><span class="pre">FringeID37</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.FringeID37" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the 37 Fringe's indices.
+The Zernike polynomials are defined with radial indices n
+and azimuthal indices m. The Fringe convention defines
+an indexing rule where an index j is defined with n and m as</p>
+<blockquote>
+<div><p>j = (1+(n+|m|)/2)^2 - 2|m| + (1-sgn(m))/2.</p>
+</div></blockquote>
+<p>In some softwares, wavefront patterns are described with
+the first 37 coefficients in the Fringe convention (j=1-37).
+This function returns the 37 combinations of (j, n, m).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> -- </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The 37 Fringe's indices.</dt><dd><p>dtype=[('j', '&lt;i4'), ('n', '&lt;i4'), ('m', '&lt;i4')]</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>indices (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="jis.photonsim.zernike.Radial">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.zernike.</span></span><span class="sig-name descname"><span class="pre">Radial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.Radial" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns Zernike amplitude at rho with index n and m.</p>
 <dl class="simple">
 <dt>Zernike function is:</dt><dd><dl class="simple">
-<dt>Z^m_n(rho, phi) = R^m_n(rho) x cos(m phi)   (m&gt;=0)</dt><dd><p>R^m_n(rho) x sin(<a href="#id29"><span class="problematic" id="id30">|m|</span></a> phi) (m&lt;0),</p>
+<dt>Z^m_n(rho, phi) = R^m_n(rho) x cos(m phi)   (m&gt;=0)</dt><dd><p>R^m_n(rho) x sin(<a href="#id92"><span class="problematic" id="id93">|m|</span></a> phi) (m&lt;0),</p>
 </dd>
 </dl>
 </dd>
@@ -832,8 +2022,8 @@ from jis.photonsim.zernike import radial</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.zernike.Zernike">
-<code class="sig-prename descclassname">jis.photonsim.zernike.</code><code class="sig-name descname">Zernike</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">rho</span></em>, <em class="sig-param"><span class="n">theta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.Zernike" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.zernike.Zernike">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.zernike.</span></span><span class="sig-name descname"><span class="pre">Zernike</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.Zernike" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns Zernike function values at (rho, theta)
 with indices of n and m, Z^m_n(rho, theta).</p>
 <dl class="field-list simple">
@@ -858,8 +2048,8 @@ with indices of n and m, Z^m_n(rho, theta).</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="jis.photonsim.zernike.ZernikeID">
-<code class="sig-prename descclassname">jis.photonsim.zernike.</code><code class="sig-name descname">ZernikeID</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.ZernikeID" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="jis.photonsim.zernike.ZernikeID">
+<span class="sig-prename descclassname"><span class="pre">jis.photonsim.zernike.</span></span><span class="sig-name descname"><span class="pre">ZernikeID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#jis.photonsim.zernike.ZernikeID" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns first N Zernike-indices n and m as arrays.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -889,37 +2079,29 @@ ZIDm (ndarray): Array of m-indices.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="jis.pixsim.html" class="btn btn-neutral float-right" title="jis.pixsim package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="jis.jisplot.html" class="btn btn-neutral float-left" title="jis.jisplot package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="jis.pixsim.html" class="btn btn-neutral float-right" title="jis.pixsim package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="jis.jisplot.html" class="btn btn-neutral float-left" title="jis.jisplot package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, JIS developer team
+        &#169; Copyright 2020, JIS developer team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

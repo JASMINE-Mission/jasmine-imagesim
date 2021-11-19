@@ -1,8 +1,4 @@
-"""
-
-Summary
----------
-Generating trajectory
+"""Generating trajectory
 
 """
 
