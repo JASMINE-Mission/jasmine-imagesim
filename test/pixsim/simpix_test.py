@@ -5,7 +5,7 @@ from jis.photonsim.extract_json import Detector
 from jis.pixsim import readflat as rf
 
 def test_simpix(fig=False):
-    filename_detjson="det_fortest.json"
+    filename_detjson="pixsim/det_fortest.json"
     spixdim  = [16,16] # subpixel dimension in a pixel (setting for intrapix pattern).
     pixdim   = [16,16] # adaptive pixel dimension in the aperture.
     det = Detector.from_json(filename_detjson)
@@ -30,7 +30,7 @@ def test_simpix(fig=False):
         plt.colorbar(c)
         plt.show()
         
-    valref=np.load("ref.npz")["arr_0"]
+    valref=np.load("pixsim/ref.npz")["arr_0"]
     assert np.sum((val-valref)**2)<1.e-16 
 
 
