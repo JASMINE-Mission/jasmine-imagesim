@@ -1,0 +1,3 @@
+# manual test module
+
+you can test the code using test.sh ... but...

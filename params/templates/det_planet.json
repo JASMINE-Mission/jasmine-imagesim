@@ -1,0 +1,48 @@
+{
+"pixsize":{
+  "title": "Pixel size (micron)",
+  "val"  : 15.0 },
+"Npix":{
+  "title": "Number of pixels on a side",
+  "val"  : 1296 }, 
+"readnoise":{ 
+  "title": "Read out noise (e-)",
+  "val"  : 15 },
+"Idark":{
+  "title": "Dark current w stray light (e-/sec/pix)",
+  "val"  :  24.5 },
+"Fullwell":{
+  "title": "Full well (e-)",
+  "val"  : 150000},
+"QE": {
+  "title": "Spectral distribution of quantum efficiency (W?? in um; V?? QE value)",
+  "W00": 0.9,
+  "V00": 0.6,
+  "W01": 1.4,
+  "V01": 0.6,
+  "W02": 1.6,
+  "V02": 0.6},
+"interpix":{
+  "title": "STDDEV of the interpixel flat",
+  "val"  : 0.01},
+"intrapix":{
+  "title": "Information about files describing intrapixel pattern",
+  "dirname": "/home/kawahara/jasmine-imagesim/src/jis/pixsim/data/intrapix",
+  "filex": "intravx.csv",
+  "filey": "intravy.csv"},
+"persistence":{
+  "title": "Persistence parameters (tau: detrap. time in sec; rho: frac. of trap.)",
+  "tau": [1, 10, 100, 1000, 10000],
+  "rho": [1e-3, 1.5e-3, 1.5e-3, 2e-3, 3e-3]},
+"readparams":{
+  "title": "Parameters related to the reset/read operation.",
+  "fsmpl"     : {"val": 200e3, "description": "Sampling frequency in Hz."},
+  "ncol_ch"   : {"val": 162, "description": "Num. of col. in one ch."},
+  "nrow_ch"   : {"val":1296, "description": "Num. of row in one ch."},
+  "npix_pre"  : {"val":   4, "description": "Npix before reading each row."},
+  "npix_post" : {"val":   4, "description": "Npix after reading each row."},
+  "t_overhead": {"val": 0.1, "description": "Overhead time between reset and the 1st read in sec."}},
+"gain":{
+  "title": "Conversion gain in e/adu.",
+  "val": 3}
+}
