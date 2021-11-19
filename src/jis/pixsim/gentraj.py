@@ -75,6 +75,14 @@ def gentraj_encircled_k2like(ntime, basepos, nsub, radius=1.0, lpix=1.0, lpixsig
 
 
 def gentraj_random(ntime,basepos,nsub,basesig=1.0,subsig=0.1,seed=None):
+    """Random trajectory generator 
+
+    Args:
+       ntime: the number of time bin
+       basepos: 
+       nsub: 
+
+    """
     ndata=np.int(ntime/nsub)
     np.random.seed(seed)
     thetax = np.array([])
