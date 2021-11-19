@@ -1,7 +1,4 @@
-"""
-Summary
---------
-plotting for ACE
+"""plotting for ACE
 
 """
 

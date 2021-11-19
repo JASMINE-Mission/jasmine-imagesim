@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Welcome to Jasmine Image Simulator &mdash; Jasmine Image Simulator 0.1 documentation</title>
   
@@ -13,10 +13,15 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
+
   
+  
+
   
 
   
@@ -26,10 +31,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -50,7 +55,7 @@
           
 
           
-            <a href="#" class="icon icon-home" alt="Documentation Home"> Jasmine Image Simulator
+            <a href="#" class="icon icon-home"> Jasmine Image Simulator
           
 
           
@@ -125,6 +130,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -136,7 +143,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -181,11 +188,7 @@
 <p>This is an image simulator package developed for the JASMINE project.</p>
 <div class="section" id="pixsim">
 <h2>pixsim<a class="headerlink" href="#pixsim" title="Permalink to this headline">¶</a></h2>
-<p>combining detector characteristics. To use pixsim you need to specify include directory like</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setenv</span> <span class="n">CPLUS_INCLUDE_PATH</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">-</span><span class="n">name</span><span class="o">/</span><span class="n">jasmine</span><span class="o">-</span><span class="n">imagesim</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">jis</span><span class="o">/</span><span class="n">pixsim</span><span class="o">/</span><span class="n">include</span>
-</pre></div>
-</div>
-<p>or copy .h files to your &quot;include&quot; directory.</p>
+<p>Detector simulator in a subpixel level. Pixsim uses a GPU parallel computing to boost the computation.</p>
 </div>
 <div class="section" id="photonsim">
 <h2>photonsim<a class="headerlink" href="#photonsim" title="Permalink to this headline">¶</a></h2>
@@ -205,7 +208,20 @@
 <div class="section" id="requirements">
 <h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><p>python 3.8 (3.7 might be ok)</p></li>
+<li><p>python3 &gt;= 3.7</p></li>
+<li><p>numpy &gt;= 1.17</p></li>
+<li><p>cuda &gt;= 7.5 (at least)</p></li>
+</ul>
+</div>
+<div class="section" id="tested">
+<h1>Tested<a class="headerlink" href="#tested" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>CUDA 10.1, RTX 2080 MAX-Q, Python 3.7.3,  Ubuntu 18.04.3 LTS</p></li>
+<li><p>CUDA 10.0, TESLA V100, Python 3.7.4, Ubuntu 18.04.5 LTS</p></li>
+<li><p>CUDA 9.1, Titan X, Python 3.7.0, Ubuntu 18.04.1 LTS</p></li>
+<li><p>CUDA 9.1, TESLA V100, Python 3.7.0, Ubuntu 18.04.1 LTS</p></li>
+<li><p>CUDA 9.1, GTX 1080Ti, Python 3.7.3, Linux Mint 19</p></li>
+<li><p>CUDA 7.5, GTX Titan, Python 3.6.8, Ubuntu 14.04</p></li>
 </ul>
 </div>
 <div class="section" id="installation">
@@ -220,11 +236,35 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">CPLUS_INCLUDE_PATH</span><span class="o">=</span><span class="s2">&quot;[jis-home]/src/jis/pixsim/include:$CPLUS_INCLUDE_PATH&quot;</span>
 </pre></div>
 </div>
+<p>For a c shell-based environment, add the below in your .cshrc or .tcsrh etc.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setenv</span> <span class="n">CPLUS_INCLUDE_PATH</span> <span class="p">[</span><span class="n">jis</span><span class="o">-</span><span class="n">home</span><span class="p">]</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">jis</span><span class="o">/</span><span class="n">pixsim</span><span class="o">/</span><span class="n">include</span>
+</pre></div>
+</div>
+<p>or copy .h files to your &quot;include&quot; directory.</p>
+<p>The error such as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fatal</span> <span class="n">error</span><span class="p">:</span> <span class="n">pixlight_custom</span><span class="o">.</span><span class="n">h</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span> <span class="n">directory</span>\<span class="n">n</span>     <span class="c1">#include &quot;pixlight_custom.h&quot;\n                                 ^\ncompilation terminated.\n&#39;]</span>
+</pre></div>
+</div>
+<p>indicates that you do not set CPLUS_INCLUDE_PATH properly.</p>
 </div>
 </div>
 <div class="section" id="test">
 <h1>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
+<li><p>modify some parameter files.</p>
+<ul>
+<li><p>[jis-home]/params/templates/det.json</p>
+<ul>
+<li><p>rename intrapix.dirname (&quot;/home/kamizuka/jasmine-imagesim/&quot; -&gt; [jis-home])</p></li>
+</ul>
+</li>
+<li><p>[jis-home]/params/templates/variability.json</p>
+<ul>
+<li><p>rename dirname(s) (&quot;/home/kawahara/jasmine-imagesim/&quot; -&gt; [jis-home])</p></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><p>cd [jis-home]/bin</p></li>
 <li><p>bash test.sh</p></li>
 </ul>
@@ -261,35 +301,28 @@
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="bin/modules.html" class="btn btn-neutral float-right" title="bin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
+        <a href="bin/modules.html" class="btn btn-neutral float-right" title="bin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, JIS developer team
+        &#169; Copyright 2020, JIS developer team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
