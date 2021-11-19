@@ -14,7 +14,7 @@ CLASSIFIERS = [
     "Programming Language :: Python",
 ]
 INSTALL_REQUIRES = [
-    "numpy>=1.17","tqdm","scipy","docopt","pyfftw",
+    "numpy>=1.17","tqdm","scipy","docopt","pyfftw","pycuda",
     "h5py","m2r2","sphinx_rtd_theme","batman-package",
 ]
 
