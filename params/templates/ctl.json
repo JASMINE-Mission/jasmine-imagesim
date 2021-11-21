@@ -2,7 +2,7 @@
 "effect": {
   "title" : "enable/disable emulator effects",
   "wfe": {
-    "title": "calculation method of the wavefront error (dummy/json/csv)",
+    "title": "calculation method of the wavefront error (dummy/random/fringe37)",
     "val": "dummy" },
   "psf": {
     "title": "simulate a physically realistic point spread function",
