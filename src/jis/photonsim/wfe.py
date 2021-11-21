@@ -52,7 +52,7 @@ def calc_wfe(EPD,efile):
 def calc_wfe_from_Zernike_param_array(EPD, Zn, Zm, Za):
     """
     This function calculates wavefront error map from
-    given Zernike parametes.
+    given Zernike parameters.
 
     Args:
         EPD  (float): Entrance pupil diameter (apt-cell=mm).
