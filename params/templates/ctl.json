@@ -37,14 +37,17 @@
 "WFEcontrol": {
   "title": "WFE control parameters.",
   "zernike_nmax": {
-    "title": "Zernike max n.",
+    "title": "Zernike max n (for random mode).",
     "val": 8},
   "zernike_even": {
-    "title": "Amplitude parameter of even terms (ref_wl/zernike_even).",
+    "title": "Amplitude parameter of even terms (ref_wl/zernike_even; for random mode).",
     "val": 50},
   "zernike_odd":  {
-    "title": "Amplitude parameter of odd terms (ref_wl/zernike_odd).",
+    "title": "Amplitude parameter of odd terms (ref_wl/zernike_odd; for random mode).",
     "val": 25},
+  "fringe37_filename": {
+    "title": "Name of the file containing ZernikeFringe37 params (for fringe37 mode).",
+    "val": "/home/kamizuka/WFEfromModel/FringeZernike_2D-s1.csv"},
   "reference_wl": {
     "title": "Reference wavelength in micron.",
     "val": 1.4}},
