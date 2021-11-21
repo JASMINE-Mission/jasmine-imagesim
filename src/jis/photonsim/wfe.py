@@ -49,6 +49,65 @@ def calc_wfe(EPD,efile):
     return wfe
 
 
+def calc_wfe_fringe37(EPD, filename, scale, positions, omit_tilt=True):
+    """
+    This function calculates wavefront error (wfe)
+    at each position in the positions array. The wfe is
+    calculated by taking summation of zernike polynomials.
+    The amplitudes are given by the file whose name is
+    given by the filename parameter. The file should have
+
+    The file should be a csv file containing
+    2D Zernike coefficient data. The first column
+    of the csv data must be 'xan', 'yan', 1, 2, ..., 37.
+    'xan' and 'yan' represent positions on the focal plane in deg.
+    1, 2, ..., 37 are the Fringe Zernike indices.
+    Other columns must have the positions (row1, row2) and
+    Zernike coefficients (row3 to row39; to be scaled
+    by the scale parameter).
+
+    Args:
+        EPD         (float): Entrance pupil diameter (apt-cell=mm).
+        filename      (str): Filename of the csv file having the Zernike coefficients.
+        scale       (float): Scaling factor in um. This will be multiplied to the Zernike coefficients.
+        positions (ndarray): Array of positions ([[x0, y0], [x1, y1], ..., [xn, yn]]) in deg.
+        omit_tilt    (bool): If true, tilt terms are omitted (default: True).
+        *** Apt-cell scale is assumed to be 1 mm/apt-cell!!! ***
+        *** Coefficients are assumed to be in um!!!  ***
+
+    Returns:
+        wfe (ndarray): (# of positions) x EPD+4 x EPD+4 data array of the calculated wfe.
+                       The unit is um.
+
+    """
+
+    # Setting the minimum j.
+    if omit_tilt:
+        j_min = 4
+    else:
+        j_min = 2
+
+    # Making a dictionary of functions which calculate
+    # amplitudes at each position.
+    za_functions = read_FringeZernike37(filename, scale)
+
+    # Setting (j, n, m) indices in the Fringe37 convention.
+    indices = zernike.FringeID37()
+
+    # Calculating wfe.
+    wfe = []
+    for p in positions:
+        Za = []
+        for j in indices['j']:
+            if j >= j_min:
+                Za.append(za_functions[j](p[0], p[1])[0])
+        Za = np.array(Za)
+        wfe.append(calc_wfe_from_Zernike_param_array(EPD, indices['n'], indices['m'], Za))
+    wfe = np.array(wfe)
+
+    return wfe
+
+
 def calc_wfe_from_Zernike_param_array(EPD, Zn, Zm, Za):
     """
     This function calculates wavefront error map from
