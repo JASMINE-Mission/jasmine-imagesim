@@ -133,8 +133,11 @@ if __name__ == '__main__':
     table_starplate = table_starplate[pos]
 
 
-    # Making random wfe. ###########################################
-    if control_params.effect.wfe is True:
+    # Making wfe. ##################################################
+    if control_params.effect.wfe == 'dummy':
+        print("WFE simulation is skipped (making dummy).")
+        wfe = calc_dummy_wfe(telescope.epd, 'dummy.json')
+    else:
         print("calculate WFE...")
         wp  = control_params.wfe_control
         wfe_amplitudes = wfe_model_z(
@@ -147,9 +150,6 @@ if __name__ == '__main__':
 
         # Making wfe map...
         wfe = calc_wfe(telescope.epd, filename_wfejson)
-    else:
-        print("WFE simulation is skipped.")
-        wfe = calc_dummy_wfe(telescope.epd, 'dummy.json')
 
 
     # Making PSFs ##################################################
