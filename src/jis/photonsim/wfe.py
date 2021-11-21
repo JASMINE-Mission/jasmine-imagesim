@@ -152,7 +152,7 @@ def wfe_model_z(rg,nmax,wlen,zodd,zeven):
   return wfe
 
 
-def read_FringeZernike37(filename):
+def read_FringeZernike37(filename, scale):
     '''
     This function reads a csv file containing
     2D Zernike coefficient data and returns a
@@ -163,7 +163,8 @@ def read_FringeZernike37(filename):
     represent positions on the focal plane in deg.
     1, 2, ..., 37 are the Fringe Zernike indices.
     Other columns must have the positions (row1, row2) and
-    Zernike coefficients (row3 to row39; in um).
+    Zernike coefficients (row3 to row39; to be scaled
+    by the scale parameter).
 
     The returned dictionary has 37 functions.
     The keys are 1, 2, ..., 37 which correspond to the
@@ -176,6 +177,7 @@ def read_FringeZernike37(filename):
 
     Args:
         filename (str): Filename of the input csv file.
+        scale (float) : Scaling factor (um).
 
     Returns:
         functions (dict): Dictionary of the interpolation functions.
@@ -192,6 +194,7 @@ def read_FringeZernike37(filename):
     # Making and storing interpolation functions.
     functions = {}
     for i in range(1,38):
-        functions[i] = interp2d(xan, yan, df[str(i)])
+        z = df[str(i)] * scale
+        functions[i] = interp2d(xan, yan, z)
 
     return functions
