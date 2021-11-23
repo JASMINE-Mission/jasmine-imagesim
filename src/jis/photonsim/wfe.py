@@ -81,12 +81,6 @@ def calc_wfe_fringe37(EPD, filename, scale, positions, omit_tilt=True):
 
     """
 
-    # Setting the minimum j.
-    if omit_tilt:
-        j_min = 4
-    else:
-        j_min = 2
-
     # Making a dictionary of functions which calculate
     # amplitudes at each position.
     za_functions = read_FringeZernike37(filename, scale)
@@ -94,13 +88,17 @@ def calc_wfe_fringe37(EPD, filename, scale, positions, omit_tilt=True):
     # Setting (j, n, m) indices in the Fringe37 convention.
     indices = zernike.FringeID37()
 
+    if omit_tilt:
+        indices = indices[indices['j']>=4]
+    else:
+        indices = indices[indices['j']>=2]
+
     # Calculating wfe.
     wfe = []
     for p in positions:
         Za = []
         for j in indices['j']:
-            if j >= j_min:
-                Za.append(za_functions[j](p[0], p[1])[0])
+            Za.append(za_functions[j](p[0], p[1])[0])
         Za = np.array(Za)
         wfe.append(calc_wfe_from_Zernike_param_array(EPD, indices['n'], indices['m'], Za))
     wfe = np.array(wfe)
