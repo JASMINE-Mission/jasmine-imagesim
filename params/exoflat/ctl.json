@@ -52,7 +52,7 @@
   "title": "ACE simulation control parameters.",
   "dtace":  {
     "title": "Timestep of ACE simulation in sec.",
-    "val": 15e-5},
+    "val": 33e-5},
   "tace":   {
     "title": "Time range of ACE simulation in sec (to be adjusted).",
     "val": 3600},
