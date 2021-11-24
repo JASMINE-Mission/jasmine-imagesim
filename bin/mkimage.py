@@ -151,12 +151,12 @@ if __name__ == '__main__':
         # Making wfe map...
         wfe = calc_wfe(telescope.epd, filename_wfejson)
     elif control_params.effect.wfe == 'fringe37':
-        print("reading fringe37 params for WFE calculation...")
+        print("calculate WFE with fringe37 params...")
         wp = control_params.wfe_control
 
         # Making position array (in deg).
         positions = np.array([table_starplate['x pixel']-1.,\
-                              table_starplate['y pixel']-1.]).T*detpix_scale*3600.
+                              table_starplate['y pixel']-1.]).T*detpix_scale/3600.
 
         # Making wfe map...
         wfe = calc_wfe_fringe37(telescope.epd, wp['fringe37_filename'],\
@@ -183,8 +183,8 @@ if __name__ == '__main__':
 
     if control_params.effect.psf is True:
         ## Currently, only one PSF.
-        print("Calculating PSF...")
         if control_params.effect.wfe != 'fringe37':
+            print("Calculating PSF...")
             psf = calc_psf(wfe, wfe.shape[0],
                            wl_e_rate, e_rate, total_e_rate,
                            telescope.total_area, telescope.aperture,
@@ -193,6 +193,7 @@ if __name__ == '__main__':
         else:
             psf = []
             for i in range(wfe.shape[0]):
+                print("Calculating PSF ({}/{})...".format(i, wfe.shape[0]))
                 psf.append(calc_psf(wfe[i], wfe[i].shape[0],\
                                     wl_e_rate, e_rate, total_e_rate,\
                                     telescope.total_area, telescope.aperture,\
