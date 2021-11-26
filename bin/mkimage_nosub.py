@@ -5,7 +5,7 @@
 .. code-block:: bash
 
   usage:
-    mkimage_transit.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--dft drift.json] --format format [--od outdir] [--overwrite]
+    mkimage_transit.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det_planet.json --tel tel.json --ace ace.json --ctl ctl.json [--dft drift.json] --format format [--od outdir] [--overwrite]
 
   options:
    -h --help                   show this help message and exit.
@@ -172,7 +172,8 @@ if __name__ == '__main__':
         psf = calc_psf(wfe, wfe.shape[0],
                        wl_e_rate, e_rate, total_e_rate,
                        telescope.total_area, telescope.aperture,
-                       control_params.M_parameter, telescope.aperture.shape[0])
+                       control_params.M_parameter, telescope.aperture.shape[0],
+                       control_params.fN_parameter)
         # psf is that of an object which has the JH color of the set value and Hw=0.
         # The unit is e/sec/pix.
     else:
@@ -189,11 +190,13 @@ if __name__ == '__main__':
     tace = control_params.ace_control.get('tace')
     if control_params.effect.ace is True:
         print("Making ACE (X)...")
-        acex, psdx = calc_ace(np.random, nace, tace, ace_params)
+        rg_acex = np.random.default_rng(control_params.ace_control.get('acex_seed'))
+        acex, psdx = calc_ace(rg_acex, nace, tace, ace_params)
         # the standard deviation of acex is normalized to unity.
 
         print("Making ACE (Y)...")
-        acey, psdy = calc_ace(np.random, nace, tace, ace_params)
+        rg_acey = np.random.default_rng(control_params.ace_control.get('acey_seed'))
+        acey, psdy = calc_ace(rg_acey, nace, tace, ace_params)
         # the standard deviation of acey is normalized to unity.
     else:
         print("ACE simulation is skipped.")
