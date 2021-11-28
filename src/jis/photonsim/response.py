@@ -73,7 +73,7 @@ def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEd
            calc_response(Rv, EJH, alp, len(WL), WL, EP, np.min(WL), np.max(WL), WL, QEdet)
 
     Note :
-      The definition of alpha comes from the following equation.
+      The definition of alp (alpha) comes from the following equation.
         Hw-band mag = alp * J-mag + (1-alp) H-mag
       Here, we assume that there is no intrinsic source color excess.
       Then
