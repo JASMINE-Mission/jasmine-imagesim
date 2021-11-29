@@ -259,9 +259,8 @@ def simpix(theta, interpix, intrapix, psfarr=None, psfcenter=None, psfscale=None
         interpix  (ndarray): Interpixel flat pattern (2-d array).
         intrapix  (ndarray): Intrapixel flat pattern (2-d array).
         psfarr    (ndarray): psf array or None=the analytic donut.
-        psfcenter (ndarray): psf center in the unit of fp-cell
-        psfscale  (float)  : psf pixel-size in the unit of (detector) pix [pix/fp-cell]
-        readnoise (float)  : Readnoise in electrons (default 15e-).
+        psfcenter (ndarray): psf center in the unit of fp-cell.
+        psfscale  (float)  : psf pixel-size in the unit of (detector) pix [pix/fp-cell].
 
     Returns:
         pixar (ndarray): Calculated movie data (3-d array).  
