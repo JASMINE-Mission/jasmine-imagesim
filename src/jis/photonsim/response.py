@@ -107,21 +107,24 @@ def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEd
     EP = EPinter(WL)
     QE = QEinter(WL)
 
-    # Zero-mag photon flux (ph/s/m^2/um)
+    # Zero-mag photon flux (ph/s/m^2/um).
     Np=Nphotons(WL)
 
-    # band definition
+    # Band definition.
     NpJ   = Nphotons(WL_J)      # Zero-mag photon flux in J  band (ph/s/m^2/um).
     NpH   = Nphotons(WL_H)      # Zero-mag photon flux in H  band (ph/s/m^2/um).
 #   NpHw  = NpJ*alp+NpH*(1-alp) # Zero-mag photon flux in Hw band (ph/s/m^2/um).
-       # alp is defined as a factor for the magnitude, NOT for the photon flux
-    NpJ0 = NpJ*math.pow(10.0,-(1.-alp)*JH/2.5) # photon flux in J band (ph/s/m-2/um) for Hw=0 (ph/s/m^2/um).
-    ## Photon fluxes of reddened object which is intrinsically zero mag.
+       # alp is defined as a factor for the magnitude, NOT for the photon flux.
+
+    # Photon flux in J band (ph/s/m^2/um) for Hw=0 and intrinsic J-H=0 (see also above).
+    NpJ0 = NpJ*math.pow(10.0,-(1.-alp)*JH/2.5) 
+
+    # Photon fluxes of reddened object which is intrinsically zero mag.
     NprJ  = NpJ*math.pow(10.0,-AWL(WL_J,Rv)*Av/2.5)     # J-band reddened photon flux (ph/s/m^2/um).
     NprH  = NpH*math.pow(10.0,-AWL(WL_H,Rv)*Av/2.5)     # H-band reddened photon flux (ph/s/m^2/um).
 #   NprHw = NprJ*alp+NprH*(1-alp) # Hw-band reddened photon flux (ph/s/m^2/um).
 
-    # reddenend photon (electron) flux (e-/s/m^2/um) from an object
+    # Reddenend photon (electron) flux (e-/s/m^2/um) from an object
     # with the same photon flux at the Hw band as a Zero-mag object.
     Npr = np.empty(len(WL))
     for i in range(len(WL)):
