@@ -76,7 +76,7 @@ def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEd
            calc_response(Rv, EJH, alp, len(WL), WL, EP, np.min(WL), np.max(WL), WL, QEdet)
 
     Note :
-      The definition of alp (alpha) comes from the following equation,
+      The definition of alp comes from the following equation,
         Hw-mag = alp * J-mag + (1-alp) H-mag.
       For objects with intrinsic J-H color of 0 mag,
         JH = E(J-H)(=AJ-AH)  = J-mag - H-mag.
