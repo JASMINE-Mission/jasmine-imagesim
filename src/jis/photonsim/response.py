@@ -76,7 +76,7 @@ def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEd
       The definition of alp (alpha) comes from the following equation.
         Hw-band mag = alp * J-mag + (1-alp) H-mag
       Here, we assume that there is no intrinsic source color excess.
-      Then
+      Then, for objects with intrinsic J-H color of 0 mag,
         JH = E(J-H)(=AJ-AH)  = J-mag - H-mag 
       In the case of Hw-band mag = 0, J-mag and H-mag are; 
          J-mag =  (1-alp) JH
