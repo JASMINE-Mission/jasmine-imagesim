@@ -34,18 +34,21 @@ WL_H = 1.644
 def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEdet):
     """
     This function calculates the electron rate (e-/s/m^2) detected by SJ
-    based on the optics efficiency (EPdefined), the quantum efficiency (QEdet).
-    The target object is assumed to have an interstellar extinction
-    defined with Rv and JH (=E(J-H)) and show the same photon flux
-    at the Hw-band wavelength as a zero-mag object.
-    The parameter 'alp' defines the weight to determine the Hw-band magnitude
-    by interpolating the J- and H-band magnitudes.
+    based on the optics efficiency (EPdefined) and the quantum efficiency (QEdet).
+    The target object is assumed to have an (apparent) Hw-band magnitude (Hw) of 0 mag,
+    which is calculated from the apparent J- and H-band magnitudes as follows,
+      Hw = alp * J + (1-alp) H,
+    where J and H are the J- and H-band magnitudes in Vega system,
+    and alp is a parameter determining the weight of the interpolation.
+    It is also assumed that the object has an intrinsic J-H color of 0 mag (Normal star)
+    and an apparent color of JH due to the interstellar extinction.
+    Rv is a parameter determining the interstellar extinction law.
 
     Args:
         Rv        (float)  : Extinction parasmeter Rv(=Av/E(B-V)).
-        JH        (float)  : Color excess E(J-H)(=AJ-AH).
+        JH        (float)  : Apparent color (see above)/Color excess E(J-H)(=AJ-AH).
         alp       (float)  : Interpolation factor to define Hw-band mag.
-                             Hw-band mag = alp * J-mag + (1-alp) H-mag
+                             Hw-mag = alp * J-mag + (1-alp) H-mag
         WLdefined (ndarray): Wavelength data.
         EPdefined (ndarray): Optical efficiency data.
         WLshort   (float)  : Shortest wavelength (um).
@@ -72,6 +75,16 @@ def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEd
        el_rate, wavelength, el_flux = \
            calc_response(Rv, EJH, alp, len(WL), WL, EP, np.min(WL), np.max(WL), WL, QEdet)
 
+    Note :
+      The definition of alp comes from the following equation,
+        Hw-mag = alp * J-mag + (1-alp) H-mag.
+      For objects with intrinsic J-H color of 0 mag,
+        JH = E(J-H)(=AJ-AH)  = J-mag - H-mag.
+      In the case of Hw-mag = 0, J-mag and H-mag are; 
+         J-mag =  (1-alp) JH
+         H-mag =    -alp  JH
+      Flux from H-mag = 0 source is the same as that from J-mag = (1-alp)JH source.
+
     """
 
     # from Rv and J-H, calculate Av
@@ -94,23 +107,29 @@ def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEd
     EP = EPinter(WL)
     QE = QEinter(WL)
 
-    # Zero-mag photon flux (ph/s/m^2/um)
+    # Zero-mag photon flux (ph/s/m^2/um).
     Np=Nphotons(WL)
 
-    # band definition
+    # Band definition.
     NpJ   = Nphotons(WL_J)      # Zero-mag photon flux in J  band (ph/s/m^2/um).
     NpH   = Nphotons(WL_H)      # Zero-mag photon flux in H  band (ph/s/m^2/um).
-    NpHw  = NpJ*alp+NpH*(1-alp) # Zero-mag photon flux in Hw band (ph/s/m^2/um).
-    ## Photon fluxes of reddened object which is intrinsically zero mag.
+#   NpHw  = NpJ*alp+NpH*(1-alp) # Zero-mag photon flux in Hw band (ph/s/m^2/um).
+       # alp is defined as a factor for the magnitude, NOT for the photon flux.
+
+    # Photon flux in J band (ph/s/m^2/um) for Hw=0 and intrinsic J-H=0 (see also above).
+    NpJ0 = NpJ*math.pow(10.0,-(1.-alp)*JH/2.5) 
+
+    # Photon fluxes of reddened object which is intrinsically zero mag.
     NprJ  = NpJ*math.pow(10.0,-AWL(WL_J,Rv)*Av/2.5)     # J-band reddened photon flux (ph/s/m^2/um).
     NprH  = NpH*math.pow(10.0,-AWL(WL_H,Rv)*Av/2.5)     # H-band reddened photon flux (ph/s/m^2/um).
-    NprHw = NprJ*alp+NprH*(1-alp) # Hw-band reddened photon flux (ph/s/m^2/um).
+#   NprHw = NprJ*alp+NprH*(1-alp) # Hw-band reddened photon flux (ph/s/m^2/um).
 
-    # reddenend photon (electron) flux (e-/s/m^2/um) from an object
+    # Reddenend photon (electron) flux (e-/s/m^2/um) from an object
     # with the same photon flux at the Hw band as a Zero-mag object.
     Npr = np.empty(len(WL))
     for i in range(len(WL)):
-        Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-AWL(WL[i],Rv)*Av/2.5)*NpHw/NprHw
+        Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-AWL(WL[i],Rv)*Av/2.5)*NpJ0/NprJ
+#       Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-AWL(WL[i],Rv)*Av/2.5)*NpHw/NprHw
 
     # Total photon (electron) rate (e-/s/m^2) from an object
     # with the same photon flux at the Hw band as a Zero-mag object.
