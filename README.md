@@ -12,8 +12,9 @@ and spectral property of the target into account. This module also calculates
 the attitude control error.
 
 # Structure
-This package basically consists of 'bin' and 'src' directories.
-- bin: Executable examples are stored.
+This package basically consists of 'bin', 'eval', 'src', test directories.
+- bin: Executable examples for pixel simulations are stored.
+- eval: examples for evaluation.
 - src: Modules are stored. The modules can be used for general purposes.
 - test: unit tests (pytest) and manual tests
 
