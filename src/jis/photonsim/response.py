@@ -34,18 +34,21 @@ WL_H = 1.644
 def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEdet):
     """
     This function calculates the electron rate (e-/s/m^2) detected by SJ
-    based on the optics efficiency (EPdefined), the quantum efficiency (QEdet).
-    The target object is assumed to have an interstellar extinction
-    defined with Rv and JH (=E(J-H)) and show the same photon flux
-    at the Hw-band wavelength as a zero-mag object.
-    The parameter 'alp' defines the weight to determine the Hw-band magnitude
-    by interpolating the J- and H-band magnitudes.
+    based on the optics efficiency (EPdefined) and the quantum efficiency (QEdet).
+    The target object is assumed to have an (apparent) Hw-band magnitude (Hw) of 0 mag,
+    which is calculated from the apparent J- and H-band magnitudes as follows,
+      Hw = alp * J + (1-alp) H,
+    where J and H are the J- and H-band magnitudes in Vega system,
+    and alp is a parameter determining the weight of the interpolation.
+    It is also assumed that the object has an intrinsic J-H color of 0 mag (Normal star)
+    and an apparent color of JH due to the interstellar extinction.
+    Rv is a parameter determining the interstellar extinction law.
 
     Args:
         Rv        (float)  : Extinction parasmeter Rv(=Av/E(B-V)).
-        JH        (float)  : Color excess E(J-H)(=AJ-AH).
+        JH        (float)  : Apparent color (see above)/Color excess E(J-H)(=AJ-AH).
         alp       (float)  : Interpolation factor to define Hw-band mag.
-                             Hw-band mag = alp * J-mag + (1-alp) H-mag
+                             Hw-mag = alp * J-mag + (1-alp) H-mag
         WLdefined (ndarray): Wavelength data.
         EPdefined (ndarray): Optical efficiency data.
         WLshort   (float)  : Shortest wavelength (um).
@@ -73,12 +76,11 @@ def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEd
            calc_response(Rv, EJH, alp, len(WL), WL, EP, np.min(WL), np.max(WL), WL, QEdet)
 
     Note :
-      The definition of alp (alpha) comes from the following equation.
-        Hw-band mag = alp * J-mag + (1-alp) H-mag
-      Here, we assume that there is no intrinsic source color excess.
-      Then, for objects with intrinsic J-H color of 0 mag,
-        JH = E(J-H)(=AJ-AH)  = J-mag - H-mag 
-      In the case of Hw-band mag = 0, J-mag and H-mag are; 
+      The definition of alp (alpha) comes from the following equation,
+        Hw-mag = alp * J-mag + (1-alp) H-mag.
+      For objects with intrinsic J-H color of 0 mag,
+        JH = E(J-H)(=AJ-AH)  = J-mag - H-mag.
+      In the case of Hw-mag = 0, J-mag and H-mag are; 
          J-mag =  (1-alp) JH
          H-mag =    -alp  JH
       Flux from H-mag = 0 source is the same as that from J-mag = (1-alp)JH source.
