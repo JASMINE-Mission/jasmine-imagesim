@@ -76,8 +76,7 @@ if __name__ == '__main__':
     overwrite = False
     if args['--overwrite']:
         overwrite = True
-
-
+        
     # Loading parameters. ##########################################
     table_starplate = asc.read(filename_starplate)
     detector        = Detector.from_json(filename_detjson)
@@ -200,7 +199,7 @@ if __name__ == '__main__':
         # the standard deviation of acey is normalized to unity.
     else:
         print("ACE simulation is skipped.")
-        print("Generate face ACE(X) and ACE(Y)...")
+        print("Generate fake ACE(X) and ACE(Y)...")
         acex = calc_dummy_ace(np.random, nace, tace, ace_params)
         acey = calc_dummy_ace(np.random, nace, tace, ace_params)
 
@@ -301,7 +300,12 @@ if __name__ == '__main__':
             # picking temporary trajectory and local position update
             istart = iplate    *Nts_per_plate
             iend   = (iplate+1)*Nts_per_plate
-
+            # In no-ace mode, we make a single image with simpix to reduce the calculation time.
+            # Below is a trick for that. After executing simpix, we will copy it to make ntime_orig shots.
+            if not control_params.effect.ace:
+                ntime_orig=iend-istart
+                iend=istart+1
+            
             theta = np.copy(theta_full[:,istart:iend])         # Displacement from the initial position.
             theta = theta + np.array([[xc_local, yc_local]]).T # Displacement in local coord.
             theta = theta + np.array([[0.5, 0.5]]).T           # 0.5-pix shift to treat the coodinate difference.
@@ -322,6 +326,12 @@ if __name__ == '__main__':
                                   psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
                                   /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
+
+            # In no-ace mode, we copy the single-shot image to make the full-movie cube.
+            if not control_params.effect.ace:
+                upixar=pixar[:,:,0]
+                nxt,nyt=np.shape(upixar)
+                pixar=upixar[:,:,np.newaxis]+np.zeros((nxt,nyt,ntime_orig))
 
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
