@@ -5,7 +5,7 @@
 .. code-block:: bash
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--dft drift.json] --format format [--od outdir] [--overwrite]
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--dft drift.json] --format format [--od outdir] [--overwrite] [--noace]
 
   options:
    -h --help                   show this help message and exit.
@@ -20,6 +20,7 @@
    --format format             format of the output file (platefits, fitscube, hdfcube).
    --od outdir                 name of the directory to put the outputs.
    --overwrite                 if set, overwrite option activated.
+   --noace                     if set, no ace applied, frozen at the first ace position in each plate.
 
 """
 
@@ -76,6 +77,10 @@ if __name__ == '__main__':
     overwrite = False
     if args['--overwrite']:
         overwrite = True
+        
+    noace = False
+    if args['--noace']:
+        noace = True
 
 
     # Loading parameters. ##########################################
@@ -302,6 +307,10 @@ if __name__ == '__main__':
             istart = iplate    *Nts_per_plate
             iend   = (iplate+1)*Nts_per_plate
 
+            # noace?
+            if noace:
+                iend=istart+1
+            
             theta = np.copy(theta_full[:,istart:iend])         # Displacement from the initial position.
             theta = theta + np.array([[xc_local, yc_local]]).T # Displacement in local coord.
             theta = theta + np.array([[0.5, 0.5]]).T           # 0.5-pix shift to treat the coodinate difference.
@@ -325,7 +334,7 @@ if __name__ == '__main__':
 
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
-
+            
             # variability
             """
             Curretly, the time resolution should be prepared in the unit of tplate + tscan. We do not support the finest time resolution yet (dtace).
