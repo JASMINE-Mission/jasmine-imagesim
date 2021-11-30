@@ -300,8 +300,8 @@ if __name__ == '__main__':
             # picking temporary trajectory and local position update
             istart = iplate    *Nts_per_plate
             iend   = (iplate+1)*Nts_per_plate
-
-            if ~control_params.effect.ace:
+            #no ace?
+            if not control_params.effect.ace:
                 ntime_orig=iend-istart
                 iend=istart+1
             
@@ -337,7 +337,7 @@ if __name__ == '__main__':
                 pixar=pixar*injlc[iplate]
 
             #noace?
-            if ~control_params.effect.ace:
+            if not control_params.effect.ace:
                 upixar=pixar[:,:,0]
                 nxt,nyt=np.shape(upixar)
                 pixar=upixar[:,:,np.newaxis]+np.zeros((nxt,nyt,ntime_orig))
