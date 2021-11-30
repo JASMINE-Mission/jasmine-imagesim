@@ -325,6 +325,11 @@ if __name__ == '__main__':
                                   psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
                                   /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
+            #noace?
+            if not control_params.effect.ace:
+                upixar=pixar[:,:,0]
+                nxt,nyt=np.shape(upixar)
+                pixar=upixar[:,:,np.newaxis]+np.zeros((nxt,nyt,ntime_orig))
 
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
@@ -335,12 +340,6 @@ if __name__ == '__main__':
             """
             if varsw:
                 pixar=pixar*injlc[iplate]
-
-            #noace?
-            if not control_params.effect.ace:
-                upixar=pixar[:,:,0]
-                nxt,nyt=np.shape(upixar)
-                pixar=upixar[:,:,np.newaxis]+np.zeros((nxt,nyt,ntime_orig))
                 
             # Adding dark current (including stray light).
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
