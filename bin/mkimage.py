@@ -199,7 +199,7 @@ if __name__ == '__main__':
         # the standard deviation of acey is normalized to unity.
     else:
         print("ACE simulation is skipped.")
-        print("Generate face ACE(X) and ACE(Y)...")
+        print("Generate fake ACE(X) and ACE(Y)...")
         acex = calc_dummy_ace(np.random, nace, tace, ace_params)
         acey = calc_dummy_ace(np.random, nace, tace, ace_params)
 
