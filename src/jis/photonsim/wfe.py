@@ -1,5 +1,7 @@
+import os, glob
 import math
 import numpy as np
+import jis
 from jis import photonsim
 from jis.photonsim import zernike                       # Zernike polynomials functions
 import json
@@ -83,7 +85,12 @@ def calc_wfe_fringe37(EPD, filename, scale, positions, omit_tilt=True):
 
     # Making a dictionary of functions which calculate
     # amplitudes at each position.
-    za_functions = read_FringeZernike37(filename, scale)
+    dname = os.path.dirname(jis.__file__)
+    fname = os.path.join(dname, filename)
+    if glob.glob(fname):
+        za_functions = read_FringeZernike37(fname, scale)    # Searching in jis dir.
+    else:
+        za_functions = read_FringeZernike37(filename, scale) # Searching in other dir.
 
     # Setting (j, n, m) indices in the Fringe37 convention.
     indices = zernike.FringeID37()
