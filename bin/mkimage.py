@@ -333,14 +333,14 @@ if __name__ == '__main__':
 
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
-            
+
             # variability
             """
             Curretly, the time resolution should be prepared in the unit of tplate + tscan. We do not support the finest time resolution yet (dtace).
             """
             if varsw:
                 pixar=pixar*injlc[iplate]
-                
+
             # Adding dark current (including stray light).
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
             pixar = pixar + dark
