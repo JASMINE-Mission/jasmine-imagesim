@@ -47,7 +47,7 @@
     "val": 25},
   "fringe37_filename": {
     "title": "Name of the file containing ZernikeFringe37 params (for fringe37 mode).",
-    "val": "/home/kamizuka/WFEfromModel/FringeZernike_2D-s1.csv"},
+    "val": "photonsim/data/FringeZernike_2D-s1.csv"},
   "reference_wl": {
     "title": "Reference wavelength in micron.",
     "val": 1.4}},
