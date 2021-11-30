@@ -5,7 +5,7 @@
 .. code-block:: bash
 
   usage:
-    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--dft drift.json] --format format [--od outdir] [--overwrite] [--noace]
+    mkimage.py [-h|--help] [--pd paramdir] --starplate star_plate.csv [--var variability.json] --det det.json --tel tel.json --ace ace.json --ctl ctl.json [--dft drift.json] --format format [--od outdir] [--overwrite]
 
   options:
    -h --help                   show this help message and exit.
@@ -20,7 +20,6 @@
    --format format             format of the output file (platefits, fitscube, hdfcube).
    --od outdir                 name of the directory to put the outputs.
    --overwrite                 if set, overwrite option activated.
-   --noace                     if set, no ace applied, frozen at the first ace position in each plate.
 
 """
 
@@ -78,11 +77,6 @@ if __name__ == '__main__':
     if args['--overwrite']:
         overwrite = True
         
-    noace = False
-    if args['--noace']:
-        noace = True
-
-
     # Loading parameters. ##########################################
     table_starplate = asc.read(filename_starplate)
     detector        = Detector.from_json(filename_detjson)
@@ -307,8 +301,8 @@ if __name__ == '__main__':
             istart = iplate    *Nts_per_plate
             iend   = (iplate+1)*Nts_per_plate
 
-            # noace?
-            if noace:
+            if ~control_params.effect.ace:
+                ntime_orig=iend-istart
                 iend=istart+1
             
             theta = np.copy(theta_full[:,istart:iend])         # Displacement from the initial position.
@@ -342,6 +336,12 @@ if __name__ == '__main__':
             if varsw:
                 pixar=pixar*injlc[iplate]
 
+            #noace?
+            if ~control_params.effect.ace:
+                upixar=pixar[:,:,0]
+                nxt,nyt=np.shape(upixar)
+                pixar=upixar[:,:,np.newaxis]+np.zeros((nxt,nyt,ntime_orig))
+                
             # Adding dark current (including stray light).
             dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
             pixar = pixar + dark

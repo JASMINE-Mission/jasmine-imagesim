@@ -15,7 +15,11 @@
     "val": true },
   "flat_intrapix": {
     "title": "incorporate the intrapix flat non-uniformity",
+    "val": true },
+  "ace":  {
+    "title": "ACE applied",
     "val": true }},
+
 "M": {
  "title"  :"Cell scale is 1/M [um/mm] ",
  "val"   :6320},
