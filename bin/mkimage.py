@@ -300,7 +300,8 @@ if __name__ == '__main__':
             # picking temporary trajectory and local position update
             istart = iplate    *Nts_per_plate
             iend   = (iplate+1)*Nts_per_plate
-            #no ace?
+            # In no-ace mode, we make a single image with simpix to reduce the calculation time.
+            # Below is a trick for that. After executing simpix, we will copy it to make ntime_orig shots.
             if not control_params.effect.ace:
                 ntime_orig=iend-istart
                 iend=istart+1
@@ -325,7 +326,8 @@ if __name__ == '__main__':
                                   psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
                                   /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
-            #noace?
+
+            # In no-ace mode, we copy the single-shot image to make the full-movie cube.
             if not control_params.effect.ace:
                 upixar=pixar[:,:,0]
                 nxt,nyt=np.shape(upixar)
