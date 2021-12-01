@@ -332,6 +332,7 @@ if __name__ == '__main__':
                 upixar=pixar[:,:,0]
                 nxt,nyt=np.shape(upixar)
                 pixar=upixar[:,:,np.newaxis]+np.zeros((nxt,nyt,ntime_orig))
+                pixar=pixar/ntime_orig
 
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
