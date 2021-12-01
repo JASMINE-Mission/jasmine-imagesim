@@ -332,6 +332,10 @@ if __name__ == '__main__':
                 nxt,nyt=np.shape(upixar)
                 pixar=upixar[:,:,np.newaxis]+np.zeros((nxt,nyt,Nts_per_plate))
                 pixar=pixar/Nts_per_plate
+                # In the above process to make pixar, Nts_per_plate is multiplied
+                # to the result of simpix to make the units of pixar to be e/pix/dtace.
+                # But, in no-ace mode, the scaling is not correct for simulating a single-shot image. 
+                # Therefore, we divide pixar by Nts_per_plate for correction.
 
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
