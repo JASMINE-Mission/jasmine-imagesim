@@ -8,8 +8,8 @@
     "title": "simulate a physically realistic point spread function",
     "val": true },
   "ace": {
-    "title": "incorporate the attitude control error",
-    "val": true },
+    "title": "incorporate the attitude control error (dummy/gauss/real)",
+    "val": "dummy" },
   "flat_interpix": {
     "title": "incorporate the interpix flat non-uniformity",
     "val": true },
@@ -58,16 +58,16 @@
     "title": "Time range of ACE simulation in sec (to be adjusted).",
     "val": 360},
   "acex_std": {
-    "title": "standard deviation of ACE along with X-axis (arcsec).",
+    "title": "standard deviation of ACE along with X-axis (arcsec; gauss/real mode).",
     "val": 0.276},
   "acey_std": {
-    "title": "standard deviation of ACE along with Y-axis (arcsec).",
+    "title": "standard deviation of ACE along with Y-axis (arcsec; gauss/real mode).",
     "val": 0.276},
   "acex_seed": {
-    "title": "random number seed for ACE along with X axis.",
+    "title": "random number seed for ACE along with X axis (for real mode).",
     "val": 1},
   "acey_seed": {
-    "title": "random number seed for ACE along with Y axis.",
+    "title": "random number seed for ACE along with Y axis (for real mode).",
     "val": 2}},
 "Nplate": {
   "title": "Number of plates which make up a small frame.",
