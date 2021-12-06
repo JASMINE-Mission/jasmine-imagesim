@@ -335,7 +335,7 @@ if __name__ == '__main__':
                 pixar=pixar/Nts_per_plate
                 # In the above process to make pixar, Nts_per_plate is multiplied
                 # to the result of simpix to make the units of pixar to be e/pix/dtace.
-                # But, in dummy/gauss mode, the scaling is not correct for simulating a single-shot image. 
+                # But, in dummy/gauss mode, the scaling is not correct for simulating a single-shot image.
                 # Therefore, we divide pixar by Nts_per_plate for correction.
 
                 if control_params.effect.ace == "gauss":
