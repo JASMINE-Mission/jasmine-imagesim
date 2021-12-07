@@ -188,19 +188,20 @@ if __name__ == '__main__':
     # Ace simulation. ##############################################
     nace = control_params.ace_control.get('nace')
     tace = control_params.ace_control.get('tace')
+    print("ACE calculation mode: {}".format(control_params.effect.ace))
     if control_params.effect.ace == "real":
-        print("Making ACE (X)...")
+        print("  Making ACE (X)...")
         rg_acex = np.random.default_rng(control_params.ace_control.get('acex_seed'))
         acex, psdx = calc_ace(rg_acex, nace, tace, ace_params)
         # the standard deviation of acex is normalized to unity.
 
-        print("Making ACE (Y)...")
+        print("  Making ACE (Y)...")
         rg_acey = np.random.default_rng(control_params.ace_control.get('acey_seed'))
         acey, psdy = calc_ace(rg_acey, nace, tace, ace_params)
         # the standard deviation of acey is normalized to unity.
     else: # dummy/gauss mode
-        print("ACE simulation is skipped.")
-        print("Generate fake ACE(X) and ACE(Y)...")
+        print("  ACE simulation is skipped.")
+        print("  Generate fake ACE(X) and ACE(Y)...")
         acex = calc_dummy_ace(np.random, nace, tace, ace_params)
         acey = calc_dummy_ace(np.random, nace, tace, ace_params)
 
