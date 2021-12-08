@@ -199,7 +199,7 @@ if __name__ == '__main__':
         rg_acey = np.random.default_rng(control_params.ace_control.get('acey_seed'))
         acey, psdy = calc_ace(rg_acey, nace, tace, ace_params)
         # the standard deviation of acey is normalized to unity.
-    else: # dummy/gauss mode
+    else: # none/gauss mode
         print("  ACE simulation is skipped.")
         print("  Generate fake ACE(X) and ACE(Y)...")
         acex = calc_dummy_ace(np.random, nace, tace, ace_params)
@@ -328,7 +328,7 @@ if __name__ == '__main__':
                                   /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
 
-            # In dummy/gauss mode, we copy the single-shot image to make the full-movie cube.
+            # In none/gauss mode, we copy the single-shot image to make the full-movie cube.
             if control_params.effect.ace != "real":
                 upixar=pixar[:,:,0]
                 nxt,nyt=np.shape(upixar)
@@ -336,7 +336,7 @@ if __name__ == '__main__':
                 pixar=pixar/Nts_per_plate
                 # In the above process to make pixar, Nts_per_plate is multiplied
                 # to the result of simpix to make the units of pixar to be e/pix/dtace.
-                # But, in dummy/gauss mode, the scaling is not correct for simulating a single-shot image.
+                # But, in none/gauss mode, the scaling is not correct for simulating a single-shot image.
                 # Therefore, we divide pixar by Nts_per_plate for correction.
 
                 if control_params.effect.ace == "gauss":
