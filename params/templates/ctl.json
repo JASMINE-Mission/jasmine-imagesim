@@ -8,8 +8,8 @@
     "title": "simulate a physically realistic point spread function",
     "val": true },
   "ace": {
-    "title": "incorporate the attitude control error (dummy/gauss/real)",
-    "val": "dummy" },
+    "title": "incorporate the attitude control error (none/gauss/real)",
+    "val": "none" },
   "flat_interpix": {
     "title": "incorporate the interpix flat non-uniformity",
     "val": true },
