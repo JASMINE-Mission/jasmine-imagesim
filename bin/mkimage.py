@@ -258,6 +258,14 @@ if __name__ == '__main__':
     fp_scale = fp_cellsize_rad * 3600.*180./np.pi           # arcsec/fp-cell.
     psfscale = fp_scale/detpix_scale                        # det-pix/fp-cell.
 
+    ## In the gauss-ace mode, apply gauss filter to psf, here.
+    if control_params.effect.ace == "gauss":
+        if acex_std != acey_std:
+            print("In the current gauss-ace mode, acex_std must be equal to acey_std. Sorry!")
+            exit(-1)
+        else:
+            psf = ndimage.gaussian_filter(psf, sigma=acex_std/fp_scale)
+
 
     # Making image. ################################################
     uniform_flat_interpix = np.ones_like(detector.flat.interpix)
@@ -338,12 +346,6 @@ if __name__ == '__main__':
                 # But, in dummy/gauss mode, the scaling is not correct for simulating a single-shot image.
                 # Therefore, we divide pixar by Nts_per_plate for correction.
 
-                if control_params.effect.ace == "gauss":
-                    if acex_std != acey_std:
-                        print("In the current gauss-ace mode, acex_std must be equal to acey_std. Sorry!")
-                        exit(-1)
-                    else:
-                        pixar = ndimage.gaussian_filter(pixar, sigma=acex_std/detpix_scale)
 
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
