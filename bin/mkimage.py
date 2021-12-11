@@ -188,19 +188,20 @@ if __name__ == '__main__':
     # Ace simulation. ##############################################
     nace = control_params.ace_control.get('nace')
     tace = control_params.ace_control.get('tace')
+    print("ACE calculation mode: {}".format(control_params.effect.ace))
     if control_params.effect.ace == "real":
-        print("Making ACE (X)...")
+        print("  Making ACE (X)...")
         rg_acex = np.random.default_rng(control_params.ace_control.get('acex_seed'))
         acex, psdx = calc_ace(rg_acex, nace, tace, ace_params)
         # the standard deviation of acex is normalized to unity.
 
-        print("Making ACE (Y)...")
+        print("  Making ACE (Y)...")
         rg_acey = np.random.default_rng(control_params.ace_control.get('acey_seed'))
         acey, psdy = calc_ace(rg_acey, nace, tace, ace_params)
         # the standard deviation of acey is normalized to unity.
-    else: # dummy/gauss mode
-        print("ACE simulation is skipped.")
-        print("Generate fake ACE(X) and ACE(Y)...")
+    else: # none/gauss mode
+        print("  ACE simulation is skipped.")
+        print("  Generate fake ACE(X) and ACE(Y)...")
         acex = calc_dummy_ace(np.random, nace, tace, ace_params)
         acey = calc_dummy_ace(np.random, nace, tace, ace_params)
 
@@ -335,7 +336,7 @@ if __name__ == '__main__':
                                   /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
 
-            # In dummy/gauss mode, we copy the single-shot image to make the full-movie cube.
+            # In none/gauss mode, we copy the single-shot image to make the full-movie cube.
             if control_params.effect.ace != "real":
                 upixar=pixar[:,:,0]
                 nxt,nyt=np.shape(upixar)
@@ -343,7 +344,7 @@ if __name__ == '__main__':
                 pixar=pixar/Nts_per_plate
                 # In the above process to make pixar, Nts_per_plate is multiplied
                 # to the result of simpix to make the units of pixar to be e/pix/dtace.
-                # But, in dummy/gauss mode, the scaling is not correct for simulating a single-shot image.
+                # But, in none/gauss mode, the scaling is not correct for simulating a single-shot image.
                 # Therefore, we divide pixar by Nts_per_plate for correction.
 
 
