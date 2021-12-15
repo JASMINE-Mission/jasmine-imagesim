@@ -182,7 +182,6 @@ if __name__ == '__main__':
     # these values are for an object with an apparent Hw mag of 0 mag.
 
     if control_params.effect.psf is True:
-        ## Currently, only one PSF.
         if control_params.effect.wfe != 'fringe37':
             print("Calculating PSF...")
             psf = calc_psf(wfe, wfe.shape[0],
