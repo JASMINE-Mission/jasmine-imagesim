@@ -41,6 +41,7 @@ from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
 from jis.pixsim.addnoise import addnoise
+from scipy import ndimage
 import matplotlib.pylab as plt
 
 # Command line interface
@@ -187,19 +188,20 @@ if __name__ == '__main__':
     # Ace simulation. ##############################################
     nace = control_params.ace_control.get('nace')
     tace = control_params.ace_control.get('tace')
-    if control_params.effect.ace is True:
-        print("Making ACE (X)...")
+    print("ACE calculation mode: {}".format(control_params.effect.ace))
+    if control_params.effect.ace == "real":
+        print("  Making ACE (X)...")
         rg_acex = np.random.default_rng(control_params.ace_control.get('acex_seed'))
         acex, psdx = calc_ace(rg_acex, nace, tace, ace_params)
         # the standard deviation of acex is normalized to unity.
 
-        print("Making ACE (Y)...")
+        print("  Making ACE (Y)...")
         rg_acey = np.random.default_rng(control_params.ace_control.get('acey_seed'))
         acey, psdy = calc_ace(rg_acey, nace, tace, ace_params)
         # the standard deviation of acey is normalized to unity.
-    else:
-        print("ACE simulation is skipped.")
-        print("Generate fake ACE(X) and ACE(Y)...")
+    else: # none/gauss mode
+        print("  ACE simulation is skipped.")
+        print("  Generate fake ACE(X) and ACE(Y)...")
         acex = calc_dummy_ace(np.random, nace, tace, ace_params)
         acey = calc_dummy_ace(np.random, nace, tace, ace_params)
 
@@ -257,6 +259,14 @@ if __name__ == '__main__':
     fp_scale = fp_cellsize_rad * 3600.*180./np.pi           # arcsec/fp-cell.
     psfscale = fp_scale/detpix_scale                        # det-pix/fp-cell.
 
+    ## In the gauss-ace mode, apply gauss filter to psf, here.
+    if control_params.effect.ace == "gauss":
+        if acex_std != acey_std:
+            print("In the current gauss-ace mode, acex_std must be equal to acey_std. Sorry!")
+            exit(-1)
+        else:
+            psf = ndimage.gaussian_filter(psf, sigma=acex_std/fp_scale)
+
 
     # Making image. ################################################
     uniform_flat_interpix = np.ones_like(detector.flat.interpix)
@@ -302,7 +312,7 @@ if __name__ == '__main__':
             iend   = (iplate+1)*Nts_per_plate
             # In no-ace mode, we make a single image with simpix to reduce the calculation time.
             # Below is a trick for that. After executing simpix, we will copy it to make Nts_per_plate shots.
-            if not control_params.effect.ace:
+            if control_params.effect.ace != "real":
                 iend=istart+1
             
             theta = np.copy(theta_full[:,istart:iend])         # Displacement from the initial position.
@@ -326,16 +336,17 @@ if __name__ == '__main__':
                                   /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
 
-            # In no-ace mode, we copy the single-shot image to make the full-movie cube.
-            if not control_params.effect.ace:
+            # In none/gauss mode, we copy the single-shot image to make the full-movie cube.
+            if control_params.effect.ace != "real":
                 upixar=pixar[:,:,0]
                 nxt,nyt=np.shape(upixar)
                 pixar=upixar[:,:,np.newaxis]+np.zeros((nxt,nyt,Nts_per_plate))
                 pixar=pixar/Nts_per_plate
                 # In the above process to make pixar, Nts_per_plate is multiplied
                 # to the result of simpix to make the units of pixar to be e/pix/dtace.
-                # But, in no-ace mode, the scaling is not correct for simulating a single-shot image. 
+                # But, in none/gauss mode, the scaling is not correct for simulating a single-shot image.
                 # Therefore, we divide pixar by Nts_per_plate for correction.
+
 
             # magnitude scaling.
             pixar = pixar * 10.**(mag/(-2.5))
