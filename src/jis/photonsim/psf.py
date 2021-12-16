@@ -91,8 +91,8 @@ def calc_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
 
         # ここで、 WFE map を波長に反比例させて大きさをかえてから、
         # 位相成分として複素数化して data に掛ける
-        wfec.real = np.cos(wfer/WLm)
-        wfec.imag = np.sin(wfer/WLm)
+        wfec.real = np.cos(wfer/WLm*2.*np.pi)
+        wfec.imag = np.sin(wfer/WLm*2.*np.pi)
         i3 = int(N/2-wN/2)
         i4 = int(N/2+wN/2)
         data[i3:i4,i3:i4] = data[i3:i4,i3:i4] * wfec

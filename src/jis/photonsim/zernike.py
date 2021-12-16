@@ -125,7 +125,7 @@ def FringeID37():
     The Zernike polynomials are defined with radial indices n
     and azimuthal indices m. The Fringe convention defines
     an indexing rule where an index j is defined with n and m as
-        j = (1+(n+|m|)/2)^2 - 2|m| + (1-sgn(m))/2.
+        j = (1+(n+|m|)/2)^2 - 2|m| + |sgn(m)|*(1-sgn(m))/2.
     In some softwares, wavefront patterns are described with
     the first 37 coefficients in the Fringe convention (j=1-37).
     This function returns the 37 combinations of (j, n, m).
@@ -142,8 +142,8 @@ def FringeID37():
     arr = []
     for n in range(0, 13):
         for m in range(-n, n+1, 2):
-            j = (1+(n+np.abs(m))/2)**2-2*np.abs(m)+(1-np.sign(m))/2 # Fringe indexing.
-            arr.append([int(j), n, m])
+            j = (1+(n+np.abs(m))/2)**2-2*np.abs(m)+np.abs(np.sign(m))*(1-np.sign(m))/2 # Fringe indexing.
+            arr.append([j, n, m])
     arr = np.array(list(map(tuple, arr)), dtype=[('j','<i4'),('n','<i4'),('m','<i4')])
     indices = np.sort(arr, order='j')[0:37] # Last term should be (37, 12, 0) ???
 

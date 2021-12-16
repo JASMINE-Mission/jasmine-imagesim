@@ -33,7 +33,7 @@ import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
 from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Variability, Drift
-from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe
+from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fringe37
 from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
 from jis.photonsim.psf import calc_psf, calc_dummy_psf
@@ -133,9 +133,12 @@ if __name__ == '__main__':
     table_starplate = table_starplate[pos]
 
 
-    # Making random wfe. ###########################################
-    if control_params.effect.wfe is True:
-        print("calculate WFE...")
+    # Making wfe. ##################################################
+    if control_params.effect.wfe == 'dummy':
+        print("WFE simulation is skipped (making dummy).")
+        wfe = calc_dummy_wfe(telescope.epd, 'dummy.json')
+    elif control_params.effect.wfe == 'random':
+        print("calculate random WFE...")
         wp  = control_params.wfe_control
         wfe_amplitudes = wfe_model_z(
             np.random, wp['zernike_nmax'], wp['reference_wl'],
@@ -147,9 +150,21 @@ if __name__ == '__main__':
 
         # Making wfe map...
         wfe = calc_wfe(telescope.epd, filename_wfejson)
+    elif control_params.effect.wfe == 'fringe37':
+        print("calculate WFE with fringe37 params...")
+        wp = control_params.wfe_control
+
+        # Making position array (in deg).
+        positions = np.array([table_starplate['x pixel']-1.,\
+                              table_starplate['y pixel']-1.]).T*detpix_scale/3600.
+
+        # Making wfe map...
+        wfe = calc_wfe_fringe37(telescope.epd, wp['fringe37_filename'],\
+                                wp['reference_wl'], positions)
     else:
-        print("WFE simulation is skipped.")
-        wfe = calc_dummy_wfe(telescope.epd, 'dummy.json')
+        print("WFE-calc method '{}' is not supported.".format(\
+               control_params.effect.wfe))
+        exit()
 
 
     # Making PSFs ##################################################
@@ -167,13 +182,23 @@ if __name__ == '__main__':
     # these values are for an object with an apparent Hw mag of 0 mag.
 
     if control_params.effect.psf is True:
-        ## Currently, only one PSF.
-        print("Calculating PSF...")
-        psf = calc_psf(wfe, wfe.shape[0],
-                       wl_e_rate, e_rate, total_e_rate,
-                       telescope.total_area, telescope.aperture,
-                       control_params.M_parameter, telescope.aperture.shape[0],
-                       control_params.fN_parameter)
+        if control_params.effect.wfe != 'fringe37':
+            print("Calculating PSF...")
+            psf = calc_psf(wfe, wfe.shape[0],
+                           wl_e_rate, e_rate, total_e_rate,
+                           telescope.total_area, telescope.aperture,
+                           control_params.M_parameter, telescope.aperture.shape[0],
+                           control_params.fN_parameter)
+        else:
+            psf = []
+            for i in range(wfe.shape[0]):
+                print("Calculating PSF ({}/{})...".format(i, wfe.shape[0]))
+                psf.append(calc_psf(wfe[i], wfe[i].shape[0],\
+                                    wl_e_rate, e_rate, total_e_rate,\
+                                    telescope.total_area, telescope.aperture,\
+                                    control_params.M_parameter, telescope.aperture.shape[0],\
+                                    control_params.fN_parameter))
+            psf = np.array(psf)
         # psf is that of an object which has the JH color of the set value and Hw=0.
         # The unit is e/sec/pix.
     else:
@@ -253,8 +278,6 @@ if __name__ == '__main__':
         print("N_ace_data          : {}".format(theta_full.shape[1]))
         sys.exit(-1)
 
-    psfcenter = (np.array(np.shape(psf))-1.0)*0.5 #psf center in the unit of fp-cell
-
     fp_cellsize_rad = (1./control_params.M_parameter)*1.e-3 # in rad/fp-cell.
     fp_scale = fp_cellsize_rad * 3600.*180./np.pi           # arcsec/fp-cell.
     psfscale = fp_scale/detpix_scale                        # det-pix/fp-cell.
@@ -279,7 +302,8 @@ if __name__ == '__main__':
     pixcube_global = np.round(pixcube_global/detector.gain) # in adu/pix/plate.
 
     ## Making data around each star.
-    for line in table_starplate:
+    for i_star in range(np.size(table_starplate)):
+        line = table_starplate[i_star]
         print("StarID: {}".format(line['star index']))
 
         # Position setting.
@@ -326,13 +350,21 @@ if __name__ == '__main__':
             #   Output: array of images in each time bin in the exposure.
             #   When the PSF is given in e/fp-cell/sec,
             #   simpix/(psfscale*psfscale) is in e/pix/(1./Nts_per_plate sec).
+
             if control_params.effect.flat_intrapix:
-                pixar = sp.simpix(theta, interpix_local, detector.flat.intrapix,\
+                flat_intrapix = detector.flat.intrapix
+            else:
+                flat_intrapix = uniform_flat_intrapix
+
+            if control_params.effect.wfe != 'fringe37':
+                psfcenter = (np.array(np.shape(psf))-1.0)*0.5 #psf center in the unit of fp-cell
+                pixar = sp.simpix(theta, interpix_local, flat_intrapix,\
                                   psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
                                   /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             else:
-                pixar = sp.simpix(theta, interpix_local, uniform_flat_intrapix,\
-                                  psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
+                psfcenter = (np.array(np.shape(psf)[1:])-1.0)*0.5 #psf center in the unit of fp-cell
+                pixar = sp.simpix(theta, interpix_local, flat_intrapix,\
+                                  psfarr=psf[i_star], psfcenter=psfcenter, psfscale=psfscale)\
                                   /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
 

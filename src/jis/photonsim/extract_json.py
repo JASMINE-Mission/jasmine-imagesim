@@ -344,7 +344,7 @@ class ControlParams:
         wfe = {}
         wfe_control = js.get('WFEcontrol')
         wfe_items = [
-            'zernike_nmax', 'zernike_even', 'zernike_odd', 'reference_wl']
+            'zernike_nmax', 'zernike_even', 'zernike_odd', 'fringe37_filename', 'reference_wl']
         if wfe_control:
             for item in wfe_items:
                 wfe[item] = wfe_control[item]['val']
