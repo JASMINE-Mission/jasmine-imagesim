@@ -155,8 +155,11 @@ if __name__ == '__main__':
         wp = control_params.wfe_control
 
         # Making position array (in deg).
-        positions = np.array([table_starplate['x pixel']-1.,\
-                              table_starplate['y pixel']-1.]).T*detpix_scale/3600.
+        positions = np.array([table_starplate['x pixel']-1.+detector.offset_x_mm/detector.pixsize/1.e-3,\
+                              table_starplate['y pixel']-1.+detector.offset_y_mm/detector.pixsize/1.e-3]).T\
+                    *detpix_scale/3600.
+        ## detector.offset_[x|y]_mm is the position of (0, 0) on the telescope focal plane in mm.
+        ## detector.pixsize is in um. 
 
         # Making wfe map...
         wfe = calc_wfe_fringe37(telescope.epd, wp['fringe37_filename'],\
