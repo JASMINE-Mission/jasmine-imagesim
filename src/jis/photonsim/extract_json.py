@@ -219,9 +219,9 @@ class Detector:
                 nrow_ch    = js['readparams']['nrow_ch']['val'],
                 npix_pre   = js['readparams']['npix_pre']['val'],
                 npix_post  = js['readparams']['npix_post']['val'],
-                t_overhead = js['readparams']['t_overhead']['val']))
+                t_overhead = js['readparams']['t_overhead']['val'])
             offset_x_mm = offset_x_mm
-            offset_y_mm = offset_y_mm
+            offset_y_mm = offset_y_mm)
         return detector
 
 
