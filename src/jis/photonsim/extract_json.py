@@ -197,8 +197,8 @@ class Detector:
         interpix_sigma = js['interpix']['stddev']['val']
         intrapix_filex = js['intrapix']['file_x']['val']
         intrapix_filey = js['intrapix']['file_y']['val']
-        offset_x_mm    = js['location']['offset_x']['val'][0]
-        offset_y_mm    = js['location']['offset_y']['val'][0]
+        offset_x_mm    = js['location']['offset_x']['val']
+        offset_y_mm    = js['location']['offset_y']['val']
 
         detector = Detector(
             npix       = npix,

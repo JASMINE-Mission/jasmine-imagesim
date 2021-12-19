@@ -159,7 +159,7 @@ if __name__ == '__main__':
                               table_starplate['y pixel']-1.+detector.offset_y_mm/detector.pixsize/1.e-3]).T\
                     *detpix_scale/3600.
         ## detector.offset_[x|y]_mm is the position of (0, 0) on the telescope focal plane in mm.
-        ## detector.pixsize is in um. 
+        ## detector.pixsize is in um.
 
         # Making wfe map...
         wfe = calc_wfe_fringe37(telescope.epd, wp['fringe37_filename'],\
