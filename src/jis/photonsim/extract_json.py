@@ -155,6 +155,8 @@ class Detector:
         qe (QuantumEfficiency)   : Quantum efficiency.
         persistence (Persistence): Persistence parameters consists of tau and rho.
         readparams (ReadParams)  : Detector readout parameters.
+        offset_x_mm (float)      : Detector location offset in x direction in mm.
+        offset_y_mm (float)      : Detector location offset in y direction in mm.
     """
     npix       : int
     idark      : float
@@ -167,6 +169,8 @@ class Detector:
     qe         : QuantumEfficiency
     persistence: Persistence
     readparams : ReadParams
+    offset_x_mm: float
+    offset_y_mm: float
 
 
     @classmethod
@@ -193,6 +197,8 @@ class Detector:
         interpix_sigma = js['interpix']['stddev']['val']
         intrapix_filex = js['intrapix']['file_x']['val']
         intrapix_filey = js['intrapix']['file_y']['val']
+        offset_x_mm    = js['location']['offset_x']['val']
+        offset_y_mm    = js['location']['offset_y']['val']
 
         detector = Detector(
             npix       = npix,
@@ -213,7 +219,9 @@ class Detector:
                 nrow_ch    = js['readparams']['nrow_ch']['val'],
                 npix_pre   = js['readparams']['npix_pre']['val'],
                 npix_post  = js['readparams']['npix_post']['val'],
-                t_overhead = js['readparams']['t_overhead']['val']))
+                t_overhead = js['readparams']['t_overhead']['val']),
+            offset_x_mm = offset_x_mm,
+            offset_y_mm = offset_y_mm)
         return detector
 
 
