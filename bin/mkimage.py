@@ -443,7 +443,7 @@ if __name__ == '__main__':
     hdu.header["COBS"]    = telescope.cobs
     hdu.header["STYPE"]   = telescope.spider.type
     hdu.header["STEL"]    = telescope.total_area  # total area in m^2
-    hdu.list = pf.HDUList([hdu])
+    hdulist = pf.HDUList([hdu])
     hdulist.writeto(filename_aperture, overwrite=overwrite)
 
     hdu = pf.PrimaryHDU(acex)
