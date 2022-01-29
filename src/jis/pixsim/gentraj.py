@@ -1,4 +1,4 @@
-"""Generating trajectory
+"""gentraj module generates trajectories on the detector plane
 
 """
 

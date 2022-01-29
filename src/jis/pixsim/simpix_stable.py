@@ -21,7 +21,24 @@ def genimg_donut(spixdim):
     
     return source_module
 
-def genimg_custom(psfdim, spixdim, psfcenter, psfscale, Nsubtilex, Nsubtiley):        
+def genimg_custom(psfdim, spixdim, psfcenter, psfscale, Nsubtilex, Nsubtiley):
+    """
+
+    Summary:
+       Return the source module that generates images using a custom PSF, whose body is pixlight_custom.h 
+
+    Args:
+       psfdim: 
+       spixdim: 
+       psfcenter: 
+       psfscale: 
+       Nsubtilex: 
+       Nsubtiley: 
+
+    Returns:
+       source_module
+
+    """
     cudacode=\
     "    #define NMXCACHE "+str(spixdim[0]*spixdim[1]+Nsubtilex*Nsubtiley)+"\n"\
     +"    #define NNSUBTILE "+str(Nsubtilex*Nsubtiley)+"\n"\
