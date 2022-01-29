@@ -4,6 +4,7 @@ import pycuda.compiler
 from pycuda.compiler import SourceModule
 import time
 import numpy as np
+
 def genimg_donut(spixdim):
     cudacode=\
     "    #define NMXCACHE "+str(spixdim[0]*spixdim[1])+"\n"\
@@ -101,15 +102,25 @@ def set_simpix(theta,interpix,intrapix):
            pixdim, spixdim, ntime, pixlc
 
 def pix2psfpix(pixpos,pixcenter,psfcenter,psfscale):
+    """
+    Summary:
+        pixel to PSF pixel
+
     # psfpos [fp-cell]: psfarr pixel position as a function of (detector) pixel position (pixpos [pix])
     # pixcenter: the detector center position [pix,pix]
     # psfscale [pix/fp-cell]
+    """
     
     psfpos=psfcenter + (pixpos - pixcenter)/psfscale
     return psfpos
 
 def set_custom(theta,psfarr,psfcenter,psfscale,pixdim,spixdim):
-    import sys
+    """
+    Summary:
+        This function makes preparations for simpix for custom PSF.
+        (Gloabl memory allocation etc.)
+
+    """
 
     # psf array
     fpsfarr = (psfarr.flatten()).astype(np.float32)
@@ -240,9 +251,6 @@ def emurate_pixlight_custom(theta_instant,psfarr,pixdim,spixdim,subtilex,subtile
     sys.exit()
     return allpsf
     #------------------------------------------------------
-
-
-
 
 def simpix(theta, interpix, intrapix, psfarr=None, psfcenter=None, psfscale=None):
   
