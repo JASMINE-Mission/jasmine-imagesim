@@ -251,12 +251,15 @@ def read_FringeZernike37(filename, scale):
     # Loading data.
     df = pd.read_csv(filename, index_col=0, header=None).T
 
-    # Grid data.
+    # Load grid data.
     xan = np.array(df['xan'])
     yan = np.array(df['yan'])
-    idx = np.argsort(xan+yan*1e3)
+    # RectBivariateSpline requires regular grid points.
+    # The index `idx` is used to rearrange the Zernike coefficients
+    # to the standard Python array order.
     xtic = np.sort(np.unique(xan))
     ytic = np.sort(np.unique(yan))
+    idx = np.argsort(xan+yan*1e3)
     ny,nx = ytic.size,xtic.size
 
     # Making and storing interpolation functions.
