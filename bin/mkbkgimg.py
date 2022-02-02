@@ -316,22 +316,27 @@ if __name__ == '__main__':
     line = table_starplate[0]
     xp0=line['x pixel']
     yp0=line['x pixel']
+    mag0=line['Hwmag']
     multipsf=np.zeros_like(psf)
-
+    
     for i_star in range(np.size(table_starplate)):
         line = table_starplate[i_star]
         print('StarID: {}'.format(line['star index']))
         xp=line['x pixel']
         yp=line['y pixel']
-        rat=fp_scale/detpix_scale
-        deltax_psf=(xp-xp0)*rat #relative x position in fp-cell to the fiducial star
-        deltay_psf=(yp-yp0)*rat #relative y position in fp-cell to the fiducial star
+        dx_fp=(xp-xp0)/psfscale #relative x position in fp-cell to the fiducial star
+        dy_fp=(yp-yp0)/psfscale #relative y position in fp-cell to the fiducial star
+        mag=line['Hwmag']
 
+        ## WARNING the following is temporary, need fix, slacking
+        idx_fp=int(dx_fp)
+        idy_fp=int(dy_fp)
+        relative_intensity=10**(-(mag-mag0)/2.5)
+        multipsf=multipsf+relative_intensity*np.roll(psf, (idx_fp,idy_fp), axis=(0,1))
 
-        
-        #    import matplotlib.pyplot as plt
-        #    plt.imshow(psf)
-        #    plt.show()
+    import matplotlib.pyplot as plt
+    plt.imshow(multipsf)
+    plt.show()
     sys.exit()
 
         
