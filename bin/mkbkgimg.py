@@ -309,15 +309,35 @@ if __name__ == '__main__':
     # in adu/pix/plate.
     pixcube_global = np.round(pixcube_global/detector.gain)
 
-    # Making multipsf. under development
+    
+    # Making multipsf under development
+    i_star_fid=0 # fiducial star
+
+    line = table_starplate[0]
+    xp0=line['x pixel']
+    yp0=line['x pixel']
+    multipsf=np.zeros_like(psf)
+
     for i_star in range(np.size(table_starplate)):
         line = table_starplate[i_star]
         print('StarID: {}'.format(line['star index']))
-    
+        xp=line['x pixel']
+        yp=line['y pixel']
+        rat=fp_scale/detpix_scale
+        deltax_psf=(xp-xp0)*rat #relative x position in fp-cell to the fiducial star
+        deltay_psf=(yp-yp0)*rat #relative y position in fp-cell to the fiducial star
+
+
+        
+        #    import matplotlib.pyplot as plt
+        #    plt.imshow(psf)
+        #    plt.show()
+    sys.exit()
+
+        
     # Making data around each star.
-    for True:
-        i_star=0 # fiducial star
-        line = table_starplate[i_star]
+    if True:
+        line = table_starplate[i_star_fid]
         print('StarID: {}'.format(line['star index']))
 
         # Position setting.
@@ -387,7 +407,7 @@ if __name__ == '__main__':
                 # psf center in the unit of fp-cell
                 psfcenter = (np.array(np.shape(psf)[1:])-1.0)*0.5
                 pixar = sp.simpix(theta, interpix_local, flat_intrapix,
-                                  psfarr=psf[i_star], psfcenter=psfcenter, psfscale=psfscale)\
+                                  psfarr=multipsf, psfcenter=psfcenter, psfscale=psfscale)\
                     / (psfscale*psfscale)*dtace/(1./Nts_per_plate)
             # pixar is in e/pix/dtace.
 
