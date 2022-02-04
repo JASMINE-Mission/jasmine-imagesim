@@ -256,10 +256,10 @@ def read_FringeZernike37(filename, scale):
     yan = np.array(df['yan'])
     # RectBivariateSpline requires regular grid points.
     # The index `idx` is used to rearrange the Zernike coefficients
-    # to the standard Python array order.
+    # to make the functions compatible with the `interp2d` results.
     xtic = np.sort(np.unique(xan))
     ytic = np.sort(np.unique(yan))
-    idx = np.argsort(xan+yan*1e3)
+    idx = np.argsort(1e3*xan+yan)
     ny,nx = ytic.size,xtic.size
 
     # Making and storing interpolation functions.
