@@ -265,7 +265,7 @@ def read_FringeZernike37(filename, scale):
     # Making and storing interpolation functions.
     functions = {}
     for i in range(1,38):
-        zarr = np.array(df[str(i)])[idx].reshape((ny,nx)) * scale
+        zarr = np.array(df[str(i)])[idx].reshape((nx,ny)) * scale
         functions[i] = RectBivariateSpline(xtic, ytic, zarr, kx=1, ky=1)
 
     return functions
