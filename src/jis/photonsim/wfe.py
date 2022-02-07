@@ -7,7 +7,6 @@ from jis.photonsim import zernike                       # Zernike polynomials fu
 import json
 import pandas as pd
 from scipy.interpolate import RectBivariateSpline
-from functools import cmp_to_key
 
 def calc_wfe(EPD,efile):
     """
@@ -253,19 +252,18 @@ def read_FringeZernike37(filename, scale):
     df = pd.read_csv(filename, index_col=0, header=None).T
 
     # Load grid data.
-    xan = np.array(df['xan'])
-    yan = np.array(df['yan'])
+    grid = np.array(
+        list(map(tuple,df[['xan','yan']].to_numpy())),
+        dtype=[('xan','f8'),('yan','f8')])
     # RectBivariateSpline requires regular grid points.
     # The index `idx` is used to rearrange the Zernike coefficients
     # to make the functions compatible with the `interp2d` results.
     # The elements are arranged in the following order:
-    #   (x1,y1), (x1,y2), ..., (x1,yn), (x2,y1), (x2,y2), ..., (xn,yn)
-    xtic = np.sort(np.unique(xan))
-    ytic = np.sort(np.unique(yan))
-    xyn = [(xy,n) for n,xy in enumerate(np.vstack([xan,yan]).T)]
-    key = cmp_to_key(
-        lambda x,y: x[0][1]-y[0][1] if x[0][0]==y[0][0] else x[0][0]-y[0][0])
-    idx = np.array([z[1] for z in sorted(xyn, key=key)])
+    #   (xtic1,ytic1), (xtic1,ytic2), ..., (xtic1,yticN),
+    #   (xtic2,ytic1), (xtic2,ytic2), ..., (xticn,yticN)
+    xtic = np.sort(np.unique(grid['xan']))
+    ytic = np.sort(np.unique(grid['yan']))
+    idx = np.argsort(grid, order=('xan','yan'))
     ny,nx = ytic.size,xtic.size
 
     # Making and storing interpolation functions.
