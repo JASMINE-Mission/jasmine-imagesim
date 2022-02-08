@@ -6,7 +6,7 @@ from jis import photonsim
 from jis.photonsim import zernike                       # Zernike polynomials functions
 import json
 import pandas as pd
-from scipy.interpolate import interp2d
+from scipy.interpolate import RectBivariateSpline
 
 def calc_wfe(EPD,efile):
     """
@@ -251,14 +251,25 @@ def read_FringeZernike37(filename, scale):
     # Loading data.
     df = pd.read_csv(filename, index_col=0, header=None).T
 
-    # Grid data.
-    xan = df['xan']
-    yan = df['yan']
+    # Load grid data.
+    grid = np.array(
+        list(map(tuple,df[['xan','yan']].to_numpy())),
+        dtype=[('xan','f8'),('yan','f8')])
+    # RectBivariateSpline requires regular grid points.
+    # The index `idx` is used to rearrange the Zernike coefficients
+    # to make the functions compatible with the `interp2d` results.
+    # The elements are arranged in the following order:
+    #   (xtic1,ytic1), (xtic1,ytic2), ..., (xtic1,yticN),
+    #   (xtic2,ytic1), (xtic2,ytic2), ..., (xticn,yticN)
+    xtic = np.sort(np.unique(grid['xan']))
+    ytic = np.sort(np.unique(grid['yan']))
+    idx = np.argsort(grid, order=('xan','yan'))
+    ny,nx = ytic.size,xtic.size
 
     # Making and storing interpolation functions.
     functions = {}
     for i in range(1,38):
-        z = df[str(i)] * scale
-        functions[i] = interp2d(xan, yan, z)
+        zarr = np.array(df[str(i)])[idx].reshape((nx,ny)) * scale
+        functions[i] = RectBivariateSpline(xtic, ytic, zarr, kx=1, ky=1)
 
     return functions
