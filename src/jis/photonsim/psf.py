@@ -153,3 +153,29 @@ def calc_dummy_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     xx,yy = np.meshgrid(arr,arr)
     image = np.exp(-(xx**2+yy**2)/2.0/sigma**2)
     return image/image.sum() * Ntot * Stel
+
+
+def calc_gauss_psf(fwhm, Ntot, Stel, M, fN=520):
+    """
+    This function creates a gaussian PSF image in e-/sec/fp-cell.
+
+    Args:
+        fwhm (float): PSF FWHM (rad).
+        Ntot (float): Total detected photon (electron) rate (e-/s/m^2).
+        Stel (float): Total area of the telescope aperture (m^2).
+        M    (float): Inverse number of the PSF cell scale (mm/um).
+        fN   (int)  : Number of fp-cells of the output psf data (Default: 520).
+
+    Returns:
+        image (ndarray): fN x fN fp-cell array of the psf (e-/s/fp-cell).
+                         The fp-cell scale is (1/M) x 10^-3 rad/fp-cell.
+    """
+    fp_cell_scale = 1.e-3/M # rad/fp-cell.
+
+    fwhm_fp_cell  = fwhm/fp_cell_scale
+    sigma         = fwhm_fp_cell/2./np.sqrt(2.*np.log(2.))
+
+    arr = np.arange(0,fN)-(fN-1.)/2.
+    xx, yy = np.meshgrid(arr, arr)
+    image  = np.exp(-(xx**2.+yy**2.)/2./sigma/sigma)
+    return image/image.sum()*Ntot*Stel
