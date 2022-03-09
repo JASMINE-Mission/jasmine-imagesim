@@ -36,7 +36,7 @@ from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Varia
 from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fringe37
 from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
-from jis.photonsim.psf import calc_psf, calc_dummy_psf
+from jis.photonsim.psf import calc_psf, calc_dummy_psf, calc_gauss_psf
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
 
-    if control_params.effect.psf is True:
+    if control_params.effect.psf == "real":
         if control_params.effect.wfe != 'fringe37':
             print("Calculating PSF...")
             psf = calc_psf(wfe, wfe.shape[0],
@@ -204,7 +204,13 @@ if __name__ == '__main__':
             psf = np.array(psf)
         # psf is that of an object which has the JH color of the set value and Hw=0.
         # The unit is e/sec/pix.
-    else:
+    elif control_params.effect.psf == "gauss":
+        print("Calculating gauss PSF...")
+        psf_fwhm_arcsec = control_params.gaussPSFfwhm
+        psf_fwhm_rad = psf_fwhm_arcsec*np.pi/180./3600.
+        psf = calc_gauss_psf(psf_fwhm_rad, total_e_rate, telescope.total_area,\
+                             control_params.M_parameter, control_params.fN_parameter)
+    elif control_params.effect.dummy == "dummy":
         print("Realistic PSF simulation is skipped.")
         print("Generate fake PSF...")
         psf = calc_dummy_psf(wfe, wfe.shape[0],
