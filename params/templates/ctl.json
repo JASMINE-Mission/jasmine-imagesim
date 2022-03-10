@@ -5,8 +5,8 @@
     "title": "calculation method of the wavefront error (dummy/random/fringe37)",
     "val": "dummy" },
   "psf": {
-    "title": "simulate a physically realistic point spread function",
-    "val": true },
+    "title": "calculation method of the point spread function (gauss/real)",
+    "val": "real" },
   "ace": {
     "title": "incorporate the attitude control error (none/gauss/real)",
     "val": "none" },
@@ -35,6 +35,10 @@
 "dy": {
   "title" :"y difference between psf center and detector pixel center ",
   "val" : 0 },
+"GaussPSFfwhm": {
+  "title": "FWHM of the gaussian PSF (for gauss PSF mode; in arcsec)",
+  "val": 0.69 },
+
 "WFEcontrol": {
   "title": "WFE control parameters.",
   "zernike_nmax": {
