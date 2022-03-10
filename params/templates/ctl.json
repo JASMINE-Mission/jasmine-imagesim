@@ -5,7 +5,7 @@
     "title": "calculation method of the wavefront error (dummy/random/fringe37)",
     "val": "dummy" },
   "psf": {
-    "title": "calculation method of the point spread function (dummy/gauss/real)",
+    "title": "calculation method of the point spread function (gauss/real)",
     "val": "real" },
   "ace": {
     "title": "incorporate the attitude control error (none/gauss/real)",
