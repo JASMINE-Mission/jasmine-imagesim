@@ -36,7 +36,7 @@ from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Varia
 from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fringe37
 from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
-from jis.photonsim.psf import calc_psf, calc_dummy_psf, calc_gauss_psf
+from jis.photonsim.psf import calc_psf, calc_gauss_psf
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
@@ -125,7 +125,7 @@ if __name__ == '__main__':
                 if os.path.exists(filename):
                     print("\"{}\" exists.".format(filename))
                     print("Please set --overwrite option to overwrite it.")
-                    exit()
+                    exit(-1)
 
 
     # Selecting the data for the first plate. ######################
@@ -167,7 +167,7 @@ if __name__ == '__main__':
     else:
         print("WFE-calc method '{}' is not supported.".format(\
                control_params.effect.wfe))
-        exit()
+        exit(-1)
 
 
     # Making PSFs ##################################################
@@ -210,13 +210,9 @@ if __name__ == '__main__':
         psf_fwhm_rad = psf_fwhm_arcsec*np.pi/180./3600.
         psf = calc_gauss_psf(psf_fwhm_rad, total_e_rate, telescope.total_area,\
                              control_params.M_parameter, control_params.fN_parameter)
-    elif control_params.effect.dummy == "dummy":
-        print("Realistic PSF simulation is skipped.")
-        print("Generate fake PSF...")
-        psf = calc_dummy_psf(wfe, wfe.shape[0],
-                       wl_e_rate, e_rate, total_e_rate,
-                       telescope.total_area, telescope.aperture,
-                       control_params.M_parameter, telescope.aperture.shape[0])
+    else:
+        print("The PSF mode '{}' is not supported.".format(control_params.effect.psf))
+        exit(-1)
 
 
     # Ace simulation. ##############################################
