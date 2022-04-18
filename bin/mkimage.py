@@ -32,6 +32,10 @@ import h5py
 import numpy as np
 import astropy.io.ascii as asc
 import astropy.io.fits as pf
+from jis.binutils.setfiles import set_filenames_from_args, set_filenames_output, set_output_from_args, check_output_directory
+from jis.binutils.setcontrol import load_parameters
+from jis.binutils.save import save_outputs
+
 from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Variability, Drift
 from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fringe37
 from jis.photonsim.response import calc_response
@@ -44,88 +48,19 @@ from jis.pixsim.addnoise import addnoise
 from scipy import ndimage
 import matplotlib.pylab as plt
 
+
+
+
 # Command line interface
 if __name__ == '__main__':
-    args = docopt(__doc__)
-
-    # Getting the parameters from command line. ####################
-    dirname_params = ''
-    if args['--pd']:
-        dirname_params = args['--pd']
-
-    filename_starplate = os.path.join(dirname_params, args['--starplate'])
-
-    if args['--var']:
-        filename_varjson   = os.path.join(dirname_params, args['--var'])
-    filename_detjson   = os.path.join(dirname_params, args['--det'])
-    filename_teljson   = os.path.join(dirname_params, args['--tel'])
-    filename_acejson   = os.path.join(dirname_params, args['--ace'])
-    filename_ctljson   = os.path.join(dirname_params, args['--ctl'])
-
-    if args['--dft']:
-        filename_dftjson   = os.path.join(dirname_params, args['--dft'])
-
-    output_format = args['--format']
-    if output_format not in ['platefits', 'fitscube', 'hdfcube']:
-        print("format must be 'platefits', 'fitscube' or 'hdfcube'.")
-        exit(-1)
-
-    dirname_output = '.'
-    if args['--od']:
-        dirname_output = args['--od']
-
-    overwrite = False
-    if args['--overwrite']:
-        overwrite = True
-        
-    # Loading parameters. ##########################################
-    table_starplate = asc.read(filename_starplate)
-    detector        = Detector.from_json(filename_detjson)
-    control_params  = ControlParams.from_json(filename_ctljson)
-    telescope       = Telescope.from_json(filename_teljson)
-    with open(filename_acejson, "r") as f:
-        ace_params = json.load(f)
-    f.close()
+    
+    args = docopt(__doc__)        
+    filenames, dirname_output=set_filenames_from_args(args)
+    table_starplate, detector, control_params, telescope, ace_params = load_parameters(filenames)
+    filenames, output_format, overwrite=set_filenames_output(args,filenames,control_params,dirname_output)
 
     detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi # det. pix. scale in arcsec/pix.
 
-
-    # Setting output filenames. ####################################
-    filename_interpix = os.path.join(dirname_output, "interpix.fits")
-    filename_intrapix = os.path.join(dirname_output, "intrapix.fits")
-    filename_wfejson  = os.path.join(dirname_output, "wfe.json")
-    filename_wfe      = os.path.join(dirname_output, "wfe.fits")
-    filename_aperture = os.path.join(dirname_output, "aperture.fits")
-    filename_psf      = os.path.join(dirname_output, "psf.fits")
-    filename_acex     = os.path.join(dirname_output, "aceX.fits")
-    filename_acey     = os.path.join(dirname_output, "aceY.fits")
-
-    if output_format == 'platefits':
-        filename_images = []
-        for i in range(0, control_params.nplate):
-            filename_images.append(os.path.join(dirname_output, "image{:02d}.fits".format(i)))
-    elif output_format == 'fitscube':
-        filename_images = [os.path.join(dirname_output, "image.fits")]
-    elif output_format == 'hdfcube':
-        filename_images = [os.path.join(dirname_output, "image.h5")]
-
-    filenames_output = [filename_interpix, filename_intrapix,\
-                        filename_wfejson, filename_wfe,\
-                        filename_aperture, filename_psf,\
-                        filename_acex, filename_acey]
-    filenames_output = filenames_output + filename_images
-
-
-    # Checking the output directory. ###############################
-    if not os.path.exists(dirname_output):
-        os.makedirs(dirname_output)
-    else:
-        if overwrite is not True:
-            for filename in filenames_output:
-                if os.path.exists(filename):
-                    print("\"{}\" exists.".format(filename))
-                    print("Please set --overwrite option to overwrite it.")
-                    exit(-1)
 
 
     # Selecting the data for the first plate. ######################
@@ -145,11 +80,11 @@ if __name__ == '__main__':
             wp['zernike_odd'], wp['zernike_even'])
 
         # Saving amplitude data...
-        with open(filename_wfejson, mode='w') as f:
+        with open(filenames["wfejson"], mode='w') as f:
             json.dump(wfe_amplitudes, f, indent=2)
 
         # Making wfe map...
-        wfe = calc_wfe(telescope.epd, filename_wfejson)
+        wfe = calc_wfe(telescope.epd, filenames["wfejson"])
     elif control_params.effect.wfe == 'fringe37':
         print("calculate WFE with fringe37 params...")
         wp = control_params.wfe_control
@@ -242,7 +177,7 @@ if __name__ == '__main__':
 
     # Drift
     if args["--dft"]:
-        dft=Drift.from_json(filename_dftjson)
+        dft=Drift.from_json(filenames["dftjson"])
         dft.compute_drift(dtace,nace)
 
     # Preparation for making image. ################################
@@ -266,10 +201,10 @@ if __name__ == '__main__':
     varsw=False
     if args['--var']:
         #load variability class
-        variability=Variability.from_json(filename_varjson)
+        variability=Variability.from_json(filenames["varjson"])
         #define time array in the unit of day
         tday=(tplate+tscan)*np.array(range(0,control_params.nplate))/3600/24
-        for line in asc.read(filename_starplate):
+        for line in asc.read(filenames["starplate"]):
             varsw, injlc, b=variability.read_var(tday,line['star index'])
             if varsw:
                 plt.plot(tday,injlc)
@@ -408,54 +343,4 @@ if __name__ == '__main__':
                 pixcube[:,:,iplate]
 
 
-    # Saving the outputs. ##########################################
-    if control_params.effect.flat_interpix is True:
-        pf.writeto(filename_interpix, detector.flat.interpix, overwrite=overwrite)
-    else:
-        pf.writeto(filename_interpix, uniform_flat_interpix, overwrite=overwrite)
-    if control_params.effect.flat_interpix is True:
-        pf.writeto(filename_intrapix, detector.flat.intrapix, overwrite=overwrite)
-    else:
-        pf.writeto(filename_intrapix, uniform_flat_intrapix, overwrite=overwrite)
-    pf.writeto(filename_psf, psf, overwrite=overwrite)
-    if output_format == 'hdfcube':
-        with h5py.File(filename_images[0],"w") as f:
-            f.create_group("header")
-            f.create_group("data")
-            f.create_dataset("header/tplate", data=tplate)
-            f.create_dataset("header/unit", data="e-/pix/plate")
-            f.create_dataset("data/pixcube", data=pixcube_global)
-    else:
-        pixcube_global = np.swapaxes(pixcube_global, 0, 2)
-        if output_format == 'platefits':
-            for i in range(0, control_params.nplate):
-                pf.writeto(filename_images[i], pixcube_global[i].astype('int32'), overwrite=overwrite)
-        elif output_format == 'fitscube':
-            pf.writeto(filename_images[0], pixcube_global.astype('int32'), overwrite=overwrite)
-
-    hdu = pf.PrimaryHDU(wfe)
-    hdu.header["WFE-FILE"] = filename_wfejson
-    hdu.header["WFE-EPD"]  = telescope.epd
-    hdulist = pf.HDUList([hdu])
-    hdulist.writeto(filename_wfe, overwrite=overwrite)
-
-    hdu = pf.PrimaryHDU(telescope.aperture)
-    hdu.header["APTFILE"] = filename_teljson
-    hdu.header["EPD"]     = telescope.epd
-    hdu.header["COBS"]    = telescope.cobs
-    hdu.header["STYPE"]   = telescope.spider.type
-    hdu.header["STEL"]    = telescope.total_area  # total area in m^2
-    hdulist = pf.HDUList([hdu])
-    hdulist.writeto(filename_aperture, overwrite=overwrite)
-
-    hdu = pf.PrimaryHDU(acex)
-    hdu.header["ACE-FILE"] = filename_acejson
-    hdu.header["ACE-TOTT"] = control_params.ace_control['tace']
-    hdulist = pf.HDUList([hdu])
-    hdulist.writeto(filename_acex, overwrite=overwrite)
-
-    hdu = pf.PrimaryHDU(acey)
-    hdu.header["ACE-FILE"] = filename_acejson
-    hdu.header["ACE-TOTT"] = control_params.ace_control['tace']
-    hdulist = pf.HDUList([hdu])
-    hdulist.writeto(filename_acey, overwrite=overwrite)
+    save_outputs(filenames, control_params, telescope, detector, psf, pixcube_global, tplate, uniform_flat_interpix, uniform_flat_intrapix, overwrite)
