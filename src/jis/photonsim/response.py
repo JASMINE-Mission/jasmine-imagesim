@@ -31,7 +31,7 @@ AWL = lambda wl , R : EXT_a(wl) + EXT_b(wl)/R
 WL_J = 1.250
 WL_H = 1.644
 
-def calc_response(control_params, telescope, detector)
+def calc_response(control_params, telescope, detector):
     """
     This function calculates the electron rate (e-/s/m^2) detected by SJ
     based on the optics efficiency (EPdefined) and the quantum efficiency (QEdet).
@@ -96,7 +96,7 @@ def calc_response(control_params, telescope, detector)
     WLdefined = telescope.opt_efficiency.wavelength
     EPdefined = telescope.opt_efficiency.efficiency
     WLshort = np.min(telescope.opt_efficiency.wavelength)
-    WLlong  = np.max(telescope.opt_efficiency.wavelength),
+    WLlong  = np.max(telescope.opt_efficiency.wavelength)
     WLdet = detector.qe.wl
     QEdet =  detector.qe.val
     

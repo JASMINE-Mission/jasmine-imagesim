@@ -1,6 +1,8 @@
 import numpy as np
 import json
 from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fringe37
+from jis.photonsim.psf import calc_psf, calc_gauss_psf
+from jis.photonsim.response import calc_response
 
 def run_wfe(control_params, telescope):
     """ Making wfe. 
@@ -48,3 +50,51 @@ def run_wfe(control_params, telescope):
         exit(-1)
 
     return wfe
+
+def run_psf(control_params, telescope, detector, wfe):
+    """Making PSF
+
+    Args:
+        control_params: control parameters
+        telescope: telescope object
+        detector: detector object
+        wfe: wavefront error
+
+    Returns:
+        psf
+
+    """
+    # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
+    # these values are for an object with an apparent Hw mag of 0 mag.
+    total_e_rate, wl_e_rate, e_rate = calc_response(control_params, telescope, detector)
+
+    if control_params.effect.psf == "real":
+        if control_params.effect.wfe != 'fringe37':
+            print("Calculating PSF...")
+            psf = calc_psf(wfe, wfe.shape[0],
+                           wl_e_rate, e_rate, total_e_rate,
+                           telescope.total_area, telescope.aperture,
+                           control_params.M_parameter, telescope.aperture.shape[0],
+                           control_params.fN_parameter)
+        else:
+            psf = []
+            for i in range(wfe.shape[0]):
+                print("Calculating PSF ({}/{})...".format(i, wfe.shape[0]))
+                psf.append(calc_psf(wfe[i], wfe[i].shape[0],\
+                                    wl_e_rate, e_rate, total_e_rate,\
+                                    telescope.total_area, telescope.aperture,\
+                                    control_params.M_parameter, telescope.aperture.shape[0],\
+                                    control_params.fN_parameter))
+            psf = np.array(psf)
+        # psf is that of an object which has the JH color of the set value and Hw=0.
+        # The unit is e/sec/pix.
+    elif control_params.effect.psf == "gauss":
+        print("Calculating gauss PSF...")
+        psf_fwhm_arcsec = control_params.gaussPSFfwhm
+        psf_fwhm_rad = psf_fwhm_arcsec*np.pi/180./3600.
+        psf = calc_gauss_psf(psf_fwhm_rad, total_e_rate, telescope.total_area,\
+                             control_params.M_parameter, control_params.fN_parameter)
+    else:
+        print("The PSF mode '{}' is not supported.".format(control_params.effect.psf))
+        exit(-1)
+    return psf

@@ -35,13 +35,10 @@ import astropy.io.fits as pf
 from jis.binutils.setfiles import set_filenames_from_args, set_filenames_output, set_output_from_args, check_output_directory
 from jis.binutils.setcontrol import load_parameters
 from jis.binutils.save import save_outputs
-from jis.binutils.run import run_wfe
+from jis.binutils.run import run_wfe, run_psf
 
 from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Variability, Drift
-from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fringe37
-from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
-from jis.photonsim.psf import calc_psf, calc_gauss_psf
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
@@ -49,71 +46,7 @@ from jis.pixsim.addnoise import addnoise
 from scipy import ndimage
 import matplotlib.pylab as plt
 
-
-
-# Command line interface
-if __name__ == '__main__':
-    
-    args = docopt(__doc__)        
-    filenames, dirname_output=set_filenames_from_args(args)
-    table_starplate, detector, control_params, telescope, ace_params = load_parameters(filenames)
-    filenames, output_format, overwrite=set_filenames_output(args,filenames,control_params,dirname_output)
-    detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi # det. pix. scale in arcsec/pix.
-
-
-
-    # Selecting the data for the first plate. ######################
-    pos = np.where(table_starplate['plate index']==0)
-    table_starplate = table_starplate[pos]
-
-    wfe=run_wfe(control_params, telescope)
-
-
-    # Making PSFs ##################################################
-    ## Currently, only one case of (Rv, JH).
-    Rv = control_params.Rv
-    JH = control_params.JH
-    alpha = control_params.alpha
-    total_e_rate, wl_e_rate, e_rate = \
-    calc_response(control_params, telescope, detector)
-
-    calc_response(Rv, JH, alpha, telescope.opt_efficiency.wavelength, telescope.opt_efficiency.efficiency,
-                      np.min(telescope.opt_efficiency.wavelength), np.max(telescope.opt_efficiency.wavelength),
-                      detector.qe.wl, detector.qe.val)
-    # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
-    # these values are for an object with an apparent Hw mag of 0 mag.
-
-    if control_params.effect.psf == "real":
-        if control_params.effect.wfe != 'fringe37':
-            print("Calculating PSF...")
-            psf = calc_psf(wfe, wfe.shape[0],
-                           wl_e_rate, e_rate, total_e_rate,
-                           telescope.total_area, telescope.aperture,
-                           control_params.M_parameter, telescope.aperture.shape[0],
-                           control_params.fN_parameter)
-        else:
-            psf = []
-            for i in range(wfe.shape[0]):
-                print("Calculating PSF ({}/{})...".format(i, wfe.shape[0]))
-                psf.append(calc_psf(wfe[i], wfe[i].shape[0],\
-                                    wl_e_rate, e_rate, total_e_rate,\
-                                    telescope.total_area, telescope.aperture,\
-                                    control_params.M_parameter, telescope.aperture.shape[0],\
-                                    control_params.fN_parameter))
-            psf = np.array(psf)
-        # psf is that of an object which has the JH color of the set value and Hw=0.
-        # The unit is e/sec/pix.
-    elif control_params.effect.psf == "gauss":
-        print("Calculating gauss PSF...")
-        psf_fwhm_arcsec = control_params.gaussPSFfwhm
-        psf_fwhm_rad = psf_fwhm_arcsec*np.pi/180./3600.
-        psf = calc_gauss_psf(psf_fwhm_rad, total_e_rate, telescope.total_area,\
-                             control_params.M_parameter, control_params.fN_parameter)
-    else:
-        print("The PSF mode '{}' is not supported.".format(control_params.effect.psf))
-        exit(-1)
-
-
+def run_ace(control_params, detector):
     # Ace simulation. ##############################################
     nace = control_params.ace_control.get('nace')
     tace = control_params.ace_control.get('tace')
@@ -134,15 +67,30 @@ if __name__ == '__main__':
         acex = calc_dummy_ace(np.random, nace, tace, ace_params)
         acey = calc_dummy_ace(np.random, nace, tace, ace_params)
 
-    tplate = control_params.tplate
-    tscan = detector.readparams.t_scan
-    dtace = control_params.ace_control['dtace']
-    Nts_per_plate = int((tplate+tscan)/dtace+0.5) # Number of timesteps per a plate.
+    Nts_per_plate = int((control_params.tplate+detector.readparams.t_scan/control_params.ace_control['dtace']+0.5)) # Number of timesteps per a plate.
+    return acex, acey, Nts_per_plate
+
+# Command line interface
+if __name__ == '__main__':
+    
+    args = docopt(__doc__)        
+    filenames, dirname_output=set_filenames_from_args(args)
+    table_starplate, detector, control_params, telescope, ace_params = load_parameters(filenames)
+    filenames, output_format, overwrite=set_filenames_output(args,filenames,control_params,dirname_output)
+    detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi # det. pix. scale in arcsec/pix.
+
+    # Selecting the data for the first plate. ######################
+    pos = np.where(table_starplate['plate index']==0)
+    table_starplate = table_starplate[pos]
+    wfe=run_wfe(control_params, telescope)
+    psf=run_psf(control_params, telescope, detector, wfe)
+    acex, acey, Nts_per_plate=run_ace(control_params, detector)
+
 
     # Drift
     if args["--dft"]:
         dft=Drift.from_json(filenames["dftjson"])
-        dft.compute_drift(dtace,nace)
+        dft.compute_drift(control_params.ace_control['dtace'],nace)
 
     # Preparation for making image. ################################
 
@@ -167,7 +115,7 @@ if __name__ == '__main__':
         #load variability class
         variability=Variability.from_json(filenames["varjson"])
         #define time array in the unit of day
-        tday=(tplate+tscan)*np.array(range(0,control_params.nplate))/3600/24
+        tday=(control_params.tplate+detector.readparams.t_scan)*np.array(range(0,control_params.nplate))/3600/24
         for line in asc.read(filenames["starplate"]):
             varsw, injlc, b=variability.read_var(tday,line['star index'])
             if varsw:
@@ -201,7 +149,7 @@ if __name__ == '__main__':
 
     ## Making sky region.
     pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
-    pixcube_global += detector.idark * tplate
+    pixcube_global += detector.idark * control_params.tplate
     pixcube_global, seed = addnoise(pixcube_global, np.sqrt(2.)*detector.readnoise)
     pixcube_global = np.round(pixcube_global/detector.gain) # in adu/pix/plate.
 
@@ -264,13 +212,13 @@ if __name__ == '__main__':
                 psfcenter = (np.array(np.shape(psf))-1.0)*0.5 #psf center in the unit of fp-cell
                 pixar = sp.simpix(theta, interpix_local, flat_intrapix,\
                                   psfarr=psf, psfcenter=psfcenter, psfscale=psfscale)\
-                                  /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
+                                  /(psfscale*psfscale)*control_params.ace_control['dtace']/(1./Nts_per_plate)
             else:
                 psfcenter = (np.array(np.shape(psf)[1:])-1.0)*0.5 #psf center in the unit of fp-cell
                 pixar = sp.simpix(theta, interpix_local, flat_intrapix,\
                                   psfarr=psf[i_star], psfcenter=psfcenter, psfscale=psfscale)\
-                                  /(psfscale*psfscale)*dtace/(1./Nts_per_plate)
-            # pixar is in e/pix/dtace.
+                                  /(psfscale*psfscale)*control_params.ace_control['dtace']/(1./Nts_per_plate)
+            # pixar is in e/pix/control_params.ace_control['dtace'].
 
             # In none/gauss mode, we copy the single-shot image to make the full-movie cube.
             if control_params.effect.ace != "real":
@@ -279,7 +227,7 @@ if __name__ == '__main__':
                 pixar=upixar[:,:,np.newaxis]+np.zeros((nxt,nyt,Nts_per_plate))
                 pixar=pixar/Nts_per_plate
                 # In the above process to make pixar, Nts_per_plate is multiplied
-                # to the result of simpix to make the units of pixar to be e/pix/dtace.
+                # to the result of simpix to make the units of pixar to be e/pix/control_params.ace_control['dtace'].
                 # But, in none/gauss mode, the scaling is not correct for simulating a single-shot image.
                 # Therefore, we divide pixar by Nts_per_plate for correction.
 
@@ -289,17 +237,17 @@ if __name__ == '__main__':
 
             # variability
             """
-            Curretly, the time resolution should be prepared in the unit of tplate + tscan. We do not support the finest time resolution yet (dtace).
+            Curretly, the time resolution should be prepared in the unit of control_params.tplate + detector.readparams.t_scan. We do not support the finest time resolution yet (control_params.ace_control['dtace']).
             """
             if varsw:
                 pixar=pixar*injlc[iplate]
 
             # Adding dark current (including stray light).
-            dark  = np.ones(shape=pixar.shape) * detector.idark * dtace
+            dark  = np.ones(shape=pixar.shape) * detector.idark * control_params.ace_control['dtace']
             pixar = pixar + dark
 
             # Integrating, adding noise, and quantization.
-            integrated = integrate(pixar, x0_global, y0_global, tplate, dtace, detector)
+            integrated = integrate(pixar, x0_global, y0_global, control_params.tplate, control_params.ace_control['dtace'], detector)
             # integrated is in adu/pix/plate.
             pixcube[:,:,iplate] = integrated
 
@@ -307,4 +255,4 @@ if __name__ == '__main__':
                 pixcube[:,:,iplate]
 
 
-    save_outputs(filenames, output_format, control_params, telescope, detector, wfe, psf, pixcube_global, tplate, uniform_flat_interpix, uniform_flat_intrapix, acex, acey, overwrite)
+    save_outputs(filenames, output_format, control_params, telescope, detector, wfe, psf, pixcube_global, control_params.tplate, uniform_flat_interpix, uniform_flat_intrapix, acex, acey, overwrite)
