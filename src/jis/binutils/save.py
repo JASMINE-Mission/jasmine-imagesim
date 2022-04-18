@@ -2,7 +2,7 @@ import astropy.io.fits as pf
 import numpy as np
 import h5py
 
-def save_outputs(filenames, control_params, telescope, detector, psf, pixcube_global, tplate, uniform_flat_interpix, uniform_flat_intrapix, overwrite):
+def save_outputs(filenames, output_format, control_params, telescope, detector, wfe, psf, pixcube_global, tplate, uniform_flat_interpix, uniform_flat_intrapix, acex, acey, overwrite):
     """ Saving the outputs. 
     """
     if control_params.effect.flat_interpix is True:

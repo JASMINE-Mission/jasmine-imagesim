@@ -35,6 +35,7 @@ import astropy.io.fits as pf
 from jis.binutils.setfiles import set_filenames_from_args, set_filenames_output, set_output_from_args, check_output_directory
 from jis.binutils.setcontrol import load_parameters
 from jis.binutils.save import save_outputs
+from jis.binutils.run import run_wfe
 
 from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Variability, Drift
 from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fringe37
@@ -50,7 +51,6 @@ import matplotlib.pylab as plt
 
 
 
-
 # Command line interface
 if __name__ == '__main__':
     
@@ -58,7 +58,6 @@ if __name__ == '__main__':
     filenames, dirname_output=set_filenames_from_args(args)
     table_starplate, detector, control_params, telescope, ace_params = load_parameters(filenames)
     filenames, output_format, overwrite=set_filenames_output(args,filenames,control_params,dirname_output)
-
     detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi # det. pix. scale in arcsec/pix.
 
 
@@ -67,42 +66,7 @@ if __name__ == '__main__':
     pos = np.where(table_starplate['plate index']==0)
     table_starplate = table_starplate[pos]
 
-
-    # Making wfe. ##################################################
-    if control_params.effect.wfe == 'dummy':
-        print("WFE simulation is skipped (making dummy).")
-        wfe = calc_dummy_wfe(telescope.epd, 'dummy.json')
-    elif control_params.effect.wfe == 'random':
-        print("calculate random WFE...")
-        wp  = control_params.wfe_control
-        wfe_amplitudes = wfe_model_z(
-            np.random, wp['zernike_nmax'], wp['reference_wl'],
-            wp['zernike_odd'], wp['zernike_even'])
-
-        # Saving amplitude data...
-        with open(filenames["wfejson"], mode='w') as f:
-            json.dump(wfe_amplitudes, f, indent=2)
-
-        # Making wfe map...
-        wfe = calc_wfe(telescope.epd, filenames["wfejson"])
-    elif control_params.effect.wfe == 'fringe37':
-        print("calculate WFE with fringe37 params...")
-        wp = control_params.wfe_control
-
-        # Making position array (in deg).
-        positions = np.array([table_starplate['x pixel']-1.+detector.offset_x_mm/detector.pixsize/1.e-3,\
-                              table_starplate['y pixel']-1.+detector.offset_y_mm/detector.pixsize/1.e-3]).T\
-                    *detpix_scale/3600.
-        ## detector.offset_[x|y]_mm is the position of (0, 0) on the telescope focal plane in mm.
-        ## detector.pixsize is in um.
-
-        # Making wfe map...
-        wfe = calc_wfe_fringe37(telescope.epd, wp['fringe37_filename'],\
-                                wp['reference_wl'], positions)
-    else:
-        print("WFE-calc method '{}' is not supported.".format(\
-               control_params.effect.wfe))
-        exit(-1)
+    wfe=run_wfe(control_params, telescope)
 
 
     # Making PSFs ##################################################
@@ -343,4 +307,4 @@ if __name__ == '__main__':
                 pixcube[:,:,iplate]
 
 
-    save_outputs(filenames, control_params, telescope, detector, psf, pixcube_global, tplate, uniform_flat_interpix, uniform_flat_intrapix, overwrite)
+    save_outputs(filenames, output_format, control_params, telescope, detector, wfe, psf, pixcube_global, tplate, uniform_flat_interpix, uniform_flat_intrapix, acex, acey, overwrite)
