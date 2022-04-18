@@ -70,16 +70,16 @@ if __name__ == '__main__':
 
 
     # Making PSFs ##################################################
-    opteff = telescope.opt_efficiency
-    qe = detector.qe
-
     ## Currently, only one case of (Rv, JH).
     Rv = control_params.Rv
     JH = control_params.JH
     alpha = control_params.alpha
     total_e_rate, wl_e_rate, e_rate = \
-        calc_response(Rv, JH, alpha, opteff.wavelength, opteff.efficiency,
-                      np.min(opteff.wavelength), np.max(opteff.wavelength), qe.wl, qe.val)
+    calc_response(control_params, telescope, detector)
+
+    calc_response(Rv, JH, alpha, telescope.opt_efficiency.wavelength, telescope.opt_efficiency.efficiency,
+                      np.min(telescope.opt_efficiency.wavelength), np.max(telescope.opt_efficiency.wavelength),
+                      detector.qe.wl, detector.qe.val)
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
 
