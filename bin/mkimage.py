@@ -35,10 +35,9 @@ import astropy.io.fits as pf
 from jis.binutils.setfiles import set_filenames_from_args, set_filenames_output, set_output_from_args, check_output_directory
 from jis.binutils.setcontrol import load_parameters
 from jis.binutils.save import save_outputs
-from jis.binutils.run import run_wfe, run_psf
+from jis.binutils.run import run_wfe, run_psf, run_ace, init_pix
 
 from jis.photonsim.extract_json import Detector, ControlParams, Telescope, Variability, Drift
-from jis.photonsim.ace import calc_ace, calc_dummy_ace
 from jis.pixsim import readflat as rf
 from jis.pixsim import simpix_stable as sp
 from jis.pixsim.integrate import integrate
@@ -46,29 +45,37 @@ from jis.pixsim.addnoise import addnoise
 from scipy import ndimage
 import matplotlib.pylab as plt
 
-def run_ace(control_params, detector):
-    # Ace simulation. ##############################################
-    nace = control_params.ace_control.get('nace')
-    tace = control_params.ace_control.get('tace')
-    print("ACE calculation mode: {}".format(control_params.effect.ace))
-    if control_params.effect.ace == "real":
-        print("  Making ACE (X)...")
-        rg_acex = np.random.default_rng(control_params.ace_control.get('acex_seed'))
-        acex, psdx = calc_ace(rg_acex, nace, tace, ace_params)
-        # the standard deviation of acex is normalized to unity.
+def get_detpix_scale(telescope,detector):
+    """ det. pix. scale in arcsec/pix.
 
-        print("  Making ACE (Y)...")
-        rg_acey = np.random.default_rng(control_params.ace_control.get('acey_seed'))
-        acey, psdy = calc_ace(rg_acey, nace, tace, ace_params)
-        # the standard deviation of acey is normalized to unity.
-    else: # none/gauss mode
-        print("  ACE simulation is skipped.")
-        print("  Generate fake ACE(X) and ACE(Y)...")
-        acex = calc_dummy_ace(np.random, nace, tace, ace_params)
-        acey = calc_dummy_ace(np.random, nace, tace, ace_params)
+    Returns:
+        detector pixel scale
 
-    Nts_per_plate = int((control_params.tplate+detector.readparams.t_scan/control_params.ace_control['dtace']+0.5)) # Number of timesteps per a plate.
-    return acex, acey, Nts_per_plate
+    """
+    return detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi 
+
+def include_variability(control_params,detector):
+    """ Variablity
+
+    Args:
+        
+
+    """
+    from jis.photonsim.extract_json import Variability
+
+    varsw=False
+    #load variability class
+    variability=Variability.from_json(filenames["varjson"])
+    #define time array in the unit of day
+    tday=(control_params.tplate+detector.readparams.t_scan)*np.array(range(0,control_params.nplate))/3600/24
+    for line in asc.read(filenames["starplate"]):
+        varsw, injlc, b=variability.read_var(tday,line['star index'])
+        if varsw:
+            plt.plot(tday,injlc)
+            plt.savefig("variability_input"+"_"+str(line['star index'])+".png")
+            plt.clf()
+    return variability, tday
+
 
 # Command line interface
 if __name__ == '__main__':
@@ -77,53 +84,21 @@ if __name__ == '__main__':
     filenames, dirname_output=set_filenames_from_args(args)
     table_starplate, detector, control_params, telescope, ace_params = load_parameters(filenames)
     filenames, output_format, overwrite=set_filenames_output(args,filenames,control_params,dirname_output)
-    detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi # det. pix. scale in arcsec/pix.
 
     # Selecting the data for the first plate. ######################
     pos = np.where(table_starplate['plate index']==0)
     table_starplate = table_starplate[pos]
+    
     wfe=run_wfe(control_params, telescope)
     psf=run_psf(control_params, telescope, detector, wfe)
-    acex, acey, Nts_per_plate=run_ace(control_params, detector)
+    acex, acey, Nts_per_plate=run_ace(control_params, detector, ace_params)
 
-
-    # Drift
-    if args["--dft"]:
-        dft=Drift.from_json(filenames["dftjson"])
-        dft.compute_drift(control_params.ace_control['dtace'],nace)
-
-    # Preparation for making image. ################################
-
-    ## Full data of the displacement in detpix.
-    ## (ace[x|y] scaled and converted to detpix)
-    acex_std = control_params.ace_control.get('acex_std')
-    acey_std = control_params.ace_control.get('acey_std')
-    # Setting and plotting full trajectory.
-    if args["--dft"]:
-        theta_full = np.array([acex*acex_std/detpix_scale+dft.drift_theta[0,:], acey*acey_std/detpix_scale+dft.drift_theta[1,:]])
-        plt.plot(acex*acex_std/detpix_scale+dft.drift_theta[0,:], acey*acey_std/detpix_scale+dft.drift_theta[1,:], ".")
-        plt.savefig("theta.png")
-    else:
-        theta_full = np.array([acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
-
-    Npixcube = int((np.max(np.abs(theta_full))+detector.nmargin)*2)
-    pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
-
-    ## Variablity
-    varsw=False
+    detpix_scale = get_detpix_scale(telescope,detector)
+    theta_full, pixdim, Npixcube = init_pix(control_params,detector,acex,acey, detpix_scale,args["--dft"])
+    
     if args['--var']:
-        #load variability class
-        variability=Variability.from_json(filenames["varjson"])
-        #define time array in the unit of day
-        tday=(control_params.tplate+detector.readparams.t_scan)*np.array(range(0,control_params.nplate))/3600/24
-        for line in asc.read(filenames["starplate"]):
-            varsw, injlc, b=variability.read_var(tday,line['star index'])
-            if varsw:
-                plt.plot(tday,injlc)
-                plt.savefig("variability_input"+"_"+str(line['star index'])+".png")
-                plt.clf()
-
-
+        variability, tday = include_variability(control_params,detector)
+        
     if Nts_per_plate*control_params.nplate >= theta_full.shape[1]:
         print("Insufficient time length of ACE data.")
         print("Nts_per_plate*Nplate: {}".format(Nts_per_plate*control_params.nplate))

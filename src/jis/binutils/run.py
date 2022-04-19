@@ -3,6 +3,7 @@ import json
 from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fringe37
 from jis.photonsim.psf import calc_psf, calc_gauss_psf
 from jis.photonsim.response import calc_response
+from jis.photonsim.ace import calc_ace, calc_dummy_ace
 
 def run_wfe(control_params, telescope):
     """ Making wfe. 
@@ -98,3 +99,73 @@ def run_psf(control_params, telescope, detector, wfe):
         print("The PSF mode '{}' is not supported.".format(control_params.effect.psf))
         exit(-1)
     return psf
+
+def run_ace(control_params, detector, ace_params):
+    """Ace (Atitude control error) simulation.
+
+    Args:
+        control_params: control parameters
+        detector: detector object
+        ace_params: ace parameters
+
+    Returns:
+        ace in x-axis, ace in y-axis, the number of time bins per plate
+    """
+    nace = control_params.ace_control.get('nace')
+    tace = control_params.ace_control.get('tace')
+    print("ACE calculation mode: {}".format(control_params.effect.ace))
+    if control_params.effect.ace == "real":
+        print("  Making ACE (X)...")
+        rg_acex = np.random.default_rng(control_params.ace_control.get('acex_seed'))
+        acex, psdx = calc_ace(rg_acex, nace, tace, ace_params)
+        # the standard deviation of acex is normalized to unity.
+
+        print("  Making ACE (Y)...")
+        rg_acey = np.random.default_rng(control_params.ace_control.get('acey_seed'))
+        acey, psdy = calc_ace(rg_acey, nace, tace, ace_params)
+        # the standard deviation of acey is normalized to unity.
+    else: # none/gauss mode
+        print("  ACE simulation is skipped.")
+        print("  Generate fake ACE(X) and ACE(Y)...")
+        acex = calc_dummy_ace(np.random, nace, tace, ace_params)
+        acey = calc_dummy_ace(np.random, nace, tace, ace_params)
+
+    Nts_per_plate = int((control_params.tplate+detector.readparams.t_scan/control_params.ace_control['dtace']+0.5))
+    # Number of timesteps per a plate.
+    return acex, acey, Nts_per_plate
+
+def init_pix(control_params,detector, acex,acey, detpix_scale, driftsw):
+    """ Preparation for making image, Setting and plotting full trajectory.
+
+    Args:
+        control_params: control parameters
+        detector: detector object
+        acex: ACE in x-axis
+        acey: ACE in y-axis
+        detpix_scale: scale of detector pixels 
+        driftsw: bool if True drift included
+
+    Returns:
+        theta_full, pixdim, Npixcube
+
+    """
+
+    if driftsw:
+        from jis.photonsim.extract_json import Drift
+        dft=Drift.from_json(filenames["dftjson"])
+        dft.compute_drift(control_params.ace_control['dtace'],len(acex))
+        
+    ## Full data of the displacement in detpix.
+    ## (ace[x|y] scaled and converted to detpix)
+    acex_std = control_params.ace_control.get('acex_std')
+    acey_std = control_params.ace_control.get('acey_std')
+    if driftsw:
+        theta_full = np.array([acex*acex_std/detpix_scale+dft.drift_theta[0,:], acey*acey_std/detpix_scale+dft.drift_theta[1,:]])
+        plt.plot(acex*acex_std/detpix_scale+dft.drift_theta[0,:], acey*acey_std/detpix_scale+dft.drift_theta[1,:], ".")
+        plt.savefig("theta.png")
+    else:
+        theta_full = np.array([acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
+
+    Npixcube = int((np.max(np.abs(theta_full))+detector.nmargin)*2)
+    pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
+    return theta_full, pixdim, Npixcube
