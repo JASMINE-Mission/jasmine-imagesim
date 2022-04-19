@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.8
 # -*- coding: utf-8 -*-
-"""Make an image
+"""Make an image.
 
 .. code-block:: bash
 
@@ -27,7 +27,6 @@
 
     Note:
         Curretly, the time resolution should be prepared in the unit of control_params.tplate + detector.readparams.t_scan. We do not support the finest time resolution yet (control_params.ace_control['dtace']).
-
 """
 
 from docopt import docopt
@@ -55,77 +54,88 @@ if __name__ == '__main__':
         simpix/(psfscale*psfscale) is in e/pix/(1./Nts_per_plate sec).
 
     """
-    args = docopt(__doc__)        
-    filenames, dirname_output=set_filenames_from_args(args)
-    table_starplate, detector, control_params, telescope, ace_params = load_parameters(filenames)
-    filenames, output_format, overwrite=set_filenames_output(args,filenames,control_params,dirname_output)
+    args = docopt(__doc__)
+    filenames, dirname_output = set_filenames_from_args(args)
+    table_starplate, detector, control_params, telescope, ace_params = load_parameters(
+        filenames)
+    filenames, output_format, overwrite = set_filenames_output(
+        args, filenames, control_params, dirname_output)
 
     # Selecting the data for the first plate. ######################
-    pos = np.where(table_starplate['plate index']==0)
+    pos = np.where(table_starplate['plate index'] == 0)
     table_starplate = table_starplate[pos]
-    
-    wfe=run_wfe(control_params, telescope)
-    psf=run_psf(control_params, telescope, detector, wfe)
-    acex, acey, Nts_per_plate=run_ace(control_params, detector, ace_params)
-    detpix_scale, fp_cellsize_rad, fp_scale, psfscale = get_pixelscales(control_params,telescope,detector)
-    theta_full, pixdim, Npixcube = init_pix(control_params,detector,acex,acey, detpix_scale,args["--dft"])
-    variability=Variability.from_json(filenames["varjson"])
-    tday= get_tday(control_params, detector)
+
+    wfe = run_wfe(control_params, telescope)
+    psf = run_psf(control_params, telescope, detector, wfe)
+    acex, acey, Nts_per_plate = run_ace(control_params, detector, ace_params)
+    detpix_scale, fp_cellsize_rad, fp_scale, psfscale = get_pixelscales(
+        control_params, telescope, detector)
+    theta_full, pixdim, Npixcube = init_pix(
+        control_params, detector, acex, acey, detpix_scale, args['--dft'])
+    variability = Variability.from_json(filenames['varjson'])
+    tday = get_tday(control_params, detector)
 
     check_ace_length(Nts_per_plate, control_params, theta_full)
-    plot_variability(variability,filenames["starplate"],tday)
+    plot_variability(variability, filenames['starplate'], tday)
 
-    if control_params.effect.ace == "gauss":
-        psf=apply_gaussian(psf, acex_std, acey_std, fp_scale)
-        
-    uniform_flat_interpix, uniform_flat_intrapix=uniform_flat(detector)
-    pixcube_global=init_images(control_params,detector)
-    
-    ## Making data around each star.
+    if control_params.effect.ace == 'gauss':
+        psf = apply_gaussian(psf, acex_std, acey_std, fp_scale)
+
+    uniform_flat_interpix, uniform_flat_intrapix = uniform_flat(detector)
+    pixcube_global = init_images(control_params, detector)
+
+    # Making data around each star.
     for i_star, line in enumerate(table_starplate):
-        print("StarID: {}".format(line['star index']))
+        print('StarID: {}'.format(line['star index']))
         mag = line['Hwmag']
-        xc_local, yc_local, x0_global, y0_global, xc_global, yc_global = set_positions(line,Npixcube)
-        interpix_local = make_local_flat(control_params, detector,x0_global, y0_global, pixdim)
+        xc_local, yc_local, x0_global, y0_global, xc_global, yc_global = set_positions(
+            line, Npixcube)
+        interpix_local = make_local_flat(
+            control_params, detector, x0_global, y0_global, pixdim)
 
         # Making a cube containing plate data for a local region (small frame for a local region).
-        pixcube = np.zeros((Npixcube, Npixcube, control_params.nplate))   # Initialize (Axis order: X, Y, Z)
+        # Initialize (Axis order: X, Y, Z)
+        pixcube = np.zeros((Npixcube, Npixcube, control_params.nplate))
 
         # Load variability
-        if args["--var"]:
-            varsw, injlc, b=variability.read_var(tday,line['star index'])
+        if args['--var']:
+            varsw, injlc, b = variability.read_var(tday, line['star index'])
 
-        for iplate in tqdm.tqdm(range(0, control_params.nplate)):         # Loop to take each plate.
+        # Loop to take each plate.
+        for iplate in tqdm.tqdm(range(0, control_params.nplate)):
             # picking temporary trajectory and local position update
-            istart, iend = index_control_trajectory(control_params, iplate, Nts_per_plate)
+            istart, iend = index_control_trajectory(
+                control_params, iplate, Nts_per_plate)
             theta = calc_theta(theta_full, istart, iend, xc_local, yc_local)
 
             if control_params.effect.flat_intrapix:
                 flat_intrapix = detector.flat.intrapix
             else:
                 flat_intrapix = uniform_flat_intrapix
-                
+
             if control_params.effect.wfe != 'fringe37':
                 psfin = psf
-                psfcenter = (np.array(np.shape(psfin))-1.0)*0.5 
+                psfcenter = (np.array(np.shape(psfin))-1.0)*0.5
             else:
-                psfin=psf[i_star]
+                psfin = psf[i_star]
                 psfcenter = (np.array(np.shape(psfin)[1:])-1.0)*0.5
-            
-            pixar = sp.simpix(theta, interpix_local, flat_intrapix,\
-                    psfarr=psfin, psfcenter=psfcenter, psfscale=psfscale)\
-                    /(psfscale*psfscale)*control_params.ace_control['dtace']/(1./Nts_per_plate)
+
+            pixar = sp.simpix(theta, interpix_local, flat_intrapix,
+                              psfarr=psfin, psfcenter=psfcenter, psfscale=psfscale)\
+                / (psfscale*psfscale)*control_params.ace_control['dtace']/(1./Nts_per_plate)
 
             pixar = normalize_pixar(control_params, pixar, mag, Nts_per_plate)
-            
-            if varsw:            
-                pixar = add_varability(pixar,injlc_iplate)
 
-            pixar = add_dark_current(control_params,detector,pixar)
-            integrated = integrate(pixar, x0_global, y0_global, control_params.tplate, control_params.ace_control['dtace'], detector)
+            if varsw:
+                pixar = add_varability(pixar, injlc_iplate)
+
+            pixar = add_dark_current(control_params, detector, pixar)
+            integrated = integrate(pixar, x0_global, y0_global, control_params.tplate,
+                                   control_params.ace_control['dtace'], detector)
             # integrated is in adu/pix/plate.
-            pixcube[:,:,iplate] = integrated
+            pixcube[:, :, iplate] = integrated
             pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
-                pixcube[:,:,iplate]
+                pixcube[:, :, iplate]
 
-    save_outputs(filenames, output_format, control_params, telescope, detector, wfe, psf, pixcube_global, control_params.tplate, uniform_flat_interpix, uniform_flat_intrapix, acex, acey, overwrite)
+    save_outputs(filenames, output_format, control_params, telescope, detector, wfe, psf, pixcube_global,
+                 control_params.tplate, uniform_flat_interpix, uniform_flat_intrapix, acex, acey, overwrite)
