@@ -134,3 +134,23 @@ def run_ace(control_params, detector, ace_params):
     # Number of timesteps per a plate.
     return acex, acey, Nts_per_plate
 
+def apply_gaussian(psf, acex_std, acey_std, fp_scale):
+   """ In the gauss-ace mode, apply gauss filter to psf, here.
+
+   Args:
+       psf: psf
+       acex_std: std of ACE in x-axis
+       acey_std: std of ACE in y-axis
+       fp_scale: arcsec/fp-cell.
+
+   Returns:
+       Gaussian filtered psf
+
+   """
+   if acex_std != acey_std:
+       print("In the current gauss-ace mode, acex_std must be equal to acey_std. Sorry!")
+       raise ValueError("error") 
+   else:
+       return ndimage.gaussian_filter(psf, sigma=acex_std/fp_scale)
+        
+    
