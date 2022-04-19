@@ -1,3 +1,6 @@
+import numpy as np
+import json
+
 def init_pix(control_params,detector, acex,acey, detpix_scale, driftsw):
     """ Preparation for making image, Setting and plotting full trajectory.
 
@@ -33,3 +36,4 @@ def init_pix(control_params,detector, acex,acey, detpix_scale, driftsw):
     Npixcube = int((np.max(np.abs(theta_full))+detector.nmargin)*2)
     pixdim   = [Npixcube, Npixcube] # adaptive pixel dimension in the aperture.
     return theta_full, pixdim, Npixcube
+
