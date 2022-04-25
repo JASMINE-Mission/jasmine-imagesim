@@ -36,7 +36,7 @@ from jis.photonsim.extract_json import Variability
 from jis.binutils.setfiles import set_filenames_from_args, set_filenames_output
 from jis.binutils.setcontrol import load_parameters
 from jis.binutils.save import save_outputs
-from jis.binutils.runphotonsim import run_wfe, run_psf, run_ace, apply_gaussian
+from jis.binutils.runphotonsim import run_calc_wfe, run_calc_psf, run_calc_ace, apply_gaussian
 from jis.binutils.runpixsim import init_pix, uniform_flat, init_images, set_positions, make_local_flat, index_control_trajectory, calc_theta, normalize_pixar, add_varability, add_dark_current
 from jis.binutils.scales import get_pixelscales, get_tday
 from jis.binutils.check import check_ace_length
@@ -65,9 +65,9 @@ if __name__ == '__main__':
     pos = np.where(table_starplate['plate index'] == 0)
     table_starplate = table_starplate[pos]
 
-    wfe = run_wfe(control_params, telescope)
-    psf = run_psf(control_params, telescope, detector, wfe)
-    acex, acey, Nts_per_plate = run_ace(control_params, detector, ace_params)
+    wfe = run_calc_wfe(control_params, telescope)
+    psf = run_calc_psf(control_params, telescope, detector, wfe)
+    acex, acey, Nts_per_plate = run_calc_ace(control_params, detector, ace_params)
     detpix_scale, fp_cellsize_rad, fp_scale, psfscale = get_pixelscales(
         control_params, telescope, detector)
     theta_full, pixdim, Npixcube = init_pix(

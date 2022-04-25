@@ -6,7 +6,7 @@ from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
 
 
-def run_wfe(control_params, telescope):
+def run_calc_wfe(control_params, telescope):
     """Making wfe.
 
     Args:
@@ -53,7 +53,7 @@ def run_wfe(control_params, telescope):
     return wfe
 
 
-def run_psf(control_params, telescope, detector, wfe):
+def run_calc_psf(control_params, telescope, detector, wfe):
     """Making PSF.
 
     Args:
@@ -103,7 +103,7 @@ def run_psf(control_params, telescope, detector, wfe):
     return psf
 
 
-def run_ace(control_params, detector, ace_params):
+def run_calc_ace(control_params, detector, ace_params):
     """Ace (Atitude control error) simulation.
 
     Args:
