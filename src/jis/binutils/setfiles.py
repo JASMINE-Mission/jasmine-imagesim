@@ -2,7 +2,14 @@ import os
 
 
 def set_output_from_args(args):
-    """"""
+    """set output from docopt object.
+
+    Args:
+        args: docopt(__doc__)
+
+    Returns:
+        output_format, overwrite
+    """
     output_format = args['--format']
     if output_format not in ['platefits', 'fitscube', 'hdfcube']:
         print("format must be 'platefits', 'fitscube' or 'hdfcube'.")
@@ -16,7 +23,14 @@ def set_output_from_args(args):
 
 
 def check_output_directory(filenames, dirname_output, overwrite):
-    """Checking the output directory."""
+    """Checking the output directory.
+
+    Args:
+       filenames: filename to be checked
+       dirname_output: output direction
+       overwrite: overwrite status
+
+    """
     if not os.path.exists(dirname_output):
         os.makedirs(dirname_output)
     else:

@@ -2,7 +2,7 @@ import astropy.io.ascii as asc
 import matplotlib.pylab as plt
 
 
-def plot_variability(variability, filenames_starplate, tday):
+def plot_variability(variability, filenames_starplate, tday, dirname_output=None):
     """plot  variability.
 
     Args:
@@ -14,5 +14,9 @@ def plot_variability(variability, filenames_starplate, tday):
         varsw, injlc, b = variability.read_var(tday, line['star index'])
         if varsw:
             plt.plot(tday, injlc)
-            plt.savefig('variability_input'+'_'+str(line['star index'])+'.png')
+            if dirname_output is None:
+                plt.savefig('variability_input'+'_'+str(line['star index'])+'.png')
+            else:
+                plt.savefig(dirname_output+'/variability_input'+'_'+str(line['star index'])+'.png')
+                
             plt.clf()

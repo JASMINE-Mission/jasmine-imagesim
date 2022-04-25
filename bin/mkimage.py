@@ -33,7 +33,7 @@ from docopt import docopt
 import tqdm
 import numpy as np
 from jis.photonsim.extract_json import Variability
-from jis.binutils.setfiles import set_filenames_from_args, set_filenames_output, set_output_from_args, check_output_directory
+from jis.binutils.setfiles import set_filenames_from_args, set_filenames_output
 from jis.binutils.setcontrol import load_parameters
 from jis.binutils.save import save_outputs
 from jis.binutils.runphotonsim import run_wfe, run_psf, run_ace, apply_gaussian

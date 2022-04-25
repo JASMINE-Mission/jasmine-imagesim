@@ -24,13 +24,14 @@ def get_pixelscales(control_params, telescope, detector):
 
 
 def get_tday(control_params, detector):
-    """t day.
+    """compute a time array in the unit of day.
 
     Args:
-       control_params: control parameters
+        control_params: control parameters
         detector: detector object
 
     Returns:
-        tday
+        time array in the unit of day
+
     """
     return (control_params.tplate+detector.readparams.t_scan)*np.array(range(0, control_params.nplate))/3600/24
