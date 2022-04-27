@@ -31,7 +31,7 @@ AWL = lambda wl , R : EXT_a(wl) + EXT_b(wl)/R
 WL_J = 1.250
 WL_H = 1.644
 
-def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEdet):
+def calc_response(control_params, telescope, detector):
     """
     This function calculates the electron rate (e-/s/m^2) detected by SJ
     based on the optics efficiency (EPdefined) and the quantum efficiency (QEdet).
@@ -45,16 +45,9 @@ def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEd
     Rv is a parameter determining the interstellar extinction law.
 
     Args:
-        Rv        (float)  : Extinction parasmeter Rv(=Av/E(B-V)).
-        JH        (float)  : Apparent color (see above)/Color excess E(J-H)(=AJ-AH).
-        alp       (float)  : Interpolation factor to define Hw-band mag.
-                             Hw-mag = alp * J-mag + (1-alp) H-mag
-        WLdefined (ndarray): Wavelength data.
-        EPdefined (ndarray): Optical efficiency data.
-        WLshort   (float)  : Shortest wavelength (um).
-        WLlong    (float)  : Longest wavelength (um).
-        WLdet     (ndarray): Wavelength grid for the detector QE data, QEdet.
-        QEdet     (ndarray): Quantum efficiency data of the detector.
+        control_params: control parameters
+        telescope: telescope object
+        detector: detector object
 
     Returns:
         Tr  (float)  : Total electron rate (e-/s/m^2).
@@ -86,7 +79,27 @@ def calc_response(Rv, JH, alp, WLdefined, EPdefined, WLshort, WLlong, WLdet, QEd
       Flux from H-mag = 0 source is the same as that from J-mag = (1-alp)JH source.
 
     """
+    #    Rv        (float)  : Extinction parasmeter Rv(=Av/E(B-V)).
+    #    JH        (float)  : Apparent color (see above)/Color excess E(J-H)(=AJ-AH).
+    #    alp       (float)  : Interpolation factor to define Hw-band mag.
+    #                         Hw-mag = alp * J-mag + (1-alp) H-mag
+    #    WLdefined (ndarray): Wavelength data.
+    #    EPdefined (ndarray): Optical efficiency data.
+    #    WLshort   (float)  : Shortest wavelength (um).
+    #    WLlong    (float)  : Longest wavelength (um).
+    #    WLdet     (ndarray): Wavelength grid for the detector QE data, QEdet.
+    #    QEdet     (ndarray): Quantum efficiency data of the detector.
 
+    Rv = control_params.Rv
+    JH = control_params.JH
+    alp = control_params.alpha
+    WLdefined = telescope.opt_efficiency.wavelength
+    EPdefined = telescope.opt_efficiency.efficiency
+    WLshort = np.min(telescope.opt_efficiency.wavelength)
+    WLlong  = np.max(telescope.opt_efficiency.wavelength)
+    WLdet = detector.qe.wl
+    QEdet =  detector.qe.val
+    
     # from Rv and J-H, calculate Av
     JHA = AWL(WL_J,Rv) - AWL(WL_H,Rv) # (AJ-AH)/Av
     Av  = JH/JHA
