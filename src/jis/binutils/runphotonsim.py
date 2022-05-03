@@ -136,8 +136,8 @@ def run_calc_ace(control_params, detector, ace_params):
         acex = calc_dummy_ace(np.random, nace, tace, ace_params)
         acey = calc_dummy_ace(np.random, nace, tace, ace_params)
 
-    Nts_per_plate = int((control_params.tplate+detector.readparams.t_scan /
-                         control_params.ace_control['dtace']+0.5))
+    Nts_per_plate = int((control_params.tplate+detector.readparams.t_scan)/
+                         control_params.ace_control['dtace']+0.5)
     # Number of timesteps per a plate.
     return acex, acey, Nts_per_plate
 
