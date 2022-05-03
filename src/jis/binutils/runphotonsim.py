@@ -1,5 +1,6 @@
 import numpy as np
 import json
+from scipy import ndimage
 from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fringe37
 from jis.photonsim.psf import calc_psf, calc_gauss_psf
 from jis.photonsim.response import calc_response
