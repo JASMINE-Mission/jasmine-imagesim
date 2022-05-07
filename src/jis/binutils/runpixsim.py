@@ -116,6 +116,7 @@ def make_local_flat(control_params, detector, x0_global, y0_global, pixdim):
         interpix_local = rf.flat_interpix(
             detector.flat.interpix, x0_global, y0_global, pixdim, figsw=0)
     else:
+        uniform_flat_interpix, uniform_flat_intrapix = uniform_flat(detector)
         interpix_local = rf.flat_interpix(
             uniform_flat_interpix, x0_global, y0_global, pixdim, figsw=0)
     return interpix_local
