@@ -171,7 +171,7 @@ def calc_theta(theta_full, istart, iend, xc_local, yc_local):
 
 
 def run_simpix(control_params, theta, interpix_local, flat_intrapix, psfarr, psfcenter, psfscale, Nts_per_plate):
-    """normalize pixar.
+    """run simpix and normalize it
 
     Args:
         control_params: control parameters       
@@ -185,7 +185,7 @@ def run_simpix(control_params, theta, interpix_local, flat_intrapix, psfarr, psf
 
 
     Returns:
-        unnormalized pixar magnitude
+        unscaled pixar
     """
 
     pixar = sp.simpix(theta, interpix_local, flat_intrapix,
@@ -201,8 +201,8 @@ def run_simpix(control_params, theta, interpix_local, flat_intrapix, psfarr, psf
         pixar = pixar/Nts_per_plate
     return pixar
         
-def normalize_pixar(pixar, mag):
-    """normalize pixar.
+def scaling_pixar(pixar, mag):
+    """scale pixar.
 
     Args:
         pixar: pixar

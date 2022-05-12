@@ -37,7 +37,7 @@ from jis.binutils.setfiles import set_filenames_from_args, set_filenames_output
 from jis.binutils.setcontrol import load_parameters
 from jis.binutils.save import save_outputs
 from jis.binutils.runphotonsim import run_calc_wfe, run_calc_psf, run_calc_ace, apply_gaussian
-from jis.binutils.runpixsim import init_pix, uniform_flat, init_images, set_positions, make_local_flat, index_control_trajectory, calc_theta, normalize_pixar, add_varability, add_dark_current, run_simpix
+from jis.binutils.runpixsim import init_pix, uniform_flat, init_images, set_positions, make_local_flat, index_control_trajectory, calc_theta, scaling_pixar, add_varability, add_dark_current, run_simpix
 from jis.binutils.scales import get_pixelscales, get_tday
 from jis.binutils.check import check_ace_length
 from jis.binutils.binplot import plot_variability
@@ -120,7 +120,7 @@ if __name__ == '__main__':
                 psfcenter = (np.array(np.shape(psfin)[1:])-1.0)*0.5
 
             pixar = run_simpix(control_params, theta, interpix_local, flat_intrapix, psfin, psfcenter, psfscale, Nts_per_plate)
-            pixar = normalize_pixar(pixar, mag)
+            pixar = scaling_pixar(pixar, mag)
 
             if args['--var']:
                 if varsw:
