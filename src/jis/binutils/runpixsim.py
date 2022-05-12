@@ -1,5 +1,6 @@
 import numpy as np
 import json
+from jis.pixsim import simpix_stable as sp
 
 
 def init_pix(control_params, detector, acex, acey, detpix_scale, driftsw):
@@ -169,17 +170,27 @@ def calc_theta(theta_full, istart, iend, xc_local, yc_local):
     return theta
 
 
-def normalize_pixar(control_params, pixar, mag, Nts_per_plate):
-    """normalize pixar.
+def run_simpix(control_params, theta, interpix_local, flat_intrapix, psfarr, psfcenter, psfscale, Nts_per_plate):
+    """run simpix and normalize it
 
     Args:
-        control_params: control parameters
-        mag: magnitude
+        control_params: control parameters       
+        theta: trajectory
+        interpix_local: (local) interpixel fluctuation
+        flat_intrapix: intrapix fluctuation
+        psfarr: psfarr
+        psfcenter: psf center
+        psfscale: psfscale
         Nts_per_plate: number of time bins per plate
 
+
     Returns:
-        pixar
+        unscaled pixar
     """
+
+    pixar = sp.simpix(theta, interpix_local, flat_intrapix,
+                      psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)\
+                      / (psfscale*psfscale)*control_params.ace_control['dtace']/(1./Nts_per_plate)
 
     # pixar is in e/pix/control_params.ace_control['dtace'].
     # In none/gauss mode, we copy the single-shot image to make the full-movie cube.
@@ -188,6 +199,18 @@ def normalize_pixar(control_params, pixar, mag, Nts_per_plate):
         nxt, nyt = np.shape(upixar)
         pixar = upixar[:, :, np.newaxis]+np.zeros((nxt, nyt, Nts_per_plate))
         pixar = pixar/Nts_per_plate
+    return pixar
+        
+def scaling_pixar(pixar, mag):
+    """scale pixar.
+
+    Args:
+        pixar: pixar
+        mag: magnitude
+
+    Returns:
+        pixar
+    """
 
     pixar = pixar * 10.**(mag/(-2.5))  # magnitude scaling.
 
