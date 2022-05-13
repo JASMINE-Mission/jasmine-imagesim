@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 def calc_ace(rg, N, T, ace):
     """
     This function makes a one-dimensional attitude control error (ACE) data.
-    The ACE is assumed to have a PSW which consists of a power-law function
+    The ACE is assumed to have a power spectral density (PSD) which consists of a power-law function
     and some Lorenzian-type peaks (PS disturbance). The returned ace data (acedata)
     is normalized with its standard deviation. The generated PSD is also returned
     as 'psdn', but this is not normalized as 'acedata'.
