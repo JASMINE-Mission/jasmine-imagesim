@@ -307,6 +307,8 @@ class EffectSelector:
 class ControlParams:
     """
     This is a class to handle the control parameters.
+    To construct a ControlParams instance from a json file,
+    the classmethod 'from_json' of this class is useful.
 
     Attributes:
         wfe_control (dict): Parameters related to the wfe calculation.
