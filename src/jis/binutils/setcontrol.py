@@ -1,6 +1,6 @@
 import json
 import astropy.io.ascii as asc
-from jis.photonsim.extract_json import Detector, ControlParams, Telescope
+from jis.photonsim.extract_json import Detector, ControlParams, Telescope, AcePsd
 
 
 def load_parameters(filenames):
@@ -16,7 +16,5 @@ def load_parameters(filenames):
     detector = Detector.from_json(filenames['detjson'])
     control_params = ControlParams.from_json(filenames['ctljson'])
     telescope = Telescope.from_json(filenames['teljson'])
-    with open(filenames['acejson'], 'r') as f:
-        ace_params = json.load(f)
-    f.close()
+    acepsd = AcePsd.from_json(filenames['acejson']).parameters
     return table_starplate, detector, control_params, telescope, ace_params

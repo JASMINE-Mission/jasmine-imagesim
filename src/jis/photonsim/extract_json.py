@@ -622,3 +622,30 @@ class Drift:
         self.drift_time=dtace*Nace
         self.drift_length=self.drift_velocity*self.drift_time
         self.drift_theta=gentraj.gentraj_drift(Nace,self.drift_length,self.drift_azimuth)
+
+
+@dataclasses.dataclass(frozen=True)
+class AcePsd:
+    """
+    This is a class to handle the parameters of the ACE PSD.
+
+    Attributes:
+        parameters (dict) : Parameters which define the ACE PSD.
+    """
+    parameters: dict
+
+    @classmethod
+    def from_json(self, ace_psd_filename):
+        """
+        This function loads the ACE PSD parameters from a json file.
+
+        Args:
+            ace_psd_filename (str): Filename of the ace-psd json file.
+
+        Returns:
+            ace_psd: AcePsd object.
+        """
+        with open(ace_psd_filename, "r") as f:
+            data = json.load(f)
+
+        return AcePsd(parameters=data)
