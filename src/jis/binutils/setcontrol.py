@@ -1,4 +1,3 @@
-import json
 import astropy.io.ascii as asc
 from jis.photonsim.extract_json import Detector, ControlParams, Telescope, AcePsd
 
