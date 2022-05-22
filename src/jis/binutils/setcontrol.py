@@ -16,4 +16,4 @@ def load_parameters(filenames):
     control_params = ControlParams.from_json(filenames['ctljson'])
     telescope = Telescope.from_json(filenames['teljson'])
     acepsd = AcePsd.from_json(filenames['acejson']).parameters
-    return table_starplate, detector, control_params, telescope, ace
+    return table_starplate, detector, control_params, telescope, acepsd
