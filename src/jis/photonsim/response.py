@@ -51,7 +51,7 @@ def calc_response(control_params, telescope, detector):
 
     Returns:
         Tr  (float)  : Total electron rate (e-/s/m^2).
-        WL  (ndarray): Wavelength grid of Npr (um).
+        WL  (ndarray): Wavelength grid of Npr (um; 0.1-um grid).
         Npr (ndarray): Electron flux (e-/s/m^2/um).
 
     Example:
@@ -98,7 +98,7 @@ def calc_response(control_params, telescope, detector):
     WLshort = np.min(telescope.opt_efficiency.wavelength)
     WLlong  = np.max(telescope.opt_efficiency.wavelength)
     WLdet = detector.qe.wl
-    QEdet =  detector.qe.val
+    QEdet = detector.qe.val
     
     # from Rv and J-H, calculate Av
     JHA = AWL(WL_J,Rv) - AWL(WL_H,Rv) # (AJ-AH)/Av
