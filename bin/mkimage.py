@@ -64,14 +64,20 @@ if __name__ == '__main__':
     pos = np.where(table_starplate['plate index'] == 0)
     table_starplate = table_starplate[pos]
 
+    # Setting scaling constants. ###################################
+    detpix_scale, fp_cellsize_rad, fp_scale, psfscale = get_pixelscales(
+                    control_params, telescope, detector)
+
+    # Running calculations. ########################################
     wfe = run_calc_wfe(control_params, telescope)
     psf = run_calc_psf(control_params, telescope, detector, wfe)
     acex, acey, Nts_per_plate = run_calc_ace(control_params, detector, ace_params)
-    detpix_scale, fp_cellsize_rad, fp_scale, psfscale = get_pixelscales(
-        control_params, telescope, detector)
+        # acex and acey are normalized with their stddevs.
+
     theta_full, pixdim, Npixcube = init_pix(
         control_params, detector, acex, acey, detpix_scale, args['--dft'])
     check_ace_length(Nts_per_plate, control_params, theta_full)
+
     if args['--var']:
         variability = Variability.from_json(filenames['varjson'])
         tday = get_tday(control_params, detector)
