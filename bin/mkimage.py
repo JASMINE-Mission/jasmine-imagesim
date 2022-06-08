@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
     # Setting scaling constants. ###################################
     detpix_scale, fp_cellsize_rad, fp_scale, psfscale = get_pixelscales(
-                    control_params, telescope, detector)
+        control_params, telescope, detector)
 
     # Running calculations. ########################################
     wfe = run_calc_wfe(control_params, telescope)
