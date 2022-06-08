@@ -15,7 +15,9 @@ def init_pix(control_params, detector, acex, acey, detpix_scale, driftsw):
         driftsw: bool if True drift included
 
     Returns:
-        theta_full, pixdim, Npixcube
+        theta_full: scaled ACE in detector pixels ([[theta_x], [theta_y]]).
+        pixdim: pixel dimensions of the simpix calculation.
+        Npixcube: number of pixels on a side of pixcube (simpix calculation image).
     """
 
     if driftsw:
