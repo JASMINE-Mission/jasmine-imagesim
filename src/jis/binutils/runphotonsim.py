@@ -113,7 +113,9 @@ def run_calc_ace(control_params, detector, ace_params):
         ace_params: ace parameters
 
     Returns:
-        ace in x-axis, ace in y-axis, the number of time bins per plate
+        acex: ace in x-axis, normalized with its stddev.
+        acey: ace in y-axis, normalized with its stddev.
+        Nts_per_plate: Number of time bins per plate.
     """
     nace = control_params.ace_control.get('nace')
     tace = control_params.ace_control.get('tace')
