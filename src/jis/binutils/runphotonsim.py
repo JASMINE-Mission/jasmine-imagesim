@@ -64,7 +64,7 @@ def run_calc_psf(control_params, telescope, detector, wfe):
         wfe: wavefront error
 
     Returns:
-        psf
+        psf: PSF in e-/sec/fp-cell for Hw=0.
     """
     # total_e_rate in e/s/m^2; wl_e_rate in um; e_rate in e/s/m^2/um.
     # these values are for an object with an apparent Hw mag of 0 mag.
@@ -90,7 +90,7 @@ def run_calc_psf(control_params, telescope, detector, wfe):
                                     control_params.fN_parameter))
             psf = np.array(psf)
         # psf is that of an object which has the JH color of the set value and Hw=0.
-        # The unit is e/sec/pix.
+        # The unit is e/sec/fp-cell.
     elif control_params.effect.psf == 'gauss':
         print('Calculating gauss PSF...')
         psf_fwhm_arcsec = control_params.gaussPSFfwhm
@@ -148,7 +148,7 @@ def apply_gaussian(psf, acex_std, acey_std, fp_scale):
     """In the gauss-ace mode, apply gauss filter to psf, here.
 
     Args:
-        psf: psf
+        psf: psf in e-/sec/fp-cell.
         acex_std: std of ACE in x-axis
         acey_std: std of ACE in y-axis
         fp_scale: arcsec/fp-cell.
