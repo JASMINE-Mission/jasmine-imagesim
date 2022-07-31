@@ -611,8 +611,8 @@ class Drift:
         """
         with open(dft_json_filename, "r") as f:
             var_params = json.load(f)
-        velocity = var_params["linear"]["drift_velocity"]
-        azimuth  = var_params["linear"]["drift_azimuth"]
+        velocity = var_params["linear"]["drift_velocity"]["val"]
+        azimuth  = var_params["linear"]["drift_azimuth"]["val"]
         dft = Drift(dft=True, drift_velocity=velocity, drift_azimuth=azimuth)
         return dft
 
