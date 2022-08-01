@@ -600,9 +600,9 @@ class Drift:
     dft           : bool
     drift_velocity: float
     drift_azimuth : float
-    drift_time    : float = dataclasses.field(init=False)
-    drift_length  : float = dataclasses.field(init=False)
-    drift_theta   : np.ndarray = dataclasses.field(init=False)
+    drift_time    : float = dataclasses.field(default=None, init=False)
+    drift_length  : float = dataclasses.field(default=None, init=False)
+    drift_theta   : np.ndarray = dataclasses.field(default=None, init=False)
 
     @classmethod
     def from_json(self,dft_json_filename):
