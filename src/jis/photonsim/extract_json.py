@@ -591,18 +591,18 @@ class Drift:
 
     Attributes:
         dft            (bool)  : Drift flag.
-        drift_velocity (float) : Drift velocity in ???.
-        drift_azimuth  (float) : Drift azimuth angle in ???.
+        drift_velocity (float) : Drift velocity in detpix/sec.
+        drift_azimuth  (float) : Drift azimuth angle in rad measured from the x-axis in the CCW direction.
         drift_time     (float) : Drift duration in second.
-        drift_length   (float) : ??? length of the drift motion in ???.
-        drift_theta    (float) : trajectory?
+        drift_length   (float) : Drift length in detpix.
+        drift_theta  (ndarray) : Drift trajectory in detpix ([theta_x, theta_y]).
     """
     dft           : bool
     drift_velocity: float
     drift_azimuth : float
     drift_time    : float = dataclasses.field(init=False)
     drift_length  : float = dataclasses.field(init=False)
-    drift_theta   : float = dataclasses.field(init=False)
+    drift_theta   : np.ndarray = dataclasses.field(init=False)
 
     @classmethod
     def from_json(self,dft_json_filename):
