@@ -1,5 +1,6 @@
 import numpy as np
 import json
+import matplotlib.pylab as plt
 from jis.pixsim import simpix_stable as sp
 
 
