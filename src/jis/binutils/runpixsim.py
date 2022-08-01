@@ -36,7 +36,7 @@ def init_pix(filenames, control_params, detector, acex, acey, detpix_scale, drif
                                acey*acey_std/detpix_scale+dft.drift_theta[1, :]])
         plt.plot(acex*acex_std/detpix_scale +
                  dft.drift_theta[0, :], acey*acey_std/detpix_scale+dft.drift_theta[1, :], '.')
-        plt.savefig('theta.png')
+        plt.savefig(filenames['thetapng'])
     else:
         theta_full = np.array(
             [acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
