@@ -75,7 +75,7 @@ if __name__ == '__main__':
         # acex and acey are normalized with their stddevs.
 
     theta_full, pixdim, Npixcube = init_pix(
-        control_params, detector, acex, acey, detpix_scale, args['--dft'])
+        filenames, control_params, detector, acex, acey, detpix_scale, args['--dft'])
     check_ace_length(Nts_per_plate, control_params, theta_full)
 
     if args['--var']:
