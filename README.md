@@ -1,4 +1,4 @@
-[![pytest](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/pytest.yml/badge.svg?branch=develop)](https://github.com/JASMINE-Mission/jasmine-imagesim/#)
+[![pytest](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/pytest.yml/badge.svg?branch=develop)](https://github.com/JASMINE-Mission/jasmine-imagesim/tree/develop)
 [![build](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/build.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6c68173a4da5ef19621c/maintainability)](https://codeclimate.com/github/JASMINE-Mission/jasmine-imagesim/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6c68173a4da5ef19621c/test_coverage)](https://codeclimate.com/github/JASMINE-Mission/jasmine-imagesim/test_coverage)
