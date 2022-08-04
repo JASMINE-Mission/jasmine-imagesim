@@ -15,5 +15,8 @@ jobs:
       with:
         python-version: 3.9
 
+    - name: get dependencies
+      uses: ./.github/actions/get_dependencies
+
     - name: build
       uses: ./.github/actions/build
