@@ -9,7 +9,7 @@ runs:
       run: |
         python -m pip install pytest pytest-html pytest-cov
         pushd src
-        python -m pytest ../test --cov=. --cov-report xml
+        python -m pytest ../test/dummy --cov=. --cov-report xml
         popd
       shell: bash
 
