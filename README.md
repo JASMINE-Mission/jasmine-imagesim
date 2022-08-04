@@ -1,3 +1,6 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/6c68173a4da5ef19621c/maintainability)](https://codeclimate.com/github/JASMINE-Mission/jasmine-imagesim/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6c68173a4da5ef19621c/test_coverage)](https://codeclimate.com/github/JASMINE-Mission/jasmine-imagesim/test_coverage)
+
 # jasmine-imagesim (jis)
 This is an image simulator package developed for the JASMINE project.
 
