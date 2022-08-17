@@ -79,6 +79,8 @@ def set_filenames_from_args(args):
     filenames['psf'] = os.path.join(dirname_output, 'psf.fits')
     filenames['acex'] = os.path.join(dirname_output, 'aceX.fits')
     filenames['acey'] = os.path.join(dirname_output, 'aceY.fits')
+    if args['--dft']:
+        filenames['thetapng'] = os.path.join(dirname_output, 'theta.png')
 
     return filenames, dirname_output
 

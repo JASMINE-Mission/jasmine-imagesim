@@ -1,12 +1,14 @@
 import numpy as np
 import json
+import matplotlib.pylab as plt
 from jis.pixsim import simpix_stable as sp
 
 
-def init_pix(control_params, detector, acex, acey, detpix_scale, driftsw):
+def init_pix(filenames, control_params, detector, acex, acey, detpix_scale, driftsw):
     """Preparation for making image, Setting and plotting full trajectory.
 
     Args:
+        filenames: names of I/O files
         control_params: control parameters
         detector: detector object
         acex: ACE in x-axis
@@ -34,7 +36,7 @@ def init_pix(control_params, detector, acex, acey, detpix_scale, driftsw):
                                acey*acey_std/detpix_scale+dft.drift_theta[1, :]])
         plt.plot(acex*acex_std/detpix_scale +
                  dft.drift_theta[0, :], acey*acey_std/detpix_scale+dft.drift_theta[1, :], '.')
-        plt.savefig('theta.png')
+        plt.savefig(filenames['thetapng'])
     else:
         theta_full = np.array(
             [acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
