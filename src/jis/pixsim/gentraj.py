@@ -34,7 +34,7 @@ def gentraj_random(ntime, basepos, nsub, basesig=1.0, subsig=0.1, seed=None):
        basepos (array-like): base position in detpix ([x0, y0])
        nsub (int): number of the time bins at one orbit
        basesig (float): initial pointing accucracy (1-sigma val. in detpix)
-       subsig (float): pointing stability during one orbit (1-sigma val. in detpix)
+       subsig (float): ptg. stability during one orbit (1-sigma val. in detpix)
        
     Returns:
         theta (ndarray): trajectory array in detpix ([thetax, thetay])
