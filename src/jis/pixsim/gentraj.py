@@ -29,9 +29,9 @@ def gentraj_random(ntime, basepos, nsub, basesig=1.0, subsig=0.1, seed=None):
     """Random Gaussian trajectory generator 
 
     Args:
-       ntime: the number of total time bin
+       ntime: the number of total time bins
        basepos: base position
-       nsub: number of the time bin at  one orbit, 
+       nsub: number of the time bins at one orbit
        basesig: sigma for the initial pointing accuracy
        subsig: sigma during one orbit accuracy
 
