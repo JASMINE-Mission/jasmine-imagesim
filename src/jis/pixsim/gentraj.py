@@ -9,15 +9,15 @@ import matplotlib.pyplot as plt
 
 
 def gentraj_drift(Nts, drift_length, drift_azimuth):
-    """generate a linear pointing trajectory 
+    """generate a linear pointing trajectory in detpix
 
     Args:
         Nts (int): number of the trajectory array 
-        drift_length (float): the length of the linear trajectory on the detector plane
+        drift_length (float): length of the linear trajectory in detpix
         drift_azimuth (float): azimuth angle (radian) of the linear trajectory  
 
     Returns:
-        nd array: trajectory array
+        nd array: trajectory array in detpix
     """
     thetax = np.linspace(0, drift_length, Nts) * np.cos(drift_azimuth)
     thetay = np.linspace(0, drift_length, Nts) * np.sin(drift_azimuth)
