@@ -17,7 +17,7 @@ def gentraj_drift(Nts, drift_length, drift_azimuth):
         drift_azimuth (float): azimuth angle (radian) of the linear trajectory  
 
     Returns:
-        nd array: trajectory array in detpix
+        theta (ndarray): trajectory array in detpix ([thetax, thetay])
     """
     thetax = np.linspace(0, drift_length, Nts) * np.cos(drift_azimuth)
     thetay = np.linspace(0, drift_length, Nts) * np.sin(drift_azimuth)
@@ -26,14 +26,18 @@ def gentraj_drift(Nts, drift_length, drift_azimuth):
 
 
 def gentraj_random(ntime, basepos, nsub, basesig=1.0, subsig=0.1, seed=None):
-    """Random Gaussian trajectory generator 
+    """Random Gaussian trajectory generator
+    (linear drift with gaussian pointing fluctuations)
 
     Args:
-       ntime: the number of total time bins
-       basepos: base position
-       nsub: number of the time bins at one orbit
-       basesig: sigma for the initial pointing accuracy
-       subsig: sigma during one orbit accuracy
+       ntime (int): the number of total time bins
+       basepos (array-like): base position in detpix ([x0, y0])
+       nsub (int): number of the time bins at one orbit
+       basesig (float): initial pointing accucracy (1-sigma val. in detpix)
+       subsig (float): pointing stability during one orbit (1-sigma val. in detpix)
+       
+    Returns:
+        theta (ndarray): trajectory array in detpix ([thetax, thetay])
 
     """
     ndata = np.int(ntime / nsub)
