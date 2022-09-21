@@ -3,5 +3,5 @@ runs:
   steps:
     - name: Build Package
       run: |
-        python setup.py install
+        python setup.py build --verbose --dry-run
       shell: bash
