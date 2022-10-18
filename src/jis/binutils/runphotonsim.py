@@ -7,7 +7,7 @@ from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
 
 
-def run_calc_wfe(control_params, telescope):
+def run_calc_wfe(control_params, telescope, filenames):
     """Making wfe.
 
     Args:
