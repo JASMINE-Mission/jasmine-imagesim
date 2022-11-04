@@ -69,7 +69,7 @@ if __name__ == '__main__':
         control_params, telescope, detector)
 
     # Running calculations. ########################################
-    wfe = run_calc_wfe(control_params, telescope)
+    wfe = run_calc_wfe(control_params, telescope, filenames)
     psf = run_calc_psf(control_params, telescope, detector, wfe)
     acex, acey, Nts_per_plate = run_calc_ace(control_params, detector, ace_params)
         # acex and acey are normalized with their stddevs.

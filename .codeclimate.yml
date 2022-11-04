@@ -1,0 +1,25 @@
+version: "2"
+plugins:
+  sonar-python:
+    enabled: true
+    checks:
+      python:S107:
+        enabled: false
+  pep8:
+    enabled: true
+    checks:
+      E221:
+        enabled: false
+      E128:
+        enabled: false
+  radon:
+    enabled: true
+exclude_patterns:
+- dist/
+- **/node_modules/
+- params/
+- docs/
+- original_codes/
+- **/__init__.py
+- *.md
+- *.in
