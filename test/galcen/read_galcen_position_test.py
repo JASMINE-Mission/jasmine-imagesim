@@ -1,10 +1,10 @@
-import pytest
-from jis.galcen.read_galcen_position import load_jscon_data
+from jis.galcen.read_galcen_position import load_jscon_random_stars
 
-def test_load_jscon_data():
-    gal_l, gal_b, hw, hwtarget = load_jscon_data()
-    assert len(gal_l) == 391359
+
+def test_load_jscon_random_stars():
+    data = load_jscon_random_stars()
+    assert len(data["ra"]) == 342157
 
 
 if __name__ == "__main__":
-    load_jscon_data()
+    test_load_jscon_random_stars()
