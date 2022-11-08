@@ -3,21 +3,6 @@ from jis.pixsim.wcs import pixel_scale_degree
 from jis.pixsim.wcs import set_wcs
 
 
-def load_filenames_for_test():
-    import pkg_resources
-    import os
-    from jis.photonsim.extract_json import Detector, ControlParams, Telescope
-    dirname_params = pkg_resources.resource_filename('jis', 'data/params')
-    filenames = {}
-    filenames['detjson'] = os.path.join(dirname_params, "det.json")
-    filenames['teljson'] = os.path.join(dirname_params, "tel.json")
-    filenames['ctljson'] = os.path.join(dirname_params, "ctl.json")
-
-    detector = Detector.from_json(filenames['detjson'])
-    control_params = ControlParams.from_json(filenames['ctljson'])
-    telescope = Telescope.from_json(filenames['teljson'])
-
-    return detector, control_params, telescope
 
 
 def test_pixel_scale_radian():
@@ -36,6 +21,9 @@ def test_set_wcs():
     pixels = jasmine_wcs.world_to_pixel(coord)
     assert pixels[0] == pytest.approx(detector.npix / 2.)
     assert pixels[1] == pytest.approx(detector.npix / 2.)
+
+
+
 
 
 if __name__ == "__main__":
