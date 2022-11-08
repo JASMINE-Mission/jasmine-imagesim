@@ -3,6 +3,7 @@ import sys
 import math
 from scipy import interpolate
 from scipy import integrate
+from jis.photonsim.fluxdensity import flux_rJHKs_byTeff
 
 # physical constants
 c = 299792458.     ; # [m/s]
@@ -10,19 +11,19 @@ h = 6.62607015e-34 ; # [J/s]
 
 # MKO NIR system from 2005PASP..117..421T, 2005PASP..117.1459T
 ## wavelength [um]
-WL_MKO   = np.array([ 0.5450 , 1.250  , 1.644  , 2.121  , 2.149  , 2.198  ,
-                      3.754  , 4.702])
-## zero-mag flux [W/m^2/um]
-FLUX_MKO = np.array([3.68e-08,3.01e-09,1.18e-09,4.57e-10,4.35e-10,4.00e-10,
-                     5.31e-11,2.22e-11])
-
-# zero-mag photon flux [Photons/s/m^2/um]
-NP_MKO = FLUX_MKO * WL_MKO * 1.0e-6 / h / c ;
-
-# interpolate photon flux (photons/s/m^2/um)
-logL = np.log10(WL_MKO)
-logN = np.log10(NP_MKO)
-Npspline = interpolate.interp1d(logL, logN, kind="cubic")
+#WL_MKO   = np.array([ 0.5450 , 1.250  , 1.644  , 2.121  , 2.149  , 2.198  ,
+#                      3.754  , 4.702])
+### zero-mag flux [W/m^2/um]
+#FLUX_MKO = np.array([3.68e-08,3.01e-09,1.18e-09,4.57e-10,4.35e-10,4.00e-10,
+#                     5.31e-11,2.22e-11])
+#
+## zero-mag photon flux [Photons/s/m^2/um]
+#NP_MKO = FLUX_MKO * WL_MKO * 1.0e-6 / h / c ;
+#
+## interpolate photon flux (photons/s/m^2/um)
+#logL = np.log10(WL_MKO)
+#logN = np.log10(NP_MKO)
+#Npspline = interpolate.interp1d(logL, logN, kind="cubic")
 
 # A(lambda)/Av
 AWL = lambda wl , R : EXT_a(wl) + EXT_b(wl)/R
@@ -30,6 +31,24 @@ AWL = lambda wl , R : EXT_a(wl) + EXT_b(wl)/R
 # wavelength definition of J and H bands (um).
 WL_J = 1.250
 WL_H = 1.644
+
+def fluxdensity_spline(t_eff):
+    """
+    This function returns spline function for absolute magnitude
+    instead of zero-mag flux of Vega-type star.
+
+    Args: t_eff: effective temperature of star.
+
+    Returns: spline function of flux density   
+    """
+
+    wav, flux   = flux_rJHKs_byTeff(t_eff)
+    nphoton     = flux * wav * 1.0e-6 /h/c
+    logL        = np.log10(wav)
+    logN        = np.log10(nphoton)
+    Npspline    = interpolate.interp1d(logL,logN,kind="cubic")
+
+    return Npspline
 
 def calc_response(control_params, telescope, detector):
     """
@@ -93,6 +112,7 @@ def calc_response(control_params, telescope, detector):
     Rv = control_params.Rv
     JH = control_params.JH
     alp = control_params.alpha
+    t_eff   = 9000
     WLdefined = telescope.opt_efficiency.wavelength
     EPdefined = telescope.opt_efficiency.efficiency
     WLshort = np.min(telescope.opt_efficiency.wavelength)
@@ -121,11 +141,11 @@ def calc_response(control_params, telescope, detector):
     QE = QEinter(WL)
 
     # Zero-mag photon flux (ph/s/m^2/um).
-    Np=Nphotons(WL)
+    Np=Nphotons(WL, t_eff)
 
     # Band definition.
-    NpJ   = Nphotons(WL_J)      # Zero-mag photon flux in J  band (ph/s/m^2/um).
-    NpH   = Nphotons(WL_H)      # Zero-mag photon flux in H  band (ph/s/m^2/um).
+    NpJ   = Nphotons(WL_J, t_eff)      # Zero-mag photon flux in J  band (ph/s/m^2/um).
+    NpH   = Nphotons(WL_H, t_eff)      # Zero-mag photon flux in H  band (ph/s/m^2/um).
 #   NpHw  = NpJ*alp+NpH*(1-alp) # Zero-mag photon flux in Hw band (ph/s/m^2/um).
        # alp is defined as a factor for the magnitude, NOT for the photon flux.
 
@@ -150,7 +170,7 @@ def calc_response(control_params, telescope, detector):
 
     return Tr, WL, Npr
 
-def Nphotons(WL):
+def Nphotons(WL, t_eff):
     """
     This function returns logarithmically
     interpolated zero-mag photon flux (ph/s/m^2/um)
@@ -167,11 +187,13 @@ def Nphotons(WL):
         from jis.photonsim.response import Nphotons
 
         wavelength = np.array([1.4, 1.5, 1.6])
-        zm_ph_flux = Nphotons(wavelength)
+        zm_ph_flux = Nphotons(wavelength, t_eff)
 
     """
     logwl = np.log10(WL)
-    lognp = Npspline(logwl)    # globally defined in this file.
+    #lognp = Npspline(logwl)    # globally defined in this file.
+    Npspline  = fluxdensity_spline(t_eff)
+    lognp = Npspline(logwl)    # 
     npw   = np.power(10,lognp)
 
     return npw

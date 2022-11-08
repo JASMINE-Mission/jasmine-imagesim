@@ -3,3 +3,4 @@ include src/jis/pixsim/data/intrapix/intravx.csv
 include src/jis/pixsim/data/intrapix/intravy.csv
 include src/jis/photonsim/data/FringeZernike_2D-s1.csv
 include src/jis/pixsim/data/trans/trans180K.txt
+include src/jis/photonsim/data/maglist.txt
