@@ -32,8 +32,9 @@ def set_wcs(ra_cen, dec_cen, detector, telescope):
     #w.wcs._naxis = [detector.npix, detector.npix] #the number of the one side pixels
     w.wcs.crpix = [detector.npix / 2.0 + 1, detector.npix / 2.0 + 1
                    ]  #reference pixel coordinate, +1 is due to python?
-    pixel_scale = pixel_scale_degree(detector, telescope) / np.pi * 180
+    pixel_scale = pixel_scale_degree(detector, telescope)
     w.wcs.cdelt = [pixel_scale, pixel_scale]
     w.wcs.ctype = ["RA---TAN", "DEC--TAN"]
     w.wcs.crval = [ra_cen, dec_cen]
+    print("pix center: ",detector.npix / 2.0, detector.npix / 2.0)
     return w

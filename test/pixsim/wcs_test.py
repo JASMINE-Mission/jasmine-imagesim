@@ -16,10 +16,12 @@ def test_set_wcs():
     detector, control_params, telescope = load_filenames_for_test()
     jasmine_wcs = set_wcs(0.0, 0.0, detector, telescope)
     from astropy.coordinates import SkyCoord
-    coord = SkyCoord('00h00m00.0s +00d00m00s', frame='fk5')
-    pixels = jasmine_wcs.world_to_pixel(coord)
-    assert pixels[0] == pytest.approx(detector.npix / 2.)
-    assert pixels[1] == pytest.approx(detector.npix / 2.)
+    coord_0 = SkyCoord('00h00m00.0s +00d00m00s', frame='fk5')
+    coord = SkyCoord('00h00m00.0s +00d00m04s', frame='fk5')
+    #print(coord.separation(coord_0).degree*3600) #separation is 4 arcsec
+    pixels = jasmine_wcs.world_to_pixel(coord)  
+    assert pixels[0] == pytest.approx(959.94604224)
+    assert pixels[1] == pytest.approx(969.40333659)
 
 
 
@@ -27,4 +29,4 @@ def test_set_wcs():
 
 if __name__ == "__main__":
     test_pixel_scale_radian()
-    test_set_wcs()
+    test_set_wcs()  
