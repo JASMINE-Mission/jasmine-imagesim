@@ -1,7 +1,7 @@
 import pytest
 from jis.pixsim.wcs import pixel_scale_degree
 from jis.pixsim.wcs import set_wcs
-
+from jis.test.loadparams import load_filenames_for_test
 
 
 
@@ -13,7 +13,6 @@ def test_pixel_scale_radian():
 
 
 def test_set_wcs():
-    filenames = load_filenames_for_test()
     detector, control_params, telescope = load_filenames_for_test()
     jasmine_wcs = set_wcs(0.0, 0.0, detector, telescope)
     from astropy.coordinates import SkyCoord
