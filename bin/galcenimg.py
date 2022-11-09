@@ -19,6 +19,8 @@ from jis.photonsim.extract_json import Detector, ControlParams, Telescope, AcePs
 from jis.galcen.read_galcen_position import load_jscon_random_stars
 from jis.galcen.read_galcen_position import random_stars_to_starplate
 from jis.galcen.read_galcen_position import maximum_separation    
+from astropy import units as u
+from astropy.coordinates import SkyCoord
 
 if __name__ == '__main__':
     """
@@ -51,24 +53,38 @@ if __name__ == '__main__':
     maxsep = maximum_separation(random_star_data)
     print("maxsep=",maxsep,"deg")
     
-    telescope_center_ra = np.median(random_star_data["ra"])
-    telescope_center_dec = np.median(random_star_data["dec"])
-    jasmine_wcs = set_wcs(telescope_center_ra, telescope_center_dec, detector,
+    tip=4/3600. #offset deg
+    telescope_center_ra = np.median(random_star_data["ra"])+tip
+    telescope_center_dec = np.median(random_star_data["dec"])+tip
+    rotation_angle = 58.5
+    jasmine_wcs = set_wcs(telescope_center_ra, telescope_center_dec, rotation_angle, detector,
                           telescope)
-    coord = SkyCoord(ramin * u.degree,
-                     decmin * u.degree)
-    xpixel, ypixel = jasmine_wcs.world_to_pixel(coord)
-    print(xpixel,ypixel,"-")
-
     table_starplate = random_stars_to_starplate(random_star_data, jasmine_wcs)
     print(np.min(table_starplate["x pixel"]))
     print(np.min(table_starplate["y pixel"]))
     print(np.max(table_starplate["x pixel"]))
     print(np.max(table_starplate["y pixel"]))
     
-    import sys
-    sys.exit()
+    # Selecting the data in the detector. ######################
+    plt.plot(table_starplate['x pixel'],table_starplate['y pixel'],".",alpha=0.1)
+    print(len(table_starplate))
+    mask1 =table_starplate['x pixel'] >= 0
+    mask2 =table_starplate['x pixel'] < detector.npix
+    mask3 =table_starplate['y pixel'] >= 0
+    mask4 =table_starplate['y pixel'] < detector.npix
 
+    mask1 =table_starplate['x pixel'] >= 0
+    mask2 =table_starplate['x pixel'] < 100#detector.npix
+    mask3 =table_starplate['y pixel'] >= 0
+    mask4 =table_starplate['y pixel'] < 100 #detector.npix
+
+    mask = mask1*mask2*mask3*mask4
+    pos = np.where(mask)
+    table_starplate = table_starplate[pos]
+    print(len(table_starplate))
+    plt.plot(table_starplate['x pixel'],table_starplate['y pixel'],".",alpha=0.2)
+    plt.savefig("pos.png")
+    
     # Setting scaling constants. ###################################
     detpix_scale, fp_cellsize_rad, fp_scale, psfscale = get_pixelscales(
         control_params, telescope, detector)
@@ -141,6 +157,10 @@ if __name__ == '__main__':
             pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
                 pixcube[:, :, iplate]
 
+    import matplotlib.pyplot as plt
+    plt.imshow(pixcube_global[:,:,0])
+    plt.savefig("tmp.png")
+    np.savez("tmp.npz",pixcube_global)
 #    save_outputs(filenames, output_format, control_params, telescope, detector,
 #                 wfe, psf, pixcube_global, control_params.tplate,
 #                 uniform_flat_interpix, uniform_flat_intrapix, acex, acey,
