@@ -105,6 +105,10 @@ if __name__ == '__main__':
 
     uniform_flat_interpix, uniform_flat_intrapix = uniform_flat(detector)
     pixcube_global = init_images(control_params, detector, prior_dark=False) #no dark added
+
+    pixcube_global += global_dark(control_params, detector)
+    np.savez("dark.npz",pixcube_global)
+    
     # Making data around each star.
     for i_star, line in enumerate(table_starplate):
         print('StarID: {}'.format(line['star index']))
@@ -159,8 +163,6 @@ if __name__ == '__main__':
         except:
             print("some error")
     pixcube_global += global_dark(control_params, detector)
-    
-    
     np.savez("tmp.npz",pixcube_global)
 #    save_outputs(filenames, output_format, control_params, telescope, detector,
 #                 wfe, psf, pixcube_global, control_params.tplate,
