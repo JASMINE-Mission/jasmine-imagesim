@@ -8,7 +8,9 @@ import tqdm
 import numpy as np
 from jis.binutils.save import save_outputs
 from jis.binutils.runphotonsim import run_calc_wfe, run_calc_psf, run_calc_ace
-from jis.binutils.runpixsim import init_pix, uniform_flat, init_images, set_positions, make_local_flat, index_control_trajectory, calc_theta, scaling_pixar, add_varability, add_dark_current, run_simpix
+from jis.binutils.runpixsim import init_pix, uniform_flat, init_images, set_positions, make_local_flat
+from jis.binutils.runpixsim import index_control_trajectory, calc_theta, scaling_pixar, run_simpix
+from jis.binutils.runpixsim import global_dark
 from jis.binutils.scales import get_pixelscales
 from jis.binutils.check import check_ace_length
 from jis.pixsim.integrate import integrate
@@ -74,9 +76,9 @@ if __name__ == '__main__':
     mask4 =table_starplate['y pixel'] < detector.npix
 
     mask1 =table_starplate['x pixel'] >= 0
-    mask2 =table_starplate['x pixel'] < 100#detector.npix
+    mask2 =table_starplate['x pixel'] < 200#detector.npix
     mask3 =table_starplate['y pixel'] >= 0
-    mask4 =table_starplate['y pixel'] < 100 #detector.npix
+    mask4 =table_starplate['y pixel'] < 200 #detector.npix
 
     mask = mask1*mask2*mask3*mask4
     pos = np.where(mask)
@@ -102,64 +104,63 @@ if __name__ == '__main__':
     check_ace_length(Nts_per_plate, control_params, theta_full)
 
     uniform_flat_interpix, uniform_flat_intrapix = uniform_flat(detector)
-    pixcube_global = init_images(control_params, detector)
-
-
+    pixcube_global = init_images(control_params, detector, prior_dark=False) #no dark added
     # Making data around each star.
     for i_star, line in enumerate(table_starplate):
-        print(i_star,line)
-        print(type(line['star index']))
-        
         print('StarID: {}'.format(line['star index']))
-        mag = line['Hwmag']
-        xc_local, yc_local, x0_global, y0_global, xc_global, yc_global = set_positions(
-            line, Npixcube)
-        interpix_local = make_local_flat(control_params, detector, x0_global,
-                                         y0_global, pixdim)
+        try:
+            mag = line['Hwmag']
+            xc_local, yc_local, x0_global, y0_global, xc_global, yc_global = set_positions(
+                line, Npixcube)
+            interpix_local = make_local_flat(control_params, detector, x0_global,
+                                            y0_global, pixdim)
 
-        # Making a cube containing plate data for a local region (small frame for a local region).
-        # Initialize (Axis order: X, Y, Z)
-        pixcube = np.zeros((Npixcube, Npixcube, control_params.nplate))
-
-
-        # Loop to take each plate.
-        for iplate in tqdm.tqdm(range(0, control_params.nplate)):
-            # picking temporary trajectory and local position update
-            istart, iend = index_control_trajectory(control_params, iplate,
-                                                    Nts_per_plate)
-            theta = calc_theta(theta_full, istart, iend, xc_local, yc_local)
-
-            if control_params.effect.flat_intrapix:
-                flat_intrapix = detector.flat.intrapix
-            else:
-                flat_intrapix = uniform_flat_intrapix
-
-            if control_params.effect.wfe != 'fringe37':
-                psfin = psf
-                psfcenter = (np.array(np.shape(psfin)) - 1.0) * 0.5
-            else:
-                psfin = psf[i_star]
-                psfcenter = (np.array(np.shape(psfin)[1:]) - 1.0) * 0.5
-
-            pixar = run_simpix(control_params, theta, interpix_local,
-                               flat_intrapix, psfin, psfcenter, psfscale,
-                               Nts_per_plate)
-            pixar = scaling_pixar(pixar, mag)
+            # Making a cube containing plate data for a local region (small frame for a local region).
+            # Initialize (Axis order: X, Y, Z)
+            pixcube = np.zeros((Npixcube, Npixcube, control_params.nplate))
 
 
-            pixar = add_dark_current(control_params, detector, pixar)
-            integrated = integrate(pixar, x0_global, y0_global,
-                                   control_params.tplate,
-                                   control_params.ace_control['dtace'],
-                                   detector)
-            # integrated is in adu/pix/plate.
-            pixcube[:, :, iplate] = integrated
-            pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
-                pixcube[:, :, iplate]
+            # Loop to take each plate.
+            for iplate in tqdm.tqdm(range(0, control_params.nplate)):
+                # picking temporary trajectory and local position update
+                istart, iend = index_control_trajectory(control_params, iplate,
+                                                        Nts_per_plate)
+                theta = calc_theta(theta_full, istart, iend, xc_local, yc_local)
 
-    import matplotlib.pyplot as plt
-    plt.imshow(pixcube_global[:,:,0])
-    plt.savefig("tmp.png")
+                if control_params.effect.flat_intrapix:
+                    flat_intrapix = detector.flat.intrapix
+                else:
+                    flat_intrapix = uniform_flat_intrapix
+
+                if control_params.effect.wfe != 'fringe37':
+                    psfin = psf
+                    psfcenter = (np.array(np.shape(psfin)) - 1.0) * 0.5
+                else:
+                    psfin = psf[i_star]
+                    psfcenter = (np.array(np.shape(psfin)[1:]) - 1.0) * 0.5
+
+                pixar = run_simpix(control_params, theta, interpix_local,
+                                flat_intrapix, psfin, psfcenter, psfscale,
+                                Nts_per_plate)
+                pixar = scaling_pixar(pixar, mag)
+
+
+                #pixar = add_dark_current(control_params, detector, pixar)
+                integrated = integrate(pixar, x0_global, y0_global,
+                                    control_params.tplate,
+                                    control_params.ace_control['dtace'],
+                                    detector)
+                # integrated is in adu/pix/plate.
+                pixcube[:, :, iplate] = integrated
+                #pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
+                #    pixcube[:, :, iplate]
+                pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] +=\
+                    pixcube[:, :, iplate]
+        except:
+            print("some error")
+    pixcube_global += global_dark(control_params, detector)
+    
+    
     np.savez("tmp.npz",pixcube_global)
 #    save_outputs(filenames, output_format, control_params, telescope, detector,
 #                 wfe, psf, pixcube_global, control_params.tplate,

@@ -61,25 +61,41 @@ def uniform_flat(detector):
     return uniform_flat_interpix, uniform_flat_intrapix
 
 
-def init_images(control_params, detector):
+def init_images(control_params, detector, prior_dark = True):
     """initialize pixcube.
 
     Args:
         control_params: control parameters
         detector: detector object
+        prior_dark: if the dark is added (True) or not (False). default: True
 
     Returns:
         global pixel cube images
     """
-    from jis.pixsim.addnoise import addnoise
-    pixcube_global = np.zeros(
-        shape=(detector.npix, detector.npix, control_params.nplate))
-    pixcube_global += detector.idark * control_params.tplate
-    pixcube_global, seed = addnoise(
-        pixcube_global, np.sqrt(2.)*detector.readnoise)
-    # in adu/pix/plate.
-    pixcube_global = np.round(pixcube_global/detector.gain)
+    if prior_dark:
+        pixcube_global = global_dark(control_params, detector)
+    else:
+        pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
+    
     return pixcube_global
+
+def global_dark(control_params, detector):
+    """compute global dark image
+
+    Args: 
+        control_params: control parameters
+        detector: detector object
+
+    Returns:
+        global pixel cube dark image
+    """
+    from jis.pixsim.addnoise import addnoise
+    pixcube_global_dark = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
+    pixcube_global_dark += detector.idark * control_params.tplate
+    pixcube_global_dark, seed = addnoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
+        # in adu/pix/plate.
+    pixcube_global_dark = np.round(pixcube_global_dark/detector.gain)
+    return pixcube_global_dark
 
 
 def set_positions(line, Npixcube):
