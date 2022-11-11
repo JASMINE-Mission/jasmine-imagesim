@@ -154,10 +154,11 @@ if __name__ == '__main__':
                                     control_params.tplate,
                                     control_params.ace_control['dtace'],
                                     detector)
+                #debug prints
                 mask = integrated != integrated
                 if(len(integrated[mask]) > 0):
                     print(integrated[mask],"invalid")
-
+                #debug prints
                 mask = integrated < 0.0
                 if(len(integrated[mask]) > 0):
                     print(integrated[mask],"negative")
@@ -171,7 +172,3 @@ if __name__ == '__main__':
             print("some error")
     pixcube_global += global_dark(control_params, detector)
     np.savez("tmp.npz",pixcube_global)
-#    save_outputs(filenames, output_format, control_params, telescope, detector,
-#                 wfe, psf, pixcube_global, control_params.tplate,
-#                 uniform_flat_interpix, uniform_flat_intrapix, acex, acey,
-#                 overwrite)
