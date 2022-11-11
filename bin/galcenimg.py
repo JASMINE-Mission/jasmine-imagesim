@@ -76,9 +76,9 @@ if __name__ == '__main__':
     mask4 =table_starplate['y pixel'] < detector.npix
 
     mask1 =table_starplate['x pixel'] >= 0
-    mask2 =table_starplate['x pixel'] < 200#detector.npix
+    mask2 =table_starplate['x pixel'] < 100 #detector.npix
     mask3 =table_starplate['y pixel'] >= 0
-    mask4 =table_starplate['y pixel'] < 200 #detector.npix
+    mask4 =table_starplate['y pixel'] < 100 #detector.npix
 
     mask = mask1*mask2*mask3*mask4
     pos = np.where(mask)
@@ -154,10 +154,17 @@ if __name__ == '__main__':
                                     control_params.tplate,
                                     control_params.ace_control['dtace'],
                                     detector)
+                mask = integrated != integrated
+                if(len(integrated[mask]) > 0):
+                    print(integrated[mask],"invalid")
+
+                mask = integrated < 0.0
+                if(len(integrated[mask]) > 0):
+                    print(integrated[mask],"negative")
+                
+
                 # integrated is in adu/pix/plate.
                 pixcube[:, :, iplate] = integrated
-                #pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
-                #    pixcube[:, :, iplate]
                 pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] +=\
                     pixcube[:, :, iplate]
         except:
