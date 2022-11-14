@@ -14,6 +14,7 @@ from jis.binutils.runpixsim import global_dark
 from jis.binutils.scales import get_pixelscales
 from jis.binutils.check import check_ace_length
 from jis.pixsim.integrate import integrate
+from jis.pixsim.addnoise import addnoise
 import astropy.io.ascii as asc  
 import matplotlib.pylab as plt
 from jis.pixsim.wcs import set_wcs
@@ -151,11 +152,11 @@ if __name__ == '__main__':
                 integrated = integrate(pixar, x0_global, y0_global,
                                     control_params.tplate,
                                     control_params.ace_control['dtace'],
-                                    detector, digitize=False)
-                # 'integrated' does not contain dark,
-                # and the data is in e/pix/plate (digitize=False).
+                                    detector, addnoise=False, digitize=False)
+                # 'integrated' does not contain dark and noise.
+                # The data is in e/pix/plate (digitize=False).
                 # Dark will be added in the end of the program.
-                # Digitization will be also done in the end of the program.
+                # Noise addition and digitization will be also done in the end.
 
                 #debug prints
                 mask = integrated != integrated
@@ -177,7 +178,8 @@ if __name__ == '__main__':
     gd = global_dark(control_params, detector, addnoise=False, digitize=False)
     np.savez("dark.npz", np.round(gd/detector.gain)) # Digitize. Conv. to in adu/pix/plate.
 
-    # Adding the dark and saving the result..
-    pixcube_global += gd
-    pixcube_global = np.round(pixcube_global/detector.gain) # Digitize.
+    # Dark addition, noise addition, and saving the result.
+    pixcube_global += gd # dark addition.
+    pixcube_global += addnoise(pixcube_global, np.sqrt(2.)*detector.readnoise) # noise addition. 
+    pixcube_global = np.round(pixcube_global/detector.gain) # digitize.
     np.savez("tmp.npz",pixcube_global)
