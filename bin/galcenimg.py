@@ -104,11 +104,9 @@ if __name__ == '__main__':
     check_ace_length(Nts_per_plate, control_params, theta_full)
 
     uniform_flat_interpix, uniform_flat_intrapix = uniform_flat(detector)
-    pixcube_global = init_images(control_params, detector, prior_dark=False) #no dark added
+    pixcube_global = init_images(control_params, detector, prior_dark=False)
+    # No dark added. Dark will be added in the end of the program.
 
-    pixcube_global += global_dark(control_params, detector)
-    np.savez("dark.npz",pixcube_global)
-    
     # Making data around each star.
     for i_star, line in enumerate(table_starplate):
         print('StarID: {}'.format(line['star index']))
@@ -153,7 +151,12 @@ if __name__ == '__main__':
                 integrated = integrate(pixar, x0_global, y0_global,
                                     control_params.tplate,
                                     control_params.ace_control['dtace'],
-                                    detector)
+                                    detector, digitize=False)
+                # 'integrated' does not contain dark,
+                # and the data is in e/pix/plate (digitize=False).
+                # Dark will be added in the end of the program.
+                # Digitization will be also done in the end of the program.
+
                 #debug prints
                 mask = integrated != integrated
                 if(len(integrated[mask]) > 0):
@@ -162,13 +165,19 @@ if __name__ == '__main__':
                 mask = integrated < 0.0
                 if(len(integrated[mask]) > 0):
                     print(integrated[mask],"negative")
-                
 
-                # integrated is in adu/pix/plate.
+                # 'integrated' is in e/pix/plate.
                 pixcube[:, :, iplate] = integrated
                 pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] +=\
                     pixcube[:, :, iplate]
         except:
             print("some error")
-    pixcube_global += global_dark(control_params, detector)
+
+    # Making and saving dark.
+    gd = global_dark(control_params, detector, addnoise=False, digitize=False)
+    np.savez("dark.npz", np.round(gd/detector.gain)) # Digitize. Conv. to in adu/pix/plate.
+
+    # Adding the dark and saving the result..
+    pixcube_global += gd
+    pixcube_global = np.round(pixcube_global/detector.gain) # Digitize.
     np.savez("tmp.npz",pixcube_global)
