@@ -79,22 +79,28 @@ def init_images(control_params, detector, prior_dark = True):
     
     return pixcube_global
 
-def global_dark(control_params, detector):
+def global_dark(control_params, detector, addnoise=True, digitize=True):
     """compute global dark image
 
     Args: 
         control_params: control parameters
         detector: detector object
+        addnoise: switch for noise-addition function.
+        digitize: switch for digitization function.
 
     Returns:
-        global pixel cube dark image
+        global pixel cube dark image.
+        if digitize=True, the unit is adu.
+        if digitize=False, the unit is e-.
     """
     from jis.pixsim.addnoise import addnoise
     pixcube_global_dark = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     pixcube_global_dark += detector.idark * control_params.tplate
-    pixcube_global_dark, seed = addnoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
-        # in adu/pix/plate.
-    pixcube_global_dark = np.round(pixcube_global_dark/detector.gain)
+    if addnoise:
+        pixcube_global_dark, seed = addnoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
+    # Digitization: converting to adu/pix/plate.
+    if digitize:
+        pixcube_global_dark = np.round(pixcube_global_dark/detector.gain)
     return pixcube_global_dark
 
 

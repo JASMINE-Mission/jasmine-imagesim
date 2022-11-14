@@ -3,7 +3,7 @@ from jis.pixsim.addnoise import mk_readnoise
 from jis.pixsim.addnoise import mk_shotnoise
 import matplotlib.pylab as plt
 
-def integrate(pixar, jx, jy, texp, dt, det, raw=False):
+def integrate(pixar, jx, jy, texp, dt, det, raw=False, addnoise=True, digitize=True):
     """
     Summary:
         This function integrates the pixar array
@@ -19,10 +19,16 @@ def integrate(pixar, jx, jy, texp, dt, det, raw=False):
         texp   (float)  : Exposure time in sec.
         dt     (float)  : Timestep of the simulated data (pixar).
         det    (detctor): Detector class object.
-        raw    (boolen) : Provide two images before subtraction?
+        raw    (bool)   : Provide two images before subtraction?
+        addnoise (bool) : Switch of noise-addition function.
+        digitize (bool) : Switch of digitization process.
 
     Returns:
-        adu (ndarray): Integrated data in adu. if raw=True, [adu2, adu1] are given.
+        adu (ndarray): Integrated data.
+                       If raw=True, [adu2, adu1] are given.
+                       If raw=False, the output is adu2-adu1.
+                       If digitiza=True, the unit is adu.
+                       If digitize=False, the unit is e-.
     
     """
 
@@ -85,11 +91,17 @@ def integrate(pixar, jx, jy, texp, dt, det, raw=False):
     signal1[signal1>det.fullwell] = det.fullwell
     signal2[signal2>det.fullwell] = det.fullwell
 
-    # Adding readnoise and digitize.
-    adu1 = signal1 + mk_readnoise(signal1.shape, det.readnoise)[0]
-    adu1 = np.round(adu1/det.gain)
-    adu2 = signal2 + mk_readnoise(signal2.shape, det.readnoise)[0]
-    adu2 = np.round(adu2/det.gain)
+    # Adding readnoise.
+    if addnoise:
+        adu1 = signal1 + mk_readnoise(signal1.shape, det.readnoise)[0]
+        adu2 = signal2 + mk_readnoise(signal2.shape, det.readnoise)[0]
+    else:
+        adu1 = signal1
+        adu2 = signal2
+    # Digitization.
+    if digitize:
+        adu1 = np.round(adu1/det.gain)
+        adu2 = np.round(adu2/det.gain)
 
     if raw:
         return adu2.T, adu1.T
