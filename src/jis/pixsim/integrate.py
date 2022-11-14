@@ -3,7 +3,7 @@ from jis.pixsim.addnoise import mk_readnoise
 from jis.pixsim.addnoise import mk_shotnoise
 import matplotlib.pylab as plt
 
-def integrate(pixar, jx, jy, texp, dt, det, raw=False, digitize=True):
+def integrate(pixar, jx, jy, texp, dt, det, raw=False, addnoise=True, digitize=True):
     """
     Summary:
         This function integrates the pixar array
@@ -20,6 +20,7 @@ def integrate(pixar, jx, jy, texp, dt, det, raw=False, digitize=True):
         dt     (float)  : Timestep of the simulated data (pixar).
         det    (detctor): Detector class object.
         raw    (bool)   : Provide two images before subtraction?
+        addnoise (bool) : Switch of noise-addition function.
         digitize (bool) : Switch of digitization process.
 
     Returns:
@@ -90,9 +91,14 @@ def integrate(pixar, jx, jy, texp, dt, det, raw=False, digitize=True):
     signal1[signal1>det.fullwell] = det.fullwell
     signal2[signal2>det.fullwell] = det.fullwell
 
-    # Adding readnoise and digitize.
-    adu1 = signal1 + mk_readnoise(signal1.shape, det.readnoise)[0]
-    adu2 = signal2 + mk_readnoise(signal2.shape, det.readnoise)[0]
+    # Adding readnoise.
+    if addnoise:
+        adu1 = signal1 + mk_readnoise(signal1.shape, det.readnoise)[0]
+        adu2 = signal2 + mk_readnoise(signal2.shape, det.readnoise)[0]
+    else:
+        adu1 = signal1
+        adu2 = signal2
+    # Digitization.
     if digitize:
         adu1 = np.round(adu1/det.gain)
         adu2 = np.round(adu2/det.gain)
