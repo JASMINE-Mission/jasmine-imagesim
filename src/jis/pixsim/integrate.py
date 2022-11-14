@@ -23,7 +23,11 @@ def integrate(pixar, jx, jy, texp, dt, det, raw=False, digitize=True):
         digitize (bool) : Switch of digitization process.
 
     Returns:
-        adu (ndarray): Integrated data in adu. if raw=True, [adu2, adu1] are given.
+        adu (ndarray): Integrated data.
+                       If raw=True, [adu2, adu1] are given.
+                       If raw=False, the output is adu2-adu1.
+                       If digitiza=True, the unit is adu.
+                       If digitize=False, the unit is e-.
     
     """
 
