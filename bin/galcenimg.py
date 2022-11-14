@@ -180,6 +180,6 @@ if __name__ == '__main__':
 
     # Dark addition, noise addition, and saving the result.
     pixcube_global += gd # dark addition.
-    pixcube_global += addnoise(pixcube_global, np.sqrt(2.)*detector.readnoise) # noise addition. 
+    pixcube_global += addnoise(pixcube_global, np.sqrt(2.)*detector.readnoise)[0] # noise addition. 
     pixcube_global = np.round(pixcube_global/detector.gain) # digitize.
     np.savez("tmp.npz",pixcube_global)
