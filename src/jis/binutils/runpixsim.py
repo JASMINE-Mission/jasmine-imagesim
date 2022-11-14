@@ -93,7 +93,7 @@ def global_dark(control_params, detector):
     pixcube_global_dark = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     pixcube_global_dark += detector.idark * control_params.tplate
     pixcube_global_dark, seed = addnoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
-        # in adu/pix/plate.
+    # Digitization: converting to adu/pix/plate.
     pixcube_global_dark = np.round(pixcube_global_dark/detector.gain)
     return pixcube_global_dark
 
