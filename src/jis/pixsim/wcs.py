@@ -31,7 +31,7 @@ def set_wcs(ra_cen, dec_cen, rotation_angle, detector, telescope):
     from astropy import wcs
     w = wcs.WCS(naxis=2)
     #w.wcs._naxis = [detector.npix, detector.npix] #the number of the one side pixels
-    w.wcs.crpix = [detector.npix / 2.0 + 1, detector.npix / 2.0 + 1
+    w.wcs.crpix = [detector.npix / 2.0 + 0.5, detector.npix / 2.0 + 0.5
                    ]  #reference pixel coordinate, +1 is due to python?
     pixel_scale = pixel_scale_degree(detector, telescope)
     w.wcs.cdelt = [pixel_scale, pixel_scale]
