@@ -76,12 +76,16 @@ def integrate(pixar, jx, jy, texp, dt, det, raw=False, addnoise=True, digitize=T
     integ2 = np.sum(pixar*w2, axis=0)
 
     # Adding shotnoise.
-    shotnoise1, seed1 = mk_shotnoise(integ1)
-    shotnoise12, seed2 = mk_shotnoise(integ2-integ1)
+    if addnoise:
+        shotnoise1, seed1 = mk_shotnoise(integ1)
+        shotnoise12, seed2 = mk_shotnoise(integ2-integ1)
 
-    signal1 = integ1 + shotnoise1
-    signal2 = signal1 + (integ2 - integ1) + shotnoise12
-
+        signal1 = integ1 + shotnoise1
+        signal2 = signal1 + (integ2 - integ1) + shotnoise12
+    else:
+        signal1 = integ1
+        signal2 = signal1 + (integ2 - integ1)
+    
     ###################################################
     # If needed, non-linearity can be implemented here
     # instead of the saturation cut below.
