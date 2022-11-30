@@ -100,6 +100,22 @@ def set_simpix(theta,interpix,intrapix):
     return dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay,\
            pixdim, spixdim, ntime, pixlc
 
+def free_dev(dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay):
+    """free device memory
+
+    Args:
+        dev_pixlc (_type_): _description_
+        dev_interpix (_type_): _description_
+        dev_intrapix (_type_): _description_
+        dev_thetax (_type_): _description_
+        dev_thetay (_type_): _description_
+    """
+    dev_pixlc.free()
+    dev_interpix.free()
+    dev_intrapix.free()
+    dev_thetax.free()
+    dev_thetay.free()
+
 def pix2psfpix(pixpos,pixcenter,psfcenter,psfscale):
     # psfpos [fp-cell]: psfarr pixel position as a function of (detector) pixel position (pixpos [pix])
     # pixcenter: the detector center position [pix,pix]
@@ -303,6 +319,12 @@ def simpix(theta, interpix, intrapix, psfarr=None, psfcenter=None, psfscale=None
     cuda.memcpy_dtoh(pixlc,dev_pixlc)
 
     pixar = pixlc.reshape((pixdim[0], pixdim[1], ntime))
+    #free memory
+    free_dev(dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay)
+    if psfarr is not None:
+        dev_psfarr.free()
+        dev_subtilex.free()
+        dev_subtiley.free()
 
     return pixar
 
