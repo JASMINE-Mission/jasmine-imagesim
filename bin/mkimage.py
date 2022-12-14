@@ -43,7 +43,6 @@ from jis.binutils.check import check_ace_length
 from jis.binutils.binplot import plot_variability
 from jis.pixsim.integrate import integrate
 import matplotlib.pylab as plt
-from jis.photonsim.fluxdensity import Hw_absmag
 
 if __name__ == '__main__':
     """
@@ -94,10 +93,7 @@ if __name__ == '__main__':
     # Making data around each star.
     for i_star, line in enumerate(table_starplate):
         print('StarID: {}'.format(line['star index']))
-        #mag = line['Hwmag']
-        mag = line['Hwmag'] - Hw_absmag(9000)
-        #   mag = line['Hwmag'] - Hw_absmag(line['Teff'])?
-        #or mag = line['Hwmag'] - Hw_absmag(control_params.Teff)?
+        mag = line['Hwmag']
         xc_local, yc_local, x0_global, y0_global, xc_global, yc_global = set_positions(
             line, Npixcube)
         interpix_local = make_local_flat(

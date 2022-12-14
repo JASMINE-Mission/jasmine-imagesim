@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from jis.photonsim.fluxdensity import flux_rJHKs_byTeff, Hw_absmag
+from jis.photonsim.fluxdensity import flux_rJHKs_byTeff, absmags
 
 def sort_check(f_array, mag_array):
     
@@ -31,7 +31,7 @@ def test_fluxdensity():
     mag_array   = []
     for t_eff in teff_list:
         w,f = flux_rJHKs_byTeff(t_eff)
-        mag = Hw_absmag(t_eff)
+        mag,_,_= absmags(t_eff)
 
         f_array.append(f)
         mag_array.append(mag)

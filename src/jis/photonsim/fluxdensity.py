@@ -6,7 +6,7 @@ import pkgutil
 from io import BytesIO
 
 from scipy import interpolate
-from scipy.optimize import minimize
+from scipy.constants import c,h
 
 #wavelength [um]
 WL_MKO   = np.array([ 0.5450 , 1.250  , 1.644  , 2.121  , 2.149  ])#, 2.198  ,
@@ -28,9 +28,6 @@ def ABmag_to_Flam(ABmag, l_p):
     Returns:
         f_lam (float)   : Flux densities (W/m2/um)
     """
-
-    c   = 299792458. #m/s
-
     f_nu    = 3720*10**(-0.4*ABmag)
     f_nu    = f_nu*1.0e-26 #W/m2/Hz
     f_lam   = f_nu/((l_p**2)/c*1e-6)
@@ -112,7 +109,7 @@ def flux_rJHKs_byTeff(t_eff=5500):
 
     return  WL_rJHK, FLUX_rJHK
 
-def Hw_absmag(t_eff=5500):
+def absmags(t_eff=5500):
     """
     derive absolute VEGA magnitude from T_eff.
 
@@ -133,7 +130,7 @@ def Hw_absmag(t_eff=5500):
     H_mag   = mag_ar[2]
     Hw_mag  = 0.9*J_mag + 0.1*H_mag - 0.06*(J_mag - H_mag)**2
 
-    return Hw_mag
+    return Hw_mag, J_mag, H_mag
 
 
 if __name__=='__main__':
@@ -144,10 +141,11 @@ if __name__=='__main__':
         else:
             t_eff   = 5500
 
-        Hw_mag  = Hw_absmag(t_eff)
+        Hw_mag,_,_  = absmags(t_eff)
         print("absolute Hw mag:\t",Hw_mag)
 
         WL_rJHK, FL_rJHK     = flux_rJHKs_byTeff(t_eff)
+        print(WL_rJHK, FL_rJHK)
         plt.plot(WL_rJHK, FL_rJHK)
         plt.savefig("fluxdensity_"+str(t_eff)+".png")
     else:
