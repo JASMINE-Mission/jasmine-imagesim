@@ -8,15 +8,17 @@ from io import BytesIO
 from scipy import interpolate
 from scipy.constants import c,h
 
-#wavelength [um]
-WL_MKO   = np.array([ 0.5450 , 1.250  , 1.644  , 2.121  , 2.149  ])#, 2.198  ,
-                      #3.754  , 4.702])
-# flux [W/m2/um]
-FLUX_MKO = np.array([3.68e-08,3.01e-09,1.18e-09,4.57e-10,4.35e-10])#,4.00e-10,
-                     #5.31e-11,2.22e-11])
+# MKO NIR system from Tokunaga & Vacca 05 (2005PASP..117..421T, 2005PASP..117.1459T)
+# wavelength [um] (isophotal wavelength for Vega model)
+WL_MKO   = np.array([0.5450, 1.250, 1.644, 2.121, 2.149]) # V/J/H/K'/Ks
+                      #, 2.198, 3.754, 4.702]) # K/L'/M'
+# flux [W/m2/um] (mean flux/flux at the iso. wavelength of the Vega model)
+FLUX_MKO = np.array([3.68e-08, 3.01e-09, 1.18e-09, 4.57e-10, 4.35e-10]) # V/J/H/K'/Ks
+                      #, 4.00e-10, 5.31e-11, 2.22e-11]) # K/L'/M'
 
-#wavelength [um]
-WL_rJHK  = np.array([ 0.6165 , 1.250  , 1.644  , 2.149   ])
+# Settings for the magnitudes on maglist.txt
+# wavelength of the r, J, H, and Ks bands [um]
+WL_rJHK  = np.array([0.6165, 1.250, 1.644, 2.149])
 
 def ABmag_to_Flam(ABmag, l_p):
     """Transform AB magnitude to F_lamda
@@ -28,8 +30,9 @@ def ABmag_to_Flam(ABmag, l_p):
     Returns:
         f_lam (float)   : Flux densities (W/m2/um)
     """
-    f_nu    = 3720*10**(-0.4*ABmag)
-    f_nu    = f_nu*1.0e-26 #W/m2/Hz
+
+    f_nu    = 3720*10**(-0.4*ABmag) # Jy
+    f_nu    = f_nu*1.0e-26          # W/m2/Hz
     f_lam   = f_nu/((l_p**2)/c*1e-6)
 
     return f_lam
@@ -39,7 +42,7 @@ def VEGAmag_to_ABmag(VEGAmag, Fo):
 
     Args:
         VEGAmag (float) : Vega magnitude
-        Fo (float)      : photometric zero flux
+        Fo (float)      : photometric zero flux for Vega mag.
 
     Returns:
         ABmag (float)   : AB magnitude
@@ -50,11 +53,13 @@ def VEGAmag_to_ABmag(VEGAmag, Fo):
     return ABmag
 
 def F_rJHK():
-    """Calculate F_lambda array for u, J, H, and Ks bands
+    """Calculate F_lambda and ABmag in the r, J, H, and Ks bands
+       for dwarf stars at 10 pc.
 
     Returns:
-        f_lam (ndarray) : F_lambda
-        t_eff (ndarray) : effective temperature.
+        f_lam (ndarray) : F_lambda (W/m2/um)
+        t_eff (ndarray) : Effective temperature (K)
+        ABmags (ndarray): AB magnitudes
 
     This caluculation is based on Kraus & Hillenbrand (2007)
     and Tokunaga & Bacca (2005).
@@ -77,7 +82,7 @@ def F_rJHK():
     fo_ar   = (r_pzero, 1594, 1024, 666.7)
     ABmags  = VEGAmag_to_ABmag(mags_ar, fo_ar)
 
-    # lambda_pivot for each bandpass
+    # lambda_pivot for each bandpass (Table 2 in Tokunaga & Vacca 2005)
     lp_ar   = np.array((lam_pvt_r, 1.247, 1.628, 2.150), dtype='f8')
     f_lam   = ABmag_to_Flam(ABmags, lp_ar)
 
@@ -85,14 +90,15 @@ def F_rJHK():
 
 
 def flux_rJHKs_byTeff(t_eff=5500):
-    """Calculate F_lamda array for u, J, H, and Ks bands
-        in a given effective temperature.
+    """Calculate F_lamda array in the r, J, H, and Ks bands
+       for a dwarf star at 10 pc with a given effective temperature.
 
     Args:
         Teff (float)    : Effective temperature of target
 
     Returns:
-        FLUX_rJHK
+        WL_rJHK         : Wavelengths of the r, J, H, and Ks bands
+        FLUX_rJHK       : Flux densities in the r, J, H, and Ks bands (W/m2/um)
 
     WL_rJHK and FLUX_rJHK can be alternatives to the WL_MKO and FLUX_MKO
     which are currently used in response.py, respectively.
@@ -116,7 +122,7 @@ def absmags(t_eff=5500):
     args:
         t_eff (float)   : effective temperature
     returns:
-        hw_mag (float)  : absolute vega magnitude in hw band
+        hw_mag (float)  : absolute vega magnitude in Hw band
     """
     #d_tab5  = np.loadtxt("photonsim/data/maglist.txt", comments='#', dtype='f8')
     maglist = pkgutil.get_data("jis", "photonsim/data/maglist.txt")
