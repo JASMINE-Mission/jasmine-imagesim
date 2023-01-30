@@ -14,7 +14,7 @@ def test_pixel_scale_radian():
 
 def test_set_wcs():
     detector, control_params, telescope = load_filenames_for_test()
-    jasmine_wcs = set_wcs(0.0, 0.0, detector, telescope)
+    jasmine_wcs = set_wcs(0.0, 0.0, 0.0, detector, telescope)
     from astropy.coordinates import SkyCoord
     coord_0 = SkyCoord('00h00m00.0s +00d00m00s', frame='fk5')
     coord = SkyCoord('00h00m00.0s +00d00m04s', frame='fk5')
