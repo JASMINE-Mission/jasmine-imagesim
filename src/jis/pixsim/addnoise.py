@@ -82,8 +82,7 @@ def mk_shotnoise(data, rg=None):
         seed = round(time.time()*10)
         rg   = np.random.Generator(np.random.PCG64(seed))
 
-    sigma     = np.sqrt(data) 
-    shotnoise = rg.standard_normal(data.shape)*sigma
+    shotnoise = rg.poisson(data) - data
 
     if seed is None:
         return shotnoise
