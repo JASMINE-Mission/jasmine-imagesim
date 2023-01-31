@@ -1,7 +1,8 @@
 version: "2"
 checks:
   argument-count:
-    config: 5
+    config:
+      threshold: 5
 plugins:
   sonar-python:
     enabled: true
