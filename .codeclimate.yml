@@ -15,11 +15,11 @@ plugins:
   radon:
     enabled: true
 exclude_patterns:
-- dist/
-- **/node_modules/
-- params/
-- docs/
-- original_codes/
-- **/__init__.py
-- *.md
-- *.in
+  - "dist/"
+  - "**/node_modules/"
+  - "params/"
+  - "docs/"
+  - "original_codes/"
+  - "**/__init__.py"
+  - "**/*.md"
+  - "**/*.in"
