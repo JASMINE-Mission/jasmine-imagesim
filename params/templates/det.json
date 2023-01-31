@@ -17,7 +17,7 @@
 "QE": {
   "title": "Spectral distribution of quantum efficiency (W?? in um; V?? QE value).",
   "wavelength": {"val": [0.9, 1.4, 1.6], "title": "Wavelength in micron."},
-  "qe_value": {"val": [0.8, 0.8, 0.8], "title": "QE values." }},
+  "qe_value": {"val": [0.83, 0.76, 0.71], "title": "QE values." }},
 "spixdim": {
   "title": "Dimensions of the subpixel grid.",
   "val": [32, 32]},
