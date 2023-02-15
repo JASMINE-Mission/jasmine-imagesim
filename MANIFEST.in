@@ -1,3 +1,7 @@
+include src/jis/data/random_stars.csv
+include src/jis/data/params/det.json
+include src/jis/data/params/ctl.json
+include src/jis/data/params/tel.json
 include src/jis/pixsim/data/v_flatn.fits
 include src/jis/pixsim/data/intrapix/intravx.csv
 include src/jis/pixsim/data/intrapix/intravy.csv
