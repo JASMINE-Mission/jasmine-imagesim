@@ -1,4 +1,8 @@
 version: "2"
+checks:
+  argument-count:
+    config:
+      threshold: 5
 plugins:
   sonar-python:
     enabled: true
@@ -8,9 +12,9 @@ plugins:
   pep8:
     enabled: true
     checks:
-      E221:
+      E128:  # continuation line uner-indented for visual indent
         enabled: false
-      E128:
+      E221:  # multiple spaces before operator
         enabled: false
   radon:
     enabled: true
@@ -21,5 +25,5 @@ exclude_patterns:
   - "docs/"
   - "original_codes/"
   - "**/__init__.py"
-  - "*.md"
-  - "*.in"
+  - "**/*.md"
+  - "**/*.in"

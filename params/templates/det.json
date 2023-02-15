@@ -4,20 +4,20 @@
   "val"  : 10.0 },
 "Npix":{
   "title": "Number of pixels on a side.",
-  "val"  : 1920 },
+  "val"  : 1968 },
 "readnoise": {
   "title": "Read out noise (e-).",
   "val"  : 15 },
 "Idark":{
   "title": "Dark current w stray light (e-/sec/pix).",
-  "val"  :  24.5 },
+  "val"  :  25. },
 "Fullwell": {
   "title": "Full well (e-).",
-  "val"  : 150000},
+  "val"  : 100000},
 "QE": {
   "title": "Spectral distribution of quantum efficiency (W?? in um; V?? QE value).",
   "wavelength": {"val": [0.9, 1.4, 1.6], "title": "Wavelength in micron."},
-  "qe_value": {"val": [0.6, 0.6, 0.6], "title": "QE values." }},
+  "qe_value": {"val": [0.83, 0.76, 0.71], "title": "QE values." }},
 "spixdim": {
   "title": "Dimensions of the subpixel grid.",
   "val": [32, 32]},
@@ -42,8 +42,8 @@
 "readparams": {
   "title": "Parameters related to the reset/read operation.",
   "fsmpl"     : {"val": 200e3, "title": "Sampling frequency in Hz."},
-  "ncol_ch"   : {"val": 120, "title": "Num. of col. in one ch."},
-  "nrow_ch"   : {"val":1920, "title": "Num. of row in one ch."},
+  "ncol_ch"   : {"val": 123, "title": "Num. of col. in one ch."},
+  "nrow_ch"   : {"val":1968, "title": "Num. of row in one ch."},
   "npix_pre"  : {"val":   4, "title": "Npix before reading each row."},
   "npix_post" : {"val":   4, "title": "Npix after reading each row."},
   "t_overhead": {"val": 0.1, "title": "Overhead time between reset and the 1st read in sec."}},
