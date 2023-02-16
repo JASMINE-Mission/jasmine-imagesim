@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     ### FILE I/O ###
     dirh="/home/kawahara/virtual-jasmine/pixsim/data/"
-    outdir="out"+str(itag)+"."+trajtype+"_bsig"+str(bsig)+"_psf"+str(sigma)+"_ppm"+str(np.int(ppm))
+    outdir="out"+str(itag)+"."+trajtype+"_bsig"+str(bsig)+"_psf"+str(sigma)+"_ppm"+str(int(ppm))
 
     filetemp="template.fits.gz"
     filet="pixel.fits.gz"
@@ -92,8 +92,8 @@ if __name__ == "__main__":
     #jx=0.5
     #jy=0.5
     hayapix=1024
-    jx=np.int(jx*(1024-spixdim[0]))
-    jy=np.int(jy*(1024-spixdim[1]))
+    jx=int(jx*(1024-spixdim[0]))
+    jy=int(jy*(1024-spixdim[1]))
     interpix=rf.haya2interpix(jx,jy,pixdim)
 
     #intrapixel
@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
     ### FIGURES ###
     fig = plt.figure(figsize=(13, 3))
-    i = np.int(ndata / 2)
+    i = int(ndata / 2)
     ax = fig.add_subplot(121)
     a = plt.imshow(pixar[:, :, i].T, interpolation="nearest")
     plt.colorbar(a)

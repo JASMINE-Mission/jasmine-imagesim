@@ -28,8 +28,8 @@ if __name__ == "__main__":
 
     jx,jy=np.random.rand(2)
     hayapix=1024
-    jx=np.int(jx*(1024-spixdim[0]))
-    jy=np.int(jy*(1024-spixdim[1]))
+    jx=int(jx*(1024-spixdim[0]))
+    jy=int(jy*(1024-spixdim[1]))
     interpix=rf.haya2interpix(jx,jy,pixdim)
 
     #trajectory

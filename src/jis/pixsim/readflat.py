@@ -34,8 +34,8 @@ def flat_interpix(flat, ix, iy, pixdim, figsw=0):
 
     """
 
-    sx=ix+np.int(pixdim[0])
-    sy=iy+np.int(pixdim[1])
+    sx=ix+int(pixdim[0])
+    sy=iy+int(pixdim[1])
     if(sx<np.shape(flat)[0] and sy<np.shape(flat)[1]):
         sflat=flat[ix:sx,iy:sy]
         #sflat=sflat/np.mean(sflat) #PR#55 

@@ -40,7 +40,7 @@ def gentraj_random(ntime, basepos, nsub, basesig=1.0, subsig=0.1, seed=None):
         theta (ndarray): trajectory array in detpix ([thetax, thetay])
 
     """
-    ndata = np.int(ntime / nsub)
+    ndata = int(ntime / nsub)
     np.random.seed(seed)
     thetax = np.array([])
     thetay = np.array([])
