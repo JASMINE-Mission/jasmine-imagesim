@@ -52,8 +52,8 @@ if __name__ == "__main__":
 
         #interpixel
         jx,jy=np.random.rand(2)
-        jx=np.int(jx*(np.shape(flat)[0]-spixdim[0]))
-        jy=np.int(jy*(np.shape(flat)[1]-spixdim[1]))
+        jx=int(jx*(np.shape(flat)[0]-spixdim[0]))
+        jy=int(jy*(np.shape(flat)[1]-spixdim[1]))
         interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
 
         theta=  np.random.normal(0.0,sigmaXY,2*ndisturb).reshape((ndisturb,2)) + np.array([theta_cen])
