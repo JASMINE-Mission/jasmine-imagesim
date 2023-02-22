@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     """
     import os
-    ver = "ver1_1_1_"
+    ver = "ver1_2_"
     region = "A"
     dirname_params = "../params/galcenimg"
     filenames = {}
@@ -173,7 +173,7 @@ if __name__ == '__main__':
 
     # Making and saving dark.
     gd = global_dark(control_params, detector, addnoise=False, digitize=False)
-    np.savez("dark_" + str(region) + ".npz", np.round(
+    np.savez("dark_" + ver + region + ".npz", np.round(
         gd / detector.gain))  # Digitize. Conv. to in adu/pix/plate.
 
     #fits save
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     hdu.header['NAXIS1'] = x
     hdu.header['NAXIS2'] = y
     hdu.header.update(jasmine_wcs.to_header())
-    hdu.writeto("img_" + ver + str(region) + ".fits", overwrite=True)
+    hdu.writeto("img_" + ver + region + ".fits", overwrite=True)
     
     # Dark addition, noise addition, and saving the result.
     pixcube_global += gd  # dark addition.
@@ -192,4 +192,4 @@ if __name__ == '__main__':
                                np.sqrt(2.) *
                                detector.readnoise)[0]  # noise addition.
     pixcube_global = np.round(pixcube_global / detector.gain)  # digitize.
-    np.savez("img_" + ver + str(region) + ".npz", pixcube_global)
+    np.savez("img_" + ver + region + ".npz", pixcube_global)
