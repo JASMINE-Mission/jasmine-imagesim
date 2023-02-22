@@ -13,15 +13,10 @@ META_PATH = os.path.join("src", "jis", "__init__.py")
 CLASSIFIERS = [
     "Programming Language :: Python",
 ]
-<<<<<<< HEAD
 INSTALL_REQUIRES = [
     "numpy>=1.17","tqdm","scipy","docopt","pyfftw","pycuda",
     "h5py","m2r2","sphinx_rtd_theme","batman-package",
 ]
-=======
-INSTALL_REQUIRES = ["numpy","tqdm","scipy","docopt","pyfftw","h5py","m2r2","sphinx_rtd_theme","batman-package"]
->>>>>>> 5bb9d051dc06b1a4b19da2f11c0e2d89c6970bc2
-
 # END PROJECT SPECIFIC
 
 

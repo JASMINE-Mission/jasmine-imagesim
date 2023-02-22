@@ -1,4 +1,9 @@
 include src/jis/data/random_stars.csv
+include src/jis/data/random_catalog/random_stars_A.csv
+include src/jis/data/random_catalog/random_stars_B.csv
+include src/jis/data/random_catalog/random_stars_C.csv
+include src/jis/data/random_catalog/random_stars_D.csv
+
 include src/jis/data/params/det.json
 include src/jis/data/params/ctl.json
 include src/jis/data/params/tel.json
