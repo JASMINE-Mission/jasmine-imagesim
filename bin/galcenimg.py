@@ -39,7 +39,7 @@ if __name__ == '__main__':
     """
     import os
     ver = "ver1_2_"
-    region = "A"
+    region = "B"
     dirname_params = "../params/galcenimg"
     filenames = {}
     #filenames['starplate'] = os.path.join(dirname_params, "gelcen_random_stars.json")
