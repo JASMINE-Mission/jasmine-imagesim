@@ -184,7 +184,7 @@ if __name__ == '__main__':
         Qtsave = []
 
     # Making a LOCAL flat as interpix ##############
-    jx, jy = np.int(x), np.int(y)
+    jx, jy = int(x), int(y)
     interpix = rf.flat_interpix(flat, jx, jy, pixdim, figsw=0)
     interpix = np.ones(np.shape(interpix))
 

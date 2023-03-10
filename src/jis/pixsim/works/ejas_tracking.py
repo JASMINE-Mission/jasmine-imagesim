@@ -30,8 +30,8 @@ def persistence_const_array(x,rho,Ei0,Qij):
 
 def read_trapped_charge(Qtrap,ix,iy,pixdim,figsw=0,figtag=0):
     #get trapped charge in local view from ix,iy,pixdim
-    sx=ix+np.int(pixdim[0])
-    sy=iy+np.int(pixdim[1])
+    sx=ix+int(pixdim[0])
+    sy=iy+int(pixdim[1])
     if(sx<np.shape(Qtrap)[0] and sy<np.shape(Qtrap)[1]):
         trap_local=Qtrap[ix:sx,iy:sy,:]
     else:
@@ -49,8 +49,8 @@ def read_trapped_charge(Qtrap,ix,iy,pixdim,figsw=0,figtag=0):
     return trap_local
 
 def push_trapped_charge(Qtrap,ix,iy,pixdim,Qij):
-    sx=ix+np.int(pixdim[0])
-    sy=iy+np.int(pixdim[1])
+    sx=ix+int(pixdim[0])
+    sy=iy+int(pixdim[1])
     if(sx<np.shape(Qtrap)[0] and sy<np.shape(Qtrap)[1]):
         Qtrap[ix:sx,iy:sy,:]=Qij
     else:
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     
     lc=[]    
     theta = np.array([theta_cen])
-    jx,jy=np.int(x),np.int(y)
+    jx,jy=int(x),int(y)
     Qtsave=[]
     for iframe in range(0,nframe):
 
@@ -120,7 +120,7 @@ if __name__ == "__main__":
         x,y=x+dx,y+dy
 
         jxp,jyp=jx,jy
-        jx,jy=np.int(x),np.int(y)
+        jx,jy=int(x),int(y)
         djx,djy=jx-jxp,jy-jyp
         interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
 

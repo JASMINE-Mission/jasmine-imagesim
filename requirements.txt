@@ -4,6 +4,4 @@ scipy
 docopt
 pyfftw
 h5py
-m2r2
-sphinx_rtd_theme
 batman-package

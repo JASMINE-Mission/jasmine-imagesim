@@ -15,7 +15,8 @@ CLASSIFIERS = [
 ]
 INSTALL_REQUIRES = [
     "numpy>=1.17","tqdm","scipy","docopt","pyfftw","pycuda",
-    "h5py","m2r2","sphinx_rtd_theme","batman-package",
+    "h5py", "batman-package",
+
 ]
 
 # END PROJECT SPECIFIC
