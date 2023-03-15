@@ -37,7 +37,7 @@ def calc_response(control_params, telescope, detector):
     (currently t_eff is fixed to be 9500 K). The apparent Hw magnitude is assumed to be zero
     and to have the relation with the J- and H-band magnitudes used in the telescope_baseline
     repository described as follows,
-      Hw - H = 0.9*(J - H) - 0.06*(J - H),
+      Hw - H = 0.9*(J - H) - 0.06*(J - H)^2,
     where J, H, and Hw are the J-, H-, and Hw-band magnitudes in the Vega system.
 
     Args:
