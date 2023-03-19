@@ -44,8 +44,8 @@
   "fsmpl"     : {"val": 200e3, "title": "Sampling frequency in Hz."},
   "ncol_ch"   : {"val": 123, "title": "Num. of col. in one ch."},
   "nrow_ch"   : {"val":1968, "title": "Num. of row in one ch."},
-  "npix_pre"  : {"val":   4, "title": "Npix before reading each row."},
-  "npix_post" : {"val":   4, "title": "Npix after reading each row."},
+  "npix_pre"  : {"val":   0, "title": "Npix before reading each row."},
+  "npix_post" : {"val":   0, "title": "Npix after reading each row."},
   "t_overhead": {"val": 0.1, "title": "Overhead time between reset and the 1st read in sec."}},
 "gain": {
   "title": "Conversion gain in e/adu.",
