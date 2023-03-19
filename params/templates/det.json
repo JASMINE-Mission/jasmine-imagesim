@@ -13,7 +13,7 @@
   "val"  :  25. },
 "Fullwell": {
   "title": "Full well (e-).",
-  "val"  : 100000},
+  "val"  : 150000},
 "QE": {
   "title": "Spectral distribution of quantum efficiency (W?? in um; V?? QE value).",
   "wavelength": {"val": [0.9, 1.4, 1.6], "title": "Wavelength in micron."},
