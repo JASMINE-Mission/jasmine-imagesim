@@ -13,12 +13,12 @@ WL_H = 1.644
 
 def fluxdensity_spline(t_eff):
     """
-    This function returns spline function for absolute magnitude
-    instead of zero-mag flux of Vega-type star.
+    This function returns a spline function for the flux density
+    of a dwarf star with an effective temperature of t_eff at 10 pc.
 
-    Args: t_eff: effective temperature of star.
+    Args: t_eff: effective temperature of the star.
 
-    Returns: spline function of flux density   
+    Returns: spline function of flux density.
     """
 
     wav, flux   = flux_rJHKs_byTeff(t_eff)
@@ -31,13 +31,16 @@ def fluxdensity_spline(t_eff):
 
 def calc_response(control_params, telescope, detector):
     """
-    This function calculates the electron rate (e-/s/m^2) detected by SJ
+    This function calculates the electron rate (e-/s/m^2) detected by Jasmine
     based on the optics efficiency (EPdefined) and the quantum efficiency (QEdet).
-    The target object is assumed to have SED determined by effective temperature t_eff.
-    Hw-mag is calculated from the apparent J- and H-band magnitudes 
-    using the same equation in the telescope_baseline as follows,
-      Hw - H = 0.9*(J - H) - 0.06*(J - H),
-    where J and H are the J- and H-band magnitudes in Vega system.
+    The target object is assumed to have an SED determined by the effective
+    temperature t_eff (currently t_eff is fixed to be 9500 K). The apparent
+    Hw magnitude is assumed to be zero and to have the relation with the
+    J- and H-band magnitudes used in the telescope_baseline repository
+    described as follows,
+      Hw - H = 0.9*(J - H) - 0.06*(J - H)^2,
+    where J, H, and Hw are the J-, H-, and Hw-band magnitudes
+    in the Vega system.
 
     Args:
         control_params: control parameters
@@ -47,25 +50,11 @@ def calc_response(control_params, telescope, detector):
     Returns:
         Tr  (float)  : Total electron rate (e-/s/m^2).
         WL  (ndarray): Wavelength grid of Npr (um; 0.1-um grid).
-        Npr (ndarray): Electron flux (e-/s/m^2/um).
-
-    Example:
-       import numpy as np
-       from jis.photonsim.response import calc_response
-
-       JH  = 0.3
-       alp = 0.75
-       WL  = np.array([1.4, 1.5, 1.6])
-       EP  = np.array([0.9, 0.8, 0.7])
-       QEdet = np.array([0.5, 0.4, 0.3])
-
-       el_rate, wavelength, el_flux = 
-
+        Npr (ndarray): Electron flux (e-/s/m^2/um) of a dwarf star
+                       with Hw=0mag and (J-H)=control_params.JH (t_eff = 9500 K).
 
     """
-    #Rv = control_params.Rv
     JH = control_params.JH
-    #alp = control_params.alpha
     t_eff   = 9500
     #t_eff   = 3500
     #t_eff   = 6000
@@ -101,12 +90,13 @@ def calc_response(control_params, telescope, detector):
     EP = EPinter(WL)
     QE = QEinter(WL)
 
-    # absolute-mag photon flux (ph/s/m^2/um).
+    # photon flux of a dwarf star at 10 pc (ph/s/m^2/um).
     Np=Nphotons(WL, t_eff)
 
     # Photon count per wavelength in Hw-band.
     # The value is adjust by the distance-factor 
-    # to make consistecy among the distance, extinction, and apparent Hw-mag.
+    # to make consistecy among the distance, extinction,
+    # and apparent Hw-mag (=0 mag).
     Npr = np.empty(len(WL))
     for i in range(len(WL)):
         Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-Awl_n20(JH,J_abs,H_abs,WL[i])/2.5)\
