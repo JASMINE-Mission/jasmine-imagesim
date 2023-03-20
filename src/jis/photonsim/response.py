@@ -94,8 +94,10 @@ def calc_response(control_params, telescope, detector):
     WL = np.array(Wlist)
 
     # interpolate efficiency and qe
-    EPinter = interpolate.interp1d(WLdefined, EPdefined, kind='linear')
-    QEinter = interpolate.interp1d(WLdet, QEdet, kind='linear')
+    EPinter = interpolate.interp1d(WLdefined, EPdefined, kind='linear',
+              bounds_error=False, fill_value=0.)
+    QEinter = interpolate.interp1d(WLdet, QEdet, kind='linear',
+              bounds_error=False, fill_value=0.)
     EP = EPinter(WL)
     QE = QEinter(WL)
 
