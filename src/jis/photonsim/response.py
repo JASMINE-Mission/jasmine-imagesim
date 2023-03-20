@@ -33,12 +33,14 @@ def calc_response(control_params, telescope, detector):
     """
     This function calculates the electron rate (e-/s/m^2) detected by Jasmine
     based on the optics efficiency (EPdefined) and the quantum efficiency (QEdet).
-    The target object is assumed to have an SED determined by the effective temperature t_eff
-    (currently t_eff is fixed to be 9500 K). The apparent Hw magnitude is assumed to be zero
-    and to have the relation with the J- and H-band magnitudes used in the telescope_baseline
-    repository described as follows,
+    The target object is assumed to have an SED determined by the effective
+    temperature t_eff (currently t_eff is fixed to be 9500 K). The apparent
+    Hw magnitude is assumed to be zero and to have the relation with the
+    J- and H-band magnitudes used in the telescope_baseline repository
+    described as follows,
       Hw - H = 0.9*(J - H) - 0.06*(J - H)^2,
-    where J, H, and Hw are the J-, H-, and Hw-band magnitudes in the Vega system.
+    where J, H, and Hw are the J-, H-, and Hw-band magnitudes
+    in the Vega system.
 
     Args:
         control_params: control parameters
@@ -91,7 +93,8 @@ def calc_response(control_params, telescope, detector):
 
     # Photon count per wavelength in Hw-band.
     # The value is adjust by the distance-factor 
-    # to make consistecy among the distance, extinction, and apparent Hw-mag (=0 mag).
+    # to make consistecy among the distance, extinction,
+    # and apparent Hw-mag (=0 mag).
     Npr = np.empty(len(WL))
     for i in range(len(WL)):
         Npr[i] = EP[i]*QE[i]*Np[i]*math.pow(10.0,-Awl_n20(JH,J_abs,H_abs,WL[i])/2.5)\
