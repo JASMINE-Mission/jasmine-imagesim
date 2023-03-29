@@ -73,14 +73,9 @@ def calc_response(control_params, telescope, detector):
     m_scale  = H_abs + (coeff1*JH + coeff2*JH**2 + Ah)
 
     # Array for wavelength
-    # WL[i] should be in (WLshort,WLlong and 0.1 um step)
-    Wlist=[]
+    # WL[i] should be in (WLshort,WLlong and 0.01 um step)
     eps = 1e-8
-    for i in range(22):
-        w = i/10+0.4  # from 0.4 um to 2.5 um
-        if w >= WLshort-eps and w <= WLlong+eps :
-            Wlist.append(w)
-    WL = np.array(Wlist)
+    WL = np.arange(0.4, 2.51, 0.01) # from 0.4 to 2.5 um.
 
     # interpolate efficiency and qe
     EPinter = interpolate.interp1d(WLdefined, EPdefined, kind='linear',
