@@ -85,6 +85,14 @@ def calc_response(control_params, telescope, detector):
     EP = EPinter(WL)
     QE = QEinter(WL)
 
+    # Removing data in non-sensitive wavelength region.
+    pos = np.where(EP*QE>0.)
+    i_min = np.min(pos[0])-1
+    i_max = np.max(pos[0])+1
+    WL = np.array(WL[i_min:i_max+1])
+    EP = np.array(EP[i_min:i_max+1])
+    QE = np.array(QE[i_min:i_max+1])
+
     # photon flux of a dwarf star at 10 pc (ph/s/m^2/um).
     Np=Nphotons(WL, t_eff)
 
