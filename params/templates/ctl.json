@@ -63,10 +63,10 @@
     "val": 360},
   "acex_std": {
     "title": "standard deviation of ACE along with X-axis (arcsec; gauss/real mode).",
-    "val": 0.276},
+    "val": 0.275},
   "acey_std": {
     "title": "standard deviation of ACE along with Y-axis (arcsec; gauss/real mode).",
-    "val": 0.276},
+    "val": 0.275},
   "acex_seed": {
     "title": "random number seed for ACE along with X axis (for real mode).",
     "val": 1},
@@ -84,7 +84,7 @@
   "val": 3.1},
 "J-H": {
   "title": "Color excess E(J-h).",
-  "val": 2.0},
+  "val": 3.0},
 "alpha": {
   "title": "Interpolation factor",
   "val": 0.75}

@@ -25,7 +25,7 @@ def fluxdensity_spline(t_eff):
     nphoton     = flux * wav * 1.0e-6 /h/c
     logL        = np.log10(wav)
     logN        = np.log10(nphoton)
-    Npspline    = interpolate.interp1d(logL,logN,kind="cubic")
+    Npspline    = interpolate.interp1d(logL,logN,kind="cubic",bounds_error=False, fill_value=-np.inf)
 
     return Npspline
 
