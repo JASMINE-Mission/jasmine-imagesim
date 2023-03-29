@@ -63,14 +63,15 @@ def calc_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     wfer = np.nan_to_num( wfe )
     wfec = np.empty( (wN,wN),dtype='complex128')
 
-    # We define the wavelength grid with k points.
-    # When the aperture diameter is D, and the size of the calculation region is N,
-    # the PSF image obtained through FFT will have an angle grid scale of
+    # We define the wavelength grid with k points. When the aperture diameter
+    # is D, and the size of the calculation region is N, the PSF image
+    # obtained through FFT will have an angle grid scale of
     # D/N x lambda/D=lambda/N. To equalize the PSF angle scales for different
     # wavelengths, WL0, WL1, ..., WLn, it is a good way to vary the calculation
     # region N in prop. to wavelength as, N=M WL (WL: wavelength in um) and
     # add the obtained PSF images after extracting the central fN x fN region.
-    # For accuracy, M should be chosen such that N is an integer for all wavelengths.
+    # For accuracy, M should be chosen such that N is an integer
+    # for all wavelengths.
 
     image = np.zeros( (fN, fN) ,dtype ='float' )
 
@@ -119,7 +120,8 @@ def calc_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
 
         image = image + tmp_img
 
-    # Normalizing the resutl such that the total value equals to the electron rate.
+    # Normalizing the resutl such that the total value
+    # equals to the electron rate.
     s     = np.sum(image)
     image = image/s * Ntot * Stel
 
