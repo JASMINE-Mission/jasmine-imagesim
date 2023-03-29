@@ -63,20 +63,19 @@ def calc_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
     wfer = np.nan_to_num( wfe )
     wfec = np.empty( (wN,wN),dtype='complex128')
 
-    # 波長を k 個の点で規定している。
-    # 口径 D で、計算領域の大きさを N とするとき、
-    # フーリエ変換で得られる PSF は D/N x lambda/D=lambda/N の角度スケールになる。
-    # 異なるいくつかの波長 WL0, WL1, ..., WLn で生成したPSFのセルスケールを
-    # 合わせようとおもったら、FFT計算領域を波長に比例させて
-    # N=M WL (ここでWLはミクロン単位の波長)として設定し、
-    # 得られた結果を PSF として fN x fN のサイズで切り取って加算すればよい。
-    # なお、Mは計算する波長WLに対してNが整数になるように選んでおく。
+    # We define the wavelength grid with k points.
+    # When the aperture diameter is D, and the size of the calculation region is N,
+    # the PSF image obtained through FFT will have an angle grid scale of
+    # D/N x lambda/D=lambda/N. To equalize the PSF angle scales for different
+    # wavelengths, WL0, WL1, ..., WLn, it is a good way to vary the calculation
+    # region N in prop. to wavelength as, N=M WL (WL: wavelength in um) and
+    # add the obtained PSF images after extracting the central fN x fN region.
+    # For accuracy, M should be chosen such that N is an integer for all wavelengths.
 
     image = np.zeros( (fN, fN) ,dtype ='float' )
 
-    # WL として、1.1, 1.2, ,,, 1.6 としているとき、
-    # 1.1-1.2 の範囲のフォトンを 波長 1.15 で代表させて加え、
-    # 1.2-1.3, ,,, 1.5-1.6 を加える、としていこう。
+    # We calculate the photons in a certain range between two wavelengths
+    # as those at the mean wavelength of the two and add them togather.
     for i in range(len(WL)-1):
         WLm = (WL[i] + WL[i+1])/2
         N = int(WLm*M)
@@ -89,8 +88,9 @@ def calc_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
         i2 = int(N/2+aN/2)
         data.real[i1:i2,i1:i2] = adata[:,:]
 
-        # ここで、 WFE map を波長に反比例させて大きさをかえてから、
-        # 位相成分として複素数化して data に掛ける
+        # Converting the wfe data to phase error and
+        # multiply the complex data created from the phase error
+        # to the aperture pattern.
         wfec.real = np.cos(wfer/WLm*2.*np.pi)
         wfec.imag = np.sin(wfer/WLm*2.*np.pi)
         i3 = int(N/2-wN/2)
@@ -101,7 +101,8 @@ def calc_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
         ft  = pyfftw.interfaces.numpy_fft.fft2(data)
         fts = np.fft.fftshift(ft)
 
-        # 結果を入射光子数(電子数)の重みを付けて加算する。
+        # Weighting with the number of photons/electrons and
+        # adding together.
         i1 = int(N/2-fN/2)
         i2 = int(N/2+fN/2)
         NPm   = (NP[i] + NP[i+1])/2
@@ -118,7 +119,7 @@ def calc_psf(wfe, wN, WL, NP, Ntot, Stel, adata, M, aN, fN=520):
 
         image = image + tmp_img
 
-    # 最後に規格化しておく、値は1秒あたりのelectron数になるように
+    # Normalizing the resutl such that the total value equals to the electron rate.
     s     = np.sum(image)
     image = image/s * Ntot * Stel
 
