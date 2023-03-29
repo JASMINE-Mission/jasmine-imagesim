@@ -184,7 +184,7 @@ if __name__ == '__main__':
     for iframe in tqdm.tqdm(range(0,nframe)):
 
         #the positioning system is designed to match to the future upgrade of the large drift.
-        #jx,jy=np.int(x),np.int(y)
+        #jx,jy=int(x),int(y)
         #interpix=rf.flat_interpix(flat,jx,jy,pixdim,figsw=0)
 
         # picking temporary trajectory and local position update
