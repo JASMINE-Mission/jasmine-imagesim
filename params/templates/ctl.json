@@ -19,10 +19,7 @@
 
 "M": {
  "title"  :"Cell scale is 1/M [um/mm] ",
- "val"   :6320},
-"CellPix": {
- "title"  :"Number of cells corresponds to detector pixel size",
- "val"   : 13 },
+ "val"   :5700},
 "fN": {
  "title"  :"Number of fp-cells of the psf data calculated by calc_psf",
  "val"   : 520},
