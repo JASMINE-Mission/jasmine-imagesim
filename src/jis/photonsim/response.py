@@ -40,7 +40,7 @@ def calc_response(control_params, telescope, detector):
     described as follows,
       Hw - H = 0.9*(J - H) - 0.06*(J - H)^2,
     where J, H, and Hw are the J-, H-, and Hw-band magnitudes
-    in the Vega system (See also JASMINE-CZ-TN-TY-220914.
+    in the Vega system (See also JASMINE-CZ-TN-TY-220914Hw関係式.pdf).
 
     Args:
         control_params: control parameters
