@@ -66,11 +66,15 @@ def calc_response(control_params, telescope, detector):
     QEdet = detector.qe.val
 
     _, J_abs, H_abs = absmags(t_eff)
-    coeff1  = 0.9
-    coeff2  = -0.06
+    #coeff1  = 0.9
+    #coeff2  = -0.06
+    coeff1  = 1.08
+    coeff2  = -0.15
+    coeff3  = 0.010
 
     Ah  = Awl_n20(JH, J_abs, H_abs, WL_H)
-    m_scale  = H_abs + (coeff1*JH + coeff2*JH**2 + Ah)
+    #m_scale  = H_abs + (coeff1*JH + coeff2*JH**2 + Ah)
+    m_scale  = H_abs + (coeff1*JH + coeff2*JH**2 + coeff3*JH**3 + Ah)
 
     # Array for wavelength
     # WL[i] should be in (WLshort,WLlong and 0.1 um step)
