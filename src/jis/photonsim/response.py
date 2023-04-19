@@ -38,7 +38,7 @@ def calc_response(control_params, telescope, detector):
     Hw magnitude is assumed to be zero and to have the relation with the
     J- and H-band magnitudes used in the telescope_baseline repository
     described as follows,
-      Hw - H = 0.9*(J - H) - 0.06*(J - H)^2,
+      Hw - H = 1.08*(J - H) - 0.15*(J - H)^2 + 0.01*(J - H)^3
     where J, H, and Hw are the J-, H-, and Hw-band magnitudes
     in the Vega system (See also JASMINE-CZ-TN-TY-220914Hw関係式.pdf).
 
