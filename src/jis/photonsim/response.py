@@ -25,7 +25,8 @@ def fluxdensity_spline(t_eff):
     nphoton     = flux * wav * 1.0e-6 /h/c
     logL        = np.log10(wav)
     logN        = np.log10(nphoton)
-    Npspline    = interpolate.interp1d(logL,logN,kind="cubic")
+    Npspline    = interpolate.interp1d(logL,logN,kind="cubic",
+                    bounds_error=False, fill_value=-np.inf)
 
     return Npspline
 
@@ -74,14 +75,9 @@ def calc_response(control_params, telescope, detector):
     m_scale  = H_abs + (coeff1*JH + coeff2*JH**2 + coeff3*JH**3 + Ah)
 
     # Array for wavelength
-    # WL[i] should be in (WLshort,WLlong and 0.1 um step)
-    Wlist=[]
+    # WL[i] should be in (WLshort,WLlong and 0.01 um step)
     eps = 1e-8
-    for i in range(22):
-        w = i/10+0.4  # from 0.4 um to 2.5 um
-        if w >= WLshort-eps and w <= WLlong+eps :
-            Wlist.append(w)
-    WL = np.array(Wlist)
+    WL = np.arange(0.4, 2.51, 0.01) # from 0.4 to 2.5 um.
 
     # interpolate efficiency and qe
     EPinter = interpolate.interp1d(WLdefined, EPdefined, kind='linear',
@@ -90,6 +86,14 @@ def calc_response(control_params, telescope, detector):
               bounds_error=False, fill_value=0.)
     EP = EPinter(WL)
     QE = QEinter(WL)
+
+    # Removing data in non-sensitive wavelength region.
+    pos = np.where(EP*QE > 0.)
+    i_min = np.min(pos[0])-1
+    i_max = np.max(pos[0])+1
+    WL = np.array(WL[i_min:i_max+1])
+    EP = np.array(EP[i_min:i_max+1])
+    QE = np.array(QE[i_min:i_max+1])
 
     # photon flux of a dwarf star at 10 pc (ph/s/m^2/um).
     Np=Nphotons(WL, t_eff)

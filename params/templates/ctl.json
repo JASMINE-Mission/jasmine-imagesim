@@ -19,10 +19,7 @@
 
 "M": {
  "title"  :"Cell scale is 1/M [um/mm] ",
- "val"   :6320},
-"CellPix": {
- "title"  :"Number of cells corresponds to detector pixel size",
- "val"   : 13 },
+ "val"   :5700},
 "fN": {
  "title"  :"Number of fp-cells of the psf data calculated by calc_psf",
  "val"   : 520},
@@ -66,10 +63,10 @@
     "val": 360},
   "acex_std": {
     "title": "standard deviation of ACE along with X-axis (arcsec; gauss/real mode).",
-    "val": 0.276},
+    "val": 0.275},
   "acey_std": {
     "title": "standard deviation of ACE along with Y-axis (arcsec; gauss/real mode).",
-    "val": 0.276},
+    "val": 0.275},
   "acex_seed": {
     "title": "random number seed for ACE along with X axis (for real mode).",
     "val": 1},
@@ -87,7 +84,7 @@
   "val": 3.1},
 "J-H": {
   "title": "Color excess E(J-h).",
-  "val": 2.0},
+  "val": 1.0},
 "alpha": {
   "title": "Interpolation factor",
   "val": 0.75}
