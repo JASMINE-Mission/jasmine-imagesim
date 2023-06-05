@@ -1,0 +1,15 @@
+include src/jis/data/random_stars.csv
+include src/jis/data/random_catalog/random_stars_A.csv
+include src/jis/data/random_catalog/random_stars_B.csv
+include src/jis/data/random_catalog/random_stars_C.csv
+include src/jis/data/random_catalog/random_stars_D.csv
+
+include src/jis/data/params/det.json
+include src/jis/data/params/ctl.json
+include src/jis/data/params/tel.json
+include src/jis/pixsim/data/v_flatn.fits
+include src/jis/pixsim/data/intrapix/intravx.csv
+include src/jis/pixsim/data/intrapix/intravy.csv
+include src/jis/photonsim/data/FringeZernike_2D-s1.csv
+include src/jis/pixsim/data/trans/trans180K.txt
+include src/jis/photonsim/data/maglist.txt

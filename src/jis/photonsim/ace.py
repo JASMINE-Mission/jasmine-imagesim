@@ -5,8 +5,7 @@ import sys
 import matplotlib.pyplot as plt
 
 def calc_ace(rg, N, T, ace):
-    """
-    This function makes a one-dimensional attitude control error (ACE) data.
+    """    
     The ACE is assumed to have a power spectral distribution (PSD) 
     which consists of a white noise spectrum in low frequencies,
     a power-law function in high frequencies (index=-2), 
@@ -41,16 +40,17 @@ def calc_ace(rg, N, T, ace):
         nmax = ace['n']   # Number of the PS disturbance peaks (see below).
 
         # Settings for the PS disturbance (peaks of some specific frequencies).
-        P = np.empty(nmax) # Power
-        F = np.empty(nmax) # Frequency
-        H = np.empty(nmax) # Half-width half-maximum
-        for i in range(nmax):
-            pi = "p{}".format(i+1)
-            hi = "h{}".format(i+1)
-            fi = "f{}".format(i+1)
-            P[i] = ace[pi]
-            H[i] = ace[hi]
-            F[i] = ace[fi]
+        if nmax > 0:
+            P = np.empty(nmax) # Power
+            F = np.empty(nmax) # Frequency
+            H = np.empty(nmax) # Half-width half-maximum
+            for i in range(nmax):
+                pi = "p{}".format(i+1)
+                hi = "h{}".format(i+1)
+                fi = "f{}".format(i+1)
+                P[i] = ace[pi]
+                H[i] = ace[hi]
+                F[i] = ace[fi]
 
         """
         -----------------------------------------------
@@ -60,7 +60,7 @@ def calc_ace(rg, N, T, ace):
         Fourier domain ACE F(f) should...
           F(0 or N/2 ) should be real
           F(N-f) = conjugete( F(f) )
-            then 
+            then
               ReF(-f) = ReF(f) ,  ImF(-f) = -ImF(f)
         -----------------------------------------------
         """
@@ -68,33 +68,39 @@ def calc_ace(rg, N, T, ace):
         # initialize data for fft
         data = pyfftw.zeros_aligned((N),dtype='complex128')
 
-        # independent data
-        for t in range(int(N/2)+1):
-            f   = t/(N*dT)           # Frequency
-            psd = 1/f0/(1+(f/f0)**2) # Power-law component
+        # independent data (i = 0,...,N/2) ######################
+        t   = np.arange(0, int(N/2)+1, dtype='int')
 
-            # Adding PS-disturbance peaks (Lorenzian function).
+        f   = t/N/dT                 # Freq. grid.
+        psd = 1/f0/(1+(f/f0)**2.)    # PSD of the continuum comp.
+
+        # Adding PS-disturbance peaks (Lorenzian function).
+        if nmax > 0:
             for i in range(nmax):
                 psd = psd + P[i]/H[i]/(1+((f-F[i])/H[i])**2)
 
-            s0    = math.sqrt(psd)       # Amplitude without noise.
-            sig   = math.pow(s0, bet)    # Sigma of the gaussian noise in the next line.
-            noise = rg.normal(scale=sig) # Gaussian noise.
-            s     = s0 + alp * noise     # Amplitude with noise.
+        s0    = np.sqrt(psd)         # Amplitude without noise.
+        sig   = s0**bet              # Sigma of the gaussian noise in the next line.
+        noise = rg.normal(scale=sig) # Gaussian noise.
+        s     = s0 + alp * noise     # Amplitude with noise.
 
-            # Making phase th (=theta).
-            if (t==0 or t==N/2) : # real
-                th = 0.0
-            else :
-                th = rg.uniform() * 2*math.pi
-            data.real[t] = s*math.cos(th)
-            data.imag[t] = s*math.sin(th)
+        # Making phase th (=theta).
+        th = rg.uniform(size=np.size(s))*2.*np.pi
 
-        # dependent data
-        for t in range(int(N/2)-1):
-            tt = N-t-1
-            data.real[tt] =  data.real[t+1]
-            data.imag[tt] = -data.imag[t+1]
+        ## To make the data real values, set some phases to be zero.
+        th[0] = 0.
+        if N%2 == 0:
+            th[int(N/2)] = 0.
+
+        # Making Fourier components.
+        data.real[t] = s*np.cos(th)
+        data.imag[t] = s*np.sin(th)
+
+        # dependent data (i = N/2+1,...,N-1) ####################
+        t = np.arange(0, int(N/2)-1, dtype='int')
+        tt = N - t - 1
+        data.real[tt] =  data.real[t+1]
+        data.imag[tt] = -data.imag[t+1]
 
         # iFFT
         ft = pyfftw.interfaces.numpy_fft.ifft(data)
@@ -110,6 +116,26 @@ def calc_ace(rg, N, T, ace):
 
     return acedata, psdn
 
+
+def calc_dummy_ace(rg, N, T, ace):
+    """
+    This function generates a one-dimensional dummy attitue control error (ACE) data.
+    The arguents are the same as `calc_ace` but not used except for the number of elements, `N`.
+    The generated ACE is just a zero-padded one-dimensional array.
+
+    Args:
+        rg  (numpy.random.Generator): Random generator.
+        N   (int)  : Number of time grids.
+        T   (float): Range of time to simulate.
+        ace (dict) : Parameter set about ace loaded from the ace json file.
+
+    Returns:
+        dummyace (ndarray): A dummy ACE, zero-padded array with the size of `N`.
+
+    """
+    return np.zeros(N)
+
+
 def plot_ace(N, T, data, psdn, plotfile):
     """
     This function makes a plot of the ace data.
@@ -124,7 +150,7 @@ def plot_ace(N, T, data, psdn, plotfile):
 
     Returns:
         None.
- 
+
     """
 
     dT  = T/N # time step
@@ -162,8 +188,8 @@ def ace2d(x_scale, y_scale, pix_scale, N, xdata, ydata, xN):
     """
     This function returns 2D ace data array with considering
     the ace data scale and the pixel scale.
- 
-    Args:  
+
+    Args:
         x_scale   (float)  : Scale of xdata.
         y_scale   (float)  : Scale of ydata.
         pix_scale (float)  : Pixel scale of the output image.

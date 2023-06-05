@@ -1,3 +1,8 @@
+[![pytest](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/pytest.yml/badge.svg?branch=develop)](https://github.com/JASMINE-Mission/jasmine-imagesim/tree/develop)
+[![build](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/build.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6c68173a4da5ef19621c/maintainability)](https://codeclimate.com/github/JASMINE-Mission/jasmine-imagesim/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6c68173a4da5ef19621c/test_coverage)](https://codeclimate.com/github/JASMINE-Mission/jasmine-imagesim/test_coverage)
+
 # jasmine-imagesim (jis)
 This is an image simulator package developed for the JASMINE project.
 
@@ -12,9 +17,11 @@ and spectral property of the target into account. This module also calculates
 the attitude control error.
 
 # Structure
-This package basically consists of 'bin' and 'src' directories.
-- bin: Executables are stored.
+This package basically consists of 'bin', 'eval', 'src', test directories.
+- bin: Executable examples for pixel simulations are stored.
+- eval: examples for evaluation.
 - src: Modules are stored. The modules can be used for general purposes.
+- test: unit tests (pytest) and manual tests
 
 # Requirements
 - python3 >= 3.7
@@ -57,18 +64,35 @@ fatal error: pixlight_custom.h: No such file or directory\n     #include "pixlig
 ```
 indicates that you do not set CPLUS_INCLUDE_PATH properly.
 
-# Test
+# Examples and Test
+
+## Examples
+
 - modify some parameter files.
   - [jis-home]/params/templates/det.json
     - rename intrapix.dirname ("/home/kamizuka/jasmine-imagesim/" -> [jis-home])
   - [jis-home]/params/templates/variability.json
     - rename dirname(s) ("/home/kawahara/jasmine-imagesim/" -> [jis-home])
 - cd [jis-home]/bin
-- bash test.sh
+- execute test_light.sh
+
+## Unit test
+
+```
+cd test
+pytest
+```
+
+## other test
+
+There are many manual tests in test directory
+- test.sh (not maintained)
+
 
 # Usage
 - To use modules in the jis package, you can call them by typing 'from jis import xxxx' in your script.
-- To use executables, you can execute files in [jis-home]/bin/xxxx.py.
+- To use executables, you can execute files in [jis-home]/bin/mkimage.py
+
 
 # Sphinx documents
 - To generate sphinx documents, perform

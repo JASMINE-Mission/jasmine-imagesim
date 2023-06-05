@@ -53,7 +53,7 @@ def calc_aperture(N,EPD,Robs,Tsp):
             x2  = -x/2 - y*a  # x2,y2 is rotated 120 degree 
             y2  =  x*a - y/2
             apt = 0.0 
-            if rsq <= (EPD/2.)**2  and rsq > Robs**2 : 
+            if rsq <= (EPD/2.)**2  and rsq >= Robs**2 : 
                 apt = 1.0 
                 if x  >0 and y  > -Tsp/2 and y  < Tsp/2: # in a spider
                     apt = 0.0

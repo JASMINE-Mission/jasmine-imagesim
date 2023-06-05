@@ -100,6 +100,22 @@ def set_simpix(theta,interpix,intrapix):
     return dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay,\
            pixdim, spixdim, ntime, pixlc
 
+def free_dev(dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay):
+    """free device memory
+
+    Args:
+        dev_pixlc (_type_): _description_
+        dev_interpix (_type_): _description_
+        dev_intrapix (_type_): _description_
+        dev_thetax (_type_): _description_
+        dev_thetay (_type_): _description_
+    """
+    dev_pixlc.free()
+    dev_interpix.free()
+    dev_intrapix.free()
+    dev_thetax.free()
+    dev_thetay.free()
+
 def pix2psfpix(pixpos,pixcenter,psfcenter,psfscale):
     # psfpos [fp-cell]: psfarr pixel position as a function of (detector) pixel position (pixpos [pix])
     # pixcenter: the detector center position [pix,pix]
@@ -120,8 +136,8 @@ def set_custom(theta,psfarr,psfcenter,psfscale,pixdim,spixdim):
     subtilex=np.zeros(pixdim)
     subtiley=np.zeros(pixdim)
 
-    thetamax=np.max(theta,axis=1)
-    thetamin=np.min(theta,axis=1)
+    thetamax=np.max(theta,axis=1) #maximum values of trajectory
+    thetamin=np.min(theta,axis=1) #minimum values of trajectory
     thetamed=np.median(theta,axis=1)
 
     # psfscale [pix/fp-cell]
@@ -140,16 +156,24 @@ def set_custom(theta,psfarr,psfcenter,psfscale,pixdim,spixdim):
             maxpsfpos=pix2psfpix(pixpos,thetamin,psfcenter,psfscale)
             minpsfpos=pix2psfpix(pixpos,thetamax,psfcenter,psfscale)
 
-            jx=int(minpsfpos[0]-full_pixsize-1)
+#            jx=int(minpsfpos[0]-full_pixsize-1)
+            jx=int(minpsfpos[0]-2)
             if jx >= 0 and jx < psfdim[0]:
                 subtilex[ix,iy]=jx
             else:
+                print("")
+                print("jx=",jx)
+                print("jx must be between 0 and "+str(psfdim[0]-1))
                 sys.exit("OVER jx")
 
-            jy=int(minpsfpos[1]-full_pixsize-1)
+#            jy=int(minpsfpos[1]-full_pixsize-1)
+            jy=int(minpsfpos[1]-2)
             if jy >= 0 and jy < psfdim[1]:
                 subtiley[ix,iy]=jy
             else:
+                print("")
+                print("jy=",jy)
+                print("jy must be between 0 and "+str(psfdim[1]-1))
                 sys.exit("OVER jy")
             
             #check the maximum size of subtile
@@ -253,9 +277,8 @@ def simpix(theta, interpix, intrapix, psfarr=None, psfcenter=None, psfscale=None
         interpix  (ndarray): Interpixel flat pattern (2-d array).
         intrapix  (ndarray): Intrapixel flat pattern (2-d array).
         psfarr    (ndarray): psf array or None=the analytic donut.
-        psfcenter (ndarray): psf center in the unit of fp-cell
-        psfscale  (float)  : psf pixel-size in the unit of (detector) pix [pix/fp-cell]
-        readnoise (float)  : Readnoise in electrons (default 15e-).
+        psfcenter (ndarray): psf center in the unit of fp-cell.
+        psfscale  (float)  : psf pixel-size in the unit of (detector) pix [pix/fp-cell].
 
     Returns:
         pixar (ndarray): Calculated movie data (3-d array).  
@@ -296,6 +319,12 @@ def simpix(theta, interpix, intrapix, psfarr=None, psfcenter=None, psfscale=None
     cuda.memcpy_dtoh(pixlc,dev_pixlc)
 
     pixar = pixlc.reshape((pixdim[0], pixdim[1], ntime))
+    #free memory
+    free_dev(dev_pixlc, dev_interpix, dev_intrapix, dev_thetax, dev_thetay)
+    if psfarr is not None:
+        dev_psfarr.free()
+        dev_subtilex.free()
+        dev_subtiley.free()
 
     return pixar
 
