@@ -28,8 +28,8 @@ def save_outputs(filenames, output_format, control_params, telescope, detector, 
       get_pixelscales(control_params, telescope, detector)
     hdu.header['CRVAL1'] = 0.0
     hdu.header['CRVAL2'] = 0.0
-    hdu.header['CRPIX1'] = psf.shape[1]*0.5+1.0
-    hdu.header['CRPIX2'] = psf.shape[0]*0.5+1.0
+    hdu.header['CRPIX1'] = psf.shape[1]*0.5+0.5
+    hdu.header['CRPIX2'] = psf.shape[0]*0.5+0.5
     hdu.header['CDELT1'] = fp_scale 
     hdu.header['CDELT2'] = fp_scale
     hdu.header['CUNIT1'] = 'arcsec'
