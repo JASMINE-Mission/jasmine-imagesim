@@ -24,7 +24,7 @@ def save_outputs(filenames, output_format, control_params, telescope, detector, 
 
     # psf
     hdu = pf.PrimaryHDU(psf)
-    detpix_scale, fp_cellsize_rad, fp_scale, psfscale =
+    detpix_scale, fp_cellsize_rad, fp_scale, psfscale =\
       get_pixelscales(control_params, telescope, detector)
     hdu.header['CDELT1'] = fp_scale 
     hdu.header['CDELT2'] = fp_scale
