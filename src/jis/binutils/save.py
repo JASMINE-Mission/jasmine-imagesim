@@ -5,19 +5,26 @@ import h5py
 
 def save_outputs(filenames, output_format, control_params, telescope, detector, wfe, psf, pixcube_global, tplate, uniform_flat_interpix, uniform_flat_intrapix, acex, acey, overwrite):
     """Saving the outputs."""
+    # interpix flat
     if control_params.effect.flat_interpix is True:
         pf.writeto(filenames['interpix'],
                    detector.flat.interpix, overwrite=overwrite)
     else:
         pf.writeto(filenames['interpix'],
                    uniform_flat_interpix, overwrite=overwrite)
+
+    # intrapix flat
     if control_params.effect.flat_interpix is True:
         pf.writeto(filenames['intrapix'],
                    detector.flat.intrapix, overwrite=overwrite)
     else:
         pf.writeto(filenames['intrapix'],
                    uniform_flat_intrapix, overwrite=overwrite)
+
+    # psf
     pf.writeto(filenames['psf'], psf, overwrite=overwrite)
+
+    # final image
     if output_format == 'hdfcube':
         with h5py.File(filenames['images'][0], 'w') as f:
             f.create_group('header')
@@ -35,12 +42,14 @@ def save_outputs(filenames, output_format, control_params, telescope, detector, 
             pf.writeto(filenames['images'][0], pixcube_global.astype(
                 'int32'), overwrite=overwrite)
 
+    # wfe
     hdu = pf.PrimaryHDU(wfe)
     hdu.header['WFE-FILE'] = filenames['wfejson']
     hdu.header['WFE-EPD'] = telescope.epd
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filenames['wfe'], overwrite=overwrite)
 
+    # aperture
     hdu = pf.PrimaryHDU(telescope.aperture)
     hdu.header['APTFILE'] = filenames['teljson']
     hdu.header['EPD'] = telescope.epd
@@ -50,12 +59,14 @@ def save_outputs(filenames, output_format, control_params, telescope, detector, 
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filenames['aperture'], overwrite=overwrite)
 
+    # ACE (x direction)
     hdu = pf.PrimaryHDU(acex)
     hdu.header['ACE-FILE'] = filenames['acejson']
     hdu.header['ACE-TOTT'] = control_params.ace_control['tace']
     hdulist = pf.HDUList([hdu])
     hdulist.writeto(filenames['acex'], overwrite=overwrite)
 
+    # ACE (y direction)
     hdu = pf.PrimaryHDU(acey)
     hdu.header['ACE-FILE'] = filenames['acejson']
     hdu.header['ACE-TOTT'] = control_params.ace_control['tace']
