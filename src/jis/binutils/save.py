@@ -1,6 +1,7 @@
 import astropy.io.fits as pf
 import numpy as np
 import h5py
+from jis.binutils.scales import get_pixelscales
 
 
 def save_outputs(filenames, output_format, control_params, telescope, detector, wfe, psf, pixcube_global, tplate, uniform_flat_interpix, uniform_flat_intrapix, acex, acey, overwrite):
@@ -22,7 +23,15 @@ def save_outputs(filenames, output_format, control_params, telescope, detector, 
                    uniform_flat_intrapix, overwrite=overwrite)
 
     # psf
-    pf.writeto(filenames['psf'], psf, overwrite=overwrite)
+    hdu = pf.PrimaryHDU(psf)
+    detpix_scale, fp_cellsize_rad, fp_scale, psfscale =
+      get_pixelscales(control_params, telescope, detector)
+    hdu.header['CDELT1'] = fp_scale 
+    hdu.header['CDELT2'] = fp_scale
+    hdu.header['CUNIT1'] = 'arcsec'
+    hdu.header['CUNIT2'] = 'arcsec'
+    hdulist = pf.HDUList([hdu])
+    hdulist.writeto(filenames['psf'], overwrite=overwrite)
 
     # final image
     if output_format == 'hdfcube':
