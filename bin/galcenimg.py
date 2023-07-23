@@ -176,16 +176,6 @@ if __name__ == '__main__':
     np.savez("dark_" + ver + region + ".npz", np.round(
         gd / detector.gain))  # Digitize. Conv. to in adu/pix/plate.
 
-    #fits save
-    y, x, z = np.shape(pixcube_global)
-    hdu = fits.PrimaryHDU(data=pixcube_global[:, :, 0])
-    #hdu.header = header
-    hdu.header['NAXIS'] = 2
-    hdu.header['NAXIS1'] = x
-    hdu.header['NAXIS2'] = y
-    hdu.header.update(jasmine_wcs.to_header())
-    hdu.writeto("img_" + ver + region + ".fits", overwrite=True)
-    
     # Dark addition, noise addition, and saving the result.
     pixcube_global += gd  # dark addition.
     pixcube_global += addnoise(pixcube_global,
@@ -193,3 +183,13 @@ if __name__ == '__main__':
                                detector.readnoise)[0]  # noise addition.
     pixcube_global = np.round(pixcube_global / detector.gain)  # digitize.
     np.savez("img_" + ver + region + ".npz", pixcube_global)
+
+    #FITS save
+    pixcube_global = np.swapaxes(pixcube_global, 0, 2) # (x, y, z) -> (z, y, x)
+    nz, ny, nx = np.shape(pixcube_global)
+    hdu = fits.PrimaryHDU(data=pixcube_global[0].astype('int32'))
+    hdu.header['NAXIS'] = 2
+    hdu.header['NAXIS1'] = nx
+    hdu.header['NAXIS2'] = ny
+    hdu.header.update(jasmine_wcs.to_header())
+    hdu.writeto("img_" + ver + region + ".fits", overwrite=True)
