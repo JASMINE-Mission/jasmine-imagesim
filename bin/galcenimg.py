@@ -9,7 +9,7 @@
 import tqdm
 import numpy as np
 from jis.binutils.save import save_outputs
-from jis.binutils.runphotonsim import run_calc_wfe, run_calc_psf, run_calc_ace
+from jis.binutils.runphotonsim import run_calc_wfe, run_calc_psf, run_calc_ace, apply_gaussian
 from jis.binutils.runpixsim import init_pix, uniform_flat, init_images, set_positions, make_local_flat
 from jis.binutils.runpixsim import index_control_trajectory, calc_theta, scaling_pixar, run_simpix
 from jis.binutils.runpixsim import global_dark
@@ -105,6 +105,10 @@ if __name__ == '__main__':
                                             detector, acex, acey, detpix_scale,
                                             driftsw)
     check_ace_length(Nts_per_plate, control_params, theta_full)
+
+    if control_params.effect.ace == 'gauss':
+        psf = apply_gaussian(psf, control_params.ace_control['acex_std'],\
+                             control_params.ace_control['acey_std'], fp_scale)
 
     uniform_flat_interpix, uniform_flat_intrapix = uniform_flat(detector)
     pixcube_global = init_images(control_params, detector, prior_dark=False)
