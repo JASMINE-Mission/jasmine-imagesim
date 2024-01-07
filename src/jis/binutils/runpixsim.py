@@ -2,6 +2,7 @@ import numpy as np
 import json
 import matplotlib.pylab as plt
 from jis.pixsim import simpix_stable as sp
+from jis.pixsim.addnoise import addnoise
 
 
 def init_pix(filenames, control_params, detector, acex, acey, detpix_scale, driftsw):
@@ -61,19 +62,20 @@ def uniform_flat(detector):
     return uniform_flat_interpix, uniform_flat_intrapix
 
 
-def init_images(control_params, detector, prior_dark = True):
+def init_images(control_params, detector, prior_dark = True, addnoise=True):
     """initialize pixcube.
 
     Args:
         control_params: control parameters
         detector: detector object
         prior_dark: if the dark is added (True) or not (False). default: True
+        addnoise: switch for noise-addition function.
 
     Returns:
         global pixel cube images
     """
     if prior_dark:
-        pixcube_global = global_dark(control_params, detector)
+        pixcube_global = global_dark(control_params, detector, addnoise=addnoise)
     else:
         pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     
@@ -93,7 +95,6 @@ def global_dark(control_params, detector, addnoise=True, digitize=True):
         if digitize=True, the unit is adu.
         if digitize=False, the unit is e-.
     """
-    from jis.pixsim.addnoise import addnoise
     pixcube_global_dark = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     pixcube_global_dark += detector.idark * control_params.tplate
     if addnoise:
