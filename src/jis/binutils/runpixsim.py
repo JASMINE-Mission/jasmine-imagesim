@@ -2,8 +2,6 @@ import numpy as np
 import json
 import matplotlib.pylab as plt
 from jis.pixsim import simpix_stable as sp
-from jis.pixsim.addnoise import addnoise
-
 
 def init_pix(filenames, control_params, detector, acex, acey, detpix_scale, driftsw):
     """Preparation for making image, Setting and plotting full trajectory.
@@ -62,33 +60,33 @@ def uniform_flat(detector):
     return uniform_flat_interpix, uniform_flat_intrapix
 
 
-def init_images(control_params, detector, prior_dark = True, add_noise=True, digitize=True):
+def init_images(control_params, detector, prior_dark = True, addnoise=True, digitize=True):
     """initialize pixcube.
 
     Args:
         control_params: control parameters
         detector: detector object
         prior_dark: if the dark is added (True) or not (False). default: True
-        add_noise: switch for noise-addition function (used when prior_dark=True).
+        addnoise: switch for noise-addition function (used when prior_dark=True).
         digitize: swithc for digitize function (used when prior_dark=True).
 
     Returns:
         global pixel cube images
     """
     if prior_dark:
-        pixcube_global = global_dark(control_params, detector, add_noise=add_noise, digitize=digitize)
+        pixcube_global = global_dark(control_params, detector, addnoise=addnoise, digitize=digitize)
     else:
         pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     
     return pixcube_global
 
-def global_dark(control_params, detector, add_noise=True, digitize=True):
+def global_dark(control_params, detector, addnoise=True, digitize=True):
     """compute global dark image
 
     Args: 
         control_params: control parameters
         detector: detector object
-        add_noise: switch for noise-addition function.
+        addnoise: switch for noise-addition function.
         digitize: switch for digitization function.
 
     Returns:
@@ -98,7 +96,8 @@ def global_dark(control_params, detector, add_noise=True, digitize=True):
     """
     pixcube_global_dark = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     pixcube_global_dark += detector.idark * control_params.tplate
-    if add_noise:
+    if addnoise:
+        from jis.pixsim.addnoise import addnoise
         pixcube_global_dark, seed = addnoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
     # Digitization: converting to adu/pix/plate.
     if digitize:
