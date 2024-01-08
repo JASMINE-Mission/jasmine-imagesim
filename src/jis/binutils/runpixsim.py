@@ -62,20 +62,21 @@ def uniform_flat(detector):
     return uniform_flat_interpix, uniform_flat_intrapix
 
 
-def init_images(control_params, detector, prior_dark = True, addnoise=True):
+def init_images(control_params, detector, prior_dark = True, addnoise=True, digitize=True):
     """initialize pixcube.
 
     Args:
         control_params: control parameters
         detector: detector object
         prior_dark: if the dark is added (True) or not (False). default: True
-        addnoise: switch for noise-addition function.
+        addnoise: switch for noise-addition function (used when prior_dark=True).
+        digitize: swithc for digitize function (used when prior_dark=True).
 
     Returns:
         global pixel cube images
     """
     if prior_dark:
-        pixcube_global = global_dark(control_params, detector, addnoise=addnoise)
+        pixcube_global = global_dark(control_params, detector, addnoise=addnoise, digitize=digitize)
     else:
         pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     
