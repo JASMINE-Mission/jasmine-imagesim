@@ -2,6 +2,7 @@ import numpy as np
 import json
 import matplotlib.pylab as plt
 from jis.pixsim import simpix_stable as sp
+from jis.pixsim.addnoise import addnoise as AddNoise
 
 def init_pix(filenames, control_params, detector, acex, acey, detpix_scale, driftsw):
     """Preparation for making image, Setting and plotting full trajectory.
@@ -97,8 +98,7 @@ def global_dark(control_params, detector, addnoise=True, digitize=True):
     pixcube_global_dark = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     pixcube_global_dark += detector.idark * control_params.tplate
     if addnoise:
-        from jis.pixsim.addnoise import addnoise
-        pixcube_global_dark, seed = addnoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
+        pixcube_global_dark, seed = AddNoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
     # Digitization: converting to adu/pix/plate.
     if digitize:
         pixcube_global_dark = np.round(pixcube_global_dark/detector.gain)
