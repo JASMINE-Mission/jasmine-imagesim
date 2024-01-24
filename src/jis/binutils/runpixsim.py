@@ -2,7 +2,7 @@ import numpy as np
 import json
 import matplotlib.pylab as plt
 from jis.pixsim import simpix_stable as sp
-
+from jis.pixsim.addnoise import addnoise as AddNoise
 
 def init_pix(filenames, control_params, detector, acex, acey, detpix_scale, driftsw):
     """Preparation for making image, Setting and plotting full trajectory.
@@ -61,19 +61,21 @@ def uniform_flat(detector):
     return uniform_flat_interpix, uniform_flat_intrapix
 
 
-def init_images(control_params, detector, prior_dark = True):
+def init_images(control_params, detector, prior_dark = True, addnoise=True, digitize=True):
     """initialize pixcube.
 
     Args:
         control_params: control parameters
         detector: detector object
         prior_dark: if the dark is added (True) or not (False). default: True
+        addnoise: switch for noise-addition function (used when prior_dark=True).
+        digitize: swithc for digitize function (used when prior_dark=True).
 
     Returns:
         global pixel cube images
     """
     if prior_dark:
-        pixcube_global = global_dark(control_params, detector)
+        pixcube_global = global_dark(control_params, detector, addnoise=addnoise, digitize=digitize)
     else:
         pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     
@@ -93,11 +95,10 @@ def global_dark(control_params, detector, addnoise=True, digitize=True):
         if digitize=True, the unit is adu.
         if digitize=False, the unit is e-.
     """
-    from jis.pixsim.addnoise import addnoise
     pixcube_global_dark = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
     pixcube_global_dark += detector.idark * control_params.tplate
     if addnoise:
-        pixcube_global_dark, seed = addnoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
+        pixcube_global_dark, seed = AddNoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
     # Digitization: converting to adu/pix/plate.
     if digitize:
         pixcube_global_dark = np.round(pixcube_global_dark/detector.gain)
