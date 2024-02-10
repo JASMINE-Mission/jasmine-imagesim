@@ -1,0 +1,273 @@
+{
+ "pixsize": {
+  "title": "Pixel size (micron).",
+  "val": 10.0
+ },
+ "Npix": {
+  "title": "Number of pixels on a side.",
+  "val": 1968
+ },
+ "readnoise": {
+  "title": "Read out noise (e-).",
+  "val": 15
+ },
+ "Idark": {
+  "title": "Dark current w stray light (e-/sec/pix).",
+  "val": 31.0
+ },
+ "Fullwell": {
+  "title": "Full well (e-).",
+  "val": 150000
+ },
+ "QE": {
+  "title": "Spectral distribution of quantum efficiency (W?? in um; V?? QE value).",
+  "wavelength": {
+   "val": [
+    0.20663,
+    0.21014,
+    0.21376,
+    0.21751,
+    0.22139,
+    0.22541999999999998,
+    0.22959000000000002,
+    0.23392,
+    0.23842,
+    0.2431,
+    0.24796,
+    0.25302,
+    0.25829,
+    0.26379,
+    0.26952,
+    0.27551,
+    0.28176999999999996,
+    0.28833,
+    0.29519,
+    0.30239,
+    0.30995,
+    0.31789999999999996,
+    0.32626,
+    0.33508,
+    0.34439,
+    0.35423000000000004,
+    0.36465,
+    0.3757,
+    0.37970939749120003,
+    0.38744,
+    0.39994,
+    0.41326999999999997,
+    0.42752,
+    0.44279,
+    0.45919,
+    0.4739835734912,
+    0.47685000000000005,
+    0.49592,
+    0.51658,
+    0.53904,
+    0.56355,
+    0.5682577494912,
+    0.59038,
+    0.6199,
+    0.6525299999999999,
+    0.6625319254912,
+    0.68878,
+    0.72929,
+    0.7568061014912001,
+    0.7748700000000001,
+    0.82653,
+    0.8510802774912,
+    0.8855700000000001,
+    0.8982173654912,
+    0.9453544534912,
+    0.95369,
+    1.0331700000000001,
+    1.0396286294912,
+    1.12709,
+    1.1339028054912,
+    1.2281769814912,
+    1.2398,
+    1.3224511574912,
+    1.37756,
+    1.4167253334912,
+    1.5109995094912,
+    1.5487091798911998,
+    1.54975,
+    1.6052736854912,
+    1.7711400000000002,
+    1.8880962134912,
+    2.06633
+   ],
+   "title": "Wavelength in micron."
+  },
+  "qe_value": {
+   "val": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    6.328036611145662e-63,
+    5.86938591686637e-52,
+    7.850084751554571e-44,
+    1.4741544462460292e-37,
+    1.5390412083130397e-32,
+    1.9445964292842158e-28,
+    1.4246934152558472e-25,
+    4.893535737788884e-25,
+    2.0589425010342509e-22,
+    4.5168402881392e-20,
+    6.114671144864859e-18,
+    5.349454850918279e-16,
+    1.1573371474841038e-15,
+    2.674649291516774e-14,
+    7.901352031098833e-13,
+    1.9545493696684546e-11,
+    4.9769798546271226e-11,
+    5.666784806368201e-10,
+    9.529435291001906e-09,
+    3.660372242501908e-08,
+    8.562716962679474e-08,
+    2.8501353734507987e-05,
+    0.0006500107324544281,
+    0.0342997253118703,
+    0.14620164865637336,
+    0.8203842889122052,
+    0.819425369162256,
+    0.8020552699896948,
+    0.8,
+    0.8092773412847226,
+    0.81,
+    0.81,
+    0.8063013142086334,
+    0.78,
+    0.7683088148107919,
+    0.76,
+    0.73,
+    0.71,
+    0.6969355831999335,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "title": "QE values."
+  }
+ },
+ "spixdim": {
+  "title": "Dimensions of the subpixel grid.",
+  "val": [
+   32,
+   32
+  ]
+ },
+ "Nmargin": {
+  "title": "Number of margin pixels for simpix calculation.",
+  "val": 10
+ },
+ "interpix": {
+  "title": "Parameters of the interpixel flat.",
+  "stddev": {
+   "val": 0.01,
+   "title": "standard deviation of the interpixel flat."
+  }
+ },
+ "intrapix": {
+  "title": "Information about files describing intrapixel pattern.",
+  "file_x": {
+   "val": "pixsim/data/intrapix/intravx.csv",
+   "title": "Path to the definiton file of the intrapix flat pattern along with the x-axis."
+  },
+  "file_y": {
+   "val": "pixsim/data/intrapix/intravy.csv",
+   "title": "Path to the definiton file of the intrapix flat pattern along with the y-axis."
+  }
+ },
+ "persistence": {
+  "title": "Persistence parameters.",
+  "tau": {
+   "val": [
+    1,
+    10,
+    100,
+    1000,
+    10000
+   ],
+   "title": "Detrapping times in second."
+  },
+  "rho": {
+   "val": [
+    0.001,
+    0.0015,
+    0.0015,
+    0.002,
+    0.003
+   ],
+   "title": "Trapping fractions."
+  }
+ },
+ "readparams": {
+  "title": "Parameters related to the reset/read operation.",
+  "fsmpl": {
+   "val": 200000.0,
+   "title": "Sampling frequency in Hz."
+  },
+  "ncol_ch": {
+   "val": 123,
+   "title": "Num. of col. in one ch."
+  },
+  "nrow_ch": {
+   "val": 1968,
+   "title": "Num. of row in one ch."
+  },
+  "npix_pre": {
+   "val": 0,
+   "title": "Npix before reading each row."
+  },
+  "npix_post": {
+   "val": 0,
+   "title": "Npix after reading each row."
+  },
+  "t_overhead": {
+   "val": 0.1,
+   "title": "Overhead time between reset and the 1st read in sec."
+  }
+ },
+ "gain": {
+  "title": "Conversion gain in e/adu.",
+  "val": 3.3
+ },
+ "location": {
+  "title": "Parameters defining the detector location on the telescope focal plane.",
+  "offset_x": {
+   "val": 1.65,
+   "title": "Offset in x direction in mm."
+  },
+  "offset_y": {
+   "val": 1.65,
+   "title": "Offset in y direction in mm."
+  }
+ }
+}
