@@ -159,9 +159,8 @@ if __name__ == '__main__':
 
     # Add dark, Add noise, and Save the result.
     pixcube_global += gd # add dark.
-    pixcube_global += addnoise(pixcube_global,
+    pixcube_global = addnoise(pixcube_global,
             np.sqrt(2.)*detector.readnoise)[0] # add noise.
-
     pixcube_global = np.round(pixcube_global/detector.gain) # digitize.
     np.savez("img.npz", pixcube_global)
 
