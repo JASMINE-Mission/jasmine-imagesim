@@ -37,11 +37,12 @@ from jis.binutils.setfiles import set_filenames_from_args, set_filenames_output
 from jis.binutils.setcontrol import load_parameters
 from jis.binutils.save import save_outputs
 from jis.binutils.runphotonsim import run_calc_wfe, run_calc_psf, run_calc_ace, apply_gaussian
-from jis.binutils.runpixsim import init_pix, uniform_flat, init_images, set_positions, make_local_flat, index_control_trajectory, calc_theta, scaling_pixar, add_varability, add_dark_current, run_simpix
+from jis.binutils.runpixsim import init_pix, uniform_flat, init_images, set_positions, make_local_flat, index_control_trajectory, calc_theta, scaling_pixar, add_varability, add_dark_current, run_simpix, global_dark
 from jis.binutils.scales import get_pixelscales, get_tday
 from jis.binutils.check import check_ace_length
 from jis.binutils.binplot import plot_variability
 from jis.pixsim.integrate import integrate
+from jis.pixsim.addnoise import addnoise
 import matplotlib.pylab as plt
 
 if __name__ == '__main__':
@@ -88,7 +89,8 @@ if __name__ == '__main__':
                              control_params.ace_control['acey_std'], fp_scale)
 
     uniform_flat_interpix, uniform_flat_intrapix = uniform_flat(detector)
-    pixcube_global = init_images(control_params, detector)
+    pixcube_global = init_images(control_params, detector, prior_dark=False)
+    # No dark added. Dark will be added in the end of the program.
 
     # Making data around each star.
     for i_star, line in enumerate(table_starplate):
@@ -126,20 +128,44 @@ if __name__ == '__main__':
                 psfin = psf[i_star]
                 psfcenter = (np.array(np.shape(psfin)[1:])-1.0)*0.5
 
-            pixar = run_simpix(control_params, theta, interpix_local, flat_intrapix, psfin, psfcenter, psfscale, Nts_per_plate)
+            pixar = run_simpix(control_params, theta, interpix_local,
+                    flat_intrapix, psfin, psfcenter, psfscale,
+                    Nts_per_plate)
             pixar = scaling_pixar(pixar, mag)
 
             if args['--var']:
                 if varsw:
                     pixar = add_varability(pixar, injlc_iplate)
 
-            pixar = add_dark_current(control_params, detector, pixar)
-            integrated = integrate(pixar, x0_global, y0_global, control_params.tplate,
-                                   control_params.ace_control['dtace'], detector)
-            # integrated is in adu/pix/plate.
+            #pixar = add_dark_current(control_params, detector, pixar)
+            integrated = integrate(pixar, x0_global, y0_global,
+                    control_params.tplate,
+                    control_params.ace_control['dtace'], detector,
+                    addnoise=False, digitize=False)
+            # 'integrated' does not contain dark and noise.
+            # The data is in e/pix/plate (digitize=False).
+            # Dark will be added in the end of the program.
+            # Noise addition and digitization will be also done in the end.
+
             pixcube[:, :, iplate] = integrated
-            pixcube_global[x0_global:x0_global+Npixcube, y0_global:y0_global+Npixcube, iplate] =\
+            pixcube_global[x0_global:x0_global+Npixcube,
+                    y0_global:y0_global+Npixcube, iplate] +=\
                 pixcube[:, :, iplate]
 
-    save_outputs(filenames, output_format, control_params, telescope, detector, wfe, psf, pixcube_global,
-                 control_params.tplate, uniform_flat_interpix, uniform_flat_intrapix, acex, acey, overwrite)
+    # Make and save dark.
+    gd = global_dark(control_params, detector, addnoise=False, digitize=False)
+    np.savez("dark.npz", np.round(gd/detector.gain))
+    # saved after digitization; in adu/pix/plate.
+
+    # Add dark, Add noise, and Save the result.
+    pixcube_global += gd # add dark.
+    pixcube_global += addnoise(pixcube_global,
+            np.sqrt(2.)*detector.readnoise)[0] # add noise.
+
+    pixcube_global = np.round(pixcube_global/detector.gain) # digitize.
+    np.savez("img.npz", pixcube_global)
+
+    save_outputs(filenames, output_format, control_params,
+            telescope, detector, wfe, psf, pixcube_global,
+            control_params.tplate, uniform_flat_interpix,
+            uniform_flat_intrapix, acex, acey, overwrite)
