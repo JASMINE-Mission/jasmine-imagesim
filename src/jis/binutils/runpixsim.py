@@ -69,7 +69,7 @@ def init_images(control_params, detector, prior_dark = True, addnoise=True, digi
         detector: detector object
         prior_dark: if the dark is added (True) or not (False). default: True
         addnoise: switch for noise-addition function (used when prior_dark=True).
-        digitize: swithc for digitize function (used when prior_dark=True).
+        digitize: switch for digitize function (used when prior_dark=True).
 
     Returns:
         global pixel cube images
