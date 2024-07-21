@@ -33,8 +33,8 @@ __global__ void pixlight_custom(float *pixlc, float *interpix, float *intrapix, 
   float sensitivity = interpix[grInd]*intrapix[thInd];
   
   /* pixel position vector from the PSF center */
-  float pxr=px+spx-thetaY[0];
-  float pyr=py+spy-thetaX[0];
+  float pxr=px+spx-thetaY[0]+0.5/float(blockDim.y);
+  float pyr=py+spy-thetaX[0]+0.5/float(blockDim.x);
 
   /* bilinear interporated value*/
   float bilin;
@@ -70,8 +70,9 @@ __global__ void pixlight_custom(float *pixlc, float *interpix, float *intrapix, 
   nout=0;
   for (int i=0; i<ntime; i++){
 
-    pxr=px+spx-thetaY[i];
-    pyr=py+spy-thetaX[i];
+    /* pixel position vector from the PSF center */
+    pxr=px+spx-thetaY[i]+0.5/float(blockDim.y);
+    pyr=py+spy-thetaX[i]+0.5/float(blockDim.x);
 
     psfposx=PSFCENTERX + pxr/PSFSCALE;
     psfposy=PSFCENTERY + pyr/PSFSCALE;

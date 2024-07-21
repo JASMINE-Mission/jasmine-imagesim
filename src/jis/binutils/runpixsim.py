@@ -2,6 +2,7 @@ import numpy as np
 import json
 import matplotlib.pylab as plt
 from jis.pixsim import simpix_stable as sp
+from jis.pixsim.addnoise import addnoise as pixsim_addnoise
 
 
 def init_pix(filenames, control_params, detector, acex, acey, detpix_scale, driftsw):
@@ -24,24 +25,33 @@ def init_pix(filenames, control_params, detector, acex, acey, detpix_scale, drif
 
     if driftsw:
         from jis.photonsim.extract_json import Drift
-        dft = Drift.from_json(filenames['dftjson'])
-        dft.compute_drift(control_params.ace_control['dtace'], len(acex))
+
+        dft = Drift.from_json(filenames["dftjson"])
+        dft.compute_drift(control_params.ace_control["dtace"], len(acex))
 
     # Full data of the displacement in detpix.
     # (ace[x|y] scaled and converted to detpix)
-    acex_std = control_params.ace_control.get('acex_std')
-    acey_std = control_params.ace_control.get('acey_std')
+    acex_std = control_params.ace_control.get("acex_std")
+    acey_std = control_params.ace_control.get("acey_std")
     if driftsw:
-        theta_full = np.array([acex*acex_std/detpix_scale+dft.drift_theta[0, :],
-                               acey*acey_std/detpix_scale+dft.drift_theta[1, :]])
-        plt.plot(acex*acex_std/detpix_scale +
-                 dft.drift_theta[0, :], acey*acey_std/detpix_scale+dft.drift_theta[1, :], '.')
-        plt.savefig(filenames['thetapng'])
+        theta_full = np.array(
+            [
+                acex * acex_std / detpix_scale + dft.drift_theta[0, :],
+                acey * acey_std / detpix_scale + dft.drift_theta[1, :],
+            ]
+        )
+        plt.plot(
+            acex * acex_std / detpix_scale + dft.drift_theta[0, :],
+            acey * acey_std / detpix_scale + dft.drift_theta[1, :],
+            ".",
+        )
+        plt.savefig(filenames["thetapng"])
     else:
         theta_full = np.array(
-            [acex*acex_std/detpix_scale, acey*acey_std/detpix_scale])
+            [acex * acex_std / detpix_scale, acey * acey_std / detpix_scale]
+        )
 
-    Npixcube = int((np.max(np.abs(theta_full))+detector.nmargin)*2)
+    Npixcube = int((np.max(np.abs(theta_full)) + detector.nmargin) * 2)
     pixdim = [Npixcube, Npixcube]  # adaptive pixel dimension in the aperture.
     return theta_full, pixdim, Npixcube
 
@@ -61,28 +71,37 @@ def uniform_flat(detector):
     return uniform_flat_interpix, uniform_flat_intrapix
 
 
-def init_images(control_params, detector, prior_dark = True):
+def init_images(
+    control_params, detector, prior_dark=True, addnoise=True, digitize=True
+):
     """initialize pixcube.
 
     Args:
         control_params: control parameters
         detector: detector object
         prior_dark: if the dark is added (True) or not (False). default: True
+        addnoise: switch for noise-addition function (used when prior_dark=True).
+        digitize: switch for digitize function (used when prior_dark=True).
 
     Returns:
         global pixel cube images
     """
     if prior_dark:
-        pixcube_global = global_dark(control_params, detector)
+        pixcube_global = global_dark(
+            control_params, detector, addnoise=addnoise, digitize=digitize
+        )
     else:
-        pixcube_global = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
-    
+        pixcube_global = np.zeros(
+            shape=(detector.npix, detector.npix, control_params.nplate)
+        )
+
     return pixcube_global
+
 
 def global_dark(control_params, detector, addnoise=True, digitize=True):
     """compute global dark image
 
-    Args: 
+    Args:
         control_params: control parameters
         detector: detector object
         addnoise: switch for noise-addition function.
@@ -93,14 +112,17 @@ def global_dark(control_params, detector, addnoise=True, digitize=True):
         if digitize=True, the unit is adu.
         if digitize=False, the unit is e-.
     """
-    from jis.pixsim.addnoise import addnoise
-    pixcube_global_dark = np.zeros(shape=(detector.npix, detector.npix, control_params.nplate))
+    pixcube_global_dark = np.zeros(
+        shape=(detector.npix, detector.npix, control_params.nplate)
+    )
     pixcube_global_dark += detector.idark * control_params.tplate
     if addnoise:
-        pixcube_global_dark, seed = addnoise(pixcube_global_dark, np.sqrt(2.)*detector.readnoise)
+        pixcube_global_dark, seed = pixsim_addnoise(
+            pixcube_global_dark, np.sqrt(2.0) * detector.readnoise
+        )
     # Digitization: converting to adu/pix/plate.
     if digitize:
-        pixcube_global_dark = np.round(pixcube_global_dark/detector.gain)
+        pixcube_global_dark = np.round(pixcube_global_dark / detector.gain)
     return pixcube_global_dark
 
 
@@ -114,12 +136,12 @@ def set_positions(line, Npixcube):
     Returns:
         xc_local, yc_local, x0_global, y0_global, xc_global, yc_global
     """
-    xc_global = line['x pixel'] - 1  # Stellar pos. in glob. coord (X).
-    yc_global = line['y pixel'] - 1  # Stellar pos. in glob. coord (Y).
+    xc_global = line["x pixel"] - 1  # Stellar pos. in glob. coord (X).
+    yc_global = line["y pixel"] - 1  # Stellar pos. in glob. coord (Y).
     # Origin pix position in global coord (x).
-    x0_global = int(xc_global - Npixcube*0.5 + 0.5)
+    x0_global = int(xc_global - Npixcube * 0.5 + 0.5)
     # Origin pix position in global coord (y).
-    y0_global = int(yc_global - Npixcube*0.5 + 0.5)
+    y0_global = int(yc_global - Npixcube * 0.5 + 0.5)
     xc_local = xc_global - x0_global  # Stellar position (local; x).
     yc_local = yc_global - y0_global  # Stellar position (local; y).
     return xc_local, yc_local, x0_global, y0_global, xc_global, yc_global
@@ -139,13 +161,16 @@ def make_local_flat(control_params, detector, x0_global, y0_global, pixdim):
         local interpixel fluctuation
     """
     from jis.pixsim import readflat as rf
+
     if control_params.effect.flat_interpix is True:
         interpix_local = rf.flat_interpix(
-            detector.flat.interpix, x0_global, y0_global, pixdim, figsw=0)
+            detector.flat.interpix, x0_global, y0_global, pixdim, figsw=0
+        )
     else:
         uniform_flat_interpix, uniform_flat_intrapix = uniform_flat(detector)
         interpix_local = rf.flat_interpix(
-            uniform_flat_interpix, x0_global, y0_global, pixdim, figsw=0)
+            uniform_flat_interpix, x0_global, y0_global, pixdim, figsw=0
+        )
     return interpix_local
 
 
@@ -162,11 +187,11 @@ def index_control_trajectory(control_params, iplate, Nts_per_plate):
         iend for trajectory
     """
     istart = iplate * Nts_per_plate
-    iend = (iplate+1)*Nts_per_plate
+    iend = (iplate + 1) * Nts_per_plate
     # In no-ace mode, we make a single image with simpix to reduce the calculation time.
     # Below is a trick for that. After executing simpix, we will copy it to make Nts_per_plate shots.
-    if control_params.effect.ace != 'real':
-        iend = istart+1
+    if control_params.effect.ace != "real":
+        iend = istart + 1
     return istart, iend
 
 
@@ -196,11 +221,20 @@ def calc_theta(theta_full, istart, iend, xc_local, yc_local):
     return theta
 
 
-def run_simpix(control_params, theta, interpix_local, flat_intrapix, psfarr, psfcenter, psfscale, Nts_per_plate):
+def run_simpix(
+    control_params,
+    theta,
+    interpix_local,
+    flat_intrapix,
+    psfarr,
+    psfcenter,
+    psfscale,
+    Nts_per_plate,
+):
     """run simpix and normalize it
 
     Args:
-        control_params: control parameters       
+        control_params: control parameters
         theta: trajectory
         interpix_local: (local) interpixel fluctuation
         flat_intrapix: intrapix fluctuation
@@ -214,19 +248,30 @@ def run_simpix(control_params, theta, interpix_local, flat_intrapix, psfarr, psf
         unscaled pixar
     """
 
-    pixar = sp.simpix(theta, interpix_local, flat_intrapix,
-                      psfarr=psfarr, psfcenter=psfcenter, psfscale=psfscale)\
-                      / (psfscale*psfscale)*control_params.ace_control['dtace']/(1./Nts_per_plate)
+    pixar = (
+        sp.simpix(
+            theta,
+            interpix_local,
+            flat_intrapix,
+            psfarr=psfarr,
+            psfcenter=psfcenter,
+            psfscale=psfscale,
+        )
+        / (psfscale * psfscale)
+        * control_params.ace_control["dtace"]
+        / (1.0 / Nts_per_plate)
+    )
 
     # pixar is in e/pix/control_params.ace_control['dtace'].
     # In none/gauss mode, we copy the single-shot image to make the full-movie cube.
-    if control_params.effect.ace != 'real':
+    if control_params.effect.ace != "real":
         upixar = pixar[:, :, 0]
         nxt, nyt = np.shape(upixar)
-        pixar = upixar[:, :, np.newaxis]+np.zeros((nxt, nyt, Nts_per_plate))
-        pixar = pixar/Nts_per_plate
+        pixar = upixar[:, :, np.newaxis] + np.zeros((nxt, nyt, Nts_per_plate))
+        pixar = pixar / Nts_per_plate
     return pixar
-        
+
+
 def scaling_pixar(pixar, mag):
     """scale pixar.
 
@@ -238,7 +283,7 @@ def scaling_pixar(pixar, mag):
         pixar
     """
 
-    pixar = pixar * 10.**(mag/(-2.5))  # magnitude scaling.
+    pixar = pixar * 10.0 ** (mag / (-2.5))  # magnitude scaling.
 
     return pixar
 
@@ -253,7 +298,7 @@ def add_varability(pixar, injlc_iplate):
     Returns:
         pixel array variability imprinted
     """
-    return pixar*injlc_iplate
+    return pixar * injlc_iplate
 
 
 def add_dark_current(control_params, detector, pixar):
@@ -267,6 +312,9 @@ def add_dark_current(control_params, detector, pixar):
     Returns:
         pixel array dark current added
     """
-    dark = np.ones(shape=pixar.shape) * detector.idark * \
-        control_params.ace_control['dtace']
+    dark = (
+        np.ones(shape=pixar.shape)
+        * detector.idark
+        * control_params.ace_control["dtace"]
+    )
     return pixar + dark
