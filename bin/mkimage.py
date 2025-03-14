@@ -126,7 +126,7 @@ if __name__ == '__main__':
                 psfcenter = (np.array(np.shape(psfin))-1.0)*0.5
             else:
                 psfin = psf[i_star]
-                psfcenter = (np.array(np.shape(psfin)[1:])-1.0)*0.5
+                psfcenter = (np.array(np.shape(psfin))-1.0)*0.5
 
             pixar = run_simpix(control_params, theta, interpix_local,
                     flat_intrapix, psfin, psfcenter, psfscale,

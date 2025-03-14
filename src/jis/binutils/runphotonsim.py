@@ -1,3 +1,4 @@
+import astropy.io.ascii as asc
 import numpy as np
 import json
 from scipy import ndimage
@@ -5,6 +6,8 @@ from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fr
 from jis.photonsim.psf import calc_psf, calc_gauss_psf
 from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
+from jis.photonsim.extract_json import Detector, Telescope
+from jis.binutils.setcontrol import load_parameters
 
 
 def run_calc_wfe(control_params, telescope, filenames):
@@ -35,6 +38,11 @@ def run_calc_wfe(control_params, telescope, filenames):
     elif control_params.effect.wfe == 'fringe37':
         print('calculate WFE with fringe37 params...')
         wp = control_params.wfe_control
+
+        table_starplate = asc.read(filenames['starplate'])
+        detector = Detector.from_json(filenames['detjson'])
+        telescope = Telescope.from_json(filenames['teljson'])
+        detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi
 
         # Making position array (in deg).
         positions = np.array([table_starplate['x pixel']-1.+detector.offset_x_mm/detector.pixsize/1.e-3,
@@ -82,7 +90,7 @@ def run_calc_psf(control_params, telescope, detector, wfe):
         else:
             psf = []
             for i in range(wfe.shape[0]):
-                print('Calculating PSF ({}/{})...'.format(i, wfe.shape[0]))
+                print('Calculating PSF ({}/{})...'.format(i + 1, wfe.shape[0]))
                 psf.append(calc_psf(wfe[i], wfe[i].shape[0],
                                     wl_e_rate, e_rate, total_e_rate,
                                     telescope.total_area, telescope.aperture,
