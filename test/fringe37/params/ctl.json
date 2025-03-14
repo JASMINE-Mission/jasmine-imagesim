@@ -9,7 +9,7 @@
     "val": "real" },
   "ace": {
     "title": "incorporate the attitude control error (none/gauss/real)",
-    "val": "gauss" },
+    "val": "none" },
   "flat_interpix": {
     "title": "incorporate the interpix flat non-uniformity",
     "val": true },
