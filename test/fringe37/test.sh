@@ -1,11 +1,11 @@
 #!/bin/bash -x
-
+TEMPLATE='../../params/templates/'
 
 python ../../bin/mkimage.py \
-  --starplate ./params/star_plate.csv \
-  --det ./params/det.json \
-  --tel ./params/tel.json \
-  --ace ./params/ace_001.json \
+  --starplate ${TEMPLATE}/star_plate.csv \
+  --det ${TEMPLATE}/det.json \
+  --tel ${TEMPLATE}/tel.json \
+  --ace ${TEMPLATE}/ace_001.json \
   --ctl ./params/ctl.json \
   --format platefits \
   --od ./out --overwrite
