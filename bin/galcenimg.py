@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.8
 # -*- coding: utf-8 -*-
 """Make a galactic center image.
-   
+
     This example generates a mock JASMINE dectector image of the Galactic center using Aizawa's jscon catalog.
 
 """
@@ -27,6 +27,7 @@ from jis.galcen.read_galcen_position import maximum_separation
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.io import fits
+
 
 if __name__ == '__main__':
     """
@@ -95,7 +96,8 @@ if __name__ == '__main__':
         control_params, telescope, detector)
 
     # Running calculations. ########################################
-    wfe = run_calc_wfe(control_params, telescope, filenames)
+    wfe = run_calc_wfe(
+        control_params, table_starplate, detector, telescope, filenames)
     psf = run_calc_psf(control_params, telescope, detector, wfe)
     acex, acey, Nts_per_plate = run_calc_ace(control_params, detector,
                                              ace_params)

@@ -10,12 +10,16 @@ from jis.photonsim.extract_json import Detector, Telescope
 from jis.binutils.setcontrol import load_parameters
 
 
-def run_calc_wfe(control_params, telescope, filenames):
+def run_calc_wfe(
+        control_params, table_starplate, detector, telescope, filenames):
     """Making wfe.
 
     Args:
         control_params: control parameters
+        table_starplate: starplate table
+        detector: detector object
         telescope: telescope object
+        filenames: list of configuration files
     Returns:
         wavefront error
     """
@@ -39,15 +43,14 @@ def run_calc_wfe(control_params, telescope, filenames):
         print('calculate WFE with fringe37 params...')
         wp = control_params.wfe_control
 
-        table_starplate = asc.read(filenames['starplate'])
-        detector = Detector.from_json(filenames['detjson'])
-        telescope = Telescope.from_json(filenames['teljson'])
-        detpix_scale = detector.pixsize*1.e-6/telescope.efl/1.e-3*180.*3600./np.pi
+        pixel_size = detector.pixsize * 1.0e-6
+        detpix_scale = np.rad2deg(pixel_size / telescope.efl) * 3600e3
 
         # Making position array (in deg).
-        positions = np.array([table_starplate['x pixel']-1.+detector.offset_x_mm/detector.pixsize/1.e-3,
-                              table_starplate['y pixel']-1.+detector.offset_y_mm/detector.pixsize/1.e-3]).T\
-            * detpix_scale/3600.
+        positions = np.array([
+            table_starplate['x pixel'] - 1. + detector.offset_x_mm / detector.pixsize / 1.e-3,
+            table_starplate['y pixel'] - 1. + detector.offset_y_mm / detector.pixsize / 1.e-3
+        ]).T * detpix_scale/3600.
         # detector.offset_[x|y]_mm is the position of (0, 0) on the telescope focal plane in mm.
         # detector.pixsize is in um.
 
