@@ -2,7 +2,7 @@ import numpy as np
 
 
 def get_pixelscales(control_params, telescope, detector):
-    """ 
+    """
 
     Args:
         control_params: control parameters
@@ -11,8 +11,8 @@ def get_pixelscales(control_params, telescope, detector):
 
     Returns:
         det. pix. scale in arcsec/pix
-        in rad/fp-cell.   
-        arcsec/fp-cell. 
+        in rad/fp-cell.
+        arcsec/fp-cell.
         det-pix/fp-cell.
 
     """
