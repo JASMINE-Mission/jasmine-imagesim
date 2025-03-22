@@ -6,8 +6,7 @@ from jis.photonsim.wfe import wfe_model_z, calc_wfe, calc_dummy_wfe, calc_wfe_fr
 from jis.photonsim.psf import calc_psf, calc_gauss_psf
 from jis.photonsim.response import calc_response
 from jis.photonsim.ace import calc_ace, calc_dummy_ace
-from jis.photonsim.extract_json import Detector, Telescope
-from jis.binutils.setcontrol import load_parameters
+from .scales import get_pixelscales
 
 
 def run_calc_wfe(
@@ -43,8 +42,7 @@ def run_calc_wfe(
         print('calculate WFE with fringe37 params...')
         wp = control_params.wfe_control
 
-        pixel_size = detector.pixsize * 1.0e-6
-        detpix_scale = np.rad2deg(pixel_size / telescope.efl) * 3600e3
+        detpix_scale = get_pixelscales(control_params, telescope, detector)[0]
 
         # Making position array (in deg).
         positions = np.array([
