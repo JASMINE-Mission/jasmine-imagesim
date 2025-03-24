@@ -43,7 +43,7 @@ from jis.binutils.check import check_ace_length
 from jis.binutils.binplot import plot_variability
 from jis.pixsim.integrate import integrate
 from jis.pixsim.addnoise import addnoise
-import matplotlib.pylab as plt
+
 
 if __name__ == '__main__':
     """
@@ -70,7 +70,8 @@ if __name__ == '__main__':
         control_params, telescope, detector)
 
     # Running calculations. ########################################
-    wfe = run_calc_wfe(control_params, telescope, filenames)
+    wfe = run_calc_wfe(
+        control_params, table_starplate, detector, telescope, filenames)
     psf = run_calc_psf(control_params, telescope, detector, wfe)
     acex, acey, Nts_per_plate = run_calc_ace(control_params, detector, ace_params)
         # acex and acey are normalized with their stddevs.
@@ -126,7 +127,7 @@ if __name__ == '__main__':
                 psfcenter = (np.array(np.shape(psfin))-1.0)*0.5
             else:
                 psfin = psf[i_star]
-                psfcenter = (np.array(np.shape(psfin)[1:])-1.0)*0.5
+                psfcenter = (np.array(np.shape(psfin))-1.0)*0.5
 
             pixar = run_simpix(control_params, theta, interpix_local,
                     flat_intrapix, psfin, psfcenter, psfscale,

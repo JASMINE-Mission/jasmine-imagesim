@@ -18,5 +18,5 @@ def plot_variability(variability, filenames_starplate, tday, dirname_output=None
                 plt.savefig('variability_input'+'_'+str(line['star index'])+'.png')
             else:
                 plt.savefig(dirname_output+'/variability_input'+'_'+str(line['star index'])+'.png')
-                
+
             plt.clf()
