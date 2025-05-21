@@ -1,7 +1,9 @@
 [![pytest](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/pytest.yml/badge.svg?branch=develop)](https://github.com/JASMINE-Mission/jasmine-imagesim/tree/develop)
 [![build](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/JASMINE-Mission/jasmine-imagesim/actions/workflows/build.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/6c68173a4da5ef19621c/maintainability)](https://codeclimate.com/github/JASMINE-Mission/jasmine-imagesim/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/6c68173a4da5ef19621c/test_coverage)](https://codeclimate.com/github/JASMINE-Mission/jasmine-imagesim/test_coverage)
+[![Maintainability](https://qlty.sh/badges/18868519-216e-4dbf-b98c-064e4b7c4a5b/maintainability.svg)](https://qlty.sh/gh/JASMINE-Mission/projects/jasmine-imagesim)
+[![Code Coverage](https://qlty.sh/badges/18868519-216e-4dbf-b98c-064e4b7c4a5b/test_coverage.svg)](https://qlty.sh/gh/JASMINE-Mission/projects/jasmine-imagesim)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/JASMINE-Mission/jasmine-imagesim)
+
 
 # jasmine-imagesim (jis)
 This is an image simulator package developed for the JASMINE project.
@@ -10,7 +12,7 @@ This is an image simulator package developed for the JASMINE project.
 Detector simulator in a subpixel level. Pixsim uses a GPU parallel computing to boost the computation.
 
 ## photonsim
-This module calculates PSF taking the pupil pattern, wavefront error, spectral response, 
+This module calculates PSF taking the pupil pattern, wavefront error, spectral response,
 
 and spectral property of the target into account. This module also calculates
 
@@ -58,7 +60,7 @@ setenv CPLUS_INCLUDE_PATH [jis-home]/src/jis/pixsim/include
 or copy .h files to your "include" directory.
 
 
-The error such as 
+The error such as
 ```
 fatal error: pixlight_custom.h: No such file or directory\n     #include "pixlight_custom.h"\n                                 ^\ncompilation terminated.\n']
 ```
