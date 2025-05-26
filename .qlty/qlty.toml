@@ -14,16 +14,11 @@
 config_version = "0"
 
 exclude_patterns = [
-  "**/build/**",
-  "**/dist/**",
-  "**/docs/**",
-  "**/eval/**",
-  "**/bin/**",
-  "**/original_codes/**",
-  "**/node_modules/",
-  "**/__init__.py",
-  "**/*.md",
-  "**/*.in",
+  "build/**",
+  "dist/**",
+  "docs/**",
+  "eval/**",
+  "original_codes/**",
 ]
 
 test_patterns = [
