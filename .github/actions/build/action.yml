@@ -1,5 +1,5 @@
 name: build
-description: Check if the package can be built wihtout errors.
+description: Check if the package can be built without errors.
 
 runs:
   using: "composite"
