@@ -1,5 +1,8 @@
+name: get_dependency
+description: Solve dependency using requirements.txt.
+
 runs:
-  using: "Composite"
+  using: "composite"
   steps:
     - name: Install dependencies
       run: |

@@ -1,5 +1,8 @@
+name: test
+description: Check the package integrity via unittest.
+
 runs:
-  using: "Composite"
+  using: "composite"
   steps:
     - name: Test with pytest
       env:
