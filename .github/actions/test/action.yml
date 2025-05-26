@@ -27,6 +27,7 @@ runs:
       with:
         token: ${{ env.QLTY_COVERAGE_TOKEN }}
         files: src/coverage.xml
+        add-prefix: src/
 
     - name: Notice Error
       if: ${{ steps.pytest.outcome == 'failure' }}
