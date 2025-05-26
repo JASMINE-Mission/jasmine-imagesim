@@ -1,22 +1,23 @@
+permissions: read-all
 name: build
 
 on:
   pull_request:
-    branches: [ "master", "develop" ]
+    branches: [master, develop]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v3
-      with:
-        python-version: 3.9
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.9
 
-    - name: get dependencies
-      uses: ./.github/actions/get_dependencies
+      - name: get dependencies
+        uses: ./.github/actions/get_dependencies
 
-    - name: build
-      uses: ./.github/actions/build
+      - name: build
+        uses: ./.github/actions/build

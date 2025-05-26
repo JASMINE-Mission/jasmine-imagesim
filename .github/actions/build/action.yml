@@ -1,5 +1,8 @@
+name: build
+description: Check if the package can be built without errors.
+
 runs:
-  using: "Composite"
+  using: "composite"
   steps:
     - name: Build Package
       run: |
